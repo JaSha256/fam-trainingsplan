@@ -1,7 +1,7 @@
 {
-  "version": "2.1.0",
+  "version": "3.0.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-01T21:05:08.208Z",
+  "generated": "2025-10-01T21:37:49.118Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -305,7 +305,6 @@
       "trainer": "Laurenz, Konsti",
       "probetraining": "ja",
       "anmerkung": "ab den Herbstferien in der Winterpause",
-      "teilnehmer": 4,
       "link": "https://fam.kurabu.com/de/events/8516b0f1-d29e-4c36-9741-30944c21cfbe",
       "lat": 48.1117864,
       "lng": 11.5721155
@@ -323,7 +322,6 @@
       "trainer": "Ludwig",
       "probetraining": "nein",
       "anmerkung": "Findet ab Oktober nicht mehr statt",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/2b74ec1c-0ea8-40ff-a106-77d924cf7ba0",
       "lat": 48.1117864,
       "lng": 11.5721155
@@ -341,7 +339,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "ab den Herbstferien in der Winterpause",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/66b79177-0f29-4f7c-a455-2e9048785fc7",
       "lat": 48.1117864,
       "lng": 11.5721155
@@ -359,7 +356,6 @@
       "trainer": "Finnian, Maxi D?., Jakob",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": 30,
       "link": "https://fam.kurabu.com/de/events/25498c0a-73a9-41ac-9213-50146bcadf60",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
@@ -377,7 +373,6 @@
       "trainer": "Finnian, Maxi D?., Jakob",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/25498c0a-73a9-41ac-9213-50146bcadf60",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
@@ -395,7 +390,6 @@
       "trainer": "Bene, Chris",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": 12,
       "link": "https://fam.kurabu.com/de/events/80d40c31-40fe-489b-8098-1f7fd5181be2",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -413,7 +407,6 @@
       "trainer": "Bene, Chris",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": 7,
       "link": "",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -431,7 +424,6 @@
       "trainer": "Steffi, Sarah",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d9ece0df-b4b9-4b43-9638-7dae4853b8e6",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -449,7 +441,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d7329b73-7e8f-4244-9c70-283f6bf845f5",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -467,7 +458,6 @@
       "trainer": "Steffi, Bene",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/en/events/d769631f-95ea-458a-8546-f1da43a3902f",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -485,7 +475,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fe3a5ada-798e-434f-914b-a9aafc321f8a",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442
@@ -503,7 +492,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/62c0977e-60a2-4762-a140-220638829599",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442
@@ -521,7 +509,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/632ad222-9d07-41e7-b422-9598f1e1d568",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442
@@ -539,7 +526,6 @@
       "trainer": "Simon R., Laurenz, Konsti",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/75b253a9-aae1-4806-ae2a-66f9284a78e7",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294
@@ -557,7 +543,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/1eec1fc9-d924-4cf3-923f-53f0e586fee7",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294
@@ -575,7 +560,6 @@
       "trainer": "Bene",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": 12,
       "link": "https://fam.kurabu.com/de/events/75b253a9-aae1-4806-ae2a-66f9284a78e7",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -593,7 +577,6 @@
       "trainer": "Bene",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": 8,
       "link": "https://fam.kurabu.com/de/events/b4c3b240-40fd-4c70-8804-dce642f381e6",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -611,7 +594,6 @@
       "trainer": "Bene",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/104405d4-33de-4121-9742-23a63f6593c5",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
@@ -629,7 +611,6 @@
       "trainer": "Youssef",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/b7c3eb8e-c8cf-4e4f-9786-f1fc22d188b6",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -647,7 +628,6 @@
       "trainer": "Alwin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fc02197a-ced9-4ad2-9f26-3213d41bf3eb",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -665,7 +645,6 @@
       "trainer": "Alwin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/71a35c47-bc2e-45a8-9eb7-a8c36370abb3",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -683,7 +662,6 @@
       "trainer": "Simon R., Joni",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0666498d-dbc9-43a4-a8be-78dc92a63fb2",
       "lat": 48.1034295,
       "lng": 11.5868822
@@ -701,7 +679,6 @@
       "trainer": "Simon R., Joni",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f85adaa5-7fac-429d-a2cb-332e6cea0ccc",
       "lat": 48.1034295,
       "lng": 11.5868822
@@ -719,7 +696,6 @@
       "trainer": "Simon R.",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/b728cec3-fc25-465c-a87c-ed408a170894",
       "lat": 48.1034295,
       "lng": 11.5868822
@@ -737,7 +713,6 @@
       "trainer": "Kati,Malte, Maxi D?.",
       "probetraining": "nein",
       "anmerkung": "03.10. Abgesagt Feiertag",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275
@@ -755,7 +730,6 @@
       "trainer": "Kati, Malte, Maxi D?.",
       "probetraining": "nein",
       "anmerkung": "03.10. Abgesagt Feiertag",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275
@@ -773,7 +747,6 @@
       "trainer": "Kati, Malte, Maxi D?.",
       "probetraining": "nein",
       "anmerkung": "03.10. Abgesagt Feiertag",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275
@@ -791,7 +764,6 @@
       "trainer": "Joni, Neo",
       "probetraining": "ja",
       "anmerkung": "03.10. Abgesagt Feiertag",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/39328963-a499-4953-9129-8056997bda1d",
       "lat": 48.1034295,
       "lng": 11.5868822
@@ -809,7 +781,6 @@
       "trainer": "Maxi D.",
       "probetraining": "nein",
       "anmerkung": "03.10. Abgesagt Feiertag",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fc674a4b-ff55-4c1a-b961-07d52380521d",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -827,7 +798,6 @@
       "trainer": "Youssef",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/8e0b04b4-7296-4a78-9209-bf080b9a9f70",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -845,7 +815,6 @@
       "trainer": "Alwin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/33d40c37-bdd4-45b5-9854-ac8e454bcfbe",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -863,7 +832,6 @@
       "trainer": "Alwin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/668ae999-bf23-4057-94fc-e8ad7914f1ba",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -881,7 +849,6 @@
       "trainer": "Konsti, Neo",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -899,7 +866,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/1f0177ad-0183-4450-9f7e-f14b78d5734d",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -917,7 +883,6 @@
       "trainer": "Konsti, Neo",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/5497822d-fbd0-4130-b60b-dc204b1eb21b",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -935,7 +900,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/122ab0ca-88b0-409a-925c-de884e0328ca",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -953,7 +917,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/c9afaa99-6711-4d40-8c56-f618512cc337",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -971,7 +934,6 @@
       "trainer": "Garlef, Maxi C., Marcel",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": 28,
       "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
       "lat": 48.16961192487,
       "lng": 11.507736765568037
@@ -989,7 +951,6 @@
       "trainer": "Garlef, Maxi C., Marcel",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": 6,
       "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
       "lat": 48.16961192487,
       "lng": 11.507736765568037
@@ -1007,7 +968,6 @@
       "trainer": "Garlef, Maxi C., Marcel",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": 2,
       "link": "https://fam.kurabu.com/de/events/559ad33c-90e3-4f4c-99a1-d7b8669d2ec6",
       "lat": 48.16961192487,
       "lng": 11.507736765568037
@@ -1025,7 +985,6 @@
       "trainer": "Lewin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/db927f2f-574a-4a09-b685-e3c84658f0e6",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1043,7 +1002,6 @@
       "trainer": "Lewin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/74a35444-7548-4cc7-80ff-e34c8e37eb13",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1061,7 +1019,6 @@
       "trainer": "Lewin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/795c64ce-524a-4f13-8aea-dda6a3708631",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1079,7 +1036,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/3294f690-6885-4e81-906f-351605fcdc4e",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1097,7 +1053,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/4b8e212d-2057-4828-b4bb-0e63d55b5558",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1115,7 +1070,6 @@
       "trainer": "Steffi",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/67d59036-22a3-42d5-a747-deb70e99c9fc",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1133,7 +1087,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/969e5281-3bc6-4902-ae6b-c2be1e02709a",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1151,7 +1104,6 @@
       "trainer": "Lea, Joni",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d63fdc84-7737-44e9-93b1-b94eb8afd9ad",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1169,7 +1121,6 @@
       "trainer": "Steven, Julian W.",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
@@ -1187,7 +1138,6 @@
       "trainer": "Steven, Julian W.",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
@@ -1205,7 +1155,6 @@
       "trainer": "David",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0d497802-e483-494f-8ad1-d94d7b8cad97",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421
@@ -1223,7 +1172,6 @@
       "trainer": "David",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0d497802-e483-494f-8ad1-d94d7b8cad97",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421
@@ -1241,7 +1189,6 @@
       "trainer": "Ludwig",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/a3758b6b-0bc5-4714-8cee-6353736fff65",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1259,7 +1206,6 @@
       "trainer": "Simon R.",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e65687be-7cc3-47ef-98ba-52e97fd8d47c",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1277,7 +1223,6 @@
       "trainer": "Sam, Malorie",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e60f3a4d-04eb-4c53-9de7-fad1b126a077",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1295,7 +1240,6 @@
       "trainer": "Sam",
       "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f534cefa-7906-4707-9792-ad9608cb1a09",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1313,7 +1257,6 @@
       "trainer": "Lewin",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/9d63f202-4f6c-48b2-91e9-5a7aa7d9c119",
       "lat": 48.12416,
       "lng": 11.6210053
@@ -1331,11 +1274,10 @@
       "trainer": "Lewin, Simon R.",
       "probetraining": "ja",
       "anmerkung": "",
-      "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d29df62a-2696-41ad-b827-9a4f24480942",
       "lat": 48.12416,
       "lng": 11.6210053
     }
   ],
-  "buildId": "20251001-230508"
+  "buildId": "20251001-233749"
 }
