@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-02T06:47:59.927Z",
+  "generated": "2025-10-02T06:51:36.836Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -121,8 +121,8 @@
         ],
         "probetraining": true,
         "koordinaten": {
-          "lat": 48.1117864,
-          "lng": 11.5721155
+          "lat": 48.11201643938622,
+          "lng": 11.572617040130154
         }
       },
       "Drygalski Allee": {
@@ -206,8 +206,8 @@
         ],
         "probetraining": true,
         "koordinaten": {
-          "lat": 48.12416,
-          "lng": 11.6210053
+          "lat": 48.124155075514125,
+          "lng": 11.621655148342274
         }
       },
       "Milbertshofen": {
@@ -307,8 +307,8 @@
       "anmerkung": "ab den Herbstferien in der Winterpause",
       "teilnehmer": 4,
       "link": "https://fam.kurabu.com/de/events/8516b0f1-d29e-4c36-9741-30944c21cfbe",
-      "lat": 48.1117864,
-      "lng": 11.5721155
+      "lat": 48.11201643938622,
+      "lng": 11.572617040130154
     },
     {
       "id": 1,
@@ -325,8 +325,8 @@
       "anmerkung": "Findet ab Oktober nicht mehr statt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/2b74ec1c-0ea8-40ff-a106-77d924cf7ba0",
-      "lat": 48.1117864,
-      "lng": 11.5721155
+      "lat": 48.11201643938622,
+      "lng": 11.572617040130154
     },
     {
       "id": 2,
@@ -343,8 +343,8 @@
       "anmerkung": "ab den Herbstferien in der Winterpause",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/66b79177-0f29-4f7c-a455-2e9048785fc7",
-      "lat": 48.1117864,
-      "lng": 11.5721155
+      "lat": 48.11201643938622,
+      "lng": 11.572617040130154
     },
     {
       "id": 3,
@@ -631,8 +631,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/b7c3eb8e-c8cf-4e4f-9786-f1fc22d188b6",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 19,
@@ -649,8 +649,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fc02197a-ced9-4ad2-9f26-3213d41bf3eb",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 20,
@@ -667,8 +667,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/71a35c47-bc2e-45a8-9eb7-a8c36370abb3",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 21,
@@ -811,8 +811,8 @@
       "anmerkung": "03.10. Abgesagt Feiertag",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fc674a4b-ff55-4c1a-b961-07d52380521d",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 29,
@@ -829,8 +829,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/8e0b04b4-7296-4a78-9209-bf080b9a9f70",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 30,
@@ -847,8 +847,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/33d40c37-bdd4-45b5-9854-ac8e454bcfbe",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 31,
@@ -865,8 +865,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/668ae999-bf23-4057-94fc-e8ad7914f1ba",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 32,
@@ -883,8 +883,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 33,
@@ -901,8 +901,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/1f0177ad-0183-4450-9f7e-f14b78d5734d",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 34,
@@ -919,8 +919,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/5497822d-fbd0-4130-b60b-dc204b1eb21b",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 35,
@@ -937,8 +937,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/122ab0ca-88b0-409a-925c-de884e0328ca",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 36,
@@ -955,8 +955,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/c9afaa99-6711-4d40-8c56-f618512cc337",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 37,
@@ -1027,8 +1027,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/db927f2f-574a-4a09-b685-e3c84658f0e6",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 41,
@@ -1045,8 +1045,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/74a35444-7548-4cc7-80ff-e34c8e37eb13",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 42,
@@ -1063,8 +1063,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/795c64ce-524a-4f13-8aea-dda6a3708631",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 43,
@@ -1081,8 +1081,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/3294f690-6885-4e81-906f-351605fcdc4e",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 44,
@@ -1099,8 +1099,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/4b8e212d-2057-4828-b4bb-0e63d55b5558",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 45,
@@ -1117,8 +1117,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/67d59036-22a3-42d5-a747-deb70e99c9fc",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 46,
@@ -1135,8 +1135,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/969e5281-3bc6-4902-ae6b-c2be1e02709a",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 47,
@@ -1153,8 +1153,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d63fdc84-7737-44e9-93b1-b94eb8afd9ad",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 48,
@@ -1243,8 +1243,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/a3758b6b-0bc5-4714-8cee-6353736fff65",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 53,
@@ -1261,8 +1261,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e65687be-7cc3-47ef-98ba-52e97fd8d47c",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 54,
@@ -1279,8 +1279,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e60f3a4d-04eb-4c53-9de7-fad1b126a077",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 55,
@@ -1297,8 +1297,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f534cefa-7906-4707-9792-ad9608cb1a09",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 56,
@@ -1315,8 +1315,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/9d63f202-4f6c-48b2-91e9-5a7aa7d9c119",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     },
     {
       "id": 57,
@@ -1333,8 +1333,8 @@
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d29df62a-2696-41ad-b827-9a4f24480942",
-      "lat": 48.12416,
-      "lng": 11.6210053
+      "lat": 48.124155075514125,
+      "lng": 11.621655148342274
     }
   ]
 }
