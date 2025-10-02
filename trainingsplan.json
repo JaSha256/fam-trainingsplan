@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-02T06:51:36.836Z",
+  "generated": "2025-10-02T07:48:08.342Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -244,7 +244,7 @@
   "stats": {
     "total": 58,
     "mitProbetraining": 31,
-    "mitLink": 57,
+    "mitLink": 58,
     "nachWochentag": {
       "Montag": 1,
       "Dienstag": 9,
@@ -414,7 +414,7 @@
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": 7,
-      "link": "",
+      "link": "https://fam.kurabu.com/de/events/1777c5e0-b17a-4473-b6f7-e971bc891248",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
