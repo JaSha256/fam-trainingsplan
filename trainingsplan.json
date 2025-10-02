@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-02T06:14:22.811Z",
+  "generated": "2025-10-02T06:14:54.817Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -1177,5 +1177,5 @@
       "ort": ""
     }
   ],
-  "buildId": "20251002-081422"
+  "buildId": "20251002-081454"
 }
