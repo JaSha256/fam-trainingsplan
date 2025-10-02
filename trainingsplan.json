@@ -1,6 +1,304 @@
 {
-  "version": "2.0.0",
-  "generated": "2025-10-02T06:26:17.073Z",
+  "version": "2.1.0",
+  "minClientVersion": "1.0.0",
+  "generated": "2025-10-02T06:30:08.422Z",
+  "metadata": {
+    "orte": [
+      "Balanstr.",
+      "Burmesterstr.",
+      "Candidplatz",
+      "Drygalski Allee",
+      "Forstenried",
+      "Freiham Halle A/B",
+      "Freiham Halle C",
+      "LTR",
+      "Milbertshofen",
+      "Outdoor",
+      "PSV"
+    ],
+    "trainingsarten": [],
+    "altersgruppen": [
+      "Adults",
+      "Kids",
+      "Minis",
+      "Teens"
+    ],
+    "wochentage": [],
+    "trainer": [
+      "Aaron",
+      "Adrian",
+      "Adrian D.",
+      "Alex",
+      "Alex V.",
+      "Alwin",
+      "Andi",
+      "Anielle",
+      "Antonio",
+      "Arthur",
+      "Ayat",
+      "Baris",
+      "Basti",
+      "Bella",
+      "Ben P.",
+      "Ben W.",
+      "Bene",
+      "Bobby",
+      "Chris",
+      "Dani",
+      "David",
+      "Dorian",
+      "Eddy",
+      "Erdmann",
+      "Fabi",
+      "Fedo",
+      "Felix L.",
+      "Felix O.",
+      "Felix P.",
+      "Finnian",
+      "Fiona",
+      "Flo B.",
+      "Flo P.",
+      "Fraser",
+      "Garlef",
+      "Georg",
+      "Hannah",
+      "Henrik",
+      "Henry",
+      "Jakob",
+      "Jamie",
+      "Jan",
+      "Janina",
+      "Jessie",
+      "Johannes",
+      "Jojo",
+      "Jomo",
+      "Jonas I.",
+      "Jonas R.",
+      "Jonas Ru.",
+      "Jonathan",
+      "Joni",
+      "Juli K.",
+      "Juli P.",
+      "Julia Sa.",
+      "Julia Sc.",
+      "Julian W.",
+      "Julius",
+      "Kai",
+      "Kathi A.",
+      "Kati",
+      "Kian",
+      "Kieran",
+      "Konrad",
+      "Konsti",
+      "Laurenz",
+      "Laurin",
+      "Lea",
+      "Lena",
+      "Leo",
+      "Leonie",
+      "Leopold",
+      "Lewin",
+      "Lora",
+      "Lorenz",
+      "Lu",
+      "Luca",
+      "Lucas",
+      "Ludwig",
+      "Magnus",
+      "Malorie",
+      "Malte",
+      "Manu",
+      "Mara",
+      "Marcel",
+      "Marcin",
+      "Marlon",
+      "Martin",
+      "Matthias",
+      "Matthias R.",
+      "Maxi C.",
+      "Maxi D.",
+      "Maxi D?.",
+      "Melli",
+      "Mido",
+      "Mo",
+      "Nassi",
+      "Nathalie",
+      "Neo",
+      "Nico",
+      "Nikola",
+      "Nina",
+      "Oskar",
+      "Phlipp",
+      "Rafi",
+      "Ralph",
+      "Red",
+      "Robin L.",
+      "Robin Link",
+      "Robin S.",
+      "Sam",
+      "Sarah",
+      "Serhii",
+      "Severine",
+      "Simon R.",
+      "Simon T.",
+      "Simon W.",
+      "Steffi",
+      "Stella",
+      "Steven",
+      "Sylvia",
+      "Teo",
+      "Teresa",
+      "Theo",
+      "Till",
+      "Timm",
+      "Timo",
+      "Tobi",
+      "Toni",
+      "Trixi",
+      "Yevhenii",
+      "Yonah",
+      "Youssef",
+      "Yves"
+    ],
+    "standorte": {
+      "Balanstr.": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.10343606652215,
+          "lng": 11.605320746449413
+        }
+      },
+      "Burmesterstr.": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.20486657383294,
+          "lng": 11.61657561943386
+        }
+      },
+      "Candidplatz": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.1117864,
+          "lng": 11.5721155
+        }
+      },
+      "Drygalski Allee": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.097997433962256,
+          "lng": 11.506329342215421
+        }
+      },
+      "Forstenried": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.08626981754226,
+          "lng": 11.496730165793442
+        }
+      },
+      "Freiham Halle A/B": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.1417830051316,
+          "lng": 11.403146869033275
+        }
+      },
+      "Freiham Halle C": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.141691300033706,
+          "lng": 11.40614693505211
+        }
+      },
+      "LTR": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.12416,
+          "lng": 11.6210053
+        }
+      },
+      "Milbertshofen": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.18090466622404,
+          "lng": 11.566481568007294
+        }
+      },
+      "PSV": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.16961192487,
+          "lng": 11.507736765568037
+        }
+      },
+      "Outdoor": {
+        "anzahl": 1,
+        "trainingsarten": [],
+        "wochentage": [],
+        "probetraining": false,
+        "koordinaten": {
+          "lat": 48.13739897456391,
+          "lng": 11.57544604922726
+        }
+      }
+    }
+  },
+  "stats": {
+    "total": 135,
+    "mitProbetraining": 0,
+    "mitLink": 0,
+    "nachWochentag": {},
+    "nachOrt": {
+      "Balanstr.": 1,
+      "Burmesterstr.": 1,
+      "Candidplatz": 1,
+      "Drygalski Allee": 1,
+      "Forstenried": 1,
+      "Freiham Halle A/B": 1,
+      "Freiham Halle C": 1,
+      "LTR": 1,
+      "Milbertshofen": 1,
+      "PSV": 1,
+      "Outdoor": 1
+    },
+    "nachTrainingsart": {},
+    "nachAltersgruppe": {
+      "Minis": 1,
+      "Kids": 1,
+      "Teens": 1,
+      "Adults": 1
+    }
+  },
   "trainings": [
     {
       "id": 0,
@@ -834,304 +1132,5 @@
       "altersgruppe": "",
       "ort": ""
     }
-  ],
-  "minClientVersion": "1.0.0",
-  "buildId": "20251002-082617",
-  "metadata": {
-    "orte": [
-      "Balanstr.",
-      "Burmesterstr.",
-      "Candidplatz",
-      "Drygalski Allee",
-      "Forstenried",
-      "Freiham Halle A/B",
-      "Freiham Halle C",
-      "LTR",
-      "Milbertshofen",
-      "Outdoor",
-      "PSV"
-    ],
-    "trainingsarten": [],
-    "altersgruppen": [
-      "Adults",
-      "Kids",
-      "Minis",
-      "Teens"
-    ],
-    "wochentage": [],
-    "trainer": [
-      "Aaron",
-      "Adrian",
-      "Adrian D.",
-      "Alex",
-      "Alex V.",
-      "Alwin",
-      "Andi",
-      "Anielle",
-      "Antonio",
-      "Arthur",
-      "Ayat",
-      "Baris",
-      "Basti",
-      "Bella",
-      "Ben P.",
-      "Ben W.",
-      "Bene",
-      "Bobby",
-      "Chris",
-      "Dani",
-      "David",
-      "Dorian",
-      "Eddy",
-      "Erdmann",
-      "Fabi",
-      "Fedo",
-      "Felix L.",
-      "Felix O.",
-      "Felix P.",
-      "Finnian",
-      "Fiona",
-      "Flo B.",
-      "Flo P.",
-      "Fraser",
-      "Garlef",
-      "Georg",
-      "Hannah",
-      "Henrik",
-      "Henry",
-      "Jakob",
-      "Jamie",
-      "Jan",
-      "Janina",
-      "Jessie",
-      "Johannes",
-      "Jojo",
-      "Jomo",
-      "Jonas I.",
-      "Jonas R.",
-      "Jonas Ru.",
-      "Jonathan",
-      "Joni",
-      "Juli K.",
-      "Juli P.",
-      "Julia Sa.",
-      "Julia Sc.",
-      "Julian W.",
-      "Julius",
-      "Kai",
-      "Kathi A.",
-      "Kati",
-      "Kian",
-      "Kieran",
-      "Konrad",
-      "Konsti",
-      "Laurenz",
-      "Laurin",
-      "Lea",
-      "Lena",
-      "Leo",
-      "Leonie",
-      "Leopold",
-      "Lewin",
-      "Lora",
-      "Lorenz",
-      "Lu",
-      "Luca",
-      "Lucas",
-      "Ludwig",
-      "Magnus",
-      "Malorie",
-      "Malte",
-      "Manu",
-      "Mara",
-      "Marcel",
-      "Marcin",
-      "Marlon",
-      "Martin",
-      "Matthias",
-      "Matthias R.",
-      "Maxi C.",
-      "Maxi D.",
-      "Maxi D?.",
-      "Melli",
-      "Mido",
-      "Mo",
-      "Nassi",
-      "Nathalie",
-      "Neo",
-      "Nico",
-      "Nikola",
-      "Nina",
-      "Oskar",
-      "Phlipp",
-      "Rafi",
-      "Ralph",
-      "Red",
-      "Robin L.",
-      "Robin Link",
-      "Robin S.",
-      "Sam",
-      "Sarah",
-      "Serhii",
-      "Severine",
-      "Simon R.",
-      "Simon T.",
-      "Simon W.",
-      "Steffi",
-      "Stella",
-      "Steven",
-      "Sylvia",
-      "Teo",
-      "Teresa",
-      "Theo",
-      "Till",
-      "Timm",
-      "Timo",
-      "Tobi",
-      "Toni",
-      "Trixi",
-      "Yevhenii",
-      "Yonah",
-      "Youssef",
-      "Yves"
-    ],
-    "standorte": {
-      "Balanstr.": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.10343606652215,
-          "lng": 11.605320746449413
-        }
-      },
-      "Burmesterstr.": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.20486657383294,
-          "lng": 11.61657561943386
-        }
-      },
-      "Candidplatz": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.1117864,
-          "lng": 11.5721155
-        }
-      },
-      "Drygalski Allee": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.097997433962256,
-          "lng": 11.506329342215421
-        }
-      },
-      "Forstenried": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.08626981754226,
-          "lng": 11.496730165793442
-        }
-      },
-      "Freiham Halle A/B": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.1417830051316,
-          "lng": 11.403146869033275
-        }
-      },
-      "Freiham Halle C": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.141691300033706,
-          "lng": 11.40614693505211
-        }
-      },
-      "LTR": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.12416,
-          "lng": 11.6210053
-        }
-      },
-      "Milbertshofen": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.18090466622404,
-          "lng": 11.566481568007294
-        }
-      },
-      "PSV": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.16961192487,
-          "lng": 11.507736765568037
-        }
-      },
-      "Outdoor": {
-        "anzahl": 1,
-        "trainingsarten": [],
-        "wochentage": [],
-        "probetraining": false,
-        "koordinaten": {
-          "lat": 48.13739897456391,
-          "lng": 11.57544604922726
-        }
-      }
-    }
-  },
-  "stats": {
-    "total": 135,
-    "mitProbetraining": 0,
-    "mitLink": 0,
-    "nachWochentag": {},
-    "nachOrt": {
-      "Balanstr.": 1,
-      "Burmesterstr.": 1,
-      "Candidplatz": 1,
-      "Drygalski Allee": 1,
-      "Forstenried": 1,
-      "Freiham Halle A/B": 1,
-      "Freiham Halle C": 1,
-      "LTR": 1,
-      "Milbertshofen": 1,
-      "PSV": 1,
-      "Outdoor": 1
-    },
-    "nachTrainingsart": {},
-    "nachAltersgruppe": {
-      "Minis": 1,
-      "Kids": 1,
-      "Teens": 1,
-      "Adults": 1
-    }
-  }
+  ]
 }
