@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-07T08:42:10.744Z",
+  "generated": "2025-10-07T08:57:31.214Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -13,6 +13,7 @@
       "Freiham Halle C",
       "LTR",
       "Milbertshofen",
+      "Outdoor",
       "PSV"
     ],
     "trainingsarten": [
@@ -61,6 +62,7 @@
       "Lea, Joni",
       "Lewin",
       "Lewin, Simon R.",
+      "Lora, Lea",
       "Ludwig",
       "Maxi D.",
       "Sam",
@@ -225,6 +227,20 @@
           "lng": 11.566481568007294
         }
       },
+      "Outdoor": {
+        "anzahl": 2,
+        "trainingsarten": [
+          "Parkour Outdoor"
+        ],
+        "wochentage": [
+          "Dienstag"
+        ],
+        "probetraining": true,
+        "koordinaten": {
+          "lat": 48.13739897456391,
+          "lng": 11.57544604922726
+        }
+      },
       "PSV": {
         "anzahl": 3,
         "trainingsarten": [
@@ -243,12 +259,12 @@
     }
   },
   "stats": {
-    "total": 59,
-    "mitProbetraining": 32,
-    "mitLink": 59,
+    "total": 61,
+    "mitProbetraining": 33,
+    "mitLink": 60,
     "nachWochentag": {
       "Montag": 1,
-      "Dienstag": 9,
+      "Dienstag": 11,
       "Mittwoch": 12,
       "Donnerstag": 3,
       "Freitag": 8,
@@ -265,10 +281,11 @@
       "Balanstr.": 4,
       "Freiham Halle A/B": 3,
       "PSV": 3,
-      "Drygalski Allee": 2
+      "Drygalski Allee": 2,
+      "Outdoor": 2
     },
     "nachTrainingsart": {
-      "Parkour Outdoor": 2,
+      "Parkour Outdoor": 4,
       "Movement Outdoor": 1,
       "Parkour": 19,
       "Flips & Tricks": 2,
@@ -284,8 +301,8 @@
       "Trampolin": 2
     },
     "nachAltersgruppe": {
-      "Kids": 18,
-      "Adults, Teens": 21,
+      "Kids": 19,
+      "Adults, Teens": 22,
       "Adults": 3,
       "Teens, Adults": 4,
       "Minis": 8,
@@ -1354,6 +1371,42 @@
       "link": "https://fam.kurabu.com/de/events/d29df62a-2696-41ad-b827-9a4f24480942",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274
+    },
+    {
+      "id": 59,
+      "wochentag": "Dienstag",
+      "ort": "Outdoor",
+      "von": "18:30",
+      "bis": "20:00",
+      "training": "Parkour Outdoor",
+      "altersgruppe": "Adults, Teens",
+      "alterVon": 18,
+      "alterBis": null,
+      "trainer": "Lora, Lea",
+      "probetraining": "ja",
+      "anmerkung": "Standort wechselt jede Woche, Informationen über Team WA-Gruppe",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/events/e12ff93a-2a3b-457f-b384-4cd9d9b9cebd",
+      "lat": 48.13739897456391,
+      "lng": 11.57544604922726
+    },
+    {
+      "id": 60,
+      "wochentag": "Dienstag",
+      "ort": "Outdoor",
+      "von": "18:30",
+      "bis": "20:00",
+      "training": "Parkour Outdoor",
+      "altersgruppe": "Kids",
+      "alterVon": null,
+      "alterBis": null,
+      "trainer": "",
+      "probetraining": "nein",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "",
+      "lat": 48.13739897456391,
+      "lng": 11.57544604922726
     }
   ]
 }
