@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-07T08:36:46.824Z",
+  "generated": "2025-10-07T08:42:10.744Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -567,7 +567,7 @@
       "id": 15,
       "wochentag": "Mittwoch",
       "ort": "Milbertshofen",
-      "von": "19:00",
+      "von": "20:00",
       "bis": "21:30",
       "training": "Freies Training",
       "altersgruppe": "Adults, Teens",
