@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "minClientVersion": "1.0.0",
-  "generated": "2025-10-07T07:57:28.283Z",
+  "generated": "2025-10-07T08:36:46.824Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -95,8 +95,8 @@
         "anzahl": 8,
         "trainingsarten": [
           "Flips & Tricks",
-          "FAM Minis",
           "Freies Training",
+          "FAM Minis",
           "Parkour"
         ],
         "wochentage": [
@@ -211,9 +211,10 @@
         }
       },
       "Milbertshofen": {
-        "anzahl": 2,
+        "anzahl": 3,
         "trainingsarten": [
-          "Parkour"
+          "Parkour",
+          "Freies Training"
         ],
         "wochentage": [
           "Mittwoch"
@@ -242,13 +243,13 @@
     }
   },
   "stats": {
-    "total": 58,
-    "mitProbetraining": 31,
-    "mitLink": 58,
+    "total": 59,
+    "mitProbetraining": 32,
+    "mitLink": 59,
     "nachWochentag": {
       "Montag": 1,
       "Dienstag": 9,
-      "Mittwoch": 11,
+      "Mittwoch": 12,
       "Donnerstag": 3,
       "Freitag": 8,
       "Samstag": 11,
@@ -259,7 +260,7 @@
       "Freiham Halle C": 4,
       "Burmesterstr.": 8,
       "Forstenried": 3,
-      "Milbertshofen": 2,
+      "Milbertshofen": 3,
       "LTR": 26,
       "Balanstr.": 4,
       "Freiham Halle A/B": 3,
@@ -271,8 +272,8 @@
       "Movement Outdoor": 1,
       "Parkour": 19,
       "Flips & Tricks": 2,
+      "Freies Training": 11,
       "FAM Minis": 8,
-      "Freies Training": 10,
       "Freestyle Calistenics": 2,
       "Trampolin & Tricking": 2,
       "Parkour & Trampolin": 4,
@@ -284,7 +285,7 @@
     },
     "nachAltersgruppe": {
       "Kids": 18,
-      "Adults, Teens": 20,
+      "Adults, Teens": 21,
       "Adults": 3,
       "Teens, Adults": 4,
       "Minis": 8,
@@ -422,6 +423,24 @@
       "id": 7,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
+      "von": "18:30",
+      "bis": "20:00",
+      "training": "Freies Training",
+      "altersgruppe": "Teens, Adults",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Steffi, Bene",
+      "probetraining": "nein",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/en/events/d769631f-95ea-458a-8546-f1da43a3902f",
+      "lat": 48.20486657383294,
+      "lng": 11.61657561943386
+    },
+    {
+      "id": 8,
+      "wochentag": "Dienstag",
+      "ort": "Burmesterstr.",
       "von": "17:00",
       "bis": "18:00",
       "training": "FAM Minis",
@@ -437,7 +456,7 @@
       "lng": 11.61657561943386
     },
     {
-      "id": 8,
+      "id": 9,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
       "von": "18:00",
@@ -451,24 +470,6 @@
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d7329b73-7e8f-4244-9c70-283f6bf845f5",
-      "lat": 48.20486657383294,
-      "lng": 11.61657561943386
-    },
-    {
-      "id": 9,
-      "wochentag": "Dienstag",
-      "ort": "Burmesterstr.",
-      "von": "18:30",
-      "bis": "20:00",
-      "training": "Freies Training",
-      "altersgruppe": "Teens, Adults",
-      "alterVon": 14,
-      "alterBis": null,
-      "trainer": "Steffi, Bene",
-      "probetraining": "nein",
-      "anmerkung": "",
-      "teilnehmer": null,
-      "link": "https://fam.kurabu.com/en/events/d769631f-95ea-458a-8546-f1da43a3902f",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -565,6 +566,24 @@
     {
       "id": 15,
       "wochentag": "Mittwoch",
+      "ort": "Milbertshofen",
+      "von": "19:00",
+      "bis": "21:30",
+      "training": "Freies Training",
+      "altersgruppe": "Adults, Teens",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Ludwig",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/events/39e10508-d915-4a5c-9922-482af365ba49",
+      "lat": 48.18090466622404,
+      "lng": 11.566481568007294
+    },
+    {
+      "id": 16,
+      "wochentag": "Mittwoch",
       "ort": "Burmesterstr.",
       "von": "17:00",
       "bis": "18:30",
@@ -581,7 +600,7 @@
       "lng": 11.61657561943386
     },
     {
-      "id": 16,
+      "id": 17,
       "wochentag": "Mittwoch",
       "ort": "Burmesterstr.",
       "von": "18:30",
@@ -599,7 +618,7 @@
       "lng": 11.61657561943386
     },
     {
-      "id": 17,
+      "id": 18,
       "wochentag": "Mittwoch",
       "ort": "Burmesterstr.",
       "von": "18:30",
@@ -617,7 +636,7 @@
       "lng": 11.61657561943386
     },
     {
-      "id": 18,
+      "id": 19,
       "wochentag": "Mittwoch",
       "ort": "LTR",
       "von": "20:00",
@@ -635,7 +654,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 19,
+      "id": 20,
       "wochentag": "Mittwoch",
       "ort": "LTR",
       "von": "20:00",
@@ -653,7 +672,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 20,
+      "id": 21,
       "wochentag": "Mittwoch",
       "ort": "LTR",
       "von": "20:00",
@@ -671,7 +690,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 21,
+      "id": 22,
       "wochentag": "Donnerstag",
       "ort": "Balanstr.",
       "von": "17:00",
@@ -689,7 +708,7 @@
       "lng": 11.605320746449413
     },
     {
-      "id": 22,
+      "id": 23,
       "wochentag": "Donnerstag",
       "ort": "Balanstr.",
       "von": "18:30",
@@ -707,7 +726,7 @@
       "lng": 11.605320746449413
     },
     {
-      "id": 23,
+      "id": 24,
       "wochentag": "Donnerstag",
       "ort": "Balanstr.",
       "von": "18:30",
@@ -725,7 +744,7 @@
       "lng": 11.605320746449413
     },
     {
-      "id": 24,
+      "id": 25,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "15:30",
@@ -743,7 +762,7 @@
       "lng": 11.403146869033275
     },
     {
-      "id": 25,
+      "id": 26,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "15:30",
@@ -761,7 +780,7 @@
       "lng": 11.403146869033275
     },
     {
-      "id": 26,
+      "id": 27,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "17:00",
@@ -779,7 +798,7 @@
       "lng": 11.403146869033275
     },
     {
-      "id": 27,
+      "id": 28,
       "wochentag": "Freitag",
       "ort": "Balanstr.",
       "von": "16:00",
@@ -797,7 +816,7 @@
       "lng": 11.605320746449413
     },
     {
-      "id": 28,
+      "id": 29,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "18:00",
@@ -815,7 +834,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 29,
+      "id": 30,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:00",
@@ -833,7 +852,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 30,
+      "id": 31,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:30",
@@ -851,7 +870,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 31,
+      "id": 32,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:30",
@@ -869,7 +888,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 32,
+      "id": 33,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "09:30",
@@ -887,7 +906,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 33,
+      "id": 34,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "09:30",
@@ -905,7 +924,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 34,
+      "id": 35,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "11:00",
@@ -923,7 +942,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 35,
+      "id": 36,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "11:00",
@@ -941,7 +960,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 36,
+      "id": 37,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "12:30",
@@ -959,7 +978,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 37,
+      "id": 38,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "09:30",
@@ -977,7 +996,7 @@
       "lng": 11.507736765568037
     },
     {
-      "id": 38,
+      "id": 39,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "11:30",
@@ -995,7 +1014,7 @@
       "lng": 11.507736765568037
     },
     {
-      "id": 39,
+      "id": 40,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "13:00",
@@ -1013,7 +1032,7 @@
       "lng": 11.507736765568037
     },
     {
-      "id": 40,
+      "id": 41,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1031,7 +1050,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 41,
+      "id": 42,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1049,7 +1068,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 42,
+      "id": 43,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1067,7 +1086,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 43,
+      "id": 44,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "09:30",
@@ -1085,7 +1104,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 44,
+      "id": 45,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "10:30",
@@ -1103,7 +1122,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 45,
+      "id": 46,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:30",
@@ -1121,7 +1140,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 46,
+      "id": 47,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:45",
@@ -1139,7 +1158,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 47,
+      "id": 48,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:45",
@@ -1157,7 +1176,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 48,
+      "id": 49,
       "wochentag": "Sonntag",
       "ort": "Freiham Halle C",
       "von": "10:30",
@@ -1175,7 +1194,7 @@
       "lng": 11.40614693505211
     },
     {
-      "id": 49,
+      "id": 50,
       "wochentag": "Sonntag",
       "ort": "Freiham Halle C",
       "von": "12:00",
@@ -1193,7 +1212,7 @@
       "lng": 11.40614693505211
     },
     {
-      "id": 50,
+      "id": 51,
       "wochentag": "Sonntag",
       "ort": "Drygalski Allee",
       "von": "10:00",
@@ -1211,7 +1230,7 @@
       "lng": 11.506329342215421
     },
     {
-      "id": 51,
+      "id": 52,
       "wochentag": "Sonntag",
       "ort": "Drygalski Allee",
       "von": "11:00",
@@ -1229,7 +1248,7 @@
       "lng": 11.506329342215421
     },
     {
-      "id": 52,
+      "id": 53,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "13:45",
@@ -1247,7 +1266,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 53,
+      "id": 54,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "16:45",
@@ -1265,7 +1284,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 54,
+      "id": 55,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "16:45",
@@ -1283,7 +1302,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 55,
+      "id": 56,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1301,7 +1320,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 56,
+      "id": 57,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1319,7 +1338,7 @@
       "lng": 11.621655148342274
     },
     {
-      "id": 57,
+      "id": 58,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
