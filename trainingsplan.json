@@ -1,7 +1,7 @@
 {
-  "version": "2.1.0",
-  "minClientVersion": "1.0.0",
-  "generated": "2025-10-08T20:57:28.206Z",
+  "version": "3.0.0",
+  "minClientVersion": "2.0.0",
+  "generated": "2025-10-08T21:57:27.667Z",
   "metadata": {
     "orte": [
       "Balanstr.",
