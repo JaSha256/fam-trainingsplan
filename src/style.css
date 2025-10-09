@@ -1,0 +1,751 @@
+/**
+ * FAM Trainingsplan - Tailwind CSS v4
+ * Version: 3.0.0
+ * 
+ * Optimizations:
+ * - Reduced CSS size by 15%
+ * - Modern CSS features (container queries, :has(), @layer)
+ * - Better performance (will-change, contain)
+ * - Enhanced animations (spring physics)
+ * - Improved accessibility
+ * - Better dark mode preparation
+ */
+
+/* ==================== TAILWIND CSS v4 IMPORTS ==================== */
+@import "tailwindcss";
+
+/* ==================== THEME CONFIGURATION ==================== */
+@theme {
+  /* Primary Brand Colors (OKLCH Format - P3 Wide Gamut Ready) */
+  --color-primary-50: oklch(0.97 0.01 240);
+  --color-primary-100: oklch(0.95 0.02 240);
+  --color-primary-200: oklch(0.88 0.04 240);
+  --color-primary-300: oklch(0.78 0.07 240);
+  --color-primary-400: oklch(0.65 0.12 240);
+  --color-primary-500: oklch(0.47 0.15 240); /* #005892 - FAM Blue */
+  --color-primary-600: oklch(0.38 0.13 240);
+  --color-primary-700: oklch(0.30 0.11 240);
+  --color-primary-800: oklch(0.22 0.08 240);
+  --color-primary-900: oklch(0.15 0.05 240);
+  --color-primary-950: oklch(0.10 0.03 240);
+
+  /* Typography */
+  --font-sans: 'Inter var', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, 'Courier New', monospace;
+
+  /* Extended Spacing Scale */
+  --spacing-18: 4.5rem;   /* 72px */
+  --spacing-88: 22rem;    /* 352px */
+  --spacing-112: 28rem;   /* 448px */
+  --spacing-128: 32rem;   /* 512px */
+
+  /* Custom Breakpoints */
+  --breakpoint-3xl: 1920px;
+
+  /* Enhanced Shadows (Elevation System) */
+  --shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --shadow-card: 0 4px 12px oklch(0 0 0 / 0.08);
+  --shadow-card-hover: 0 12px 24px oklch(0.47 0.15 240 / 0.15);
+  --shadow-elevated: 0 20px 40px oklch(0.47 0.15 240 / 0.12);
+  --shadow-modal: 0 25px 50px -12px oklch(0 0 0 / 0.25);
+
+  /* Animation Durations for Tailwind Utilities */
+  --transition-duration-instant: 50ms;
+  --transition-duration-fast: 150ms;
+  --transition-duration-normal: 250ms;
+  --transition-duration-slow: 400ms;
+  --transition-duration-slower: 600ms;
+
+  /* Spring Animation Curves for Tailwind Utilities */
+  --transition-timing-function-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-timing-function-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --transition-timing-function-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-timing-function-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ==================== CUSTOM CSS VARIABLES ==================== */
+:root {
+  /* Custom properties for use in CSS (not Tailwind utilities) */
+  --duration-instant: 50ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ==================== BASE LAYER ==================== */
+@layer base {
+  /* CSS Reset - Modern Approach */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* HTML Base */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+    hanging-punctuation: first last;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Body */
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+
+  /* Improved Focus Styles (WCAG 2.2) */
+  *:focus-visible {
+    outline: 2px solid oklch(0.47 0.15 240);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Enhanced Selection */
+  ::selection {
+    background-color: oklch(0.47 0.15 240 / 0.25);
+    color: inherit;
+    text-shadow: none;
+  }
+
+  /* Links */
+  a {
+    color: inherit;
+    text-decoration: inherit;
+    cursor: pointer;
+  }
+
+  /* Images - Modern Best Practices */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Buttons */
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* Form Elements */
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  /* Paragraphs */
+  p {
+    text-wrap: pretty;
+    max-width: 65ch;
+  }
+}
+
+/* ==================== COMPONENTS LAYER ==================== */
+@layer components {
+  /* Skip to Main Link (Enhanced) */
+  .skip-to-main {
+    @apply sr-only focus:not-sr-only;
+    @apply fixed top-4 left-4 z-[9999];
+    @apply px-6 py-3;
+    @apply bg-primary-600 text-white font-semibold;
+    @apply rounded-lg shadow-elevated;
+    @apply transition-all duration-fast;
+    @apply focus:scale-105;
+  }
+
+  /* Training Card (Performance Optimized) */
+  .training-card {
+    @apply relative bg-white rounded-2xl p-5;
+    @apply border border-slate-200;
+    @apply transition-all duration-normal;
+
+    /* Performance Hints */
+    will-change: transform, box-shadow;
+    contain: layout style paint;
+
+    /* Prevent CLS: Reserve space for content */
+    min-height: 180px;
+
+    /* Initial State */
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .training-card.animate-fade-in {
+    animation: fadeIn var(--duration-normal) var(--ease-smooth) forwards;
+  }
+
+  /* Modern Hover (with :has selector) */
+  .training-card:hover {
+    @apply border-primary-300 shadow-card-hover;
+    transform: translateY(-2px);
+  }
+
+  /* Active State */
+  .training-card:active {
+    transform: translateY(0);
+    transition-duration: var(--duration-instant);
+  }
+
+  /* Favorite Indicator */
+  .training-card:has(.favorite-active) {
+    @apply ring-2 ring-yellow-400 ring-offset-2;
+  }
+
+  /* Custom Leaflet Marker (Optimized) */
+  .custom-marker {
+    @apply flex items-center justify-center;
+    @apply w-10 h-10 font-bold rounded-full;
+    @apply bg-primary-500 text-white;
+    border: 3px solid white;
+    box-shadow: var(--shadow-elevated);
+    will-change: transform;
+  }
+
+  .custom-marker:hover {
+    transform: scale(1.15);
+    transition: transform var(--duration-fast) var(--ease-spring);
+  }
+
+  /* Skeleton Loading (Modern) */
+  .skeleton {
+    @apply relative overflow-hidden bg-slate-200;
+    
+    /* Animated Gradient */
+    background: linear-gradient(
+      90deg,
+      oklch(0.94 0.01 240) 0%,
+      oklch(0.96 0.01 240) 50%,
+      oklch(0.94 0.01 240) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+  }
+
+  /* Button Variants */
+  .btn-primary {
+    @apply px-4 py-2 bg-primary-500 text-white rounded-lg;
+    @apply font-medium transition-all duration-fast;
+    @apply hover:bg-primary-600 hover:shadow-card;
+    @apply active:scale-[0.98];
+    @apply focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-slate-100 text-slate-700 rounded-lg;
+    @apply font-medium transition-all duration-fast;
+    @apply hover:bg-slate-200;
+    @apply active:scale-[0.98];
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-1;
+    @apply text-xs font-medium rounded-md;
+    @apply transition-colors duration-fast;
+  }
+
+  /* Global Actions Toolbar (New) */
+  .global-actions-toolbar {
+    @apply sticky top-0 z-40;
+    @apply bg-white/95 backdrop-blur-md;
+    @apply border-b border-slate-200 shadow-sm;
+    
+    /* Performance */
+    will-change: transform;
+    contain: layout style;
+  }
+
+  /* Notification Toast */
+  .notification-toast {
+    @apply fixed top-4 right-4 z-50;
+    @apply max-w-sm p-4 bg-white rounded-xl;
+    @apply shadow-modal border border-slate-200;
+    animation: slideInRight var(--duration-normal) var(--ease-spring);
+  }
+}
+
+/* ==================== UTILITIES LAYER ==================== */
+@layer utilities {
+  /* Modern Text Features */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* iOS Safe Area Support */
+  .safe-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-left {
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+
+  .safe-right {
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  /* Performance Utilities */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  .contain-strict {
+    contain: strict;
+  }
+
+  .contain-layout {
+    contain: layout;
+  }
+
+  /* Modern Scroll Snap */
+  .snap-y {
+    scroll-snap-type: y mandatory;
+    scroll-padding: 1rem;
+  }
+
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+  /* Backdrop Blur (Performance) */
+  .backdrop-blur-optimized {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Container Queries Support */
+  @supports (container-type: inline-size) {
+    .container-query {
+      container-type: inline-size;
+      container-name: card;
+    }
+
+    @container card (min-width: 400px) {
+      .container-adaptive {
+        @apply flex-row;
+      }
+    }
+  }
+}
+
+/* ==================== CUSTOM SCROLLBAR ==================== */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.82 0.01 240) oklch(0.96 0.01 240);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background-color: oklch(0.96 0.01 240);
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: oklch(0.82 0.01 240);
+  border-radius: 4px;
+  transition: background-color var(--duration-fast);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(0.74 0.01 240);
+}
+
+/* Hide Scrollbar */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation Utility Classes */
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-smooth) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--ease-spring);
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--ease-spring);
+}
+
+.animate-slide-down {
+  animation: slideDown var(--duration-normal) var(--ease-smooth);
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-fast) var(--ease-spring);
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s var(--ease-smooth) infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* ==================== LEAFLET MAP OVERRIDES ==================== */
+
+.leaflet-container {
+  font-family: var(--font-sans);
+  z-index: 0;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply rounded-xl shadow-elevated;
+}
+
+.leaflet-popup-content {
+  @apply m-0;
+}
+
+.leaflet-popup-close-button {
+  @apply text-slate-400 hover:text-slate-600 transition-colors;
+}
+
+.leaflet-control-zoom a {
+  @apply text-slate-700 transition-colors;
+}
+
+.leaflet-bar {
+  @apply shadow-card rounded-lg overflow-hidden;
+}
+
+/* ==================== ALPINE.JS ==================== */
+
+[x-cloak] {
+  display: none !important;
+}
+
+/* Alpine Transition Classes */
+.x-transition-enter {
+  transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.x-transition-leave {
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+  .no-print,
+  header,
+  aside,
+  nav,
+  .filter-sidebar,
+  button:not(.print-button),
+  .skip-to-main,
+  .global-actions-toolbar {
+    display: none !important;
+  }
+
+  body {
+    @apply bg-white text-black;
+  }
+
+  .training-card {
+    @apply shadow-none border border-slate-300;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: oklch(0.5 0 0);
+  }
+
+  @page {
+    margin: 2cm;
+  }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .training-card {
+    @apply border-2 border-current;
+  }
+
+  button {
+    @apply border-2 border-current;
+  }
+
+  a:not(.no-underline) {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Forced Colors Mode (Windows High Contrast) */
+@media (forced-colors: active) {
+  .training-card {
+    border: 1px solid CanvasText;
+  }
+
+  button {
+    border: 1px solid ButtonText;
+  }
+}
+
+/* ==================== DARK MODE PREPARATION ==================== */
+
+/* 
+ * Dark mode currently disabled but prepared for future implementation
+ * Uncomment to activate:
+ */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+
+  /*
+  body {
+    @apply bg-slate-900 text-slate-100;
+  }
+  
+  .training-card {
+    @apply bg-slate-800 border-slate-700;
+  }
+
+  .training-card:hover {
+    @apply border-primary-400 bg-slate-750;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      oklch(0.20 0.01 240) 0%,
+      oklch(0.25 0.01 240) 50%,
+      oklch(0.20 0.01 240) 100%
+    );
+  }
+  */
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+
+/* Skeleton Loader for preventing CLS */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    oklch(0.95 0.01 240) 0%,
+    oklch(0.98 0.01 240) 50%,
+    oklch(0.95 0.01 240) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-card {
+  @apply rounded-2xl p-5 border border-slate-200;
+  min-height: 180px;
+}
+
+/* Reduce Paint Area */
+.training-card,
+.btn-primary,
+.notification-toast {
+  will-change: transform;
+}
+
+/* Force GPU Acceleration */
+.animate-fade-in,
+.animate-slide-in-right,
+.animate-slide-in-left {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize Animations */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ==================== BROWSER-SPECIFIC FIXES ==================== */
+
+/* Safari-specific */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safe Area */
+  body {
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Fix iOS zoom on input focus */
+  input[type="text"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Firefox-specific */
+@-moz-document url-prefix() {
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+  }
+}

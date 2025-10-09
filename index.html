@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Trainingsplan - Free Arts of Movement</title>
+    <meta name="description" content="Interaktiver Trainingsplan für Parkour, Trampolin, Tricking und Movement Training in München. Finde dein perfektes Training nach Wochentag, Ort und Altersgruppe.">
+    <meta name="keywords" content="Parkour Training München, Trampolin Training, Tricking, Movement, FAM, Trainingsplan">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#005892">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FAM">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Trainingsplan - Free Arts of Movement">
+    <meta property="og:description" content="Finde dein perfektes Training in München">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:image" content="/og-image.png">
+    
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin="anonymous">
+
+    <!-- Main Script -->
+    <script type="module" src="/src/main.js"></script>
+</head>
+<body class="bg-slate-50 antialiased">
+
+<!-- Skip Link -->
+<a href="#main-content" class="skip-to-main">
+    Zum Hauptinhalt springen
+</a>
+
+<div x-data="trainingsplaner()" 
+     x-init="init(); watchFilters()" 
+     x-cloak
+     class="min-h-screen"
+     id="app">
+    
+    <!-- ==================== UPDATE NOTIFICATION ==================== -->
+    <div x-show="updateAvailable" 
+         x-transition
+         class="fixed top-4 right-4 z-50 max-w-sm bg-white rounded-xl shadow-2xl border-2 border-primary-500 p-4"
+         role="alert"
+         aria-live="assertive">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-bold text-slate-900 mb-1">Update verfügbar!</h3>
+                <p class="text-sm text-slate-700 mb-3">
+                    Version <span x-text="latestVersion"></span> ist verfügbar
+                </p>
+                <button @click="window.location.reload()" 
+                        type="button"
+                        class="w-full px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors">
+                    Jetzt aktualisieren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== NOTIFICATION TOAST ==================== -->
+    <div x-show="$store.ui.notification?.show"
+         x-transition
+         data-notification
+         class="fixed top-4 right-4 z-50 max-w-sm bg-white rounded-xl shadow-2xl p-4"
+         role="alert"
+         aria-live="polite">
+        <div class="flex items-start gap-3">
+            <div x-bind:class="{
+                'bg-blue-100 text-blue-600': $store.ui.notification?.type === 'info',
+                'bg-green-100 text-green-600': $store.ui.notification?.type === 'success',
+                'bg-yellow-100 text-yellow-600': $store.ui.notification?.type === 'warning',
+                'bg-red-100 text-red-600': $store.ui.notification?.type === 'error'
+            }" class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <p class="text-sm font-medium text-slate-900" x-text="$store.ui.notification?.message"></p>
+            <button @click="$store.ui.hideNotification()"
+                    type="button"
+                    aria-label="Benachrichtigung schließen"
+                    class="ml-auto text-slate-500 hover:text-slate-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- ==================== MOBILE HEADER ==================== -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm" role="banner">
+        <div class="px-4 py-3">
+            <h1 class="text-2xl font-bold text-primary-600 mb-2">Trainingsplan</h1>
+            
+            <!-- Mobile Actions -->
+            <div class="flex gap-2">
+                <button @click="$store.ui.mobileFilterOpen = true" 
+                        type="button"
+                        class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-slate-300 rounded-xl font-semibold text-slate-700 active:bg-slate-50 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                    </svg>
+                    Filter
+                    <span x-show="hasActiveFilters" 
+                          class="ml-1 px-2 py-0.5 bg-primary-500 text-white text-xs font-bold rounded-full">
+                        ●
+                    </span>
+                </button>
+                
+                <button @click="$store.ui.mapModalOpen = true" 
+                        type="button"
+                        class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-500 text-white rounded-xl font-semibold active:bg-primary-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                    </svg>
+                    Karte
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        
+        <!-- ==================== DESKTOP FILTER SIDEBAR ==================== -->
+        <aside x-show="$store.ui.filterSidebarOpen" 
+               x-collapse.duration.300ms
+               class="hidden lg:block w-80 bg-white border-r border-slate-200 min-h-screen sticky top-0 overflow-y-auto">
+            
+            <div class="p-6">
+                <!-- Header -->
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-primary-600 mb-1">Trainingsplan</h2>
+                        <p class="text-sm text-slate-700">
+                            <span x-text="allTrainings.length"></span> Trainings verfügbar
+                        </p>
+                    </div>
+                    <button @click="$store.ui.filterSidebarOpen = false"
+                            type="button"
+                            data-test="toggle-filter"
+                            aria-label="Filter schließen"
+                            class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+                        <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="mb-6">
+                    <label for="search" class="block text-sm font-semibold text-slate-700 mb-2">Suche</label>
+                    <input 
+                        x-model="$store.ui.filters.searchTerm"
+                        @input.debounce.300ms="applyFilters()"
+                        type="text" 
+                        id="search"
+                        placeholder="Training, Ort, Trainer..."
+                        class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                </div>
+
+                <!-- Quick Filters -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-3">Schnellfilter</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button @click="favorites.length > 0 && quickFilterFavorites()" 
+                                type="button"
+                                :disabled="favorites.length === 0"
+                                class="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 hover:bg-yellow-100 disabled:bg-slate-50 disabled:text-slate-400 text-yellow-700 rounded-full text-xs font-medium transition-colors">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            Favoriten
+                            <span x-show="favorites.length > 0" 
+                                  x-text="favorites.length"
+                                  class="px-1.5 py-0.5 bg-yellow-200 text-yellow-800 rounded-full text-xs font-bold">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="space-y-5">
+                    <div>
+                        <label for="filter-wochentag" class="block text-sm font-semibold text-slate-700 mb-2">Wochentag</label>
+                        <select x-model="$store.ui.filters.wochentag" 
+                                @change="applyFilters()" 
+                                id="filter-wochentag"
+                                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="">Alle Tage</option>
+                            <template x-for="tag in wochentage" :key="tag">
+                                <option x-text="tag" :value="tag"></option>
+                            </template>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="filter-ort" class="block text-sm font-semibold text-slate-700 mb-2">Ort</label>
+                        <select x-model="$store.ui.filters.ort" 
+                                @change="applyFilters()" 
+                                id="filter-ort"
+                                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="">Alle Orte</option>
+                            <template x-for="ort in orte" :key="ort">
+                                <option x-text="ort" :value="ort"></option>
+                            </template>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="filter-training" class="block text-sm font-semibold text-slate-700 mb-2">Trainingsart</label>
+                        <select x-model="$store.ui.filters.training" 
+                                @change="applyFilters()" 
+                                id="filter-training"
+                                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="">Alle Trainings</option>
+                            <template x-for="training in trainingsarten" :key="training">
+                                <option x-text="training" :value="training"></option>
+                            </template>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="filter-altersgruppe" class="block text-sm font-semibold text-slate-700 mb-2">Altersgruppe</label>
+                        <select x-model="$store.ui.filters.altersgruppe" 
+                                @change="applyFilters()" 
+                                id="filter-altersgruppe"
+                                class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="">Alle Altersgruppen</option>
+                            <template x-for="gruppe in altersgruppen" :key="gruppe">
+                                <option x-text="gruppe" :value="gruppe"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="space-y-3 pt-6 mt-6 border-t border-slate-200">
+                    <button @click="$store.ui.filters = {wochentag:'',ort:'',training:'',altersgruppe:'',searchTerm:'',activeQuickFilter:null}; applyFilters()" 
+                            type="button"
+                            :disabled="!hasActiveFilters"
+                            :class="hasActiveFilters ? 'bg-slate-100 hover:bg-slate-200 text-slate-700' : 'bg-slate-50 text-slate-400 cursor-not-allowed'"
+                            class="w-full px-4 py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Filter zurücksetzen
+                    </button>
+
+                    <button @click="$store.ui.mapModalOpen = true" 
+                            type="button"
+                            class="w-full px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                        </svg>
+                        Karte anzeigen
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main class="flex-1 min-w-0" id="main-content">
+            
+            <!-- ==================== GLOBAL ACTIONS TOOLBAR (NEU!) ==================== -->
+            <div class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+                <div class="px-4 lg:px-6 py-3">
+                    <div class="flex items-center justify-between gap-4 flex-wrap">
+                        
+                        <!-- Left: Results Info -->
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-lg font-semibold text-slate-900">
+                                <span x-text="filteredTrainingsCount"></span>
+                                <span class="text-sm text-slate-700">
+                                    von <span x-text="allTrainings.length"></span> Trainings
+                                </span>
+                            </h2>
+                            
+                            <!-- Active Filters Badge -->
+                            <div x-show="hasActiveFilters"
+                                 x-transition
+                                 class="flex items-center gap-2 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                                </svg>
+                                Filter aktiv
+                            </div>
+
+                            <!-- Favorites Badge -->
+                            <div x-show="favorites.length > 0"
+                                 x-transition
+                                 class="flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <span x-text="favorites.length"></span> Favoriten
+                            </div>
+                        </div>
+
+                        <!-- Right: Action Buttons -->
+                        <div class="flex items-center gap-2">
+                            
+                            <!-- Share Button -->
+                            <button @click="shareCurrentView()"
+                                    type="button"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                </svg>
+                                <span class="hidden sm:inline">Teilen</span>
+                            </button>
+
+                            <!-- Export All -->
+                            <button @click="exportAllToCalendar()"
+                                    :disabled="filteredTrainingsCount === 0"
+                                    type="button"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="hidden sm:inline">Alle exportieren</span>
+                                <span class="sm:hidden">Export</span>
+                            </button>
+
+                            <!-- Export Favorites -->
+                            <button x-show="favorites.length > 0"
+                                    x-transition
+                                    @click="exportFavoritesToCalendar()"
+                                    type="button"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition-colors">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                <span class="hidden sm:inline">Favoriten</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div x-show="loading" class="p-6">
+                <div class="max-w-md mx-auto text-center py-16">
+                    <div class="animate-spin w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-slate-700 font-medium">Trainings werden geladen...</p>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div x-show="error" class="p-6">
+                <div class="max-w-md mx-auto bg-white border-l-4 border-red-500 rounded-xl shadow-lg p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-red-900 mb-1">Fehler beim Laden</h3>
+                            <p class="text-sm text-red-700 mb-3" x-text="error"></p>
+                            <button @click="init()" 
+                                    type="button"
+                                    class="text-sm font-medium text-red-800 hover:text-red-900 underline">
+                                Erneut versuchen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Cards -->
+            <div x-show="!loading && !error && filteredTrainings.length > 0" class="p-4 lg:p-6">
+                <template x-for="gruppe in groupedTrainings" :key="gruppe.key">
+                    <section class="mb-10">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-5 flex items-center gap-3">
+                            <span x-text="gruppe.key"></span>
+                            <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-bold" 
+                                  x-text="gruppe.items.length"></span>
+                        </h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                            <template x-for="training in gruppe.items" :key="training.id">
+                                <article x-intersect="$el.classList.add('animate-fade-in')"
+                                         class="training-card">
+                                    
+                                    <!-- Header mit Favoriten -->
+                                    <div class="flex items-start justify-between gap-3 mb-4">
+                                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold border"
+                                              :class="getTrainingColor(training.training)" 
+                                              x-text="training.training"></span>
+                                        <div class="flex items-center gap-2">
+                                            <span x-show="training.probetraining === 'ja'" 
+                                                  class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
+                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                Probe
+                                            </span>
+                                            <!-- Favoriten Button -->
+                                            <button @click="toggleFavorite(training.id)" 
+                                                    type="button"
+                                                    class="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                                                    :aria-label="isFavorite(training.id) ? 'Von Favoriten entfernen' : 'Zu Favoriten hinzufügen'">
+                                                <svg class="w-5 h-5 transition-all" 
+                                                     :class="isFavorite(training.id) ? 'fill-red-500 text-red-500' : 'fill-none text-slate-400'"
+                                                     stroke="currentColor" 
+                                                     viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Training Info -->
+                                    <div class="space-y-3">
+                                        <div>
+                                            <h3 class="text-xl font-bold text-slate-900 mb-1" x-text="training.ort"></h3>
+                                            <p class="text-sm text-slate-700" x-text="training.wochentag"></p>
+                                        </div>
+
+                                        <dl class="space-y-2">
+                                            <div class="flex items-center gap-2.5 text-sm text-slate-700">
+                                                <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                <dt class="sr-only">Zeit:</dt>
+                                                <dd x-text="formatZeitrange(training.von, training.bis)"></dd>
+                                            </div>
+
+                                            <div class="flex items-center gap-2.5 text-sm text-slate-700">
+                                                <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                                </svg>
+                                                <dt class="sr-only">Altersgruppe:</dt>
+                                                <dd x-text="formatAlter(training)"></dd>
+                                            </div>
+
+                                            <div x-show="training.trainer" class="flex items-center gap-2.5 text-xs text-slate-500">
+                                                <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                </svg>
+                                                <dt class="sr-only">Trainer:</dt>
+                                                <dd x-text="training.trainer"></dd>
+                                            </div>
+
+                                            <div x-show="training.distanceText" class="flex items-center gap-2.5 text-xs text-primary-600 font-bold">
+                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                </svg>
+                                                <dd x-text="training.distanceText + ' entfernt'"></dd>
+                                            </div>
+                                        </dl>
+
+                                        <!-- Actions -->
+                                        <div class="flex items-center gap-2 pt-4 border-t border-slate-100">
+                                            <a x-show="training.link" 
+                                               :href="training.link" 
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-sm font-bold transition-colors">
+                                                Anmelden
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                                </svg>
+                                            </a>
+                                            
+                                            <button x-show="training.lat && training.lng"
+                                                    @click="$store.ui.mapModalOpen = true; $nextTick(() => initializeMap())"
+                                                    type="button"
+                                                    aria-label="Auf Karte zeigen"
+                                                    class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-colors"
+                                                    title="Auf Karte zeigen">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <!-- Anmerkung -->
+                                        <div x-show="training.anmerkung" class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                                            <div class="flex items-start gap-2">
+                                                <svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                <span class="text-xs text-amber-800 font-medium" x-text="training.anmerkung"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </template>
+                        </div>
+                    </section>
+                </template>
+            </div>
+
+            <!-- No Results -->
+            <div x-show="!loading && !error && filteredTrainings.length === 0" class="p-6">
+                <div class="max-w-md mx-auto text-center py-16 bg-white rounded-2xl shadow-lg">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-slate-100 rounded-full flex items-center justify-center">
+                        <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3">Keine Trainings gefunden</h3>
+                    <p class="text-slate-700 mb-6">Versuche andere Filter-Einstellungen</p>
+                    <button @click="$store.ui.filters = {wochentag:'',ort:'',training:'',altersgruppe:'',searchTerm:'',activeQuickFilter:null}; applyFilters()" 
+                            type="button"
+                            class="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl font-bold hover:bg-primary-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Alle Trainings anzeigen
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== MOBILE FILTER DRAWER ==================== -->
+    <div x-show="$store.ui.mobileFilterOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="$store.ui.mobileFilterOpen = false"
+         class="lg:hidden fixed inset-0 bg-black/50 z-50"></div>
+
+    <div x-show="$store.ui.mobileFilterOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="-translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="-translate-x-full"
+         @click.outside="$store.ui.mobileFilterOpen = false"
+         class="lg:hidden fixed inset-y-0 left-0 w-80 max-w-full bg-white shadow-2xl z-50 overflow-y-auto">
+        
+        <div class="p-6">
+            <!-- Header -->
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-primary-600 mb-1">Filter</h2>
+                    <p class="text-sm text-slate-700">
+                        <span x-text="allTrainings.length"></span> Trainings verfügbar
+                    </p>
+                </div>
+                <button @click="$store.ui.mobileFilterOpen = false" 
+                        type="button"
+                        class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div class="mb-6">
+                <label for="mobile-search" class="block text-sm font-semibold text-slate-700 mb-2">Suche</label>
+                <input 
+                    x-model="$store.ui.filters.searchTerm"
+                    @input.debounce.300ms="applyFilters()"
+                    type="text" 
+                    id="mobile-search"
+                    placeholder="Training, Ort, Trainer..."
+                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+            </div>
+
+            <!-- Filters -->
+            <div class="space-y-5">
+                <div>
+                    <label for="mobile-filter-wochentag" class="block text-sm font-semibold text-slate-700 mb-2">Wochentag</label>
+                    <select x-model="$store.ui.filters.wochentag" 
+                            @change="applyFilters()" 
+                            id="mobile-filter-wochentag"
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                        <option value="">Alle Tage</option>
+                        <template x-for="tag in wochentage" :key="tag">
+                            <option x-text="tag" :value="tag"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="mobile-filter-ort" class="block text-sm font-semibold text-slate-700 mb-2">Ort</label>
+                    <select x-model="$store.ui.filters.ort" 
+                            @change="applyFilters()" 
+                            id="mobile-filter-ort"
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                        <option value="">Alle Orte</option>
+                        <template x-for="ort in orte" :key="ort">
+                            <option x-text="ort" :value="ort"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="mobile-filter-training" class="block text-sm font-semibold text-slate-700 mb-2">Trainingsart</label>
+                    <select x-model="$store.ui.filters.training" 
+                            @change="applyFilters()" 
+                            id="mobile-filter-training"
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                        <option value="">Alle Trainings</option>
+                        <template x-for="training in trainingsarten" :key="training">
+                            <option x-text="training" :value="training"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="mobile-filter-altersgruppe" class="block text-sm font-semibold text-slate-700 mb-2">Altersgruppe</label>
+                    <select x-model="$store.ui.filters.altersgruppe" 
+                            @change="applyFilters()" 
+                            id="mobile-filter-altersgruppe"
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                        <option value="">Alle Altersgruppen</option>
+                        <template x-for="gruppe in altersgruppen" :key="gruppe">
+                            <option x-text="gruppe" :value="gruppe"></option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="space-y-3 pt-6 mt-6 border-t border-slate-200">
+                <button @click="$store.ui.filters = {wochentag:'',ort:'',training:'',altersgruppe:'',searchTerm:'',activeQuickFilter:null}; applyFilters()" 
+                        type="button"
+                        class="w-full px-4 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold text-sm hover:bg-slate-200">
+                    Filter zurücksetzen
+                </button>
+                <button @click="$store.ui.mobileFilterOpen = false" 
+                        type="button"
+                        class="w-full px-4 py-3 bg-primary-500 text-white rounded-lg font-semibold text-sm hover:bg-primary-600">
+                    Trainings anzeigen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAP MODAL ==================== -->
+    <div x-show="$store.ui.mapModalOpen"
+         x-trap.inert.noscroll="$store.ui.mapModalOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @keydown.escape.window="$store.ui.mapModalOpen = false"
+         class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+        
+        <div class="w-full h-full max-w-7xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-white flex-shrink-0">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Trainings auf Karte</h2>
+                    <p class="text-sm text-slate-700">
+                        <span x-text="filteredTrainings.length"></span> Standorte
+                    </p>
+                </div>
+                <button @click="$store.ui.mapModalOpen = false" 
+                        type="button"
+                        class="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+                    <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Map Container -->
+            <div class="flex-1 relative">
+                <div id="map-modal-container" class="w-full h-full"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
