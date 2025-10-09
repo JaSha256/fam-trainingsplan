@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-09T09:57:32.549Z",
+  "generated": "2025-10-09T10:57:27.981Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -260,7 +260,7 @@
   },
   "stats": {
     "total": 60,
-    "mitProbetraining": 33,
+    "mitProbetraining": 34,
     "mitLink": 60,
     "nachWochentag": {
       "Montag": 1,
@@ -357,7 +357,7 @@
       "alterVon": 14,
       "alterBis": null,
       "trainer": "Ludwig",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "Findet ab Oktober nicht mehr statt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/2b74ec1c-0ea8-40ff-a106-77d924cf7ba0",
