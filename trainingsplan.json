@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-13T10:57:26.704Z",
+  "generated": "2025-10-13T11:57:28.452Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -58,7 +58,6 @@
       "Kati, Malte, Maxi Dö.",
       "Kati,Malte, Maxi Dö.",
       "Konsti, Neo",
-      "Laurenz, Konsti",
       "Lea, Joni",
       "Lewin",
       "Lewin, Simon R.",
@@ -320,7 +319,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Laurenz, Konsti",
+      "trainer": "Simon R.",
       "probetraining": "ja",
       "anmerkung": "ab den Herbstferien in der Winterpause",
       "teilnehmer": 4,
