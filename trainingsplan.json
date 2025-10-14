@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-14T08:57:29.162Z",
+  "generated": "2025-10-14T09:57:27.622Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -260,7 +260,7 @@
   },
   "stats": {
     "total": 60,
-    "mitProbetraining": 34,
+    "mitProbetraining": 35,
     "mitLink": 60,
     "nachWochentag": {
       "Montag": 1,
@@ -1311,7 +1311,7 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Simon R.",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e65687be-7cc3-47ef-98ba-52e97fd8d47c",
