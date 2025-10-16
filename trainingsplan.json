@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-16T09:57:37.082Z",
+  "generated": "2025-10-16T10:57:31.718Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -105,7 +105,7 @@
           "Dienstag",
           "Mittwoch"
         ],
-        "probetraining": false,
+        "probetraining": true,
         "koordinaten": {
           "lat": 48.20486657383294,
           "lng": 11.61657561943386
@@ -260,7 +260,7 @@
   },
   "stats": {
     "total": 60,
-    "mitProbetraining": 35,
+    "mitProbetraining": 38,
     "mitLink": 60,
     "nachWochentag": {
       "Montag": 1,
@@ -627,7 +627,7 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Bene",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 12,
       "link": "https://fam.kurabu.com/de/events/75b253a9-aae1-4806-ae2a-66f9284a78e7",
@@ -645,7 +645,7 @@
       "alterVon": 12,
       "alterBis": null,
       "trainer": "Bene",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 8,
       "link": "https://fam.kurabu.com/de/events/b4c3b240-40fd-4c70-8804-dce642f381e6",
@@ -663,7 +663,7 @@
       "alterVon": 14,
       "alterBis": null,
       "trainer": "Bene",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/104405d4-33de-4121-9742-23a63f6593c5",
