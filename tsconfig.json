@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    // Type-Checking Settings
+    "allowJs": true,                    // JSDoc in .js-Dateien
+    "checkJs": true,                    // Type-Checking für JS
+    "noEmit": true,                     // KEINE Compilation!
+
+    // Module-System
+    "module": "ESNext",                 // ES Modules
+    "moduleResolution": "bundler",      // Vite Bundler
+    "target": "ESNext",                 // Modern JS
+
+    // Type-Checking strictness
+    "strict": true,                     // Alle strict-Checks
+    "strictNullChecks": true,           // null/undefined prüfen
+    "strictFunctionTypes": true,        // Function-Types prüfen
+    "noImplicitAny": true,              // Kein implizites any
+    "noImplicitThis": true,             // this muss typisiert sein
+
+    // Advanced
+    "esModuleInterop": true,            // CommonJS-Import erlauben
+    "skipLibCheck": true,               // node_modules überspringen
+    "resolveJsonModule": true,          // JSON-Imports
+    "allowSyntheticDefaultImports": true,
+
+    // Paths (für Vite-Aliase)
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["src/*"]
+    }
+  },
+
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "*.config.js"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
+}
