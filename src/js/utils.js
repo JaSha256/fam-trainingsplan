@@ -12,7 +12,7 @@
  * @typedef {import('./types.js').UserPosition} UserPosition
  */
 
-import { CONFIG, log } from './config.js'
+import { CONFIG, log, getMapConfig } from './config.js'
 
 // ==================== DEBOUNCE & THROTTLE ====================
 
@@ -23,8 +23,9 @@ import { CONFIG, log } from './config.js'
  * @returns {Function} Debounced function
  */
 export function debounce(func, wait = 300) {
-  /** @type {number | undefined} */
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
   let timeout
+  // @ts-ignore - rest parameter type inference
   return function executedFunction(...args) {
     const later = () => {
       clearTimeout(timeout)
@@ -44,6 +45,7 @@ export function debounce(func, wait = 300) {
 export function throttle(func, limit = 100) {
   /** @type {boolean | undefined} */
   let inThrottle
+  // @ts-ignore - rest parameter type inference
   return function executedFunction(...args) {
     if (!inThrottle) {
       func(...args)
@@ -258,8 +260,8 @@ export function shuffle(array) {
  * @returns {Promise<UserPosition>} Position {lat, lng, accuracy}
  */
 export async function getCurrentPosition() {
-  const geoConfig = CONFIG.map.geolocation
-  
+  const geoConfig = getMapConfig().geolocation
+
   if (!navigator.geolocation) {
     throw new Error('Geolocation nicht unterstützt')
   }
@@ -600,6 +602,7 @@ export function downloadICalFile(icalContent, filename = 'training.ics') {
  */
 export function createShareLink(filters) {
   const params = new URLSearchParams()
+  // @ts-ignore - CONFIG runtime property access
   const paramMapping = CONFIG.filters.urlParams
 
   Object.entries(filters).forEach(([key, value]) => {
@@ -622,13 +625,14 @@ export function createShareLink(filters) {
  */
 export function getFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search)
+  // @ts-ignore - CONFIG runtime property access
   const paramMapping = /** @type {Record<string, string>} */ (CONFIG.filters.urlParams)
 
   const reverseMapping = Object.fromEntries(
     Object.entries(paramMapping).map(([key, value]) => [value, key])
   )
 
-  /** @type {Partial<Filter>} */
+  /** @type {any} */
   const filters = {
     wochentag: '',
     ort: '',
@@ -641,13 +645,11 @@ export function getFiltersFromUrl() {
   params.forEach((value, key) => {
     const filterKey = reverseMapping[key] || key
     if (filterKey in filters) {
-      /** @type {any} */
-      const filtersAny = filters
-      filtersAny[filterKey] = value === 'true' ? true : (value === 'false' ? false : value)
+      filters[filterKey] = value === 'true' ? true : (value === 'false' ? false : value)
     }
   })
 
-  return filters
+  return /** @type {Partial<Filter>} */ (filters)
 }
 
 /**
@@ -786,6 +788,7 @@ export const favorites = {
    * @returns {Array<number>}
    */
   load() {
+    // @ts-ignore - CONFIG runtime property access
     return storage.get(CONFIG.favoritesKey, [])
   },
 
@@ -796,12 +799,14 @@ export const favorites = {
    */
   save(favs) {
     // Validate and limit
-    const validated = Array.isArray(favs) 
+    const validated = Array.isArray(favs)
       ? favs.filter(id => typeof id === 'number' || typeof id === 'string')
       : []
-    
+
+    // @ts-ignore - CONFIG runtime property access
     const limited = validated.slice(0, CONFIG.favorites.maxCount)
-    
+
+    // @ts-ignore - CONFIG runtime property access
     return storage.set(CONFIG.favoritesKey, limited)
   },
 
