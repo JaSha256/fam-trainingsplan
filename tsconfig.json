@@ -33,13 +33,13 @@
 
   "include": [
     "src/**/*",
-    "tests/**/*",
     "*.config.js"
   ],
 
   "exclude": [
     "node_modules",
     "dist",
-    "coverage"
+    "coverage",
+    "tests/**/*"
   ]
 }
