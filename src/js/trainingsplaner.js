@@ -3,12 +3,20 @@
  * Trainingsplaner Alpine Component - Refactored v3.0
  * @version 3.0.0
  * @requires Node 20+
- * 
+ *
  * BREAKING CHANGES:
  * - Share/Export moved to global actions
  * - Fuse.js imported locally (no window pollution)
  * - Better error boundaries
  * - Extracted bulk operations
+ */
+
+/**
+ * @typedef {import('./types.js').Training} Training
+ * @typedef {import('./types.js').Filter} Filter
+ * @typedef {import('./types.js').Metadata} Metadata
+ * @typedef {import('./types.js').UserPosition} UserPosition
+ * @typedef {import('./types.js').ApiResponse} ApiResponse
  */
 
 import { CONFIG, log } from './config.js'
@@ -19,7 +27,8 @@ import 'leaflet/dist/leaflet.css'
 
 /**
  * Trainingsplaner Component Factory
- * @returns {Object} Alpine.js component
+ *
+ * @returns {Object} Alpine.js component with state and methods
  */
 export function trainingsplaner() {
   return {
@@ -150,6 +159,13 @@ export function trainingsplaner() {
 
     // ==================== INITIALIZATION ====================
 
+    /**
+     * Initialize Component
+     *
+     * Loads data from cache or API, initializes favorites, URL filters
+     *
+     * @returns {Promise<void>}
+     */
     async init() {
       this.loading = true
       this.error = null
@@ -216,6 +232,9 @@ export function trainingsplaner() {
 
     /**
      * Load Data into Component
+     *
+     * @param {ApiResponse} data - API response with trainings and metadata
+     * @returns {void}
      */
     loadData(data) {
       this.allTrainings = data.trainings || []
@@ -240,6 +259,10 @@ export function trainingsplaner() {
 
     /**
      * Watch for Filter Changes
+     *
+     * Sets up reactive watchers for filter changes and map modal
+     *
+     * @returns {void}
      */
     watchFilters() {
       let filterChangeTimeout = null
@@ -270,6 +293,10 @@ export function trainingsplaner() {
 
     /**
      * Apply All Filters
+     *
+     * Filters trainings based on all active filter criteria
+     *
+     * @returns {void}
      */
     applyFilters() {
       const filters = this.$store.ui.filters
@@ -347,6 +374,10 @@ export function trainingsplaner() {
 
     /**
      * Match Altersgruppe Filter
+     *
+     * @param {Training} training - Training object
+     * @param {string} filterValue - Filter value
+     * @returns {boolean}
      */
     matchesAltersgruppe(training, filterValue) {
       if (!training.altersgruppe) return false
@@ -360,6 +391,9 @@ export function trainingsplaner() {
 
     /**
      * Sort Trainings by Time
+     *
+     * @param {Training[]} trainings - Array of trainings
+     * @returns {Training[]} Sorted trainings
      */
     sortTrainings(trainings) {
       return trainings.sort((a, b) => {
@@ -373,8 +407,11 @@ export function trainingsplaner() {
 
     /**
      * Add single training to Google Calendar
+     *
      * Opens Google Calendar with pre-filled event
-     * @param {Object} training - Training object
+     *
+     * @param {Training} training - Training object
+     * @returns {void}
      */
     addToGoogleCalendar(training) {
       try {
@@ -402,8 +439,12 @@ export function trainingsplaner() {
 
     /**
      * Add single training to calendar (smart detection)
-     * @param {Object} training - Training object
-     * @param {string} provider - Optional provider override
+     *
+     * Detects calendar provider and opens appropriate URL
+     *
+     * @param {Training} training - Training object
+     * @param {string | null} [provider] - Optional provider override
+     * @returns {void}
      */
     addToCalendar(training, provider = null) {
       const selectedProvider = provider || calendar.detectCalendarProvider()
@@ -462,7 +503,10 @@ export function trainingsplaner() {
 
     /**
      * Bulk add filtered trainings to Google Calendar
-     * Opens multiple tabs with delay
+     *
+     * Opens multiple tabs with delay to avoid browser blocking
+     *
+     * @returns {Promise<void>}
      */
     async bulkAddToGoogleCalendar() {
       if (this.filteredTrainings.length === 0) {
@@ -525,7 +569,10 @@ export function trainingsplaner() {
 
     /**
      * Export ALL Filtered Trainings to Calendar (.ics file)
-     * NEW: Bulk operation instead of per-training
+     *
+     * Creates and downloads a single .ics file with all filtered trainings
+     *
+     * @returns {Promise<void>}
      */
     async exportAllToCalendar() {
       if (this.filteredTrainings.length === 0) {
@@ -564,7 +611,10 @@ export function trainingsplaner() {
 
     /**
      * Export Favorites to Calendar
-     * NEW: Dedicated favorites export
+     *
+     * Creates and downloads a .ics file with all favorite trainings
+     *
+     * @returns {Promise<void>}
      */
     async exportFavoritesToCalendar() {
       const favTrainings = this.favoriteTrainings
@@ -601,7 +651,10 @@ export function trainingsplaner() {
 
     /**
      * Share Current View (Filters + Results)
-     * NEW: Smart sharing with context
+     *
+     * Creates shareable URL with current filters and shares via Web Share API or clipboard
+     *
+     * @returns {Promise<void>}
      */
     async shareCurrentView() {
       const filters = this.$store.ui.filters
@@ -649,15 +702,32 @@ export function trainingsplaner() {
 
     // ==================== FAVORITES ====================
 
+    /**
+     * Load Favorites from LocalStorage
+     *
+     * @returns {void}
+     */
     loadFavorites() {
       this.favorites = utils.favorites.load()
       log('debug', 'Favorites loaded', { count: this.favorites.length })
     },
 
+    /**
+     * Check if Training is Favorite
+     *
+     * @param {number} trainingId - Training ID
+     * @returns {boolean} True if favorite
+     */
     isFavorite(trainingId) {
       return this.favorites.includes(trainingId)
     },
 
+    /**
+     * Toggle Favorite Status
+     *
+     * @param {number} trainingId - Training ID
+     * @returns {boolean} New favorite status
+     */
     toggleFavorite(trainingId) {
       const isNowFavorite = utils.favorites.toggle(trainingId)
       this.loadFavorites()
@@ -677,6 +747,13 @@ export function trainingsplaner() {
       return isNowFavorite
     },
 
+    /**
+     * Quick Filter Favorites
+     *
+     * Sets filter to show only favorites
+     *
+     * @returns {void}
+     */
     quickFilterFavorites() {
       this.$store.ui.filters = {
         wochentag: '',
@@ -691,6 +768,13 @@ export function trainingsplaner() {
 
     // ==================== GEOLOCATION ====================
 
+    /**
+     * Request User Location
+     *
+     * Requests geolocation permission and adds distance to trainings
+     *
+     * @returns {Promise<boolean>} True if location obtained
+     */
     async requestUserLocation() {
       if (!CONFIG.features.enableGeolocation) {
         this.geolocationError = 'Geolocation ist deaktiviert'
@@ -724,6 +808,13 @@ export function trainingsplaner() {
       }
     },
 
+    /**
+     * Add Distance to Trainings
+     *
+     * Calculates distance from user position to each training location
+     *
+     * @returns {void}
+     */
     addDistanceToTrainings() {
       if (!this.userPosition) return
 
@@ -741,6 +832,13 @@ export function trainingsplaner() {
 
     // ==================== MAP ====================
 
+    /**
+     * Initialize Map
+     *
+     * Creates Leaflet map instance and adds tile layer
+     *
+     * @returns {void}
+     */
     initializeMap() {
       if (this.map) return
 
@@ -770,6 +868,13 @@ export function trainingsplaner() {
       }
     },
 
+    /**
+     * Add Markers to Map
+     *
+     * Adds markers for all filtered trainings to the map
+     *
+     * @returns {void}
+     */
     addMarkersToMap() {
       if (!this.map) return
 
@@ -798,6 +903,12 @@ export function trainingsplaner() {
       })
     },
 
+    /**
+     * Create Map Popup HTML
+     *
+     * @param {Training} training - Training object
+     * @returns {string} HTML string for popup
+     */
     createMapPopup(training) {
       return `
         <div class="p-2">
@@ -824,6 +935,13 @@ export function trainingsplaner() {
       `
     },
 
+    /**
+     * Cleanup Map
+     *
+     * Removes all markers and destroys map instance
+     *
+     * @returns {void}
+     */
     cleanupMap() {
       if (this.map) {
         this.markers.forEach((m) => this.map.removeLayer(m))
@@ -836,12 +954,26 @@ export function trainingsplaner() {
 
     // ==================== URL HANDLING ====================
 
+    /**
+     * Load Filters from URL
+     *
+     * Parses URL parameters and sets filters accordingly
+     *
+     * @returns {void}
+     */
     loadFiltersFromUrl() {
       const urlFilters = utils.getFiltersFromUrl()
       Object.assign(this.$store.ui.filters, urlFilters)
       log('debug', 'URL filters loaded', urlFilters)
     },
 
+    /**
+     * Update URL with Filters
+     *
+     * Updates URL with current filter state (without page reload)
+     *
+     * @returns {void}
+     */
     updateUrlWithFilters() {
       if (!CONFIG.filters.persistInUrl) return
 
@@ -851,6 +983,13 @@ export function trainingsplaner() {
 
     // ==================== CACHING ====================
 
+    /**
+     * Get Cached Data
+     *
+     * Retrieves cached data from LocalStorage if valid
+     *
+     * @returns {ApiResponse | null} Cached data or null
+     */
     getCachedData() {
       if (!CONFIG.cacheEnabled) return null
 
@@ -873,6 +1012,14 @@ export function trainingsplaner() {
       }
     },
 
+    /**
+     * Set Cached Data
+     *
+     * Stores data in LocalStorage with timestamp
+     *
+     * @param {ApiResponse} data - Data to cache
+     * @returns {void}
+     */
     setCachedData(data) {
       if (!CONFIG.cacheEnabled) return
 
@@ -889,6 +1036,13 @@ export function trainingsplaner() {
 
     // ==================== UPDATE CHECK ====================
 
+    /**
+     * Start Update Check
+     *
+     * Starts periodic update checks
+     *
+     * @returns {void}
+     */
     startUpdateCheck() {
       if (this.updateCheckInterval) return
 
@@ -897,6 +1051,13 @@ export function trainingsplaner() {
       }, CONFIG.pwa.updateCheckInterval)
     },
 
+    /**
+     * Check for Updates
+     *
+     * Fetches version.json and checks if update is available
+     *
+     * @returns {Promise<void>}
+     */
     async checkForUpdates() {
       try {
         const response = await fetch(
@@ -916,6 +1077,14 @@ export function trainingsplaner() {
 
     // ==================== FORMATTING ====================
 
+    /**
+     * Get Training Color Classes
+     *
+     * Returns Tailwind CSS classes based on training type
+     *
+     * @param {string} training - Training type
+     * @returns {string} Tailwind CSS classes
+     */
     getTrainingColor(training) {
       const t = (training || '').toLowerCase()
       if (t.includes('parkour'))
@@ -933,16 +1102,36 @@ export function trainingsplaner() {
       return 'bg-slate-100 text-slate-800 border-slate-200'
     },
 
+    /**
+     * Format Alter
+     *
+     * @param {Training} training - Training object
+     * @returns {string} Formatted age range
+     */
     formatAlter(training) {
       return utils.formatAlter(training)
     },
 
+    /**
+     * Format Zeitrange
+     *
+     * @param {string} von - Start time
+     * @param {string} bis - End time
+     * @returns {string} Formatted time range
+     */
     formatZeitrange(von, bis) {
       return utils.formatZeitrange(von, bis)
     },
 
     // ==================== CLEANUP ====================
 
+    /**
+     * Destroy Component
+     *
+     * Cleans up intervals, map, and timeouts
+     *
+     * @returns {void}
+     */
     destroy() {
       if (this.updateCheckInterval) {
         clearInterval(this.updateCheckInterval)
