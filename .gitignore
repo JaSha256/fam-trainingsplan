@@ -35,6 +35,8 @@ coverage/
 .nyc_output/
 playwright-report/
 test-results/
+tests/e2e/**/*-snapshots/
+tests/integration/__screenshots__/
 
 # Puppeteer
 tests/puppeteer/screenshots/
@@ -54,3 +56,9 @@ workbox-*.js
 .claude/settings.local.json
 .claude/.session/
 .claude/memory/
+.claude/knowledge/
+
+# Legacy/Backup Files
+*.legacy.js
+*.monolithic.js
+*.backup.js
