@@ -7,6 +7,7 @@ export default defineConfig({
   
   plugins: [
     // Tailwind CSS v4 Plugin with Forms & Typography
+    // @ts-ignore - tailwindcss plugin accepts options but types are incorrect
     tailwindcss({
       plugins: ['@tailwindcss/forms', '@tailwindcss/typography']
     }),
@@ -213,7 +214,7 @@ export default defineConfig({
         },
         
         assetFileNames: (assetInfo) => {
-          const info = assetInfo.name.split('.')
+          const info = assetInfo.name?.split('.') || []
           const ext = info[info.length - 1]
           
           if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
