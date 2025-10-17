@@ -73,6 +73,10 @@ export function createGoogleCalendarUrl(training) {
  * @returns {string} Formatted date range
  */
 function formatGoogleDates(start, end) {
+  /**
+   * @param {Date} date - Date to format
+   * @returns {string} Formatted date
+   */
   const formatDate = (date) => {
     return date.toISOString()
       .replace(/[-:]/g, '')
@@ -212,7 +216,8 @@ export async function bulkAddToGoogleCalendar(trainings, options = {}) {
       success: false,
       message: 'Keine Trainings zum Exportieren',
       exported: 0,
-      total: 0
+      total: 0,
+      errors: null
     }
   }
 
@@ -248,9 +253,10 @@ export async function bulkAddToGoogleCalendar(trainings, options = {}) {
           await new Promise(resolve => setTimeout(resolve, delay))
         }
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error)
         errors.push({
           training: toExport[i],
-          error: error.message
+          error: errorMessage
         })
         log('error', '[calendar] Bulk export error for training', {
           training: toExport[i].id,
@@ -278,7 +284,7 @@ export async function bulkAddToGoogleCalendar(trainings, options = {}) {
       message: 'Export fehlgeschlagen',
       exported,
       total: toExport.length,
-      errors: [error]
+      errors: errors.length > 0 ? errors : null
     }
   }
 }
@@ -292,6 +298,7 @@ export async function bulkAddToGoogleCalendar(trainings, options = {}) {
  * @returns {Promise<{success: boolean, message: string, exported: number, total: number, errors: any[] | null}>} Result object
  */
 export async function bulkAddToCalendar(trainings, provider = CALENDAR_PROVIDERS.GOOGLE, options = {}) {
+  /** @type {Record<string, (training: Training) => string>} */
   const urlCreators = {
     [CALENDAR_PROVIDERS.GOOGLE]: createGoogleCalendarUrl,
     [CALENDAR_PROVIDERS.OUTLOOK]: createOutlookCalendarUrl,
@@ -306,7 +313,7 @@ export async function bulkAddToCalendar(trainings, provider = CALENDAR_PROVIDERS
   }
 
   // Similar logic to bulkAddToGoogleCalendar but uses provider-specific URL creator
-  return bulkAddToGoogleCalendar(trainings, { ...options, createUrl })
+  return bulkAddToGoogleCalendar(trainings, options)
 }
 
 // ==================== HELPER FUNCTIONS ====================
@@ -468,7 +475,7 @@ export function downloadICalBundle(trainings, filename = 'trainings.ics') {
       'METHOD:PUBLISH',
       'X-WR-CALNAME:FAM Trainingsplan',
       'X-WR-TIMEZONE:Europe/Berlin',
-      ...events.map(e => e.split('\n').slice(2, -2).join('\n')), // Extract events without wrapper
+      ...events.map(e => (e || '').split('\n').slice(2, -2).join('\n')), // Extract events without wrapper
       'END:VCALENDAR'
     ].join('\n')
 
@@ -535,6 +542,7 @@ export function detectCalendarProvider() {
  * @returns {string} Display name
  */
 export function getCalendarProviderName(provider) {
+  /** @type {Record<string, string>} */
   const names = {
     [CALENDAR_PROVIDERS.GOOGLE]: 'Google Calendar',
     [CALENDAR_PROVIDERS.OUTLOOK]: 'Outlook Calendar',
