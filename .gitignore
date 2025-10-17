@@ -63,3 +63,6 @@ workbox-*.js
 *.monolithic.js
 *.backup.js
 /public/trainingsplan.json
+
+# Test fixtures
+/tests/fixtures/trainingsplan.fixture.json
