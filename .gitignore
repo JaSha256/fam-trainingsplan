@@ -62,3 +62,4 @@ workbox-*.js
 *.legacy.js
 *.monolithic.js
 *.backup.js
+/public/trainingsplan.json
