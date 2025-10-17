@@ -6,13 +6,25 @@
  * @description Immutable, validated, type-safe configuration
  */
 
+/// <reference path="./env.d.js" />
+
 // ==================== CONSTANTS ====================
 
 /**
  * Environment Detection
+ *
+ * @type {boolean}
  */
 export const isDev = import.meta.env.MODE === 'development'
+
+/**
+ * @type {boolean}
+ */
 export const isProd = import.meta.env.MODE === 'production'
+
+/**
+ * @type {boolean}
+ */
 export const isTest = import.meta.env.MODE === 'test'
 
 /**
@@ -345,10 +357,20 @@ export function log(level, message, ...args) {
 }
 
 /**
- * Get browser information (cached)
+ * @typedef {import('./types.js').BrowserInfo} BrowserInfo
+ */
+
+/**
+ * Cached browser info
+ * @type {BrowserInfo | null}
  */
 let browserInfoCache = null
 
+/**
+ * Get browser information (cached)
+ *
+ * @returns {BrowserInfo} Browser capabilities and info
+ */
 export function getBrowserInfo() {
   if (browserInfoCache) return browserInfoCache
   
