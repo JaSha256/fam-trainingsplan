@@ -6,6 +6,12 @@
  * @description Pure functions, no side effects, fully tested
  */
 
+/**
+ * @typedef {import('./types.js').Training} Training
+ * @typedef {import('./types.js').Filter} Filter
+ * @typedef {import('./types.js').UserPosition} UserPosition
+ */
+
 import { CONFIG, log } from './config.js'
 
 // ==================== DEBOUNCE & THROTTLE ====================
@@ -84,7 +90,8 @@ export function formatZeitrange(von, bis) {
 
 /**
  * Format age group
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Formatted age group
  */
 export function formatAlter(training) {
@@ -173,9 +180,11 @@ export function roundTo(num, decimals = 2) {
 
 /**
  * Extract unique values from array
- * @param {Array} array - Input array
- * @param {string} key - Property key
- * @returns {Array} Unique values
+ *
+ * @template T
+ * @param {T[]} array - Input array
+ * @param {keyof T} key - Property key
+ * @returns {string[]} Unique values
  */
 export function extractUnique(array, key) {
   if (!Array.isArray(array)) return []
@@ -190,9 +199,11 @@ export function extractUnique(array, key) {
 
 /**
  * Group array by key
- * @param {Array} array - Input array
- * @param {string} key - Grouping key
- * @returns {Object} Grouped object
+ *
+ * @template T
+ * @param {T[]} array - Input array
+ * @param {keyof T} key - Grouping key
+ * @returns {Record<string, T[]>} Grouped object
  */
 export function groupBy(array, key) {
   if (!Array.isArray(array)) return {}
@@ -233,7 +244,8 @@ export function shuffle(array) {
 
 /**
  * Get current position
- * @returns {Promise<Object>} Position {lat, lng, accuracy}
+ *
+ * @returns {Promise<UserPosition>} Position {lat, lng, accuracy}
  */
 export async function getCurrentPosition() {
   const geoConfig = CONFIG.map.geolocation
@@ -315,9 +327,10 @@ function toRadians(degrees) {
 
 /**
  * Add distance to trainings
- * @param {Array} trainings - Training array
- * @param {Object} userPosition - User position {lat, lng}
- * @returns {Array} Trainings with distance property
+ *
+ * @param {Training[]} trainings - Training array
+ * @param {UserPosition} userPosition - User position {lat, lng}
+ * @returns {Training[]} Trainings with distance property
  */
 export function addDistanceToTrainings(trainings, userPosition) {
   if (!Array.isArray(trainings) || !userPosition) return trainings
@@ -402,8 +415,9 @@ export function zeitZuMinuten(zeit) {
 
 /**
  * Create iCal event
- * @param {Object} training - Training object
- * @returns {string|null} iCal string
+ *
+ * @param {Training} training - Training object
+ * @returns {string | null} iCal string
  */
 export function createICalEvent(training) {
   const date = getNextTrainingDate(training.wochentag)
@@ -453,8 +467,10 @@ export function createICalEvent(training) {
 /**
  * Create iCal bundle for multiple trainings
  * NEW in v3.0: Bulk export functionality
- * @param {Array} trainings - Array of training objects
+ *
+ * @param {Training[]} trainings - Array of training objects
  * @returns {string} iCal string with multiple events
+ * @throws {Error} If trainings array is empty or invalid
  */
 export function createICalBundle(trainings) {
   if (!Array.isArray(trainings) || trainings.length === 0) {
@@ -565,7 +581,8 @@ export function downloadICalFile(icalContent, filename = 'training.ics') {
 
 /**
  * Create share link
- * @param {Object} filters - Filter object
+ *
+ * @param {Partial<Filter>} filters - Filter object
  * @returns {string} URL
  */
 export function createShareLink(filters) {
@@ -587,7 +604,8 @@ export function createShareLink(filters) {
 
 /**
  * Get filters from URL
- * @returns {Object} Filter object
+ *
+ * @returns {Partial<Filter>} Filter object
  */
 export function getFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search)
