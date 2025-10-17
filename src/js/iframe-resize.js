@@ -11,6 +11,62 @@
 import { CONFIG, log } from './config.js'
 import { throttle } from './utils.js'
 
+// ==================== TYPE DEFINITIONS ====================
+
+/**
+ * @typedef {Object} AlpineStore
+ * @property {boolean} mapView - Map view active status
+ */
+
+/**
+ * @typedef {Object} AlpineJS
+ * @property {function(string): any} store - Get Alpine store
+ */
+
+/**
+ * @typedef {Object} IframeResizeMessage
+ * @property {string} type - Message type
+ * @property {number} height - Iframe height in pixels
+ * @property {number} timestamp - Message timestamp
+ * @property {'map' | 'list'} view - Current view mode
+ * @property {string} source - Message source identifier
+ */
+
+/**
+ * @typedef {Object} IframeState
+ * @property {number | null} notifyTimeout - Debounce timeout ID
+ * @property {number} lastSentHeight - Last sent height value
+ * @property {string | null} parentOrigin - Parent window origin
+ * @property {ResizeObserver | null} resizeObserver - ResizeObserver instance
+ * @property {MutationObserver | null} mutationObserver - MutationObserver instance
+ * @property {boolean} isInitialized - Initialization status
+ * @property {HTMLElement | null} targetElement - Target element being observed
+ * @property {EventListenerEntry[]} eventListeners - Registered event listeners
+ */
+
+/**
+ * @typedef {Object} EventListenerEntry
+ * @property {EventTarget} element - Element with listener
+ * @property {string} event - Event name
+ * @property {EventListener} handler - Event handler function
+ */
+
+/**
+ * @typedef {Object} InitOptions
+ * @property {string} [parentOrigin] - Parent window origin
+ * @property {string} [targetSelector] - CSS selector for target element
+ */
+
+/**
+ * @typedef {Object} StateSnapshot
+ * @property {boolean} isInitialized - Initialization status
+ * @property {number} lastSentHeight - Last sent height
+ * @property {string | null} parentOrigin - Parent origin
+ * @property {boolean} hasResizeObserver - ResizeObserver present
+ * @property {boolean} hasMutationObserver - MutationObserver present
+ * @property {number} eventListenerCount - Event listener count
+ */
+
 // ==================== CONSTANTS ====================
 
 const CONSTANTS = Object.freeze({
@@ -25,6 +81,7 @@ const CONSTANTS = Object.freeze({
 
 // ==================== STATE ====================
 
+/** @type {IframeState} */
 let state = {
   notifyTimeout: null,
   lastSentHeight: 0,
@@ -47,6 +104,8 @@ function detectParentOrigin() {
     return state.parentOrigin
   }
 
+  /** @type {any} */
+  const config = CONFIG
   try {
     // Try to read parent origin
     if (window.parent !== window) {
@@ -55,20 +114,20 @@ function detectParentOrigin() {
         state.parentOrigin = url.origin
       } else {
         // Fallback to config
-        state.parentOrigin = CONFIG.iframe.parentOrigin
+        state.parentOrigin = config.iframe?.parentOrigin || '*'
       }
     }
   } catch (error) {
     log('warn', '[iframe-resize] Could not detect parent origin, using fallback', error)
-    state.parentOrigin = CONFIG.iframe.parentOrigin
+    state.parentOrigin = config.iframe?.parentOrigin || '*'
   }
 
   // Validate origin
-  if (!isOriginAllowed(state.parentOrigin)) {
+  if (state.parentOrigin && !isOriginAllowed(state.parentOrigin)) {
     log('warn', '[iframe-resize] Parent origin not in allowed list', { origin: state.parentOrigin })
   }
 
-  return state.parentOrigin
+  return state.parentOrigin || '*'
 }
 
 /**
@@ -77,11 +136,13 @@ function detectParentOrigin() {
  * @returns {boolean}
  */
 function isOriginAllowed(origin) {
-  if (!CONFIG.iframe.allowedOrigins) {
+  /** @type {any} */
+  const config = CONFIG
+  if (!config.iframe?.allowedOrigins) {
     return true // No restrictions
   }
-  
-  return CONFIG.iframe.allowedOrigins.includes(origin)
+
+  return config.iframe.allowedOrigins.includes(origin)
 }
 
 // ==================== HEIGHT CALCULATION ====================
@@ -106,9 +167,13 @@ function calculateRequiredHeight() {
  */
 function isMapViewActive() {
   // Check Alpine store (primary method)
-  if (window.Alpine?.store) {
+  /** @type {any} */
+  const win = window
+  if (win.Alpine?.store) {
     try {
-      return window.Alpine.store('ui').mapView === true
+      /** @type {any} */
+      const uiStore = win.Alpine.store('ui')
+      return uiStore.mapView === true
     } catch (error) {
       // Fallback to DOM check
     }
@@ -173,24 +238,28 @@ function calculateListViewHeight() {
 
 /**
  * Notify parent of height change (debounced)
- * @param {string} [origin] - Optional custom origin
+ * @param {string | null} [origin] - Optional custom origin
  */
 export function notifyParentHeight(origin = null) {
+  /** @type {any} */
+  const config = CONFIG
   if (window.parent === window) return
-  if (!CONFIG.iframe.enabled) return
+  if (!config.iframe?.enabled) return
 
-  clearTimeout(state.notifyTimeout)
+  if (state.notifyTimeout !== null) {
+    clearTimeout(state.notifyTimeout)
+  }
 
-  state.notifyTimeout = setTimeout(() => {
+  state.notifyTimeout = /** @type {number} */ (/** @type {unknown} */ (setTimeout(() => {
     requestAnimationFrame(() => {
       sendHeightToParent(origin)
     })
-  }, CONSTANTS.DEBOUNCE_DELAY)
+  }, CONSTANTS.DEBOUNCE_DELAY)))
 }
 
 /**
  * Send height to parent immediately (no debounce)
- * @param {string} [origin] - Optional custom origin
+ * @param {string | null} [origin] - Optional custom origin
  */
 function sendHeightToParent(origin = null) {
   const height = calculateRequiredHeight()
@@ -208,6 +277,7 @@ function sendHeightToParent(origin = null) {
   )
 
   try {
+    /** @type {IframeResizeMessage} */
     const message = {
       type: 'resize',
       height: Math.round(clampedHeight),
@@ -255,12 +325,19 @@ function handleParentMessage(event) {
 /**
  * Setup all event listeners
  * @param {HTMLElement} target - Target element to observe
- * @param {Function} notify - Notification function (throttled)
+ * @param {() => void} notify - Notification function (throttled)
  */
 function setupEventListeners(target, notify) {
+  /** @type {EventListenerEntry[]} */
   const listeners = []
 
   // Helper to track listeners
+  /**
+   * @param {EventTarget} element
+   * @param {string} event
+   * @param {EventListener} handler
+   * @param {AddEventListenerOptions} [options]
+   */
   const addListener = (element, event, handler, options = {}) => {
     element.addEventListener(event, handler, options)
     listeners.push({ element, event, handler })
@@ -277,7 +354,9 @@ function setupEventListeners(target, notify) {
   }
 
   // Alpine.js events
-  if (window.Alpine) {
+  /** @type {any} */
+  const win = window
+  if (win.Alpine) {
     addListener(document, 'alpine:init', notify)
     addListener(document, 'alpine:initialized', notify)
     addListener(document, 'alpine:updated', notify)
@@ -285,10 +364,10 @@ function setupEventListeners(target, notify) {
 
   // Scroll (heavily throttled)
   const scrollNotify = throttle(notify, CONSTANTS.SCROLL_THROTTLE)
-  addListener(window, 'scroll', scrollNotify, { passive: true })
+  addListener(window, 'scroll', /** @type {EventListener} */ (scrollNotify), { passive: true })
 
   // Parent message listener
-  addListener(window, 'message', handleParentMessage)
+  addListener(window, 'message', /** @type {EventListener} */ (handleParentMessage))
 
   // Store listeners for cleanup
   state.eventListeners = listeners
@@ -301,7 +380,7 @@ function setupEventListeners(target, notify) {
 /**
  * Setup ResizeObserver
  * @param {HTMLElement} target - Target element
- * @param {Function} notify - Notification function
+ * @param {() => void} notify - Notification function
  */
 function setupResizeObserver(target, notify) {
   if (!window.ResizeObserver) {
@@ -322,7 +401,7 @@ function setupResizeObserver(target, notify) {
 /**
  * Setup MutationObserver
  * @param {HTMLElement} target - Target element
- * @param {Function} notify - Notification function
+ * @param {() => void} notify - Notification function
  */
 function setupMutationObserver(target, notify) {
   if (!window.MutationObserver) {
@@ -348,9 +427,7 @@ function setupMutationObserver(target, notify) {
 
 /**
  * Initialize iframe auto-resize
- * @param {Object} options - Configuration options
- * @param {string} [options.parentOrigin] - Parent origin
- * @param {string} [options.targetSelector] - Target selector
+ * @param {InitOptions} [options] - Configuration options
  * @returns {boolean} Success status
  */
 export function initIframeAutoResize(options = {}) {
@@ -370,11 +447,11 @@ export function initIframeAutoResize(options = {}) {
   }
 
   // Find target element
-  const target = 
+  const target = /** @type {HTMLElement | null} */ (
     document.querySelector(targetSelector) ||
     document.querySelector('[x-data]') ||
-    document.querySelector('#app') ||
-    document.body
+    document.querySelector('#app')
+  ) || document.body
 
   if (!target) {
     log('error', '[iframe-resize] Target element not found')
@@ -384,7 +461,7 @@ export function initIframeAutoResize(options = {}) {
   state.targetElement = target
 
   // Create throttled notify function
-  const notify = throttle(() => notifyParentHeight(), CONSTANTS.RESIZE_THROTTLE)
+  const notify = /** @type {() => void} */ (throttle(() => notifyParentHeight(), CONSTANTS.RESIZE_THROTTLE))
 
   // Setup observers
   setupResizeObserver(target, notify)
@@ -400,8 +477,10 @@ export function initIframeAutoResize(options = {}) {
   state.isInitialized = true
 
   // Expose global functions (for Alpine compatibility)
-  window.notifyParentHeight = notifyParentHeight
-  window.forceIframeResize = forceResize
+  /** @type {any} */
+  const win = window
+  win.notifyParentHeight = notifyParentHeight
+  win.forceIframeResize = forceResize
 
   log('info', '[iframe-resize] ✓ Initialized', {
     target: targetSelector,
@@ -424,7 +503,7 @@ export function forceResize() {
 
 /**
  * Get current state (for debugging)
- * @returns {Object} Current state
+ * @returns {StateSnapshot} Current state
  */
 export function getState() {
   return {
@@ -457,7 +536,9 @@ export function destroyIframeAutoResize() {
   }
 
   // Clear timeout
-  clearTimeout(state.notifyTimeout)
+  if (state.notifyTimeout !== null) {
+    clearTimeout(state.notifyTimeout)
+  }
 
   // Remove event listeners
   state.eventListeners.forEach(({ element, event, handler }) => {
@@ -466,8 +547,10 @@ export function destroyIframeAutoResize() {
   state.eventListeners = []
 
   // Remove global functions
-  delete window.notifyParentHeight
-  delete window.forceIframeResize
+  /** @type {any} */
+  const win = window
+  delete win.notifyParentHeight
+  delete win.forceIframeResize
 
   // Reset state
   state = {
@@ -495,8 +578,10 @@ function autoInit() {
     return
   }
 
+  /** @type {any} */
+  const config = CONFIG
   // Check if enabled
-  if (!CONFIG.iframe.enabled || !CONFIG.iframe.autoResize) {
+  if (!config.iframe?.enabled || !config.iframe?.autoResize) {
     return
   }
 
