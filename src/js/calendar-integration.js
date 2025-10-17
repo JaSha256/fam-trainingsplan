@@ -9,6 +9,12 @@
  * Phase 2: OAuth2 integration (future)
  */
 
+/**
+ * @typedef {import('./types.js').Training} Training
+ * @typedef {import('./types.js').CalendarProvider} CalendarProvider
+ * @typedef {import('./types.js').BulkExportOptions} BulkExportOptions
+ */
+
 import { getNextTrainingDate, createICalEvent } from './utils.js'
 import { log } from './config.js'
 
@@ -32,7 +38,8 @@ const YAHOO_CALENDAR_BASE_URL = 'https://calendar.yahoo.com/'
 
 /**
  * Create Google Calendar event URL
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Google Calendar URL
  */
 export function createGoogleCalendarUrl(training) {
@@ -79,7 +86,8 @@ function formatGoogleDates(start, end) {
 
 /**
  * Create Outlook.com Calendar event URL
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Outlook Calendar URL
  */
 export function createOutlookCalendarUrl(training) {
@@ -109,7 +117,8 @@ export function createOutlookCalendarUrl(training) {
 
 /**
  * Create Office 365 Calendar event URL
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Office 365 Calendar URL
  */
 export function createOffice365CalendarUrl(training) {
@@ -141,7 +150,8 @@ export function createOffice365CalendarUrl(training) {
 
 /**
  * Create Yahoo Calendar event URL
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Yahoo Calendar URL
  */
 export function createYahooCalendarUrl(training) {
@@ -183,10 +193,12 @@ function formatYahooDate(date) {
 
 /**
  * Add multiple trainings to Google Calendar
+ *
  * Opens URLs sequentially with delay to prevent popup blocking
- * @param {Array<Object>} trainings - Array of training objects
- * @param {Object} options - Export options
- * @returns {Promise<Object>} Result object
+ *
+ * @param {Training[]} trainings - Array of training objects
+ * @param {BulkExportOptions} [options] - Export options
+ * @returns {Promise<{success: boolean, message: string, exported: number, total: number, errors: any[] | null}>} Result object
  */
 export async function bulkAddToGoogleCalendar(trainings, options = {}) {
   const {
@@ -273,10 +285,11 @@ export async function bulkAddToGoogleCalendar(trainings, options = {}) {
 
 /**
  * Add multiple trainings to any calendar provider
- * @param {Array<Object>} trainings - Array of training objects
- * @param {string} provider - Calendar provider (google|outlook|office365|yahoo)
- * @param {Object} options - Export options
- * @returns {Promise<Object>} Result object
+ *
+ * @param {Training[]} trainings - Array of training objects
+ * @param {CalendarProvider} [provider] - Calendar provider (google|outlook|office365|yahoo)
+ * @param {BulkExportOptions} [options] - Export options
+ * @returns {Promise<{success: boolean, message: string, exported: number, total: number, errors: any[] | null}>} Result object
  */
 export async function bulkAddToCalendar(trainings, provider = CALENDAR_PROVIDERS.GOOGLE, options = {}) {
   const urlCreators = {
@@ -300,8 +313,9 @@ export async function bulkAddToCalendar(trainings, provider = CALENDAR_PROVIDERS
 
 /**
  * Get start and end DateTime for training
- * @param {Object} training - Training object
- * @returns {Object} { start: Date, end: Date }
+ *
+ * @param {Training} training - Training object
+ * @returns {{start: Date, end: Date}} Start and end dates
  */
 function getEventDateTimes(training) {
   const nextDate = getNextTrainingDate(training.wochentag)
@@ -324,7 +338,8 @@ function getEventDateTimes(training) {
 
 /**
  * Format event title
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Event title
  */
 function formatEventTitle(training) {
@@ -333,7 +348,8 @@ function formatEventTitle(training) {
 
 /**
  * Format event description with all details
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Event description
  */
 function formatEventDescription(training) {
@@ -370,7 +386,8 @@ function formatEventDescription(training) {
 
 /**
  * Format event location
- * @param {Object} training - Training object
+ *
+ * @param {Training} training - Training object
  * @returns {string} Event location
  */
 function formatEventLocation(training) {
@@ -385,8 +402,10 @@ function formatEventLocation(training) {
 
 /**
  * Download .ics file for training (Apple Calendar, generic)
- * @param {Object} training - Training object
- * @param {string} filename - Optional filename
+ *
+ * @param {Training} training - Training object
+ * @param {string | null} [filename] - Optional filename
+ * @returns {{success: boolean, message: string, error?: any}} Result object
  */
 export function downloadICalFile(training, filename = null) {
   try {
@@ -420,8 +439,10 @@ export function downloadICalFile(training, filename = null) {
 
 /**
  * Download .ics file for multiple trainings
- * @param {Array<Object>} trainings - Array of training objects
- * @param {string} filename - Optional filename
+ *
+ * @param {Training[]} trainings - Array of training objects
+ * @param {string} [filename='trainings.ics'] - Optional filename
+ * @returns {{success: boolean, message: string, count?: number, error?: any}} Result object
  */
 export function downloadICalBundle(trainings, filename = 'trainings.ics') {
   try {
@@ -481,7 +502,8 @@ export function downloadICalBundle(trainings, filename = 'trainings.ics') {
 
 /**
  * Detect user's preferred calendar provider
- * @returns {string} Detected provider or default
+ *
+ * @returns {CalendarProvider} Detected provider or default
  */
 export function detectCalendarProvider() {
   const userAgent = navigator.userAgent.toLowerCase()
@@ -508,7 +530,8 @@ export function detectCalendarProvider() {
 
 /**
  * Get user-friendly calendar provider name
- * @param {string} provider - Provider constant
+ *
+ * @param {CalendarProvider} provider - Provider constant
  * @returns {string} Display name
  */
 export function getCalendarProviderName(provider) {
