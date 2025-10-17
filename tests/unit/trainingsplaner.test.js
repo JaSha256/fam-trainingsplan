@@ -492,7 +492,7 @@ describe('trainingsplaner.js - Integration', () => {
     component = trainingsplaner()
     component.$store = {
       ui: {
-        filters: { wochentag: 'Montag', ort: '', training: '', altersgruppe: '', searchTerm: '', activeQuickFilter: null },
+        filters: { wochentag: '', ort: '', training: '', altersgruppe: '', searchTerm: '', activeQuickFilter: null },
         showNotification: vi.fn()
       }
     }
@@ -503,16 +503,17 @@ describe('trainingsplaner.js - Integration', () => {
     component.$watch = vi.fn()
   })
 
-  it.skip('should handle complete filter -> export workflow', async () => {
-    // TODO: Fix filter application when filter is set before init()
-    // Initialize component (filters are already set in $store before init)
+  it('should handle complete filter -> export workflow', async () => {
+    // Initialize component first
     await component.init()
 
-    // Manually apply filters to ensure they're active
+    // Set filter after init
+    component.$store.ui.filters.wochentag = 'Montag'
     component.applyFilters()
 
     // Filter should be applied, filteredTrainings should have 2 items
     expect(component.filteredTrainings).toHaveLength(2)
+    expect(component.filteredTrainings.every(t => t.wochentag === 'Montag')).toBe(true)
 
     // Mock export
     vi.spyOn(utils, 'createICalBundle').mockReturnValue('VCALENDAR')
@@ -526,5 +527,6 @@ describe('trainingsplaner.js - Integration', () => {
         expect.objectContaining({ wochentag: 'Montag' })
       ])
     )
+    expect(utils.downloadICalFile).toHaveBeenCalled()
   })
 })
