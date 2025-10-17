@@ -23,6 +23,7 @@ import { CONFIG, log } from './config.js'
  * @returns {Function} Debounced function
  */
 export function debounce(func, wait = 300) {
+  /** @type {number | undefined} */
   let timeout
   return function executedFunction(...args) {
     const later = () => {
@@ -41,6 +42,7 @@ export function debounce(func, wait = 300) {
  * @returns {Function} Throttled function
  */
 export function throttle(func, limit = 100) {
+  /** @type {boolean | undefined} */
   let inThrottle
   return function executedFunction(...args) {
     if (!inThrottle) {
@@ -79,12 +81,16 @@ export function generateHash(str) {
  */
 export function formatZeitrange(von, bis) {
   if (!von || !bis) return ''
-  
+
+  /**
+   * @param {string} time - Time string
+   * @returns {string} Formatted time
+   */
   const formatTime = (time) => {
     const [hours, minutes] = time.split(':')
     return `${parseInt(hours, 10)}:${minutes}`
   }
-  
+
   return `${formatTime(von)} - ${formatTime(bis)} Uhr`
 }
 
@@ -188,13 +194,13 @@ export function roundTo(num, decimals = 2) {
  */
 export function extractUnique(array, key) {
   if (!Array.isArray(array)) return []
-  
+
   const values = array
     .map(item => item[key])
     .filter(val => val !== null && val !== undefined && String(val).trim() !== '')
-  
-  return [...new Set(values)]
-    .sort((a, b) => String(a).localeCompare(String(b), 'de'))
+
+  return [...new Set(values.map(v => String(v)))]
+    .sort((a, b) => a.localeCompare(b, 'de'))
 }
 
 /**
@@ -207,31 +213,35 @@ export function extractUnique(array, key) {
  */
 export function groupBy(array, key) {
   if (!Array.isArray(array)) return {}
-  
+
   // Use native Object.groupBy if available (Node 21+)
   if (Object.groupBy) {
-    return Object.groupBy(array, item => item[key])
+    // @ts-ignore - Object.groupBy exists in newer environments
+    return Object.groupBy(array, item => String(item[key] || 'undefined'))
   }
-  
+
   // Fallback
+  /** @type {Record<string, T[]>} */
+  const result = {}
   return array.reduce((result, item) => {
-    const groupKey = item[key] || 'undefined'
+    const groupKey = String(item[key] || 'undefined')
     if (!result[groupKey]) {
       result[groupKey] = []
     }
     result[groupKey].push(item)
     return result
-  }, {})
+  }, result)
 }
 
 /**
  * Shuffle array (Fisher-Yates)
- * @param {Array} array - Input array
- * @returns {Array} Shuffled array
+ * @template T
+ * @param {T[]} array - Input array
+ * @returns {T[]} Shuffled array
  */
 export function shuffle(array) {
   if (!Array.isArray(array)) return []
-  
+
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -359,6 +369,7 @@ export function addDistanceToTrainings(trainings, userPosition) {
 export function getNextTrainingDate(wochentag) {
   if (!wochentag) return null
 
+  /** @type {Record<string, number>} */
   const wochentagMap = {
     'Montag': 1,
     'Dienstag': 2,
@@ -477,6 +488,7 @@ export function createICalBundle(trainings) {
     throw new Error('Trainings array is empty or invalid')
   }
 
+  /** @type {string[]} */
   const events = []
 
   trainings.forEach((training) => {
@@ -501,6 +513,7 @@ export function createICalBundle(trainings) {
         training.link ? 'Anmeldung: ' + training.link : ''
       ].filter(Boolean).join('\\n')
 
+      /** @type {Record<string, string>} */
       const wochentagMap = {
         'Montag': 'MO',
         'Dienstag': 'TU',
@@ -591,8 +604,8 @@ export function createShareLink(filters) {
 
   Object.entries(filters).forEach(([key, value]) => {
     if (value && value !== '' && value !== null && key !== 'activeQuickFilter') {
-      const paramName = paramMapping[key] || key
-      params.set(paramName, value)
+      const paramName = /** @type {Record<string, string>} */ (paramMapping)[key] || key
+      params.set(paramName, String(value))
     }
   })
 
@@ -609,12 +622,13 @@ export function createShareLink(filters) {
  */
 export function getFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search)
-  const paramMapping = CONFIG.filters.urlParams
-  
+  const paramMapping = /** @type {Record<string, string>} */ (CONFIG.filters.urlParams)
+
   const reverseMapping = Object.fromEntries(
     Object.entries(paramMapping).map(([key, value]) => [value, key])
   )
 
+  /** @type {Partial<Filter>} */
   const filters = {
     wochentag: '',
     ort: '',
@@ -627,7 +641,9 @@ export function getFiltersFromUrl() {
   params.forEach((value, key) => {
     const filterKey = reverseMapping[key] || key
     if (filterKey in filters) {
-      filters[filterKey] = value === 'true' ? true : (value === 'false' ? false : value)
+      /** @type {any} */
+      const filtersAny = filters
+      filtersAny[filterKey] = value === 'true' ? true : (value === 'false' ? false : value)
     }
   })
 
