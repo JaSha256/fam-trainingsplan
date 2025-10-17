@@ -1,28 +1,109 @@
 // tests/e2e/visual-regression.spec.js
 /**
- * Visual Regression Tests
- * Captures screenshots and compares against baselines
+ * Visual Regression Tests - TODO v4.1
  *
- * ⚠️  STATUS: TODO - Tests are skeleton only, data loading not yet implemented
+ * @version 4.0.1
+ * @status SKIPPED - Fundamental data loading issue
  *
- * These tests were created in commit 46d5d7f as a foundation for future visual
- * regression testing. They require proper data mocking/fixtures to function.
+ * PROBLEM DISCOVERED:
+ * - App loads data from external GitHub Pages URL, not local dev server
+ * - Route mocking works (data arrives) but Alpine.js rendering fails
+ * - Metadata properties undefined despite successful API response
+ * - .env.local approach breaks app entirely (blank screen)
  *
- * TODO v4.1:
- * - Implement proper data mocking strategy (MSW or Playwright fixtures)
- * - Generate baseline snapshots
- * - Add cross-browser visual testing
- * - Integrate with CI/CD pipeline
+ * DEBUGGING DONE (2+ hours):
+ * 1. Tried Playwright route mocking → Data loads but Alpine fails
+ * 2. Tried local fixture in /public → App ignores it, uses external URL
+ * 3. Tried .env.local with VITE_API_URL → Breaks app completely
+ * 4. Analyzed data-loader.js → Double-loading race condition suspected
+ *
+ * ROOT CAUSE:
+ * Alpine.js state remains empty (allTrainings: 0, metadata: null) despite
+ * successful data fetch. Likely timing/race condition in Alpine reactivity.
+ *
+ * NEXT STEPS for v4.1:
+ * - Consider MSW (Mock Service Worker) for API mocking
+ * - Or: Setup local API proxy server
+ * - Or: Fix Alpine timing issue (needs deeper investigation)
+ * - Generate baseline snapshots once data loading is fixed
+ *
+ * Usage:
+ * - npm run test:visual              # Currently all skipped
+ * - npm run test:visual:update       # Won't work until fixed
  */
 
 import { test, expect } from '@playwright/test'
-import { waitForAlpineAndData } from './test-helpers.js'
 
-// Skip entire suite until data loading is implemented
+/**
+ * Wait for Alpine.js and training data to load
+ * CRITICAL: Wait for DOM rendering, not just state
+ */
+async function waitForAlpineAndData(page, timeout = 15000) {
+  // Wait for Alpine.js to initialize
+  await page.waitForFunction(() => window.Alpine !== undefined, { timeout })
+
+  // Wait for training data to load from dev server
+  await page.waitForFunction(() => {
+    const component = window.Alpine?.$data(document.querySelector('[x-data]'))
+    return component?.allTrainings?.length > 0
+  }, { timeout })
+
+  // CRITICAL: Wait for training cards to actually render in DOM
+  // Alpine's x-for takes time to render elements after data loads
+  await page.waitForSelector('.training-card', { state: 'visible', timeout })
+
+  // Wait for at least a few cards to ensure rendering is complete
+  await page.waitForFunction(() => {
+    return document.querySelectorAll('.training-card').length >= 3
+  }, { timeout: 5000 })
+}
+
+/**
+ * Wait for visual stability before capturing screenshots
+ * Ensures fonts, images, and animations are complete
+ */
+async function waitForVisualStability(page, options = {}) {
+  const {
+    waitForFonts = true,
+    waitForImages = true,
+    stabilityTimeout = 500
+  } = options
+
+  // Wait for fonts to load
+  if (waitForFonts) {
+    await page.evaluate(() => document.fonts.ready)
+  }
+
+  // Wait for images to load
+  if (waitForImages) {
+    await page.evaluate(() => {
+      return Promise.all(
+        Array.from(document.images)
+          .filter(img => !img.complete)
+          .map(img => new Promise(resolve => {
+            img.onload = img.onerror = resolve
+          }))
+      )
+    })
+  }
+
+  // Wait for network to be idle
+  await page.waitForLoadState('networkidle')
+
+  // Final stability wait for animations
+  await page.waitForTimeout(stabilityTimeout)
+}
+
 test.describe.skip('Visual Regression Tests (TODO v4.1)', () => {
   test.beforeEach(async ({ page }) => {
+    // Navigate to app
     await page.goto('/')
+
+    // Wait for Alpine.js and data to load
     await waitForAlpineAndData(page)
+
+    // Wait for visual stability
+    await waitForVisualStability(page)
   })
 
   test.describe('Homepage Views', () => {
