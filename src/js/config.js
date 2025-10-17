@@ -418,6 +418,7 @@ export function getBrowserInfo() {
     // PWA Detection
     // @ts-ignore - standalone is a PWA property
     isStandalone: window.matchMedia('(display-mode: standalone)').matches ||
+                  // @ts-ignore - standalone is iOS Safari PWA property
                   window.navigator.standalone === true,
 
     // Connection Info
