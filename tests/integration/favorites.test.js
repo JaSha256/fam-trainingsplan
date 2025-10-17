@@ -4,23 +4,28 @@
  * Tests favorites functionality with localStorage persistence
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
-import { page } from '@vitest/browser/context'
-import { waitForAlpineAndData } from './test-helpers.js'
+import { test, expect } from '@playwright/test'
+// Playwright provides page via test context
+// Helper functions inlined
 
-describe('Favorites System Integration', () => {
-  beforeEach(async () => {
+test.describe('Favorites System Integration', () => {
+  test.beforeEach(async ({ page }) => {
     // Clear localStorage before each test
     await page.evaluate(() => {
       localStorage.clear()
     })
 
     await page.goto('/')
-    await waitForAlpineAndData(page)
+    // Wait for Alpine and data
+    await page.waitForFunction(() => window.Alpine !== undefined, { timeout: 5000 })
+    await page.waitForFunction(() => {
+      const component = window.Alpine?.$data(document.querySelector('[x-data]'))
+      return component?.allTrainings?.length > 0
+    }, { timeout: 5000 })
   })
 
-  describe('Add to Favorites', () => {
-    it('should add training to favorites', async () => {
+  test.describe('Add to Favorites', () => {
+    test('should add training to favorites', async ({ page }) => {
       // Get first training ID
       const trainingId = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -48,7 +53,7 @@ describe('Favorites System Integration', () => {
       expect(isFavorite).toBe(true)
     })
 
-    it('should update favorites count', async () => {
+    test('should update favorites count', async ({ page }) => {
       const trainingId = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings[0]?.id
       })
@@ -78,8 +83,8 @@ describe('Favorites System Integration', () => {
     })
   })
 
-  describe('Remove from Favorites', () => {
-    it('should remove training from favorites', async () => {
+  test.describe('Remove from Favorites', () => {
+    test('should remove training from favorites', async ({ page }) => {
       const trainingId = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings[0]?.id
       })
@@ -111,7 +116,7 @@ describe('Favorites System Integration', () => {
       expect(isFavorite).toBe(false)
     })
 
-    it('should decrease favorites count', async () => {
+    test('should decrease favorites count', async ({ page }) => {
       const trainingId = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings[0]?.id
       })
@@ -146,8 +151,8 @@ describe('Favorites System Integration', () => {
     })
   })
 
-  describe('Favorites Persistence', () => {
-    it('should persist favorites in localStorage', async () => {
+  test.describe('Favorites Persistence', () => {
+    test('should persist favorites in localStorage', async ({ page }) => {
       const trainingId = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings[0]?.id
       })
@@ -172,7 +177,7 @@ describe('Favorites System Integration', () => {
       expect(storedFavorites).toContain(trainingId)
     })
 
-    it('should restore favorites after page reload', async () => {
+    test('should restore favorites after page reload', async ({ page }) => {
       const trainingId = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings[0]?.id
       })
@@ -205,8 +210,8 @@ describe('Favorites System Integration', () => {
     })
   })
 
-  describe('Multiple Favorites', () => {
-    it('should handle multiple favorites', async () => {
+  test.describe('Multiple Favorites', () => {
+    test('should handle multiple favorites', async ({ page }) => {
       const trainingIds = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
         return store.allTrainings.slice(0, 3).map(t => t.id)
@@ -234,7 +239,7 @@ describe('Favorites System Integration', () => {
       expect(allFavorites).toBe(true)
     })
 
-    it('should maintain correct favorites count', async () => {
+    test('should maintain correct favorites count', async ({ page }) => {
       const trainingIds = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
         return store.allTrainings.slice(0, 5).map(t => t.id)
@@ -261,8 +266,8 @@ describe('Favorites System Integration', () => {
     })
   })
 
-  describe('Favorites UI Integration', () => {
-    it('should toggle heart icon state', async () => {
+  test.describe('Favorites UI Integration', () => {
+    test('should toggle heart icon state', async ({ page }) => {
       const trainingId = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings[0]?.id
       })
@@ -286,7 +291,7 @@ describe('Favorites System Integration', () => {
       expect(isFav).toBe(true)
     })
 
-    it('should show favorites count badge', async () => {
+    test('should show favorites count badge', async ({ page }) => {
       // Add some favorites
       const trainingIds = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -313,8 +318,8 @@ describe('Favorites System Integration', () => {
     })
   })
 
-  describe('Quick Filter Favorites', () => {
-    it('should filter to show only favorites', async () => {
+  test.describe('Quick Filter Favorites', () => {
+    test('should filter to show only favorites', async ({ page }) => {
       // Add some favorites
       const trainingIds = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -356,8 +361,8 @@ describe('Favorites System Integration', () => {
     })
   })
 
-  describe('Export Favorites', () => {
-    it('should be able to get favorites list for export', async () => {
+  test.describe('Export Favorites', () => {
+    test('should be able to get favorites list for export', async ({ page }) => {
       // Add favorites
       const trainingIds = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))

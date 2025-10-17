@@ -4,18 +4,23 @@
  * Tests fuzzy search with Fuse.js integration
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
-import { page } from '@vitest/browser/context'
-import { waitForAlpineAndData } from './test-helpers.js'
+import { test, expect } from '@playwright/test'
+// Playwright provides page via test context
+// Helper functions inlined
 
-describe('Search System Integration', () => {
-  beforeEach(async () => {
+test.describe('Search System Integration', () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/')
-    await waitForAlpineAndData(page)
+    // Wait for Alpine and data
+    await page.waitForFunction(() => window.Alpine !== undefined, { timeout: 5000 })
+    await page.waitForFunction(() => {
+      const component = window.Alpine?.$data(document.querySelector('[x-data]'))
+      return component?.allTrainings?.length > 0
+    }, { timeout: 5000 })
   })
 
-  describe('Basic Search', () => {
-    it('should filter trainings by search term', async () => {
+  test.describe('Basic Search', () => {
+    test('should filter trainings by search term', async ({ page }) => {
       // Get initial count
       const initialCount = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).allTrainings.length
@@ -38,7 +43,7 @@ describe('Search System Integration', () => {
       expect(filteredCount).toBeLessThanOrEqual(initialCount)
     })
 
-    it('should update search term in store', async () => {
+    test('should update search term in store', async ({ page }) => {
       const searchInput = page.locator('#search')
       await searchInput.fill('Trampolin')
 
@@ -51,7 +56,7 @@ describe('Search System Integration', () => {
       expect(searchTerm).toBe('Trampolin')
     })
 
-    it('should search across multiple fields', async () => {
+    test('should search across multiple fields', async ({ page }) => {
       // Search by location
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -70,8 +75,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Fuzzy Search', () => {
-    it('should handle typos (fuzzy matching)', async () => {
+  test.describe('Fuzzy Search', () => {
+    test('should handle typos (fuzzy matching)', async ({ page }) => {
       // Search with typo "Parkur" instead of "Parkour"
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -89,7 +94,7 @@ describe('Search System Integration', () => {
       expect(hasResults).toBeDefined()
     })
 
-    it('should handle partial matches', async () => {
+    test('should handle partial matches', async ({ page }) => {
       // Search with partial term
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -107,8 +112,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search by Training Type', () => {
-    it('should find trainings by type', async () => {
+  test.describe('Search by Training Type', () => {
+    test('should find trainings by type', async ({ page }) => {
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
         store.filters.searchTerm = 'Parkour'
@@ -129,8 +134,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search by Location', () => {
-    it('should find trainings by location', async () => {
+  test.describe('Search by Location', () => {
+    test('should find trainings by location', async ({ page }) => {
       // Get a location from available trainings
       const location = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -157,8 +162,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search by Trainer', () => {
-    it('should find trainings by trainer name', async () => {
+  test.describe('Search by Trainer', () => {
+    test('should find trainings by trainer name', async ({ page }) => {
       // Get a trainer name
       const trainer = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -186,8 +191,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search Debouncing', () => {
-    it('should debounce search input', async () => {
+  test.describe('Search Debouncing', () => {
+    test('should debounce search input', async ({ page }) => {
       const searchInput = page.locator('#search')
 
       // Type quickly
@@ -212,8 +217,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Clear Search', () => {
-    it('should clear search and show all trainings', async () => {
+  test.describe('Clear Search', () => {
+    test('should clear search and show all trainings', async ({ page }) => {
       // Search first
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -244,8 +249,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search with Filters Combined', () => {
-    it('should combine search with day filter', async () => {
+  test.describe('Search with Filters Combined', () => {
+    test('should combine search with day filter', async ({ page }) => {
       // Set both search and filter
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -269,7 +274,7 @@ describe('Search System Integration', () => {
       expect(allMatch).toBeDefined()
     })
 
-    it('should combine search with location filter', async () => {
+    test('should combine search with location filter', async ({ page }) => {
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
         store.filters.searchTerm = 'Trampolin'
@@ -287,8 +292,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('No Results', () => {
-    it('should show empty results for non-existent search', async () => {
+  test.describe('No Results', () => {
+    test('should show empty results for non-existent search', async ({ page }) => {
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
         store.filters.searchTerm = 'xyzabc123nonexistent'
@@ -304,7 +309,7 @@ describe('Search System Integration', () => {
       expect(count).toBe(0)
     })
 
-    it('should show no results message in UI', async () => {
+    test('should show no results message in UI', async ({ page }) => {
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
         store.filters.searchTerm = 'nonexistent'
@@ -323,8 +328,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search Performance', () => {
-    it('should handle search with many results efficiently', async () => {
+  test.describe('Search Performance', () => {
+    test('should handle search with many results efficiently', async ({ page }) => {
       const startTime = Date.now()
 
       await page.evaluate(() => {
@@ -343,8 +348,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Mobile Search', () => {
-    it('should work on mobile viewport', async () => {
+  test.describe('Mobile Search', () => {
+    test('should work on mobile viewport', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 })
 
       const mobileSearch = page.locator('#mobile-search')
@@ -360,8 +365,8 @@ describe('Search System Integration', () => {
     })
   })
 
-  describe('Search Persistence', () => {
-    it('should persist search term across page reload', async () => {
+  test.describe('Search Persistence', () => {
+    test('should persist search term across page reload', async ({ page }) => {
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
         store.filters.searchTerm = 'Parkour'

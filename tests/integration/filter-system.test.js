@@ -4,21 +4,26 @@
  * Tests Alpine.js store → UI → DOM integration for filtering
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
-import { page } from '@vitest/browser/context'
-import { waitForAlpineAndData } from './test-helpers.js'
+import { test, expect } from '@playwright/test'
+// Playwright provides page via test context
+// Helper functions inlined
 
-describe('Filter System Integration', () => {
-  beforeEach(async () => {
+test.describe('Filter System Integration', () => {
+  test.beforeEach(async ({ page }) => {
     // Navigate to app
     await page.goto('/')
 
     // Wait for Alpine and data
-    await waitForAlpineAndData(page)
+    // Wait for Alpine and data
+    await page.waitForFunction(() => window.Alpine !== undefined, { timeout: 5000 })
+    await page.waitForFunction(() => {
+      const component = window.Alpine?.$data(document.querySelector('[x-data]'))
+      return component?.allTrainings?.length > 0
+    }, { timeout: 5000 })
   })
 
-  describe('Desktop Filter Sidebar', () => {
-    it('should toggle filter sidebar visibility', async () => {
+  test.describe('Desktop Filter Sidebar', () => {
+    test('should toggle filter sidebar visibility', async ({ page }) => {
       // Check initial state (should be open by default)
       const initialState = await page.evaluate(() => {
         return window.Alpine.store('ui').filterSidebarOpen
@@ -36,7 +41,7 @@ describe('Filter System Integration', () => {
       expect(newState).toBe(false)
     })
 
-    it('should persist filter sidebar state', async () => {
+    test('should persist filter sidebar state', async ({ page }) => {
       // Close sidebar
       await page.evaluate(() => {
         window.Alpine.store('ui').filterSidebarOpen = false
@@ -54,8 +59,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Filter by Wochentag (Day of Week)', () => {
-    it('should filter trainings by selected day', async () => {
+  test.describe('Filter by Wochentag (Day of Week)', () => {
+    test('should filter trainings by selected day', async ({ page }) => {
       // Get initial training count
       const initialCount = await page.evaluate(() => {
         return window.Alpine.$data(document.querySelector('[x-data]')).filteredTrainings.length
@@ -84,7 +89,7 @@ describe('Filter System Integration', () => {
       expect(allMonday).toBe(true)
     })
 
-    it('should update filter state in store', async () => {
+    test('should update filter state in store', async ({ page }) => {
       const selectDay = page.locator('#filter-wochentag')
       await selectDay.selectOption('Dienstag')
 
@@ -96,8 +101,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Filter by Ort (Location)', () => {
-    it('should filter trainings by location', async () => {
+  test.describe('Filter by Ort (Location)', () => {
+    test('should filter trainings by location', async ({ page }) => {
       // Get available locations
       const locations = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -124,8 +129,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Filter by Training Type', () => {
-    it('should filter by training type', async () => {
+  test.describe('Filter by Training Type', () => {
+    test('should filter by training type', async ({ page }) => {
       // Select training type
       const selectTraining = page.locator('#filter-training')
       await selectTraining.selectOption('Parkour')
@@ -142,8 +147,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Filter by Altersgruppe (Age Group)', () => {
-    it('should filter by age group', async () => {
+  test.describe('Filter by Altersgruppe (Age Group)', () => {
+    test('should filter by age group', async ({ page }) => {
       // Get available age groups
       const ageGroups = await page.evaluate(() => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
@@ -169,8 +174,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Reset Filters', () => {
-    it('should reset all filters', async () => {
+  test.describe('Reset Filters', () => {
+    test('should reset all filters', async ({ page }) => {
       // Set multiple filters
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -198,7 +203,7 @@ describe('Filter System Integration', () => {
       expect(filters.searchTerm).toBe('')
     })
 
-    it('should show all trainings after reset', async () => {
+    test('should show all trainings after reset', async ({ page }) => {
       // Set a restrictive filter
       await page.evaluate(() => {
         window.Alpine.store('ui').filters.wochentag = 'Montag'
@@ -233,8 +238,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Multiple Filters Combined', () => {
-    it('should apply multiple filters simultaneously', async () => {
+  test.describe('Multiple Filters Combined', () => {
+    test('should apply multiple filters simultaneously', async ({ page }) => {
       // Set multiple filters
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -256,8 +261,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Filter Persistence', () => {
-    it('should persist filters across page reload', async () => {
+  test.describe('Filter Persistence', () => {
+    test('should persist filters across page reload', async ({ page }) => {
       // Set filters
       await page.evaluate(() => {
         const store = window.Alpine.store('ui')
@@ -279,8 +284,8 @@ describe('Filter System Integration', () => {
     })
   })
 
-  describe('Mobile Filter Drawer', () => {
-    it('should open mobile filter drawer', async () => {
+  test.describe('Mobile Filter Drawer', () => {
+    test('should open mobile filter drawer', async ({ page }) => {
       // Set mobile viewport
       await page.setViewportSize({ width: 375, height: 667 })
 
@@ -298,7 +303,7 @@ describe('Filter System Integration', () => {
       expect(isOpen).toBe(true)
     })
 
-    it('should close mobile filter drawer', async () => {
+    test('should close mobile filter drawer', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 })
 
       // Open then close

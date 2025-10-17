@@ -24,24 +24,8 @@ export default defineWorkspace([
         ]
       }
     }
-  },
-
-  // Integration tests with browser mode
-  {
-    extends: './vite.config.js',
-    test: {
-      name: 'integration',
-      browser: {
-        enabled: true,
-        provider: 'playwright',
-        headless: true,
-        instances: [
-          { browser: 'chromium' }
-        ]
-      },
-      include: ['tests/integration/**/*.test.js'],
-      globals: true,
-      testTimeout: 10000
-    }
   }
+
+  // Note: Integration tests now use Playwright (see playwright.integration.config.js)
+  // Run with: npm run test:integration
 ])

@@ -4,17 +4,17 @@
  * Tests Alpine.js notification store integration with DOM
  */
 
-import { describe, it, expect, beforeEach } from 'vitest'
-import { page } from '@vitest/browser/context'
+import { test, expect } from '@playwright/test'
+// Playwright provides page via test context
 
-describe('Notification System Integration', () => {
-  beforeEach(async () => {
+test.describe('Notification System Integration', () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/')
     await page.waitForFunction(() => window.Alpine !== undefined)
   })
 
-  describe('Show Notification', () => {
-    it('should display notification with correct message', async () => {
+  test.describe('Show Notification', () => {
+    test('should display notification with correct message', async ({ page }) => {
       // Trigger notification
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Test Message', 'info', 0)
@@ -24,7 +24,7 @@ describe('Notification System Integration', () => {
 
       // Check notification is visible
       const notification = page.locator('[data-notification]')
-      await expect.element(notification).toBeVisible()
+      await expect(notification).toBeVisible()
 
       // Check message content
       const hasMessage = await page.evaluate(() => {
@@ -34,7 +34,7 @@ describe('Notification System Integration', () => {
       expect(hasMessage).toBe(true)
     })
 
-    it('should display info notification with correct styling', async () => {
+    test('should display info notification with correct styling', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Info message', 'info', 0)
       })
@@ -48,7 +48,7 @@ describe('Notification System Integration', () => {
       expect(notifType).toBe('info')
     })
 
-    it('should display success notification', async () => {
+    test('should display success notification', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Success!', 'success', 0)
       })
@@ -64,7 +64,7 @@ describe('Notification System Integration', () => {
       expect(notifData.show).toBe(true)
     })
 
-    it('should display warning notification', async () => {
+    test('should display warning notification', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Warning!', 'warning', 0)
       })
@@ -78,7 +78,7 @@ describe('Notification System Integration', () => {
       expect(notifType).toBe('warning')
     })
 
-    it('should display error notification', async () => {
+    test('should display error notification', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Error!', 'error', 0)
       })
@@ -93,8 +93,8 @@ describe('Notification System Integration', () => {
     })
   })
 
-  describe('Auto-Hide Notification', () => {
-    it('should auto-hide notification after duration', async () => {
+  test.describe('Auto-Hide Notification', () => {
+    test('should auto-hide notification after duration', async ({ page }) => {
       // Show with 1 second duration
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Auto-hide test', 'info', 1000)
@@ -118,7 +118,7 @@ describe('Notification System Integration', () => {
       expect(isVisible).toBe(false)
     })
 
-    it('should not auto-hide when duration is 0', async () => {
+    test('should not auto-hide when duration is 0', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Persistent', 'info', 0)
       })
@@ -136,8 +136,8 @@ describe('Notification System Integration', () => {
     })
   })
 
-  describe('Hide Notification', () => {
-    it('should manually hide notification', async () => {
+  test.describe('Hide Notification', () => {
+    test('should manually hide notification', async ({ page }) => {
       // Show persistent notification
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Manual hide test', 'info', 0)
@@ -165,7 +165,7 @@ describe('Notification System Integration', () => {
       expect(isVisible).toBe(false)
     })
 
-    it('should clear notification data after hide animation', async () => {
+    test('should clear notification data after hide animation', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Test', 'info', 0)
       })
@@ -187,8 +187,8 @@ describe('Notification System Integration', () => {
     })
   })
 
-  describe('Multiple Notifications', () => {
-    it('should replace previous notification with new one', async () => {
+  test.describe('Multiple Notifications', () => {
+    test('should replace previous notification with new one', async ({ page }) => {
       // Show first notification
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('First', 'info', 0)
@@ -211,7 +211,7 @@ describe('Notification System Integration', () => {
       expect(message).toBe('Second')
     })
 
-    it('should cancel previous auto-hide timer', async () => {
+    test('should cancel previous auto-hide timer', async ({ page }) => {
       // Show first with auto-hide
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('First', 'info', 1000)
@@ -236,8 +236,8 @@ describe('Notification System Integration', () => {
     })
   })
 
-  describe('Online/Offline Notifications', () => {
-    it('should show offline notification when going offline', async () => {
+  test.describe('Online/Offline Notifications', () => {
+    test('should show offline notification when going offline', async ({ page }) => {
       // Trigger offline
       await page.evaluate(() => {
         window.dispatchEvent(new Event('offline'))
@@ -252,7 +252,7 @@ describe('Notification System Integration', () => {
       expect(notification?.message).toContain('Offline')
     })
 
-    it('should show online notification when coming back online', async () => {
+    test('should show online notification when coming back online', async ({ page }) => {
       // Trigger online
       await page.evaluate(() => {
         window.dispatchEvent(new Event('online'))
@@ -268,8 +268,8 @@ describe('Notification System Integration', () => {
     })
   })
 
-  describe('Error Handler Notifications', () => {
-    it('should show notification on global error', async () => {
+  test.describe('Error Handler Notifications', () => {
+    test('should show notification on global error', async ({ page }) => {
       // Trigger error
       await page.evaluate(() => {
         const errorEvent = new ErrorEvent('error', {
@@ -292,7 +292,7 @@ describe('Notification System Integration', () => {
       expect(notification?.message).toContain('Fehler')
     })
 
-    it('should show notification on unhandled promise rejection', async () => {
+    test('should show notification on unhandled promise rejection', async ({ page }) => {
       // Trigger rejection
       await page.evaluate(() => {
         const event = new PromiseRejectionEvent('unhandledrejection', {
@@ -313,8 +313,8 @@ describe('Notification System Integration', () => {
     })
   })
 
-  describe('Notification DOM Integration', () => {
-    it('should render notification element when shown', async () => {
+  test.describe('Notification DOM Integration', () => {
+    test('should render notification element when shown', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('DOM test', 'info', 0)
       })
@@ -322,10 +322,10 @@ describe('Notification System Integration', () => {
       await page.waitForTimeout(200)
 
       const notification = page.locator('[data-notification]')
-      await expect.element(notification).toBeVisible()
+      await expect(notification).toBeVisible()
     })
 
-    it('should hide notification element when dismissed', async () => {
+    test('should hide notification element when dismissed', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Hide test', 'info', 0)
       })
@@ -339,10 +339,10 @@ describe('Notification System Integration', () => {
       await page.waitForTimeout(400)
 
       const notification = page.locator('[data-notification]')
-      await expect.element(notification).not.toBeVisible()
+      await expect(notification).not.toBeVisible()
     })
 
-    it('should have accessible role and aria-live attributes', async () => {
+    test('should have accessible role and aria-live attributes', async ({ page }) => {
       await page.evaluate(() => {
         window.Alpine.store('ui').showNotification('Accessibility test', 'info', 0)
       })
