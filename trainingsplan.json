@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-17T15:57:31.011Z",
+  "generated": "2025-10-17T16:57:28.200Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -260,7 +260,7 @@
   },
   "stats": {
     "total": 60,
-    "mitProbetraining": 41,
+    "mitProbetraining": 40,
     "mitLink": 60,
     "nachWochentag": {
       "Montag": 1,
@@ -843,9 +843,9 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Joni, Neo",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "",
-      "teilnehmer": null,
+      "teilnehmer": 22,
       "link": "https://fam.kurabu.com/de/events/39328963-a499-4953-9129-8056997bda1d",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413
