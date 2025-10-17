@@ -133,6 +133,7 @@ export function trainingsplaner() {
       }
 
       // Setup watchers
+      // @ts-expect-error - watchFilters defined below
       this.watchFilters()
 
       // Load data
@@ -171,124 +172,151 @@ export function trainingsplaner() {
   }
 
   // ==================== DELEGATED METHODS ====================
+  // NOTE: TypeScript can't infer manager properties (filterEngine, favoritesManager, etc.)
+  // because they're added dynamically in init(). These methods work correctly at runtime.
 
   // Filtering
   component.applyFilters = function() {
+    // @ts-expect-error - filterEngine added in init()
     return this.filterEngine.applyFilters()
   }
 
-  component.matchesAltersgruppe = function(training, filterValue) {
+  component.matchesAltersgruppe = function(/** @type {Training} */ training, /** @type {string} */ filterValue) {
+    // @ts-expect-error - filterEngine added in init()
     return this.filterEngine.matchesAltersgruppe(training, filterValue)
   }
 
   // Favorites
   component.loadFavorites = function() {
+    // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.loadFavorites()
   }
 
-  component.isFavorite = function(trainingId) {
+  component.isFavorite = function(/** @type {number} */ trainingId) {
+    // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.isFavorite(trainingId)
   }
 
-  component.toggleFavorite = function(trainingId) {
+  component.toggleFavorite = function(/** @type {number} */ trainingId) {
+    // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.toggleFavorite(trainingId)
   }
 
   component.quickFilterFavorites = function() {
+    // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.quickFilterFavorites()
   }
 
   // Geolocation
   component.requestUserLocation = function() {
+    // @ts-expect-error - geolocationManager added in init()
     return this.geolocationManager.requestUserLocation()
   }
 
   component.addDistanceToTrainings = function() {
+    // @ts-expect-error - geolocationManager added in init()
     return this.geolocationManager.addDistanceToTrainings()
   }
 
   // Map
   component.initializeMap = function() {
+    // @ts-expect-error - mapManager added in init()
     return this.mapManager.initializeMap()
   }
 
   component.addMarkersToMap = function() {
+    // @ts-expect-error - mapManager added in init()
     return this.mapManager.addMarkersToMap()
   }
 
-  component.createMapPopup = function(training) {
+  component.createMapPopup = function(/** @type {Training} */ training) {
+    // @ts-expect-error - mapManager added in init()
     return this.mapManager.createMapPopup(training)
   }
 
   component.cleanupMap = function() {
+    // @ts-expect-error - mapManager added in init()
     return this.mapManager.cleanupMap()
   }
 
   // URL Handling
   component.loadFiltersFromUrl = function() {
+    // @ts-expect-error - urlFiltersManager added in init()
     return this.urlFiltersManager.loadFiltersFromUrl()
   }
 
   component.updateUrlWithFilters = function() {
+    // @ts-expect-error - urlFiltersManager added in init()
     return this.urlFiltersManager.updateUrlWithFilters()
   }
 
   // Data Loading & Caching
-  component.loadData = function(data) {
+  component.loadData = function(/** @type {any} */ data) {
+    // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.loadData(data)
   }
 
   component.getCachedData = function() {
+    // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.getCachedData()
   }
 
-  component.setCachedData = function(data) {
+  component.setCachedData = function(/** @type {any} */ data) {
+    // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.setCachedData(data)
   }
 
   component.startUpdateCheck = function() {
+    // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.startUpdateCheckInternal()
   }
 
   component.checkForUpdates = function() {
+    // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.checkForUpdates()
   }
 
   // Calendar & Actions
-  component.addToGoogleCalendar = function(training) {
+  component.addToGoogleCalendar = function(/** @type {Training} */ training) {
+    // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.addToGoogleCalendar(training)
   }
 
-  component.addToCalendar = function(training, provider = null) {
+  component.addToCalendar = function(/** @type {Training} */ training, /** @type {string | null} */ provider = null) {
+    // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.addToCalendar(training, provider)
   }
 
   component.bulkAddToGoogleCalendar = function() {
+    // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.bulkAddToGoogleCalendar()
   }
 
   component.exportAllToCalendar = function() {
+    // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.exportAllToCalendar()
   }
 
   component.exportFavoritesToCalendar = function() {
+    // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.exportFavoritesToCalendar()
   }
 
   component.shareCurrentView = function() {
+    // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.shareCurrentView()
   }
 
   // Utility Methods (remain inline as they're simple)
-  component.sortTrainings = function(trainings) {
-    return trainings.sort((a, b) => {
+  component.sortTrainings = function(/** @type {Training[]} */ trainings) {
+    return trainings.sort((/** @type {Training} */ a, /** @type {Training} */ b) => {
       const aMin = utils.zeitZuMinuten(a.von)
       const bMin = utils.zeitZuMinuten(b.von)
       return aMin - bMin
     })
   }
 
-  component.getTrainingColor = function(training) {
+  component.getTrainingColor = function(/** @type {string} */ training) {
     const t = (training || '').toLowerCase()
     if (t.includes('parkour'))
       return 'bg-blue-100 text-blue-800 border-blue-200'
@@ -305,11 +333,11 @@ export function trainingsplaner() {
     return 'bg-slate-100 text-slate-800 border-slate-200'
   }
 
-  component.formatAlter = function(training) {
+  component.formatAlter = function(/** @type {Training} */ training) {
     return utils.formatAlter(training)
   }
 
-  component.formatZeitrange = function(von, bis) {
+  component.formatZeitrange = function(/** @type {string} */ von, /** @type {string} */ bis) {
     return utils.formatZeitrange(von, bis)
   }
 
@@ -321,6 +349,7 @@ export function trainingsplaner() {
     }
 
     if (state.map) {
+      // @ts-expect-error - mapManager added in init()
       this.mapManager.cleanupMap()
     }
 
@@ -329,5 +358,6 @@ export function trainingsplaner() {
     }
   }
 
+  // @ts-expect-error - Component augmented dynamically, managers added in init()
   return component
 }
