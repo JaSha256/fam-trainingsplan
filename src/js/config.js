@@ -15,16 +15,19 @@
  *
  * @type {boolean}
  */
+// @ts-ignore - Vite import.meta.env
 export const isDev = import.meta.env.MODE === 'development'
 
 /**
  * @type {boolean}
  */
+// @ts-ignore - Vite import.meta.env
 export const isProd = import.meta.env.MODE === 'production'
 
 /**
  * @type {boolean}
  */
+// @ts-ignore - Vite import.meta.env
 export const isTest = import.meta.env.MODE === 'test'
 
 /**
@@ -45,7 +48,9 @@ const TIME = Object.freeze({
  */
 export const CONFIG = Object.freeze({
   // ==================== DATA ====================
+  // @ts-ignore - Vite import.meta.env
   jsonUrl: import.meta.env.VITE_API_URL || 'https://jasha256.github.io/fam-trainingsplan/trainingsplan.json',
+  // @ts-ignore - Vite import.meta.env
   versionUrl: import.meta.env.VITE_VERSION_URL || 'https://jasha256.github.io/fam-trainingsplan/version.json',
 
   // ==================== CACHE ====================
@@ -262,31 +267,37 @@ function validateConfig() {
   
   // Validate URLs
   try {
+    // @ts-ignore - CONFIG properties exist at runtime
     new URL(CONFIG.jsonUrl)
   } catch {
     errors.push('Invalid jsonUrl')
   }
-  
+
   try {
+    // @ts-ignore - CONFIG properties exist at runtime
     new URL(CONFIG.versionUrl)
   } catch {
     errors.push('Invalid versionUrl')
   }
-  
+
   // Validate Numbers
+  // @ts-ignore - CONFIG properties exist at runtime
   if (CONFIG.cacheDuration < 0) {
     errors.push('cacheDuration must be >= 0')
   }
-  
+
+  // @ts-ignore - CONFIG properties exist at runtime
   if (CONFIG.ui.mobileBreakpoint < 320) {
     errors.push('mobileBreakpoint too small (min: 320px)')
   }
-  
+
+  // @ts-ignore - CONFIG properties exist at runtime
   if (CONFIG.map.geolocation.timeout < 1000) {
     errors.push('geolocation.timeout too small (min: 1000ms)')
   }
-  
+
   // Validate Feature Flags
+  // @ts-ignore - CONFIG properties exist at runtime
   const features = CONFIG.features
   if (typeof features !== 'object') {
     errors.push('features must be an object')
@@ -316,6 +327,7 @@ if (isDev) {
  * @returns {boolean}
  */
 export function isFeatureEnabled(feature) {
+  // @ts-ignore - CONFIG properties exist at runtime
   return CONFIG.features[feature] ?? false
 }
 
@@ -325,11 +337,14 @@ export function isFeatureEnabled(feature) {
  * @returns {boolean}
  */
 export function shouldLog(level) {
+  // @ts-ignore - CONFIG properties exist at runtime
   if (!CONFIG.logging.enabled) return false
-  
+
+  // @ts-ignore - CONFIG properties exist at runtime
   const currentLevel = CONFIG.logging.levels[CONFIG.logging.level] ?? 3
+  // @ts-ignore - CONFIG properties exist at runtime
   const requestedLevel = CONFIG.logging.levels[level] ?? 0
-  
+
   return requestedLevel >= currentLevel
 }
 
@@ -386,9 +401,10 @@ export function getBrowserInfo() {
   }
   
   browserInfoCache = Object.freeze({
+    // @ts-ignore - CONFIG properties exist at runtime
     isMobile: window.innerWidth < CONFIG.ui.mobileBreakpoint,
     isTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-    
+
     // Feature Detection
     supportsLocalStorage: testLocalStorage(),
     supportsGeolocation: 'geolocation' in navigator,
@@ -398,16 +414,22 @@ export function getBrowserInfo() {
     supportsServiceWorker: 'serviceWorker' in navigator,
     supportsShareAPI: 'share' in navigator,
     supportsClipboardAPI: 'clipboard' in navigator,
-    
+
     // PWA Detection
-    isStandalone: window.matchMedia('(display-mode: standalone)').matches || 
+    // @ts-ignore - standalone is a PWA property
+    isStandalone: window.matchMedia('(display-mode: standalone)').matches ||
                   window.navigator.standalone === true,
-    
+
     // Connection Info
+    // @ts-ignore - connection is experimental API
     connection: navigator.connection ? Object.freeze({
+      // @ts-ignore - connection properties
       effectiveType: navigator.connection.effectiveType,
+      // @ts-ignore - connection properties
       downlink: navigator.connection.downlink,
+      // @ts-ignore - connection properties
       rtt: navigator.connection.rtt,
+      // @ts-ignore - connection properties
       saveData: navigator.connection.saveData
     }) : null
   })
@@ -468,6 +490,7 @@ const configCache = new Map()
  */
 function getCachedConfig(key) {
   if (!configCache.has(key)) {
+    // @ts-ignore - CONFIG properties exist at runtime
     configCache.set(key, structuredClone(CONFIG[key]))
   }
   return configCache.get(key)
@@ -502,6 +525,7 @@ export function getIframeConfig() {
 }
 
 export function getCacheDuration() {
+  // @ts-ignore - CONFIG properties exist at runtime
   return CONFIG.cacheDuration
 }
 
