@@ -85,8 +85,10 @@ registerAlpinePlugins()
  *   resetFilters: () => void
  * }}
  */
+// @ts-ignore - Alpine.store returns unknown, but we know the structure
 Alpine.store('ui', {
   // View States
+  // @ts-ignore - Alpine.$persist plugin API
   filterSidebarOpen: Alpine.$persist(true).as('filterSidebarOpen'),
   mapModalOpen: false,
   mobileFilterOpen: false,
@@ -97,6 +99,7 @@ Alpine.store('ui', {
   notificationTimeout: null,
 
   // Filters (Persisted)
+  // @ts-ignore - Alpine.$persist plugin API
   filters: Alpine.$persist({
     wochentag: '',
     ort: '',
@@ -113,7 +116,9 @@ Alpine.store('ui', {
    * @returns {void}
    */
   toggleMapView() {
+    // @ts-ignore - Alpine.js context properties
     this.mapView = !this.mapView
+    // @ts-ignore - Alpine.js context properties
     this.$nextTick(() => {
       win.notifyParentHeight?.()
     })
@@ -124,7 +129,9 @@ Alpine.store('ui', {
    * @returns {void}
    */
   showListView() {
+    // @ts-ignore - Alpine.js context properties
     this.mapView = false
+    // @ts-ignore - Alpine.js context properties
     this.$nextTick(() => {
       win.notifyParentHeight?.()
     })
@@ -138,8 +145,10 @@ Alpine.store('ui', {
    * @returns {void}
    */
   showNotification(message, type = 'info', duration = 3000) {
+    // @ts-ignore - Alpine.js context properties
     clearTimeout(this.notificationTimeout)
 
+    // @ts-ignore - Alpine.js context properties
     this.notification = {
       message,
       type,
@@ -147,7 +156,9 @@ Alpine.store('ui', {
     }
 
     if (duration > 0) {
+      // @ts-ignore - Alpine.js context properties
       this.notificationTimeout = setTimeout(() => {
+        // @ts-ignore - Alpine.js context properties
         this.hideNotification()
       }, duration)
     }
@@ -158,9 +169,12 @@ Alpine.store('ui', {
    * @returns {void}
    */
   hideNotification() {
+    // @ts-ignore - Alpine.js context properties
     if (this.notification) {
+      // @ts-ignore - Alpine.js context properties
       this.notification.show = false
       setTimeout(() => {
+        // @ts-ignore - Alpine.js context properties
         this.notification = null
       }, 300)
     }
@@ -171,6 +185,7 @@ Alpine.store('ui', {
    * @returns {void}
    */
   resetFilters() {
+    // @ts-ignore - Alpine.js context properties
     this.filters = {
       wochentag: '',
       ort: '',
@@ -239,6 +254,7 @@ async function setupPWA() {
        */
       onOfflineReady() {
         log('info', 'App ready for offline use')
+        // @ts-ignore - Alpine.store returns unknown
         Alpine.store('ui').showNotification(
           'App bereit für Offline-Nutzung! 🎉',
           'success',
@@ -284,6 +300,7 @@ async function setupPWA() {
  * @returns {void}
  */
 function promptUserForUpdate(updateSW) {
+  // @ts-ignore - Alpine.store returns unknown
   Alpine.store('ui').showNotification(
     'Neue Version verfügbar! Klicken zum Aktualisieren.',
     'info',
@@ -331,6 +348,7 @@ function setupOnlineOfflineDetection() {
     const isOnline = navigator.onLine
 
     if (!isOnline) {
+      // @ts-ignore - Alpine.store returns unknown
       Alpine.store('ui').showNotification(
         'Keine Internetverbindung - Offline-Modus aktiv',
         'warning',
@@ -338,6 +356,7 @@ function setupOnlineOfflineDetection() {
       )
       log('warn', 'Offline mode')
     } else {
+      // @ts-ignore - Alpine.store returns unknown
       Alpine.store('ui').showNotification(
         'Wieder online! 🌐',
         'success',
@@ -413,12 +432,16 @@ function initTouchGestures() {
       return
     }
 
+    // @ts-ignore - Alpine.store returns unknown
     const store = Alpine.store('ui')
 
     // Swipe Left (close filter)
     if (deltaX < -touchConfig.swipeThreshold) {
+      // @ts-ignore - store properties
       if (store.filterSidebarOpen || store.mobileFilterOpen) {
+        // @ts-ignore - store properties
         store.filterSidebarOpen = false
+        // @ts-ignore - store properties
         store.mobileFilterOpen = false
         log('debug', 'Swipe left - closing filter')
       }
@@ -428,8 +451,10 @@ function initTouchGestures() {
     if (deltaX > touchConfig.swipeThreshold && touchStartX < 50) {
       // @ts-ignore - CONFIG has dynamic properties
       if (window.innerWidth < (CONFIG.ui?.mobileBreakpoint || 768)) {
+        // @ts-ignore - store properties
         store.mobileFilterOpen = true
       } else {
+        // @ts-ignore - store properties
         store.filterSidebarOpen = true
       }
       log('debug', 'Swipe right - opening filter')
@@ -519,6 +544,7 @@ window.addEventListener('error', (event) => {
 
   // @ts-ignore - CONFIG has dynamic properties
   if (CONFIG.errors?.showUserFriendlyMessages) {
+    // @ts-ignore - Alpine.store returns unknown
     Alpine.store('ui').showNotification(
       'Ein Fehler ist aufgetreten. Bitte Seite neu laden.',
       'error',
@@ -537,6 +563,7 @@ window.addEventListener('unhandledrejection', (event) => {
 
   // @ts-ignore - CONFIG has dynamic properties
   if (CONFIG.errors?.showUserFriendlyMessages) {
+    // @ts-ignore - Alpine.store returns unknown
     Alpine.store('ui').showNotification(
       'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
       'error',
