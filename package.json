@@ -63,6 +63,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "^4.1.0",
     "@types/alpinejs": "^3.13.11",
+    "@types/leaflet": "^1.9.21",
     "@types/node": "^24.8.1",
     "@vitest/browser": "^3.2.4",
     "eslint": "^9.15.0",

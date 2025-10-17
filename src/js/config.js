@@ -43,10 +43,38 @@ const TIME = Object.freeze({
 // ==================== MAIN CONFIG ====================
 
 /**
- * Application Configuration
- * @type {Readonly<Object>}
+ * Application Configuration Type (Partial)
+ * @typedef {Object} ConfigType
+ * @property {string} jsonUrl
+ * @property {string} versionUrl
+ * @property {boolean} cacheEnabled
+ * @property {string} cacheKey
+ * @property {number} cacheDuration
+ * @property {Object} features
+ * @property {boolean} features.enableFavorites
+ * @property {boolean} features.enableGeolocation
+ * @property {boolean} features.enableUpdateCheck
+ * @property {Object} filters
+ * @property {boolean} filters.persistInUrl
+ * @property {Object} map
+ * @property {Object} map.geolocation
+ * @property {number} map.geolocation.maxDistance
+ * @property {number[]} map.defaultCenter
+ * @property {number} map.defaultZoom
+ * @property {string} map.tileLayerUrl
+ * @property {string} map.attribution
+ * @property {Object} pwa
+ * @property {string} pwa.version
+ * @property {number} pwa.updateCheckInterval
+ * @property {Object} search
+ * @property {Object} search.fuseOptions
  */
-export const CONFIG = Object.freeze({
+
+/**
+ * Application Configuration
+ * @type {Readonly<ConfigType>}
+ */
+export const CONFIG = /** @type {Readonly<ConfigType>} */ (/** @type {any} */ (Object.freeze({
   // ==================== DATA ====================
   // @ts-ignore - Vite import.meta.env
   jsonUrl: import.meta.env.VITE_API_URL || 'https://jasha256.github.io/fam-trainingsplan/trainingsplan.json',
@@ -254,7 +282,7 @@ export const CONFIG = Object.freeze({
       '/offline.html'
     ])
   })
-})
+})))
 
 // ==================== VALIDATION ====================
 
