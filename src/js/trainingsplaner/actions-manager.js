@@ -150,7 +150,7 @@ export class ActionsManager {
    * @returns {Promise<void>}
    */
   async bulkAddToGoogleCalendar() {
-    if (this.state.filteredTrainings.length === 0) {
+    if (this.context.filteredTrainings.length === 0) {
       this.context.$store.ui.showNotification(
         'Keine Trainings zum Exportieren',
         'warning',
@@ -162,13 +162,13 @@ export class ActionsManager {
     try {
       // Show loading notification
       this.context.$store.ui.showNotification(
-        `Exportiere ${this.state.filteredTrainings.length} Trainings...`,
+        `Exportiere ${this.context.filteredTrainings.length} Trainings...`,
         'info',
         2000
       )
 
       const result = await calendar.bulkAddToGoogleCalendar(
-        this.state.filteredTrainings,
+        this.context.filteredTrainings,
         {
           maxBulk: 10,
           delay: 600,
@@ -214,7 +214,7 @@ export class ActionsManager {
    * @returns {Promise<void>}
    */
   async exportAllToCalendar() {
-    if (this.state.filteredTrainings.length === 0) {
+    if (this.context.filteredTrainings.length === 0) {
       this.context.$store.ui.showNotification(
         'Keine Trainings zum Exportieren',
         'warning',
@@ -224,19 +224,19 @@ export class ActionsManager {
     }
 
     try {
-      const icalContent = utils.createICalBundle(this.state.filteredTrainings)
+      const icalContent = utils.createICalBundle(this.context.filteredTrainings)
       const filename = `fam-trainings-${Date.now()}.ics`
 
       utils.downloadICalFile(icalContent, filename)
 
       this.context.$store.ui.showNotification(
-        `${this.state.filteredTrainings.length} Trainings exportiert! <�`,
+        `${this.context.filteredTrainings.length} Trainings exportiert! <�`,
         'success',
         3000
       )
 
       log('info', 'Bulk calendar export', {
-        count: this.state.filteredTrainings.length
+        count: this.context.filteredTrainings.length
       })
     } catch (error) {
       log('error', 'Bulk export failed', error)
@@ -256,8 +256,8 @@ export class ActionsManager {
    * @returns {Promise<void>}
    */
   async exportFavoritesToCalendar() {
-    const favTrainings = this.state.allTrainings.filter((t) =>
-      this.state.favorites.includes(t.id)
+    const favTrainings = this.context.allTrainings.filter((t) =>
+      this.context.favorites.includes(t.id)
     )
 
     if (favTrainings.length === 0) {

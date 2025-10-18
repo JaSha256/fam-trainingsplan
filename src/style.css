@@ -222,7 +222,7 @@
     @apply fixed top-4 left-4 z-[9999];
     @apply px-6 py-3;
     @apply bg-primary-600 text-white font-semibold;
-    @apply rounded-lg shadow-elevated;
+    @apply rounded-lg shadow-xl;
     @apply transition-all duration-fast;
     @apply focus:scale-105;
   }
@@ -283,7 +283,7 @@
     @apply w-10 h-10 font-bold rounded-full;
     @apply bg-primary-500 text-white;
     border: 3px solid white;
-    box-shadow: var(--shadow-elevated);
+    box-shadow: 0 8px 16px 0 oklch(0 0 0 / 0.15), 0 4px 8px 0 oklch(0 0 0 / 0.1);
     will-change: transform;
   }
 
@@ -610,7 +610,7 @@
 }
 
 .leaflet-popup-content-wrapper {
-  @apply rounded-xl shadow-elevated;
+  @apply rounded-xl shadow-xl;
 }
 
 .leaflet-popup-content {
