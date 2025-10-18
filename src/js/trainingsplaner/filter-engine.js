@@ -60,7 +60,7 @@ export class FilterEngine {
    */
   applyFilters() {
     const filters = this.context.$store.ui.filters
-    let result = [...this.state.allTrainings]
+    let result = [...this.context.allTrainings]
 
     // Quick Filter: Favoriten
     if (filters.activeQuickFilter === 'favoriten') {
@@ -100,14 +100,14 @@ export class FilterEngine {
     }
 
     // Search Term (Fuse.js)
-    if (filters.searchTerm && filters.searchTerm.trim() && this.state.fuse) {
-      const fuseResults = this.state.fuse.search(filters.searchTerm.trim())
+    if (filters.searchTerm && filters.searchTerm.trim() && this.context.fuse) {
+      const fuseResults = this.context.fuse.search(filters.searchTerm.trim())
       const searchIds = new Set(fuseResults.map((r) => r.item.id))
       result = result.filter((t) => searchIds.has(t.id))
     }
 
     // Distance Filter (if user position)
-    if (this.state.userPosition && CONFIG.map.geolocation.maxDistance > 0) {
+    if (this.context.userPosition && CONFIG.map.geolocation.maxDistance > 0) {
       result = result.filter((t) => {
         if (!t.distance) return false
         return t.distance <= CONFIG.map.geolocation.maxDistance
@@ -115,11 +115,11 @@ export class FilterEngine {
     }
 
     // Sort by distance if available
-    if (this.state.userPosition) {
+    if (this.context.userPosition) {
       result.sort((a, b) => (a.distance || 999) - (b.distance || 999))
     }
 
-    this.state.filteredTrainings = result
+    this.context.filteredTrainings = result
 
     // Update URL
     if (CONFIG.filters.persistInUrl) {
@@ -127,7 +127,7 @@ export class FilterEngine {
     }
 
     log('debug', 'Filters applied', {
-      total: this.state.allTrainings.length,
+      total: this.context.allTrainings.length,
       filtered: result.length
     })
   }

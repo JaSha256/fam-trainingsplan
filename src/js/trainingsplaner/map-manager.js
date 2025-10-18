@@ -14,6 +14,7 @@ import * as L from 'leaflet'
 /**
  * @typedef {import('./types.js').Training} Training
  * @typedef {import('./types.js').TrainingsplanerState} TrainingsplanerState
+ * @typedef {import('./types.js').AlpineContext} AlpineContext
  */
 
 /**
@@ -26,9 +27,11 @@ export class MapManager {
    * Create Map Manager
    *
    * @param {TrainingsplanerState} state - Component state
+   * @param {AlpineContext} context - Alpine.js context
    */
-  constructor(state) {
+  constructor(state, context) {
     this.state = state
+    this.context = context
   }
 
   /**
@@ -40,7 +43,7 @@ export class MapManager {
    * @returns {void}
    */
   initializeMap() {
-    if (this.state.map) return
+    if (this.context.map) return
 
     const container = document.getElementById('map-modal-container')
     if (!container) {
@@ -49,7 +52,7 @@ export class MapManager {
     }
 
     try {
-      this.state.map = L.map('map-modal-container', {
+      this.context.map = L.map('map-modal-container', {
         center: /** @type {L.LatLngExpression} */ (CONFIG.map.defaultCenter),
         zoom: CONFIG.map.defaultZoom,
         zoomControl: true
@@ -58,7 +61,7 @@ export class MapManager {
       L.tileLayer(CONFIG.map.tileLayerUrl, {
         attribution: CONFIG.map.attribution,
         maxZoom: 19
-      }).addTo(this.state.map)
+      }).addTo(this.context.map)
 
       this.addMarkersToMap()
 
@@ -77,32 +80,32 @@ export class MapManager {
    * @returns {void}
    */
   addMarkersToMap() {
-    if (!this.state.map) return
+    if (!this.context.map) return
 
-    const map = this.state.map
-    this.state.markers.forEach((m) => map.removeLayer(m))
-    this.state.markers = []
+    const map = this.context.map
+    this.context.markers.forEach((m) => map.removeLayer(m))
+    this.context.markers = []
 
     /** @type {[number, number][]} */
     const bounds = []
 
-    this.state.filteredTrainings.forEach((training) => {
+    this.context.filteredTrainings.forEach((training) => {
       if (!training.lat || !training.lng) return
 
       const marker = L.marker([training.lat, training.lng])
       marker.bindPopup(this.createMapPopup(training))
       marker.addTo(map)
 
-      this.state.markers.push(marker)
+      this.context.markers.push(marker)
       bounds.push([training.lat, training.lng])
     })
 
-    if (bounds.length > 0 && !this.state.userHasInteractedWithMap) {
+    if (bounds.length > 0 && !this.context.userHasInteractedWithMap) {
       map.fitBounds(bounds, { padding: [50, 50] })
     }
 
     map.once('movestart', () => {
-      this.state.userHasInteractedWithMap = true
+      this.context.userHasInteractedWithMap = true
     })
   }
 
@@ -149,13 +152,13 @@ export class MapManager {
    * @returns {void}
    */
   cleanupMap() {
-    if (this.state.map) {
-      const map = this.state.map
-      this.state.markers.forEach((m) => map.removeLayer(m))
-      this.state.markers = []
+    if (this.context.map) {
+      const map = this.context.map
+      this.context.markers.forEach((m) => map.removeLayer(m))
+      this.context.markers = []
       map.remove()
-      this.state.map = null
-      this.state.userHasInteractedWithMap = false
+      this.context.map = null
+      this.context.userHasInteractedWithMap = false
     }
   }
 }

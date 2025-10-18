@@ -44,22 +44,22 @@ export class GeolocationManager {
    */
   async requestUserLocation() {
     if (!CONFIG.features.enableGeolocation) {
-      this.state.geolocationError = 'Geolocation ist deaktiviert'
+      this.context.geolocationError = 'Geolocation ist deaktiviert'
       return false
     }
 
-    this.state.geolocationLoading = true
-    this.state.geolocationError = null
+    this.context.geolocationLoading = true
+    this.context.geolocationError = null
 
     try {
-      this.state.userPosition = await utils.getCurrentPosition()
-      log('info', 'Position obtained', this.state.userPosition)
+      this.context.userPosition = await utils.getCurrentPosition()
+      log('info', 'Position obtained', this.context.userPosition)
 
       this.addDistanceToTrainings()
       this.applyFilters()
 
       this.context.$store.ui.showNotification(
-        'Standort ermittelt! =�',
+        'Standort ermittelt! 📍',
         'success',
         2000
       )
@@ -68,11 +68,11 @@ export class GeolocationManager {
     } catch (err) {
       log('error', 'Geolocation failed', err)
       const errorMessage = err instanceof Error ? err.message : String(err)
-      this.state.geolocationError = errorMessage
+      this.context.geolocationError = errorMessage
       this.context.$store.ui.showNotification(errorMessage, 'error', 5000)
       return false
     } finally {
-      this.state.geolocationLoading = false
+      this.context.geolocationLoading = false
     }
   }
 
@@ -85,14 +85,14 @@ export class GeolocationManager {
    * @returns {void}
    */
   addDistanceToTrainings() {
-    if (!this.state.userPosition) return
+    if (!this.context.userPosition) return
 
-    this.state.allTrainings = utils.addDistanceToTrainings(
-      this.state.allTrainings,
-      this.state.userPosition
+    this.context.allTrainings = utils.addDistanceToTrainings(
+      this.context.allTrainings,
+      this.context.userPosition
     )
 
-    this.state.allTrainings.forEach((t) => {
+    this.context.allTrainings.forEach((t) => {
       if (t.distance !== undefined) {
         t.distanceText = t.distance.toFixed(1) + ' km'
       }

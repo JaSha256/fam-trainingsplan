@@ -42,7 +42,7 @@
     <!-- Main Script -->
     <script type="module" src="/src/main.js"></script>
 </head>
-<body class="bg-slate-50 antialiased">
+<body class="bg-slate-300 antialiased">
 
 <!-- Skip Link -->
 <a href="#main-content" class="skip-to-main">
@@ -56,9 +56,10 @@
      id="app">
     
     <!-- ==================== UPDATE NOTIFICATION ==================== -->
-    <div x-show="updateAvailable" 
+    <div x-show="updateAvailable"
          x-transition
-         class="fixed top-4 right-4 z-50 max-w-sm bg-white rounded-xl shadow-2xl border-2 border-primary-500 p-4"
+         class="fixed top-4 right-4 z-50 max-w-sm bg-slate-50 rounded-xl border-2 border-primary-500 p-4"
+         style="box-shadow: var(--shadow-modal);"
          role="alert"
          aria-live="assertive">
         <div class="flex items-start gap-3">
@@ -85,7 +86,8 @@
     <div x-show="$store.ui.notification?.show"
          x-transition
          data-notification
-         class="fixed top-4 right-4 z-50 max-w-sm bg-white rounded-xl shadow-2xl p-4"
+         class="fixed top-4 right-4 z-50 max-w-sm bg-slate-50 rounded-xl p-4"
+         style="box-shadow: var(--shadow-modal);"
          role="alert"
          aria-live="polite">
         <div class="flex items-start gap-3">
@@ -112,7 +114,7 @@
     </div>
     
     <!-- ==================== MOBILE HEADER ==================== -->
-    <header class="lg:hidden sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm" role="banner">
+    <header class="lg:hidden sticky top-0 z-40 bg-slate-100 border-b border-slate-300" role="banner" style="box-shadow: var(--shadow-sidebar);">
         <div class="px-4 py-3">
             <h1 class="text-2xl font-bold text-primary-600 mb-2">Trainingsplan</h1>
             
@@ -146,9 +148,10 @@
     <div class="flex">
         
         <!-- ==================== DESKTOP FILTER SIDEBAR ==================== -->
-        <aside x-show="$store.ui.filterSidebarOpen" 
+        <aside x-show="$store.ui.filterSidebarOpen"
                x-collapse.duration.300ms
-               class="hidden lg:block w-80 bg-white border-r border-slate-200 min-h-screen sticky top-0 overflow-y-auto">
+               class="hidden lg:block w-80 bg-slate-200 border-r border-slate-300 min-h-screen sticky top-0 overflow-y-auto"
+               style="box-shadow: var(--shadow-sidebar);">
             
             <div class="p-6">
                 <!-- Header -->
@@ -559,7 +562,8 @@
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="-translate-x-full"
          @click.outside="$store.ui.mobileFilterOpen = false"
-         class="lg:hidden fixed inset-y-0 left-0 w-80 max-w-full bg-white shadow-2xl z-50 overflow-y-auto">
+         class="lg:hidden fixed inset-y-0 left-0 w-80 max-w-full bg-slate-200 z-50 overflow-y-auto"
+         style="box-shadow: var(--shadow-card-active);">
         
         <div class="p-6">
             <!-- Header -->
@@ -674,7 +678,7 @@
          @keydown.escape.window="$store.ui.mapModalOpen = false"
          class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
         
-        <div class="w-full h-full max-w-7xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        <div class="w-full h-full max-w-7xl max-h-[90vh] bg-slate-50 rounded-2xl overflow-hidden flex flex-col" style="box-shadow: var(--shadow-modal);">
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-white flex-shrink-0">
                 <div>

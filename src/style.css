@@ -42,13 +42,41 @@
   /* Custom Breakpoints */
   --breakpoint-3xl: 1920px;
 
-  /* Enhanced Shadows (Elevation System) */
+  /* Enhanced 4-Shade Color System - Slate (for depth perception) */
+  --color-slate-50: oklch(0.98 0.01 240);   /* Lightest - elevated/important elements */
+  --color-slate-100: oklch(0.96 0.01 240);  /* Light - cards (0.1 darker) */
+  --color-slate-200: oklch(0.93 0.01 240);  /* Medium - sidebar/container (0.3 darker) */
+  --color-slate-300: oklch(0.90 0.01 240);  /* Darker - background (0.8 darker) */
+  --color-slate-400: oklch(0.82 0.01 240);
+  --color-slate-500: oklch(0.64 0.01 240);
+  --color-slate-600: oklch(0.53 0.01 240);
+  --color-slate-700: oklch(0.42 0.01 240);
+  --color-slate-800: oklch(0.27 0.01 240);
+  --color-slate-900: oklch(0.15 0.01 240);
+
+  /* Enhanced Shadows - Two-Layer System (light top + dark bottom) */
   --shadow-xs: 0 1px 2px 0 oklch(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
-  --shadow-card: 0 4px 12px oklch(0 0 0 / 0.08);
-  --shadow-card-hover: 0 12px 24px oklch(0.47 0.15 240 / 0.15);
-  --shadow-elevated: 0 20px 40px oklch(0.47 0.15 240 / 0.12);
-  --shadow-modal: 0 25px 50px -12px oklch(0 0 0 / 0.25);
+
+  /* Level 1 - Resting State (subtle depth) */
+  --shadow-card-rest: 0 1px 2px 0 oklch(1 0 0 / 0.4) inset, 0 2px 4px 0 oklch(0 0 0 / 0.1);
+
+  /* Level 2 - Hover State (moderate elevation) */
+  --shadow-card-hover: 0 2px 4px 0 oklch(1 0 0 / 0.5) inset, 0 4px 12px 0 oklch(0 0 0 / 0.15);
+
+  /* Level 3 - Active/Modal (strong elevation) */
+  --shadow-card-active: 0 4px 8px 0 oklch(1 0 0 / 0.6) inset, 0 8px 24px 0 oklch(0 0 0 / 0.2);
+
+  /* Button States */
+  --shadow-button-rest: 0 1px 2px 0 oklch(1 0 0 / 0.4) inset, 0 1px 3px 0 oklch(0 0 0 / 0.1);
+  --shadow-button-hover: 0 2px 4px 0 oklch(1 0 0 / 0.5) inset, 0 2px 6px 0 oklch(0 0 0 / 0.12);
+  --shadow-button-pressed: 0 1px 2px 0 oklch(0 0 0 / 0.15) inset, 0 1px 2px 0 oklch(0 0 0 / 0.05);
+
+  /* Sidebar/Container */
+  --shadow-sidebar: 0 2px 4px 0 oklch(1 0 0 / 0.3) inset, 0 4px 8px 0 oklch(0 0 0 / 0.08);
+
+  /* Modal */
+  --shadow-modal: 0 4px 8px 0 oklch(1 0 0 / 0.6) inset, 0 25px 50px -12px oklch(0 0 0 / 0.25);
 
   /* Animation Durations for Tailwind Utilities */
   --transition-duration-instant: 50ms;
@@ -199,11 +227,17 @@
     @apply focus:scale-105;
   }
 
-  /* Training Card (Performance Optimized) */
+  /* Training Card (Enhanced with Gradient + Two-Layer Shadows) */
   .training-card {
-    @apply relative bg-white rounded-2xl p-5;
+    @apply relative rounded-2xl p-5;
     @apply border border-slate-200;
     @apply transition-all duration-normal;
+
+    /* Gradient Background (subtle depth effect) */
+    background: linear-gradient(145deg, oklch(0.97 0.01 240), oklch(0.95 0.01 240));
+
+    /* Two-Layer Shadow - Level 1 (Resting State) */
+    box-shadow: var(--shadow-card-rest);
 
     /* Performance Hints */
     will-change: transform, box-shadow;
@@ -221,15 +255,20 @@
     animation: fadeIn var(--duration-normal) var(--ease-smooth) forwards;
   }
 
-  /* Modern Hover (with :has selector) */
+  /* Modern Hover (with :has selector) - Level 2 Shadow */
   .training-card:hover {
-    @apply border-primary-300 shadow-card-hover;
+    @apply border-primary-300;
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
+
+    /* Slightly brighter gradient on hover */
+    background: linear-gradient(145deg, oklch(0.98 0.01 240), oklch(0.96 0.01 240));
   }
 
-  /* Active State */
+  /* Active State - Level 3 Shadow */
   .training-card:active {
     transform: translateY(0);
+    box-shadow: var(--shadow-card-active);
     transition-duration: var(--duration-instant);
   }
 
@@ -268,20 +307,50 @@
     animation: skeleton-loading 1.5s ease-in-out infinite;
   }
 
-  /* Button Variants */
+  /* Button Variants (Enhanced with Gradients + Two-Layer Shadows) */
   .btn-primary {
-    @apply px-4 py-2 bg-primary-500 text-white rounded-lg;
+    @apply px-4 py-2 text-white rounded-lg;
     @apply font-medium transition-all duration-fast;
-    @apply hover:bg-primary-600 hover:shadow-card;
-    @apply active:scale-[0.98];
     @apply focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+
+    /* Gradient Background */
+    background: linear-gradient(135deg, oklch(0.47 0.15 240), oklch(0.38 0.13 240));
+
+    /* Two-Layer Shadow - Button Rest */
+    box-shadow: var(--shadow-button-rest);
+  }
+
+  .btn-primary:hover {
+    /* Brighter gradient on hover */
+    background: linear-gradient(135deg, oklch(0.50 0.15 240), oklch(0.42 0.13 240));
+    box-shadow: var(--shadow-button-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    /* Pressed state with inset shadow */
+    box-shadow: var(--shadow-button-pressed);
+    transform: translateY(0);
   }
 
   .btn-secondary {
-    @apply px-4 py-2 bg-slate-100 text-slate-700 rounded-lg;
+    @apply px-4 py-2 text-slate-700 rounded-lg;
     @apply font-medium transition-all duration-fast;
-    @apply hover:bg-slate-200;
-    @apply active:scale-[0.98];
+
+    /* Subtle gradient for secondary button */
+    background: linear-gradient(145deg, oklch(0.97 0.01 240), oklch(0.95 0.01 240));
+    box-shadow: var(--shadow-button-rest);
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(145deg, oklch(0.98 0.01 240), oklch(0.96 0.01 240));
+    box-shadow: var(--shadow-button-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary:active {
+    box-shadow: var(--shadow-button-pressed);
+    transform: translateY(0);
   }
 
   /* Badge */

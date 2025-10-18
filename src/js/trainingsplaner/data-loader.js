@@ -14,6 +14,7 @@ import Fuse from 'fuse.js'
 /**
  * @typedef {import('./types.js').ApiResponse} ApiResponse
  * @typedef {import('./types.js').TrainingsplanerState} TrainingsplanerState
+ * @typedef {import('./types.js').AlpineContext} AlpineContext
  */
 
 /**
@@ -26,13 +27,15 @@ export class DataLoader {
    * Create Data Loader
    *
    * @param {TrainingsplanerState} state - Component state
+   * @param {AlpineContext} context - Alpine.js context
    * @param {Object} dependencies - External dependencies
    * @param {() => void} dependencies.addDistanceToTrainings - Add distance function
    * @param {() => void} dependencies.applyFilters - Apply filters function
    * @param {() => void} dependencies.startUpdateCheck - Start update check function
    */
-  constructor(state, dependencies) {
+  constructor(state, context, dependencies) {
     this.state = state
+    this.context = context
     this.addDistanceToTrainings = dependencies.addDistanceToTrainings
     this.applyFilters = dependencies.applyFilters
     this.startUpdateCheck = dependencies.startUpdateCheck
@@ -46,15 +49,15 @@ export class DataLoader {
    * @returns {Promise<void>}
    */
   async init() {
-    this.state.loading = true
-    this.state.error = null
+    this.context.loading = true
+    this.context.error = null
 
     try {
       // Try Cache First
       const cached = this.getCachedData()
       if (cached) {
         this.loadData(cached)
-        this.state.fromCache = true
+        this.context.fromCache = true
       }
 
       // Fetch Fresh Data
@@ -84,7 +87,7 @@ export class DataLoader {
         log('info', 'New data available, updating...')
         this.loadData(data)
         this.setCachedData(data)
-        this.state.fromCache = false
+        this.context.fromCache = false
       }
 
       // Start Update Check
@@ -93,9 +96,9 @@ export class DataLoader {
       }
     } catch (err) {
       log('error', 'Failed to load trainings', err)
-      this.state.error = err instanceof Error ? err.message : String(err)
+      this.context.error = err instanceof Error ? err.message : String(err)
     } finally {
-      this.state.loading = false
+      this.context.loading = false
     }
   }
 
@@ -108,11 +111,11 @@ export class DataLoader {
    * @returns {void}
    */
   loadData(data) {
-    this.state.allTrainings = data.trainings || []
-    this.state.metadata = data.metadata || null
+    this.context.allTrainings = data.trainings || []
+    this.context.metadata = data.metadata || null
 
     // Initialize Fuse.js
-    this.state.fuse = new Fuse(this.state.allTrainings, CONFIG.search.fuseOptions)
+    this.context.fuse = new Fuse(this.context.allTrainings, CONFIG.search.fuseOptions)
 
     // Add distance if user position available
     if (this.state.userPosition) {
@@ -123,8 +126,8 @@ export class DataLoader {
     this.applyFilters()
 
     log('info', 'Data loaded', {
-      trainings: this.state.allTrainings.length,
-      fromCache: this.state.fromCache
+      trainings: this.context.allTrainings.length,
+      fromCache: this.context.fromCache
     })
   }
 
@@ -209,8 +212,8 @@ export class DataLoader {
       const data = await response.json()
 
       if (data.version && data.version !== CONFIG.pwa.version) {
-        this.state.updateAvailable = true
-        this.state.latestVersion = data.version
+        this.context.updateAvailable = true
+        this.context.latestVersion = data.version
         log('info', 'Update available', { version: data.version })
       }
     } catch (error) {

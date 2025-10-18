@@ -94,7 +94,7 @@ async function waitForVisualStability(page, options = {}) {
   await page.waitForTimeout(stabilityTimeout)
 }
 
-test.describe.skip('Visual Regression Tests (TODO v4.1)', () => {
+test.describe('Visual Regression Tests - Design Upgrade v4.1', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to app
     await page.goto('/')

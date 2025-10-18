@@ -19,7 +19,6 @@ import { utils } from './utils.js'
 
 // Import modular architecture
 import { createTrainingsplanerState } from './trainingsplaner/state.js'
-import { createComputedProperties } from './trainingsplaner/computed-properties.js'
 import { UrlFiltersManager } from './trainingsplaner/url-filters-manager.js'
 import { FilterEngine } from './trainingsplaner/filter-engine.js'
 import { FavoritesManager } from './trainingsplaner/favorites-manager.js'
@@ -46,30 +45,115 @@ export function trainingsplaner() {
   // Create initial state
   const state = createTrainingsplanerState()
 
-  // Define state properties as getters/setters immediately
-  // This allows accessing state before init() is called
-  const component = {}
+  // Define component with direct state properties (Alpine will make them reactive)
+  // This allows Alpine's Proxy to track all changes
+  const component = {
+    // State properties (direct assignment for Alpine reactivity)
+    allTrainings: state.allTrainings,
+    filteredTrainings: state.filteredTrainings,
+    favorites: state.favorites,
+    metadata: state.metadata,
+    fuse: state.fuse,
+    loading: state.loading,
+    error: state.error,
+    fromCache: state.fromCache,
+    userPosition: state.userPosition,
+    geolocationError: state.geolocationError,
+    map: state.map,
+    markers: state.markers,
+    userHasInteractedWithMap: state.userHasInteractedWithMap,
+    updateCheckInterval: state.updateCheckInterval,
+    updateAvailable: state.updateAvailable,
+    latestVersion: state.latestVersion,
+    searchTimeout: state.searchTimeout,
+    wochentagOrder: state.wochentagOrder,
+  }
 
+  // Computed properties (defined as getters AFTER base properties)
   Object.defineProperties(component, {
-    // State properties (getters/setters for reactive access)
-    allTrainings: { get: () => state.allTrainings, set: (v) => { state.allTrainings = v }, enumerable: true },
-    filteredTrainings: { get: () => state.filteredTrainings, set: (v) => { state.filteredTrainings = v }, enumerable: true },
-    favorites: { get: () => state.favorites, set: (v) => { state.favorites = v }, enumerable: true },
-    metadata: { get: () => state.metadata, set: (v) => { state.metadata = v }, enumerable: true },
-    fuse: { get: () => state.fuse, set: (v) => { state.fuse = v }, enumerable: true },
-    loading: { get: () => state.loading, set: (v) => { state.loading = v }, enumerable: true },
-    error: { get: () => state.error, set: (v) => { state.error = v }, enumerable: true },
-    fromCache: { get: () => state.fromCache, set: (v) => { state.fromCache = v }, enumerable: true },
-    userPosition: { get: () => state.userPosition, set: (v) => { state.userPosition = v }, enumerable: true },
-    geolocationError: { get: () => state.geolocationError, set: (v) => { state.geolocationError = v }, enumerable: true },
-    map: { get: () => state.map, set: (v) => { state.map = v }, enumerable: true },
-    markers: { get: () => state.markers, set: (v) => { state.markers = v }, enumerable: true },
-    userHasInteractedWithMap: { get: () => state.userHasInteractedWithMap, set: (v) => { state.userHasInteractedWithMap = v }, enumerable: true },
-    updateCheckInterval: { get: () => state.updateCheckInterval, set: (v) => { state.updateCheckInterval = v }, enumerable: true },
-    updateAvailable: { get: () => state.updateAvailable, set: (v) => { state.updateAvailable = v }, enumerable: true },
-    latestVersion: { get: () => state.latestVersion, set: (v) => { state.latestVersion = v }, enumerable: true },
-    searchTimeout: { get: () => state.searchTimeout, set: (v) => { state.searchTimeout = v }, enumerable: true },
-    wochentagOrder: { get: () => state.wochentagOrder, set: (v) => { state.wochentagOrder = v }, enumerable: true }
+
+    // Computed properties (MUST be defined BEFORE init() so Alpine can access them immediately)
+    wochentage: {
+      get() {
+        return this.metadata?.wochentage || [
+          'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'
+        ]
+      },
+      enumerable: true
+    },
+    orte: {
+      get() {
+        return this.metadata?.orte || utils.extractUnique(this.allTrainings, 'ort')
+      },
+      enumerable: true
+    },
+    trainingsarten: {
+      get() {
+        return this.metadata?.trainingsarten || utils.extractUnique(this.allTrainings, 'training')
+      },
+      enumerable: true
+    },
+    altersgruppen: {
+      get() {
+        if (this.metadata?.altersgruppen) {
+          return this.metadata.altersgruppen
+        }
+        const values = this.allTrainings
+          .map((t) => t.altersgruppe)
+          .filter((v) => v && String(v).trim() !== '')
+        const allGroups = []
+        values.forEach((val) => {
+          String(val).split(',').forEach((group) => {
+            const cleaned = group.trim()
+            if (cleaned && !allGroups.includes(cleaned)) {
+              allGroups.push(cleaned)
+            }
+          })
+        })
+        return allGroups.sort()
+      },
+      enumerable: true
+    },
+    groupedTrainings: {
+      get() {
+        const grouped = {}
+        this.filteredTrainings.forEach((training) => {
+          const key = training.wochentag || 'Ohne Tag'
+          if (!grouped[key]) grouped[key] = []
+          grouped[key].push(training)
+        })
+        const groupKeys = Object.keys(grouped).sort((a, b) => {
+          return (this.wochentagOrder[a] || 999) - (this.wochentagOrder[b] || 999)
+        })
+        return groupKeys.map((key) => ({
+          key: key,
+          items: this.sortTrainings(grouped[key])
+        }))
+      },
+      enumerable: true
+    },
+    favoriteTrainings: {
+      get() {
+        return this.allTrainings.filter((t) => this.favorites.includes(t.id))
+      },
+      enumerable: true
+    },
+    hasActiveFilters: {
+      get() {
+        // At runtime, Alpine.js augments 'this' with $store
+        const filters = this.$store?.ui?.filters
+        if (!filters) return false
+        return ['wochentag', 'ort', 'training', 'altersgruppe', 'searchTerm']
+          .reduce((count, key) => (filters[key] ? count + 1 : count), 0) > 0
+      },
+      enumerable: true
+    },
+    filteredTrainingsCount: {
+      get() {
+        return this.filteredTrainings.length
+      },
+      enumerable: true
+    }
   })
 
   // Define methods
@@ -78,20 +162,8 @@ export function trainingsplaner() {
       // At runtime, Alpine.js has augmented this with $store, $watch, $nextTick
       const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
 
-      // Initialize Computed Properties (must be done FIRST)
-      const computedProps = createComputedProperties(state, alpineContext)
-
-      // Add computed properties to component (only getters)
-      Object.defineProperties(this, {
-        wochentage: { get: () => computedProps.wochentage },
-        orte: { get: () => computedProps.orte },
-        trainingsarten: { get: () => computedProps.trainingsarten },
-        altersgruppen: { get: () => computedProps.altersgruppen },
-        groupedTrainings: { get: () => computedProps.groupedTrainings },
-        favoriteTrainings: { get: () => computedProps.favoriteTrainings },
-        hasActiveFilters: { get: () => computedProps.hasActiveFilters },
-        filteredTrainingsCount: { get: () => computedProps.filteredTrainingsCount }
-      })
+      // NOTE: Computed properties are now defined at component creation (lines 74-155)
+      // to prevent "undefined" errors during Alpine's initial template rendering
 
       // Initialize Managers
       this.urlFiltersManager = new UrlFiltersManager(alpineContext)
@@ -109,17 +181,17 @@ export function trainingsplaner() {
         applyFilters: () => this.filterEngine.applyFilters()
       })
 
-      this.mapManager = new MapManager(state)
+      this.mapManager = new MapManager(state, alpineContext)
 
-      this.dataLoader = new DataLoader(state, {
+      this.dataLoader = new DataLoader(state, alpineContext, {
         addDistanceToTrainings: () => this.geolocationManager.addDistanceToTrainings(),
         applyFilters: () => this.filterEngine.applyFilters(),
         startUpdateCheck: () => this.dataLoader.startUpdateCheckInternal()
       })
 
       this.actionsManager = new ActionsManager(state, alpineContext, {
-        get hasActiveFilters() { return computedProps.hasActiveFilters },
-        get filteredTrainingsCount() { return computedProps.filteredTrainingsCount }
+        get hasActiveFilters() { return alpineContext.hasActiveFilters },
+        get filteredTrainingsCount() { return alpineContext.filteredTrainingsCount }
       })
 
       // Load Favorites
@@ -344,17 +416,17 @@ export function trainingsplaner() {
   // ==================== CLEANUP ====================
 
   component.destroy = function() {
-    if (state.updateCheckInterval) {
-      clearInterval(state.updateCheckInterval)
+    if (this.updateCheckInterval) {
+      clearInterval(this.updateCheckInterval)
     }
 
-    if (state.map) {
+    if (this.map) {
       // @ts-expect-error - mapManager added in init()
       this.mapManager.cleanupMap()
     }
 
-    if (state.searchTimeout) {
-      clearTimeout(state.searchTimeout)
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout)
     }
   }
 

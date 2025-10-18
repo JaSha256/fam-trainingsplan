@@ -45,8 +45,8 @@ export class FavoritesManager {
    * @returns {void}
    */
   loadFavorites() {
-    this.state.favorites = utils.favorites.load()
-    log('debug', 'Favorites loaded', { count: this.state.favorites.length })
+    this.context.favorites = utils.favorites.load()
+    log('debug', 'Favorites loaded', { count: this.context.favorites.length })
   }
 
   /**
@@ -56,7 +56,7 @@ export class FavoritesManager {
    * @returns {boolean} True if training is in favorites
    */
   isFavorite(trainingId) {
-    return this.state.favorites.includes(trainingId)
+    return this.context.favorites.includes(trainingId)
   }
 
   /**
@@ -79,7 +79,7 @@ export class FavoritesManager {
     })
 
     this.context.$store.ui.showNotification(
-      isNowFavorite ? 'Zu Favoriten hinzugefügt P' : 'Von Favoriten entfernt',
+      isNowFavorite ? 'Zu Favoriten hinzugefï¿½gt P' : 'Von Favoriten entfernt',
       'info',
       2000
     )
