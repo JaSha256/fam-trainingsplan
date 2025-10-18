@@ -626,7 +626,7 @@
 }
 
 .leaflet-bar {
-  @apply shadow-card rounded-lg overflow-hidden;
+  @apply shadow-lg rounded-lg overflow-hidden;
 }
 
 /* ==================== ALPINE.JS ==================== */
