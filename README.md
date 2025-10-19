@@ -389,13 +389,49 @@ VITE_API_URL=https://your-domain.com/trainingsplan.json
 
 ## Entwicklung
 
+### 📚 Dokumentation
+
+| Dokument | Beschreibung |
+|----------|--------------|
+| **[QUICK_START.md](QUICK_START.md)** | **Schnellstart-Guide** - Alle npm Scripts, Testing, Development |
+| **[TESTING_SUMMARY.md](TESTING_SUMMARY.md)** | **Test-Dokumentation** - Coverage, Metriken, Test-Details |
+| **[FINAL_PROJECT_STATUS.md](FINAL_PROJECT_STATUS.md)** | **Projekt-Status** - Aktuelle Metriken, Qualität |
+| **[ARCHITECTURE.md](ARCHITECTURE.md)** | System-Architektur & Design-Patterns |
+
+### 🧪 Testing (81.71% Coverage)
+
+```bash
+# Unit Tests (313 Tests, 98% pass rate)
+npm run test:unit
+npm run test:coverage        # Mit Coverage-Report
+
+# Integration Tests (60 Tests, 98.3% pass rate)
+npm run test:integration
+
+# E2E Tests (Playwright)
+npm run test:e2e
+npm run test:e2e:ui          # Mit UI
+
+# Alle Tests
+npm test                     # Unit + Integration + E2E
+```
+
+**Coverage-Metriken:**
+- ✅ Statements: 81.71% (Threshold: 80%)
+- ✅ Branches: 85.64% (Threshold: 75%)
+- ✅ Lines: 81.71% (Threshold: 80%)
+- ⚠️ Functions: 72.94% (Threshold: 80%)
+
+**Siehe [TESTING_SUMMARY.md](TESTING_SUMMARY.md) für Details.**
+
 ### NPM Scripts
 ```bash
 npm run dev      # Dev-Server (Port 5173)
 npm run build    # Production Build
 npm run preview  # Preview Build (Port 4173)
-npm run test     # Tests ausführen
 ```
+
+**Alle Scripts:** Siehe [QUICK_START.md](QUICK_START.md)
 
 ### Logging
 ```javascript
@@ -480,5 +516,15 @@ MIT License - Free Arts of Movement
 
 ---
 
-**Version**: 2.3.0  
-**Letzte Aktualisierung**: 02.01.2025
+## 🎯 Projekt-Status
+
+**Version:** 3.1.0
+**Status:** ✅ PRODUKTIONSBEREIT & OPTIMIERT
+**Test Coverage:** 81.71%
+**Tests:** 306 passed (98% pass rate)
+
+**Siehe [FINAL_PROJECT_STATUS.md](FINAL_PROJECT_STATUS.md) für vollständigen Status.**
+
+---
+
+**Letzte Aktualisierung**: 2025-10-19
