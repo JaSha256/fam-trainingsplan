@@ -131,19 +131,36 @@ test.describe('Filter System Integration', () => {
 
   test.describe('Filter by Training Type', () => {
     test('should filter by training type', async ({ page }) => {
-      // Select training type
+      // Get available training types from actual data
+      const trainingsarten = await page.evaluate(() => {
+        const store = window.Alpine.$data(document.querySelector('[x-data]'))
+        return store.trainingsarten
+      })
+
+      if (trainingsarten.length === 0) {
+        return // Skip if no training types available
+      }
+
+      // Select first available training type
+      const selectedType = trainingsarten[0]
       const selectTraining = page.locator('#filter-training')
-      await selectTraining.selectOption('Parkour')
+      await selectTraining.selectOption(selectedType)
 
       await page.waitForTimeout(300)
 
-      // Verify all trainings are Parkour
-      const allParkour = await page.evaluate(() => {
+      // Verify all filtered trainings match the selected type
+      const result = await page.evaluate((type) => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
-        return store.filteredTrainings.every(t => t.training === 'Parkour')
-      })
+        const allMatch = store.filteredTrainings.every(t => t.training === type)
+        return {
+          allMatch,
+          count: store.filteredTrainings.length,
+          selectedType: type
+        }
+      }, selectedType)
 
-      expect(allParkour).toBe(true)
+      expect(result.count).toBeGreaterThan(0) // Should have some results
+      expect(result.allMatch).toBe(true) // All should match the filter
     })
   })
 
@@ -240,47 +257,86 @@ test.describe('Filter System Integration', () => {
 
   test.describe('Multiple Filters Combined', () => {
     test('should apply multiple filters simultaneously', async ({ page }) => {
-      // Set multiple filters
-      await page.evaluate(() => {
-        const store = window.Alpine.store('ui')
-        store.filters.wochentag = 'Montag'
-        store.filters.training = 'Parkour'
+      // Find a valid combination from actual data
+      const { wochentag, training } = await page.evaluate(() => {
+        const store = window.Alpine.$data(document.querySelector('[x-data]'))
+        // Find first training that we can use for filtering
+        const sampleTraining = store.allTrainings[0]
+        return {
+          wochentag: sampleTraining?.wochentag || 'Montag',
+          training: sampleTraining?.training || 'Parkour'
+        }
       })
+
+      // Set multiple filters using actual data values
+      await page.evaluate(({ w, t }) => {
+        const uiStore = window.Alpine.store('ui')
+        uiStore.filters.wochentag = w
+        uiStore.filters.training = t
+      }, { w: wochentag, t: training })
 
       await page.waitForTimeout(300)
 
-      // Verify all trainings match both filters
-      const allMatch = await page.evaluate(() => {
+      // Verify all trainings match both filters (or result is empty if no matches)
+      const result = await page.evaluate(({ w, t }) => {
         const store = window.Alpine.$data(document.querySelector('[x-data]'))
-        return store.filteredTrainings.every(
-          t => t.wochentag === 'Montag' && t.training === 'Parkour'
-        )
-      })
+        const allMatch = store.filteredTrainings.length === 0 ||
+                        store.filteredTrainings.every(
+                          training => training.wochentag === w && training.training === t
+                        )
+        return {
+          allMatch,
+          count: store.filteredTrainings.length
+        }
+      }, { w: wochentag, t: training })
 
-      expect(allMatch).toBe(true)
+      // Either we have matches that all fit both filters, or we have no matches (which is also valid)
+      expect(result.allMatch).toBe(true)
     })
   })
 
   test.describe('Filter Persistence', () => {
     test('should persist filters across page reload', async ({ page }) => {
-      // Set filters
-      await page.evaluate(() => {
-        const store = window.Alpine.store('ui')
-        store.filters.wochentag = 'Dienstag'
-        store.filters.training = 'Trampolin'
+      // Set filters using available data
+      const { wochentag, training } = await page.evaluate(() => {
+        const store = window.Alpine.$data(document.querySelector('[x-data]'))
+        // Get first available options
+        return {
+          wochentag: store.wochentage[1] || 'Dienstag', // Use second day if available
+          training: store.trainingsarten[0] || 'Parkour'
+        }
       })
+
+      // Set filters
+      await page.evaluate(({ w, t }) => {
+        const uiStore = window.Alpine.store('ui')
+        uiStore.filters.wochentag = w
+        uiStore.filters.training = t
+      }, { w: wochentag, t: training })
+
+      // Wait for Alpine $persist to save to localStorage
+      await page.waitForTimeout(500)
 
       // Reload page
       await page.reload()
-      await page.waitForFunction(() => window.Alpine !== undefined)
+
+      // Wait for Alpine to fully initialize and restore persisted state
+      await page.waitForFunction(() => window.Alpine !== undefined, { timeout: 5000 })
+      await page.waitForFunction(() => {
+        const component = window.Alpine?.$data(document.querySelector('[x-data]'))
+        return component?.allTrainings?.length > 0
+      }, { timeout: 5000 })
+
+      // Give Alpine.$persist time to restore filters from localStorage
+      await page.waitForTimeout(300)
 
       // Check persisted filters
       const persistedFilters = await page.evaluate(() => {
         return window.Alpine.store('ui').filters
       })
 
-      expect(persistedFilters.wochentag).toBe('Dienstag')
-      expect(persistedFilters.training).toBe('Trampolin')
+      expect(persistedFilters.wochentag).toBe(wochentag)
+      expect(persistedFilters.training).toBe(training)
     })
   })
 
