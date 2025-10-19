@@ -10,12 +10,14 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Favorites System Integration', () => {
   test.beforeEach(async ({ page }) => {
-    // Clear localStorage before each test
+    // Navigate first, THEN clear localStorage
+    await page.goto('/')
+
+    // Clear localStorage after page load
     await page.evaluate(() => {
       localStorage.clear()
     })
 
-    await page.goto('/')
     // Wait for Alpine and data
     await page.waitForFunction(() => window.Alpine !== undefined, { timeout: 5000 })
     await page.waitForFunction(() => {

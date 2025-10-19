@@ -352,6 +352,13 @@ test.describe('Search System Integration', () => {
     test('should work on mobile viewport', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 })
 
+      // Open mobile filter drawer first
+      await page.evaluate(() => {
+        window.Alpine.store('ui').mobileFilterOpen = true
+      })
+
+      await page.waitForTimeout(300) // Wait for drawer animation
+
       const mobileSearch = page.locator('#mobile-search')
       await mobileSearch.fill('Parkour')
 
