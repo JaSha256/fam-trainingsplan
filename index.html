@@ -1748,7 +1748,9 @@
                           </div>
 
                           <dl class="space-y-2">
-                            <div class="flex items-center gap-2.5 text-sm text-slate-700">
+                            <div
+                              class="flex items-center gap-2.5 md-typescale-body-medium text-slate-700"
+                            >
                               <svg
                                 class="w-4 h-4 text-primary-500 flex-shrink-0"
                                 fill="none"
@@ -1766,7 +1768,9 @@
                               <dd x-text="formatZeitrange(training.von, training.bis)"></dd>
                             </div>
 
-                            <div class="flex items-center gap-2.5 text-sm text-slate-700">
+                            <div
+                              class="flex items-center gap-2.5 md-typescale-body-medium text-slate-700"
+                            >
                               <svg
                                 class="w-4 h-4 text-primary-500 flex-shrink-0"
                                 fill="none"
@@ -1807,7 +1811,7 @@
 
                             <div
                               x-show="training.distanceText"
-                              class="flex items-center gap-2.5 text-xs text-primary-600 font-bold"
+                              class="flex items-center gap-2.5 md-typescale-body-small text-slate-500"
                             >
                               <svg
                                 class="w-4 h-4 flex-shrink-0"
@@ -1856,7 +1860,7 @@
                               @click="$store.ui.activeView = 'map'; $nextTick(() => initializeMap())"
                               type="button"
                               aria-label="Auf Karte zeigen"
-                              class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-colors"
+                              class="md-btn-outlined md-state-layer md-typescale-label-large inline-flex items-center justify-center min-h-[48px] px-4"
                               title="Auf Karte zeigen"
                             >
                               <svg
@@ -1875,14 +1879,41 @@
                             </button>
                           </div>
 
-                          <!-- Anmerkung -->
+                          <!-- Progressive Disclosure: Anmerkung -->
                           <div
                             x-show="training.anmerkung"
-                            class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl"
+                            x-data="{ showDetails: false }"
+                            class="mt-4"
                           >
-                            <div class="flex items-start gap-2">
+                            <!-- Toggle Button -->
+                            <button
+                              @click="showDetails = !showDetails"
+                              type="button"
+                              class="w-full flex items-center justify-between gap-2 px-3 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors touch-manipulation min-h-[44px]"
+                              :aria-expanded="showDetails"
+                              aria-controls="anmerkung-details"
+                            >
+                              <div class="flex items-center gap-2">
+                                <svg
+                                  class="w-4 h-4 text-amber-600 flex-shrink-0"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+                                <span class="md-typescale-body-small text-amber-800 font-medium">
+                                  Wichtige Hinweise
+                                </span>
+                              </div>
                               <svg
-                                class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"
+                                class="w-4 h-4 text-amber-600 transition-transform"
+                                :class="{ 'rotate-180': showDetails }"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -1891,13 +1922,22 @@
                                   stroke-linecap="round"
                                   stroke-linejoin="round"
                                   stroke-width="2"
-                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  d="M19 9l-7 7-7-7"
                                 />
                               </svg>
-                              <span
-                                class="text-xs text-amber-800 font-medium"
+                            </button>
+
+                            <!-- Expanded Content -->
+                            <div
+                              x-show="showDetails"
+                              x-collapse
+                              id="anmerkung-details"
+                              class="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg"
+                            >
+                              <p
+                                class="md-typescale-body-small text-amber-900"
                                 x-text="training.anmerkung"
-                              ></span>
+                              ></p>
                             </div>
                           </div>
                         </div>
