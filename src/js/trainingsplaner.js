@@ -564,6 +564,11 @@ export function trainingsplaner() {
     return this.mapManager.cleanupMap()
   }
 
+  component.zoomToFavorites = function () {
+    // @ts-expect-error - mapManager added in init()
+    return this.mapManager.zoomToFavorites()
+  }
+
   // URL Handling
   component.loadFiltersFromUrl = function () {
     // @ts-expect-error - urlFiltersManager added in init()

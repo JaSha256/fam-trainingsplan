@@ -584,6 +584,59 @@ export class MapManager {
   }
 
   /**
+   * Zoom to Favorites
+   *
+   * AUFGABE 5: Auto-Zoom zu Favoriten
+   * Fits the map bounds to show all favorite training locations.
+   * If user has no favorites or favorites have no coordinates, resets to default view.
+   *
+   * @returns {void}
+   */
+  zoomToFavorites() {
+    if (!this.context.map) {
+      log('warn', 'Map not initialized - cannot zoom to favorites')
+      return
+    }
+
+    // Get favorite trainings with valid coordinates
+    const favoriteTrainings = this.context.allTrainings.filter(
+      t => this.context.favorites.includes(t.id) && t.lat && t.lng
+    )
+
+    if (favoriteTrainings.length === 0) {
+      log('info', 'No favorites with coordinates found')
+      this.announceToScreenReader('Keine Favoriten mit Standorten gefunden')
+      // Reset to default view
+      this.context.map.setView(CONFIG.map.defaultCenter, CONFIG.map.defaultZoom, {
+        animate: true,
+        duration: 1
+      })
+      return
+    }
+
+    // Collect bounds for all favorite locations
+    /** @type {[number, number][]} */
+    const bounds = favoriteTrainings.map(t => [t.lat, t.lng])
+
+    // Fit bounds with padding
+    this.context.map.fitBounds(bounds, {
+      padding: [80, 80],
+      maxZoom: 15, // Don't zoom in too close if favorites are nearby
+      animate: true,
+      duration: 1.2
+    })
+
+    // Mark user has interacted to prevent auto-fitting
+    this.context.userHasInteractedWithMap = true
+
+    // Announce to screen reader
+    const count = favoriteTrainings.length
+    this.announceToScreenReader(`Karte zeigt ${count} Favoriten-Standort${count > 1 ? 'e' : ''}`)
+
+    log('info', `Zoomed to ${count} favorite locations`)
+  }
+
+  /**
    * Zoom and Center on Specific Training
    *
    * Switches to map view, zooms to training location, and opens its popup.

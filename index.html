@@ -2009,6 +2009,42 @@
             x-transition
             class="favorites-view p-4 lg:p-6"
           >
+            <!-- AUFGABE 5: Auto-Zoom to Favorites on Map -->
+            <div
+              x-show="favorites.length > 0"
+              class="mb-6 flex items-center justify-between gap-4 p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-lg"
+            >
+              <div class="flex items-center gap-3">
+                <svg class="w-6 h-6 text-yellow-600 fill-current" viewBox="0 0 24 24">
+                  <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  />
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-slate-900">
+                    <span x-text="favorites.length"></span> Favoriten markiert
+                  </h3>
+                  <p class="text-xs text-slate-600">Zeige alle auf der Karte</p>
+                </div>
+              </div>
+              <button
+                @click="$store.ui.activeView = 'map'; $nextTick(() => { initializeMap(); $nextTick(() => zoomToFavorites()) })"
+                class="md-btn-filled min-h-[44px] px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2 touch-manipulation"
+                aria-label="Favoriten auf Karte anzeigen"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                  />
+                </svg>
+                <span class="hidden sm:inline">Auf Karte anzeigen</span>
+                <span class="sm:hidden">Karte</span>
+              </button>
+            </div>
+
             <!-- Empty State -->
             <div
               x-show="filteredTrainings.filter(t => favorites.includes(t.id)).length === 0"
