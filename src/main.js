@@ -119,6 +119,9 @@ Alpine.store('ui', {
   // Phase 2.1/2.2: View Mode Toggle (compact/detailed/list)
   // @ts-ignore - Alpine.$persist plugin API
   viewMode: Alpine.$persist('compact').as('viewMode'), // 'compact' | 'detailed' | 'list'
+  // AUFGABE 5: List view grouping mode
+  // @ts-ignore - Alpine.$persist plugin API
+  groupingMode: Alpine.$persist('wochentag').as('groupingMode'), // 'wochentag' | 'ort'
   // Task 19: Mobile bottom navigation scroll tracking
   scrollDirection: 'up',
   lastScrollY: 0,

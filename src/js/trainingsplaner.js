@@ -152,15 +152,38 @@ export function trainingsplaner() {
     },
     groupedTrainings: {
       get() {
+        // At runtime, Alpine.js augments 'this' with $store
+        const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+          /** @type {any} */ (this)
+        )
+        const groupingMode = alpineContext.$store?.ui?.groupingMode || 'wochentag'
+
         const grouped = {}
         this.filteredTrainings.forEach(training => {
-          const key = training.wochentag || 'Ohne Tag'
+          // AUFGABE 5: Dynamic grouping by weekday or location
+          let key
+          if (groupingMode === 'ort') {
+            key = training.ort || 'Ohne Ort'
+          } else {
+            key = training.wochentag || 'Ohne Tag'
+          }
+
           if (!grouped[key]) grouped[key] = []
           grouped[key].push(training)
         })
-        const groupKeys = Object.keys(grouped).sort((a, b) => {
-          return (this.wochentagOrder[a] || 999) - (this.wochentagOrder[b] || 999)
-        })
+
+        // Sort group keys based on grouping mode
+        let groupKeys
+        if (groupingMode === 'ort') {
+          // Sort locations alphabetically
+          groupKeys = Object.keys(grouped).sort((a, b) => a.localeCompare(b))
+        } else {
+          // Sort weekdays chronologically (Mo-So)
+          groupKeys = Object.keys(grouped).sort((a, b) => {
+            return (this.wochentagOrder[a] || 999) - (this.wochentagOrder[b] || 999)
+          })
+        }
+
         return groupKeys.map(key => ({
           key: key,
           items: this.sortTrainings(grouped[key])

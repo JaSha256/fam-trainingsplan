@@ -1664,6 +1664,69 @@
             x-show="$store.ui.activeView === 'list'"
             x-transition
           >
+            <!-- AUFGABE 5: Grouping Mode Toggle -->
+            <div
+              x-show="!loading && !error && filteredTrainings.length > 0"
+              class="px-4 lg:px-6 pt-4 lg:pt-6 pb-3"
+            >
+              <div class="flex items-center gap-3 justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-semibold text-slate-700">Gruppieren nach:</span>
+                  <div class="inline-flex rounded-lg bg-slate-100 p-1" role="group">
+                    <button
+                      @click="$store.ui.groupingMode = 'wochentag'"
+                      :class="$store.ui.groupingMode === 'wochentag' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                      class="px-3 py-1.5 rounded-md text-sm font-medium transition-all touch-manipulation min-h-[44px] flex items-center gap-2"
+                      aria-label="Nach Wochentag gruppieren"
+                      type="button"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>Wochentag</span>
+                    </button>
+                    <button
+                      @click="$store.ui.groupingMode = 'ort'"
+                      :class="$store.ui.groupingMode === 'ort' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                      class="px-3 py-1.5 rounded-md text-sm font-medium transition-all touch-manipulation min-h-[44px] flex items-center gap-2"
+                      aria-label="Nach Ort gruppieren"
+                      type="button"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span>Ort</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Training Cards -->
             <div x-show="!loading && !error && filteredTrainings.length > 0" class="p-4 lg:p-6">
               <template x-for="gruppe in groupedTrainings" :key="gruppe.key">
