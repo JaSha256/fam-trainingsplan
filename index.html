@@ -1686,8 +1686,7 @@
                   >
                     <template x-for="training in gruppe.items" :key="training.id">
                       <article
-                        x-intersect="$el.classList.add('animate-fade-in')"
-                        class="md-card-elevated md-state-layer p-5"
+                        class="md-card-elevated md-state-layer p-5 training-card-stagger"
                         data-training-card
                       >
                         <!-- Header mit Favoriten -->
@@ -1718,7 +1717,7 @@
                             </span>
                             <!-- Favoriten Button -->
                             <button
-                              @click="toggleFavorite(training.id)"
+                              @click="toggleFavorite(training.id); $event.currentTarget.querySelector('svg').classList.add('favorite-pulse'); setTimeout(() => $event.currentTarget.querySelector('svg').classList.remove('favorite-pulse'), 600)"
                               type="button"
                               class="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-100 transition-colors touch-manipulation flex items-center justify-center"
                               :aria-label="isFavorite(training.id) ? 'Von Favoriten entfernen' : 'Zu Favoriten hinzufügen'"
@@ -2036,8 +2035,7 @@
               :key="training.id"
             >
               <article
-                x-intersect="$el.classList.add('animate-fade-in')"
-                class="md-card-elevated md-state-layer p-5 mb-5"
+                class="md-card-elevated md-state-layer p-5 mb-5 training-card-stagger"
                 data-training-card
               >
                 <!-- Same training card structure as list view -->
@@ -2062,7 +2060,7 @@
                       Probe
                     </span>
                     <button
-                      @click="toggleFavorite(training.id)"
+                      @click="toggleFavorite(training.id); $event.currentTarget.querySelector('svg').classList.add('favorite-pulse'); setTimeout(() => $event.currentTarget.querySelector('svg').classList.remove('favorite-pulse'), 600)"
                       type="button"
                       class="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-100 transition-colors touch-manipulation flex items-center justify-center"
                       :aria-label="isFavorite(training.id) ? 'Von Favoriten entfernen' : 'Zu Favoriten hinzufügen'"

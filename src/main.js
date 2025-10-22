@@ -281,6 +281,52 @@ Alpine.store('ui', {
   },
 
   /**
+   * Clear All Filters (Alias for resetFilters)
+   * AUFGABE 0.3: Multi-Filter System
+   * @returns {void}
+   */
+  clearAllFilters() {
+    // @ts-ignore - Alpine.js context properties
+    this.resetFilters()
+  },
+
+  /**
+   * Check if Any Filters Are Active
+   * AUFGABE 0.3: Multi-Filter System
+   * @returns {boolean} True if any filter is active
+   */
+  hasActiveFilters() {
+    // @ts-ignore - Alpine.js context properties
+    const filters = this.filters
+    return (
+      filters.wochentag.length > 0 ||
+      filters.ort.length > 0 ||
+      filters.training.length > 0 ||
+      filters.altersgruppe.length > 0 ||
+      filters.probetraining ||
+      filters.searchTerm !== ''
+    )
+  },
+
+  /**
+   * Get Active Filter Count
+   * AUFGABE 0.3: Multi-Filter System
+   * @returns {number} Number of active filters
+   */
+  getActiveFilterCount() {
+    // @ts-ignore - Alpine.js context properties
+    const filters = this.filters
+    return (
+      filters.wochentag.length +
+      filters.ort.length +
+      filters.training.length +
+      filters.altersgruppe.length +
+      (filters.probetraining ? 1 : 0) +
+      (filters.searchTerm ? 1 : 0)
+    )
+  },
+
+  /**
    * Toggle Sidebar Collapse/Expand (Task 12)
    * @returns {void}
    */
@@ -320,6 +366,73 @@ Alpine.store('filterOptions', {
   trainingsarten: [],
   altersgruppen: []
 })
+
+// ==================== LOCALSTORAGE MIGRATION ====================
+
+/**
+ * Migrate Old Filter Format to New Array Format
+ * AUFGABE 0.3: Backward compatibility for users with old string-based filters
+ * @returns {void}
+ */
+function migrateFilterFormat() {
+  try {
+    const storedFilters = localStorage.getItem('trainingFilters')
+    if (!storedFilters) {
+      log('debug', 'No stored filters found, skipping migration')
+      return
+    }
+
+    const filters = JSON.parse(storedFilters)
+
+    // Check if old format (strings instead of arrays)
+    const needsMigration =
+      typeof filters.wochentag === 'string' ||
+      typeof filters.ort === 'string' ||
+      typeof filters.training === 'string' ||
+      typeof filters.altersgruppe === 'string'
+
+    if (!needsMigration) {
+      log('debug', 'Filters already in array format, skipping migration')
+      return
+    }
+
+    // Migrate to new array format
+    const migratedFilters = {
+      wochentag: filters.wochentag ? [filters.wochentag] : [],
+      ort: filters.ort ? [filters.ort] : [],
+      training: filters.training ? [filters.training] : [],
+      altersgruppe: filters.altersgruppe ? [filters.altersgruppe] : [],
+      searchTerm: filters.searchTerm || '',
+      activeQuickFilter: filters.activeQuickFilter || null,
+      _customTimeFilter: filters._customTimeFilter || '',
+      _customFeatureFilter: filters._customFeatureFilter || '',
+      _customLocationFilter: filters._customLocationFilter || '',
+      _customPersonalFilter: filters._customPersonalFilter || ''
+    }
+
+    localStorage.setItem('trainingFilters', JSON.stringify(migratedFilters))
+    log('info', 'Successfully migrated filter format from strings to arrays', {
+      before: {
+        wochentag: typeof filters.wochentag,
+        ort: typeof filters.ort,
+        training: typeof filters.training,
+        altersgruppe: typeof filters.altersgruppe
+      },
+      after: {
+        wochentag: Array.isArray(migratedFilters.wochentag),
+        ort: Array.isArray(migratedFilters.ort),
+        training: Array.isArray(migratedFilters.training),
+        altersgruppe: Array.isArray(migratedFilters.altersgruppe)
+      }
+    })
+  } catch (error) {
+    log('error', 'Failed to migrate filter format', error)
+    // Don't throw - allow app to continue with default filters
+  }
+}
+
+// Run migration BEFORE Alpine starts
+migrateFilterFormat()
 
 Alpine.data('trainingsplaner', trainingsplaner)
 Alpine.start()
@@ -404,11 +517,7 @@ async function setupPWA() {
       onOfflineReady() {
         log('info', 'App ready for offline use')
         // @ts-ignore - Alpine.store returns unknown
-        Alpine.store('ui').showNotification(
-          'App bereit für Offline-Nutzung! 🎉',
-          'success',
-          3000
-        )
+        Alpine.store('ui').showNotification('App bereit für Offline-Nutzung! 🎉', 'success', 3000)
       },
 
       /**
@@ -461,7 +570,7 @@ function promptUserForUpdate(updateSW) {
    * @param {MouseEvent} e - Click event
    * @returns {void}
    */
-  const handleClick = (e) => {
+  const handleClick = e => {
     if (e.target && /** @type {HTMLElement} */ (e.target).closest('[data-notification]')) {
       updateSW(true)
       document.removeEventListener('click', handleClick)
@@ -506,11 +615,7 @@ function setupOnlineOfflineDetection() {
       log('warn', 'Offline mode')
     } else {
       // @ts-ignore - Alpine.store returns unknown
-      Alpine.store('ui').showNotification(
-        'Wieder online! 🌐',
-        'success',
-        2000
-      )
+      Alpine.store('ui').showNotification('Wieder online! 🌐', 'success', 2000)
       log('info', 'Online mode')
     }
   }
@@ -547,7 +652,7 @@ function initTouchGestures() {
    * @param {TouchEvent} e - Touch event
    * @returns {void}
    */
-  const handleTouchStart = (e) => {
+  const handleTouchStart = e => {
     touchStartX = e.touches[0].clientX
     touchStartY = e.touches[0].clientY
     touchStartTime = Date.now()
@@ -558,7 +663,7 @@ function initTouchGestures() {
    * @param {TouchEvent} e - Touch event
    * @returns {void}
    */
-  const handleTouchEnd = (e) => {
+  const handleTouchEnd = e => {
     const touchEndX = e.changedTouches[0].clientX
     const touchEndY = e.changedTouches[0].clientY
     const touchEndTime = Date.now()
@@ -568,10 +673,7 @@ function initTouchGestures() {
     const deltaTime = touchEndTime - touchStartTime
 
     // Ignore slow swipes or vertical movement
-    if (
-      deltaTime > touchConfig.swipeMaxTime ||
-      Math.abs(deltaY) > touchConfig.swipeMaxVertical
-    ) {
+    if (deltaTime > touchConfig.swipeMaxTime || Math.abs(deltaY) > touchConfig.swipeMaxVertical) {
       return
     }
 
@@ -651,8 +753,8 @@ function setupPerformanceMonitoring() {
   }
 
   try {
-    const observer = new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry) => {
+    const observer = new PerformanceObserver(list => {
+      list.getEntries().forEach(entry => {
         if (entry.entryType === 'navigation') {
           // Cast to PerformanceNavigationTiming for type safety
           const navEntry = /** @type {PerformanceNavigationTiming} */ (entry)
@@ -682,7 +784,7 @@ function setupPerformanceMonitoring() {
  * @param {ErrorEvent} event - Error event
  * @returns {void}
  */
-window.addEventListener('error', (event) => {
+window.addEventListener('error', event => {
   log('error', 'Global Error', {
     message: event.message,
     filename: event.filename,
@@ -707,7 +809,7 @@ window.addEventListener('error', (event) => {
  * @param {PromiseRejectionEvent} event - Promise rejection event
  * @returns {void}
  */
-window.addEventListener('unhandledrejection', (event) => {
+window.addEventListener('unhandledrejection', event => {
   log('error', 'Unhandled Promise Rejection', event.reason)
 
   // @ts-ignore - CONFIG has dynamic properties

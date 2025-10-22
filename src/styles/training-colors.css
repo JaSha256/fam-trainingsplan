@@ -1,0 +1,174 @@
+/**
+ * AUFGABE 3: Semantische Farbkodierung
+ * Training Type Color System - WCAG AAA Compliant
+ *
+ * Requirements:
+ * - 5 distinct training types with semantic colors
+ * - WCAG AAA contrast (≥7:1 for text/background)
+ * - Full dark mode support
+ * - Scientific basis: Color psychology for recognition speed
+ *
+ * Color Mappings (UX-MASTERWORK-PROMPT.md lines 826-834):
+ * - Parkour: Blue (Trust, Movement)
+ * - Trampolin: Green (Energy, Youth)
+ * - Tricking: Purple (Creativity, Premium)
+ * - Movement: Orange (Dynamic, Warmth)
+ * - FAM: Pink (Community, Accessibility)
+ *
+ * @see docs/UX-MASTERWORK-PROMPT.md
+ */
+
+/* ==================== LIGHT MODE COLORS ==================== */
+:root {
+  /* Parkour - Blue (Trust, Movement) */
+  --training-parkour-bg: #e3f2fd; /* Material Blue 50 */
+  --training-parkour-border: #90caf9; /* Material Blue 200 */
+  --training-parkour-text: #0d47a1; /* Material Blue 900 - AAA compliant */
+  --training-parkour-hover: #bbdefb; /* Material Blue 100 */
+
+  /* Trampolin - Green (Energy, Youth) */
+  --training-trampolin-bg: #e8f5e9; /* Material Green 50 */
+  --training-trampolin-border: #81c784; /* Material Green 300 */
+  --training-trampolin-text: #194d1b; /* Darkened Green 900 - AAA compliant (7:1) */
+  --training-trampolin-hover: #c8e6c9; /* Material Green 100 */
+
+  /* Tricking - Purple (Creativity, Premium) */
+  --training-tricking-bg: #f3e5f5; /* Material Purple 50 */
+  --training-tricking-border: #ba68c8; /* Material Purple 300 */
+  --training-tricking-text: #4a148c; /* Material Purple 900 - AAA compliant */
+  --training-tricking-hover: #e1bee7; /* Material Purple 100 */
+
+  /* Movement - Orange (Dynamic, Warmth) */
+  --training-movement-bg: #fff3e0; /* Material Orange 50 */
+  --training-movement-border: #ffb74d; /* Material Orange 300 */
+  --training-movement-text: #8d2600; /* Darkened Deep Orange 900 - AAA compliant (7:1) */
+  --training-movement-hover: #ffe0b2; /* Material Orange 100 */
+
+  /* FAM - Pink (Community, Accessibility) */
+  --training-fam-bg: #fce4ec; /* Material Pink 50 */
+  --training-fam-border: #f06292; /* Material Pink 300 */
+  --training-fam-text: #880e4f; /* Material Pink 900 - AAA compliant */
+  --training-fam-hover: #f8bbd0; /* Material Pink 100 */
+}
+
+/* ==================== DARK MODE COLORS ==================== */
+[data-theme='dark'] {
+  /* Parkour - Blue (adjusted for dark backgrounds) */
+  --training-parkour-bg: #0d47a1; /* Material Blue 900 (base) */
+  --training-parkour-border: #42a5f5; /* Material Blue 400 */
+  --training-parkour-text: #e3f2fd; /* Material Blue 50 - AAA compliant */
+  --training-parkour-hover: #1565c0; /* Material Blue 800 */
+
+  /* Trampolin - Green */
+  --training-trampolin-bg: #194d1b; /* Darkened Green 900 (base) */
+  --training-trampolin-border: #66bb6a; /* Material Green 400 */
+  --training-trampolin-text: #e8f5e9; /* Material Green 50 - AAA compliant */
+  --training-trampolin-hover: #2e7d32; /* Material Green 800 */
+
+  /* Tricking - Purple */
+  --training-tricking-bg: #4a148c; /* Material Purple 900 (base) */
+  --training-tricking-border: #ab47bc; /* Material Purple 400 */
+  --training-tricking-text: #f3e5f5; /* Material Purple 50 - AAA compliant */
+  --training-tricking-hover: #6a1b9a; /* Material Purple 800 */
+
+  /* Movement - Orange */
+  --training-movement-bg: #8d2600; /* Darkened Deep Orange 900 (base) */
+  --training-movement-border: #ff9800; /* Material Orange 500 */
+  --training-movement-text: #fff3e0; /* Material Orange 50 - AAA compliant */
+  --training-movement-hover: #d84315; /* Material Deep Orange 800 */
+
+  /* FAM - Pink */
+  --training-fam-bg: #880e4f; /* Material Pink 900 (base) */
+  --training-fam-border: #ec407a; /* Material Pink 400 */
+  --training-fam-text: #fce4ec; /* Material Pink 50 - AAA compliant */
+  --training-fam-hover: #ad1457; /* Material Pink 800 */
+}
+
+/* ==================== BADGE UTILITY CLASSES ==================== */
+
+/* Base Badge Styling */
+.training-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-width: 1px;
+  border-style: solid;
+}
+
+/* Training Type Badge Classes */
+.badge-parkour {
+  background-color: var(--training-parkour-bg);
+  border-color: var(--training-parkour-border);
+  color: var(--training-parkour-text);
+}
+
+.badge-parkour:hover {
+  background-color: var(--training-parkour-hover);
+}
+
+.badge-trampolin {
+  background-color: var(--training-trampolin-bg);
+  border-color: var(--training-trampolin-border);
+  color: var(--training-trampolin-text);
+}
+
+.badge-trampolin:hover {
+  background-color: var(--training-trampolin-hover);
+}
+
+.badge-tricking {
+  background-color: var(--training-tricking-bg);
+  border-color: var(--training-tricking-border);
+  color: var(--training-tricking-text);
+}
+
+.badge-tricking:hover {
+  background-color: var(--training-tricking-hover);
+}
+
+.badge-movement {
+  background-color: var(--training-movement-bg);
+  border-color: var(--training-movement-border);
+  color: var(--training-movement-text);
+}
+
+.badge-movement:hover {
+  background-color: var(--training-movement-hover);
+}
+
+.badge-fam {
+  background-color: var(--training-fam-bg);
+  border-color: var(--training-fam-border);
+  color: var(--training-fam-text);
+}
+
+.badge-fam:hover {
+  background-color: var(--training-fam-hover);
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+
+/* Ensure sufficient focus indicator for keyboard navigation */
+.training-badge:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support (Windows) */
+@media (prefers-contrast: high) {
+  .training-badge {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .training-badge {
+    transition: none;
+  }
+}

@@ -168,10 +168,11 @@
     transition-timing-function: var(--md-sys-motion-easing-emphasized);
   }
 
-  /* Phase 1.2: Enhanced hover state with subtle lift effect */
+  /* AUFGABE 4: Enhanced hover state with delightful lift effect (150ms) */
   .md-card-elevated:hover {
     box-shadow: var(--md-sys-elevation-3);
     transform: translateY(-2px) scale(1.01);
+    transition-duration: var(--md-sys-motion-duration-short3); /* 150ms */
   }
 
   /* M3 Filled Card */
@@ -212,6 +213,8 @@
     @apply relative px-6 py-2.5 rounded-full font-medium text-sm;
     @apply text-white;
     @apply transition-all;
+    /* AUFGABE 2: Touch Target Optimization - Minimum 48x48px for primary actions */
+    min-height: 48px;
     background-color: var(--color-primary-500);
     box-shadow: var(--md-sys-elevation-0);
     transition-duration: var(--md-sys-motion-duration-short4);
@@ -241,6 +244,8 @@
     @apply relative px-6 py-2.5 rounded-full font-medium text-sm;
     @apply text-primary-600 bg-transparent;
     @apply transition-all;
+    /* AUFGABE 2: Touch Target Optimization - Minimum 44x44px for secondary actions */
+    min-height: 44px;
     border: 1px solid var(--md-sys-color-outline);
     transition-duration: var(--md-sys-motion-duration-short4);
     transition-timing-function: var(--md-sys-motion-easing-emphasized);
@@ -268,6 +273,8 @@
     @apply relative px-4 py-2.5 rounded-full font-medium text-sm;
     @apply text-primary-600 bg-transparent;
     @apply transition-all;
+    /* AUFGABE 2: Touch Target Optimization - Minimum 44x44px for tertiary actions */
+    min-height: 44px;
     transition-duration: var(--md-sys-motion-duration-short4);
     transition-timing-function: var(--md-sys-motion-easing-emphasized);
   }
@@ -403,7 +410,8 @@
     border-radius: 8px;
     padding: 2px;
     box-shadow: var(--md-sys-elevation-0);
-    transition: box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    transition: box-shadow var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-emphasized);
   }
 
   /* M3 Segmented Button (Tab) */
@@ -422,7 +430,7 @@
   }
 
   /* Active Segmented Button */
-  .md-segmented-button[aria-selected="true"] {
+  .md-segmented-button[aria-selected='true'] {
     background-color: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     box-shadow: var(--md-sys-elevation-1);
@@ -435,12 +443,12 @@
   }
 
   /* Hover state (only for non-active buttons) */
-  .md-segmented-button[aria-selected="false"]:hover {
+  .md-segmented-button[aria-selected='false']:hover {
     background-color: var(--md-sys-color-surface-container-highest);
   }
 
   /* Active hover state */
-  .md-segmented-button[aria-selected="true"]:hover {
+  .md-segmented-button[aria-selected='true']:hover {
     box-shadow: var(--md-sys-elevation-2);
   }
 
@@ -465,7 +473,7 @@
     user-select: none;
   }
 
-  .md-switch input[type="checkbox"] {
+  .md-switch input[type='checkbox'] {
     @apply absolute opacity-0;
     width: 0;
     height: 0;
@@ -512,13 +520,13 @@
   }
 
   /* Checked state - Track */
-  .md-switch input[type="checkbox"]:checked + .md-switch-track {
+  .md-switch input[type='checkbox']:checked + .md-switch-track {
     background-color: var(--color-primary-500);
     border-color: var(--color-primary-500);
   }
 
   /* Checked state - Thumb */
-  .md-switch input[type="checkbox"]:checked ~ .md-switch-thumb {
+  .md-switch input[type='checkbox']:checked ~ .md-switch-thumb {
     background-color: oklch(1 0 0);
     left: 28px;
     width: 24px;
@@ -526,7 +534,7 @@
   }
 
   /* Checked state - State layer position */
-  .md-switch input[type="checkbox"]:checked ~ .md-switch-state-layer {
+  .md-switch input[type='checkbox']:checked ~ .md-switch-state-layer {
     left: auto;
     right: 0;
     transform: translate(4px, -50%);
@@ -538,11 +546,11 @@
   }
 
   /* Focus state */
-  .md-switch input[type="checkbox"]:focus-visible ~ .md-switch-state-layer {
+  .md-switch input[type='checkbox']:focus-visible ~ .md-switch-state-layer {
     opacity: 0.12;
   }
 
-  .md-switch input[type="checkbox"]:focus-visible + .md-switch-track {
+  .md-switch input[type='checkbox']:focus-visible + .md-switch-track {
     @apply outline-2 outline-primary-500 outline-offset-2;
   }
 
@@ -555,33 +563,33 @@
     width: 28px;
   }
 
-  .md-switch input[type="checkbox"]:checked:active ~ .md-switch-thumb {
+  .md-switch input[type='checkbox']:checked:active ~ .md-switch-thumb {
     width: 28px;
   }
 
   /* Disabled state */
-  .md-switch input[type="checkbox"]:disabled + .md-switch-track {
+  .md-switch input[type='checkbox']:disabled + .md-switch-track {
     @apply opacity-40 cursor-not-allowed;
     background-color: var(--md-sys-color-surface-container-highest);
     border-color: var(--md-sys-color-outline-variant);
   }
 
-  .md-switch input[type="checkbox"]:disabled ~ .md-switch-thumb {
+  .md-switch input[type='checkbox']:disabled ~ .md-switch-thumb {
     @apply opacity-40;
     background-color: var(--md-sys-color-on-surface-variant);
   }
 
-  .md-switch input[type="checkbox"]:checked:disabled + .md-switch-track {
+  .md-switch input[type='checkbox']:checked:disabled + .md-switch-track {
     @apply opacity-40;
     background-color: var(--md-sys-color-on-surface);
   }
 
-  .md-switch input[type="checkbox"]:checked:disabled ~ .md-switch-thumb {
+  .md-switch input[type='checkbox']:checked:disabled ~ .md-switch-thumb {
     @apply opacity-40;
     background-color: var(--md-sys-color-surface);
   }
 
-  .md-switch input[type="checkbox"]:disabled ~ .md-switch-state-layer {
+  .md-switch input[type='checkbox']:disabled ~ .md-switch-state-layer {
     display: none;
   }
 
@@ -593,7 +601,7 @@
     transition-duration: var(--md-sys-motion-duration-short4);
   }
 
-  .md-switch-wrapper input[type="checkbox"]:disabled ~ .md-switch {
+  .md-switch-wrapper input[type='checkbox']:disabled ~ .md-switch {
     @apply cursor-not-allowed;
   }
 
@@ -607,7 +615,7 @@
     cursor: pointer;
   }
 
-  .md-switch-wrapper input[type="checkbox"]:disabled ~ .md-switch-label {
+  .md-switch-wrapper input[type='checkbox']:disabled ~ .md-switch-label {
     @apply opacity-40 cursor-not-allowed;
   }
 
@@ -620,7 +628,7 @@
     margin-top: 2px;
   }
 
-  .md-switch-wrapper input[type="checkbox"]:disabled ~ .md-switch-description {
+  .md-switch-wrapper input[type='checkbox']:disabled ~ .md-switch-description {
     @apply opacity-40;
   }
 
@@ -661,7 +669,8 @@
   }
 
   @keyframes pulse-cluster {
-    0%, 100% {
+    0%,
+    100% {
       box-shadow: 0 0 0 0 var(--color-primary-500);
     }
     50% {
@@ -693,12 +702,12 @@
   }
 
   /* Dark mode support for clusters */
-  :root[data-theme="dark"] .md-map-cluster {
+  :root[data-theme='dark'] .md-map-cluster {
     border-color: var(--md-sys-color-surface-container-highest);
     box-shadow: var(--md-sys-elevation-4);
   }
 
-  :root[data-theme="dark"] .md-map-cluster-small {
+  :root[data-theme='dark'] .md-map-cluster-small {
     background-color: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
   }
@@ -803,7 +812,11 @@
   }
 
   .md-map-popup-note {
-    background: linear-gradient(135deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-secondary-container) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--md-sys-color-primary-container) 0%,
+      var(--md-sys-color-secondary-container) 100%
+    );
     color: var(--md-sys-color-on-primary-container);
     padding: 0.875rem;
     border-radius: 12px;
@@ -875,58 +888,58 @@
     transform: translateY(0);
   }
 
-  :root[data-theme="dark"] .md-map-popup-container .leaflet-popup-content-wrapper {
+  :root[data-theme='dark'] .md-map-popup-container .leaflet-popup-content-wrapper {
     background-color: var(--md-sys-color-surface-container-highest);
     border-color: var(--md-sys-color-outline);
     box-shadow: var(--md-sys-elevation-5);
   }
 
-  :root[data-theme="dark"] .md-map-popup-container .leaflet-popup-tip {
+  :root[data-theme='dark'] .md-map-popup-container .leaflet-popup-tip {
     background-color: var(--md-sys-color-surface-container-highest);
     border-color: var(--md-sys-color-outline);
   }
 
-  :root[data-theme="dark"] .md-map-popup-distance {
+  :root[data-theme='dark'] .md-map-popup-distance {
     background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%);
     color: var(--color-primary-200);
   }
 
   /* ==================== LEAFLET MAP DARK MODE ==================== */
   /* Dark mode für Leaflet tile layer */
-  :root[data-theme="dark"] .leaflet-tile-pane {
+  :root[data-theme='dark'] .leaflet-tile-pane {
     filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
   }
 
   /* Dark mode für Leaflet UI Elemente */
-  :root[data-theme="dark"] .leaflet-container {
+  :root[data-theme='dark'] .leaflet-container {
     background-color: var(--md-sys-color-surface-dim);
   }
 
-  :root[data-theme="dark"] .leaflet-control-zoom a {
+  :root[data-theme='dark'] .leaflet-control-zoom a {
     background-color: var(--md-sys-color-surface-container-high);
     color: var(--md-sys-color-on-surface);
     border-color: var(--md-sys-color-outline-variant);
   }
 
-  :root[data-theme="dark"] .leaflet-control-zoom a:hover {
+  :root[data-theme='dark'] .leaflet-control-zoom a:hover {
     background-color: var(--md-sys-color-surface-container-highest);
   }
 
-  :root[data-theme="dark"] .leaflet-control-attribution {
+  :root[data-theme='dark'] .leaflet-control-attribution {
     background-color: var(--md-sys-color-surface-container-high);
     color: var(--md-sys-color-on-surface-variant);
   }
 
-  :root[data-theme="dark"] .leaflet-control-attribution a {
+  :root[data-theme='dark'] .leaflet-control-attribution a {
     color: var(--color-primary-400);
   }
 
-  :root[data-theme="dark"] .leaflet-popup-content-wrapper {
+  :root[data-theme='dark'] .leaflet-popup-content-wrapper {
     background-color: var(--md-sys-color-surface-container-highest);
     color: var(--md-sys-color-on-surface);
   }
 
-  :root[data-theme="dark"] .leaflet-popup-tip {
+  :root[data-theme='dark'] .leaflet-popup-tip {
     background-color: var(--md-sys-color-surface-container-highest);
   }
 
@@ -973,7 +986,8 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    transition: background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-emphasized);
     border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
 
@@ -996,13 +1010,13 @@
     float: right;
   }
 
-  :root[data-theme="dark"] .layer-switcher-menu {
+  :root[data-theme='dark'] .layer-switcher-menu {
     background-color: var(--md-sys-color-surface-container-highest);
     border-color: var(--md-sys-color-outline);
     box-shadow: var(--md-sys-elevation-4);
   }
 
-  :root[data-theme="dark"] .layer-option:hover {
+  :root[data-theme='dark'] .layer-option:hover {
     background-color: var(--md-sys-color-surface-container-high);
   }
 
@@ -1141,14 +1155,25 @@
   .md-map-location-item {
     padding: 1.25rem;
     animation: training-item-fade-in 200ms var(--md-sys-motion-easing-emphasized) backwards;
-    transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    transition: background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-emphasized);
   }
 
-  .md-map-location-item:nth-child(1) { animation-delay: 0ms; }
-  .md-map-location-item:nth-child(2) { animation-delay: 50ms; }
-  .md-map-location-item:nth-child(3) { animation-delay: 100ms; }
-  .md-map-location-item:nth-child(4) { animation-delay: 150ms; }
-  .md-map-location-item:nth-child(5) { animation-delay: 200ms; }
+  .md-map-location-item:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .md-map-location-item:nth-child(2) {
+    animation-delay: 50ms;
+  }
+  .md-map-location-item:nth-child(3) {
+    animation-delay: 100ms;
+  }
+  .md-map-location-item:nth-child(4) {
+    animation-delay: 150ms;
+  }
+  .md-map-location-item:nth-child(5) {
+    animation-delay: 200ms;
+  }
 
   @keyframes training-item-fade-in {
     from {
@@ -1192,29 +1217,29 @@
     box-shadow: 0 1px 2px rgba(var(--color-primary-rgb), 0.3);
   }
 
-  :root[data-theme="dark"] .md-map-location-list::-webkit-scrollbar-track {
+  :root[data-theme='dark'] .md-map-location-list::-webkit-scrollbar-track {
     background: var(--md-sys-color-surface-container-high);
   }
 
-  :root[data-theme="dark"] .md-map-location-list::-webkit-scrollbar-thumb {
+  :root[data-theme='dark'] .md-map-location-list::-webkit-scrollbar-thumb {
     background: var(--md-sys-color-outline-variant);
   }
 
-  :root[data-theme="dark"] .md-map-location-item:hover {
+  :root[data-theme='dark'] .md-map-location-item:hover {
     background-color: var(--md-sys-color-surface-container-high);
   }
 
-  :root[data-theme="dark"] .md-map-location-sort {
+  :root[data-theme='dark'] .md-map-location-sort {
     background-color: var(--md-sys-color-surface-container-high);
     border-bottom-color: var(--md-sys-color-outline);
   }
 
-  :root[data-theme="dark"] .md-sort-chip {
+  :root[data-theme='dark'] .md-sort-chip {
     background-color: var(--md-sys-color-surface-container);
     border-color: var(--md-sys-color-outline-variant);
   }
 
-  :root[data-theme="dark"] .md-sort-chip:hover {
+  :root[data-theme='dark'] .md-sort-chip:hover {
     background-color: var(--md-sys-color-surface-container-highest);
   }
 
@@ -1235,7 +1260,8 @@
 
   /* Smooth marker animations on zoom */
   .leaflet-marker-icon {
-    transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    transition: transform var(--md-sys-motion-duration-medium2)
+      var(--md-sys-motion-easing-emphasized);
   }
 
   /* Tile fade animation */
@@ -1253,6 +1279,125 @@
     }
     to {
       opacity: 1;
+    }
+  }
+
+  /* ==================== AUFGABE 4: DELIGHTFUL MICROINTERACTIONS ==================== */
+
+  /* Heart Pulse Animation for Favorite Toggle */
+  @keyframes heartPulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.2);
+    }
+    50% {
+      transform: scale(0.95);
+    }
+    75% {
+      transform: scale(1.1);
+    }
+  }
+
+  .favorite-pulse {
+    animation: heartPulse 0.6s var(--md-sys-motion-easing-emphasized);
+  }
+
+  /* Card Entry Stagger Animation (fadeInUp from UX-MASTERWORK) */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .training-card-stagger {
+    animation: fadeInUp 0.4s var(--md-sys-motion-easing-emphasized-decelerate);
+    animation-fill-mode: both;
+  }
+
+  /* Stagger delays for first 10 cards */
+  .training-card-stagger:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .training-card-stagger:nth-child(2) {
+    animation-delay: 50ms;
+  }
+  .training-card-stagger:nth-child(3) {
+    animation-delay: 100ms;
+  }
+  .training-card-stagger:nth-child(4) {
+    animation-delay: 150ms;
+  }
+  .training-card-stagger:nth-child(5) {
+    animation-delay: 200ms;
+  }
+  .training-card-stagger:nth-child(6) {
+    animation-delay: 250ms;
+  }
+  .training-card-stagger:nth-child(7) {
+    animation-delay: 300ms;
+  }
+  .training-card-stagger:nth-child(8) {
+    animation-delay: 350ms;
+  }
+  .training-card-stagger:nth-child(9) {
+    animation-delay: 400ms;
+  }
+  .training-card-stagger:nth-child(10) {
+    animation-delay: 450ms;
+  }
+
+  /* Skeleton Loading State for Training Cards */
+  .skeleton-training-card {
+    @apply relative overflow-hidden;
+    background-color: var(--md-sys-color-surface-container-low);
+    border-radius: 12px;
+    padding: 1.25rem;
+    min-height: 200px;
+  }
+
+  .skeleton-line {
+    background: linear-gradient(
+      90deg,
+      var(--md-sys-color-surface-container-high) 0%,
+      var(--md-sys-color-surface-container-highest) 50%,
+      var(--md-sys-color-surface-container-high) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Filter Apply Fade-in for Results (300ms) */
+  .filter-results-fade {
+    animation: filterResultsFadeIn var(--md-sys-motion-duration-medium2)
+      var(--md-sys-motion-easing-emphasized-decelerate);
+  }
+
+  @keyframes filterResultsFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

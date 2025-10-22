@@ -37,7 +37,7 @@
  */
 
 /* ==================== TAILWIND CSS v4 IMPORTS ==================== */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ==================== THEME CONFIGURATION ==================== */
 @theme {
@@ -49,10 +49,10 @@
   --color-primary-400: oklch(0.65 0.12 240);
   --color-primary-500: oklch(0.47 0.15 240); /* #005892 - FAM Blue */
   --color-primary-600: oklch(0.38 0.13 240);
-  --color-primary-700: oklch(0.30 0.11 240);
+  --color-primary-700: oklch(0.3 0.11 240);
   --color-primary-800: oklch(0.22 0.08 240);
   --color-primary-900: oklch(0.15 0.05 240);
-  --color-primary-950: oklch(0.10 0.03 240);
+  --color-primary-950: oklch(0.1 0.03 240);
 
   /* ==================== M3 SURFACE COLORS ==================== */
   /* M3 Dynamic Color System - Surface Variants */
@@ -63,7 +63,7 @@
   --md-sys-color-surface-container-low: oklch(0.97 0.01 240);
   --md-sys-color-surface-container: oklch(0.95 0.01 240);
   --md-sys-color-surface-container-high: oklch(0.93 0.01 240);
-  --md-sys-color-surface-container-highest: oklch(0.90 0.01 240);
+  --md-sys-color-surface-container-highest: oklch(0.9 0.01 240);
 
   /* M3 On-Surface Colors */
   --md-sys-color-on-surface: oklch(0.15 0.01 240);
@@ -92,23 +92,25 @@
   --md-sys-elevation-5: 0px 4px 4px 0px oklch(0 0 0 / 0.3), 0px 8px 12px 6px oklch(0 0 0 / 0.15);
 
   /* Typography */
-  --font-sans: 'Inter var', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans:
+    'Inter var', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, 'Courier New', monospace;
 
   /* Extended Spacing Scale */
-  --spacing-18: 4.5rem;   /* 72px */
-  --spacing-88: 22rem;    /* 352px */
-  --spacing-112: 28rem;   /* 448px */
-  --spacing-128: 32rem;   /* 512px */
+  --spacing-18: 4.5rem; /* 72px */
+  --spacing-88: 22rem; /* 352px */
+  --spacing-112: 28rem; /* 448px */
+  --spacing-128: 32rem; /* 512px */
 
   /* Custom Breakpoints */
   --breakpoint-3xl: 1920px;
 
   /* Enhanced 4-Shade Color System - Slate (for depth perception) */
-  --color-slate-50: oklch(0.98 0.01 240);   /* Lightest - elevated/important elements */
-  --color-slate-100: oklch(0.96 0.01 240);  /* Light - cards (0.1 darker) */
-  --color-slate-200: oklch(0.93 0.01 240);  /* Medium - sidebar/container (0.3 darker) */
-  --color-slate-300: oklch(0.90 0.01 240);  /* Darker - background (0.8 darker) */
+  --color-slate-50: oklch(0.98 0.01 240); /* Lightest - elevated/important elements */
+  --color-slate-100: oklch(0.96 0.01 240); /* Light - cards (0.1 darker) */
+  --color-slate-200: oklch(0.93 0.01 240); /* Medium - sidebar/container (0.3 darker) */
+  --color-slate-300: oklch(0.9 0.01 240); /* Darker - background (0.8 darker) */
   --color-slate-400: oklch(0.82 0.01 240);
   --color-slate-500: oklch(0.64 0.01 240);
   --color-slate-600: oklch(0.53 0.01 240);
@@ -194,7 +196,7 @@
 }
 
 /* ==================== M3 DARK MODE ==================== */
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   /*
    * Dark Mode Best Practices (Material Design 3):
    * - Base surface: #121212 (oklch(0.16 0 0)) - not pure black
@@ -204,38 +206,38 @@
    */
 
   /* Override M3 Surface Colors for Dark Mode - Based on #121212 */
-  --md-sys-color-surface: oklch(0.16 0.005 240);                 /* #121212 base */
-  --md-sys-color-surface-dim: oklch(0.13 0.005 240);             /* Darker than base */
-  --md-sys-color-surface-bright: oklch(0.24 0.005 240);          /* Elevated surfaces */
+  --md-sys-color-surface: oklch(0.16 0.005 240); /* #121212 base */
+  --md-sys-color-surface-dim: oklch(0.13 0.005 240); /* Darker than base */
+  --md-sys-color-surface-bright: oklch(0.24 0.005 240); /* Elevated surfaces */
   --md-sys-color-surface-container-lowest: oklch(0.12 0.005 240); /* Lowest level */
-  --md-sys-color-surface-container-low: oklch(0.15 0.005 240);    /* Low containers */
-  --md-sys-color-surface-container: oklch(0.18 0.005 240);        /* Standard containers */
-  --md-sys-color-surface-container-high: oklch(0.21 0.005 240);   /* High containers */
+  --md-sys-color-surface-container-low: oklch(0.15 0.005 240); /* Low containers */
+  --md-sys-color-surface-container: oklch(0.18 0.005 240); /* Standard containers */
+  --md-sys-color-surface-container-high: oklch(0.21 0.005 240); /* High containers */
   --md-sys-color-surface-container-highest: oklch(0.26 0.005 240); /* Highest containers */
 
   /* Dark Mode On-Surface Colors - Desaturated for reduced strain */
-  --md-sys-color-on-surface: oklch(0.87 0.005 240);              /* Primary text */
-  --md-sys-color-on-surface-variant: oklch(0.70 0.008 240);      /* Secondary text */
+  --md-sys-color-on-surface: oklch(0.87 0.005 240); /* Primary text */
+  --md-sys-color-on-surface-variant: oklch(0.7 0.008 240); /* Secondary text */
 
   /* Dark Mode Outline Colors - Subtle borders */
-  --md-sys-color-outline: oklch(0.50 0.008 240);                 /* Standard outline */
-  --md-sys-color-outline-variant: oklch(0.35 0.008 240);         /* Subtle outline */
+  --md-sys-color-outline: oklch(0.5 0.008 240); /* Standard outline */
+  --md-sys-color-outline-variant: oklch(0.35 0.008 240); /* Subtle outline */
 
   /* Dark Mode Primary Container - Desaturated primary */
-  --md-sys-color-primary-container: oklch(0.30 0.04 240);        /* Desaturated primary container */
-  --md-sys-color-on-primary-container: oklch(0.80 0.06 240);     /* Text on primary container */
+  --md-sys-color-primary-container: oklch(0.3 0.04 240); /* Desaturated primary container */
+  --md-sys-color-on-primary-container: oklch(0.8 0.06 240); /* Text on primary container */
 
   /* Override Slate colors for dark mode - Inverted scale */
-  --color-slate-50: oklch(0.26 0.005 240);   /* Darkest becomes lightest */
-  --color-slate-100: oklch(0.24 0.005 240);  /* Elevated surfaces */
-  --color-slate-200: oklch(0.21 0.005 240);  /* High containers */
-  --color-slate-300: oklch(0.18 0.005 240);  /* Standard containers */
-  --color-slate-400: oklch(0.50 0.008 240);  /* Medium gray */
-  --color-slate-500: oklch(0.60 0.008 240);  /* Text secondary */
-  --color-slate-600: oklch(0.70 0.008 240);  /* Text secondary lighter */
-  --color-slate-700: oklch(0.76 0.008 240);  /* Text muted */
-  --color-slate-800: oklch(0.82 0.008 240);  /* Text light */
-  --color-slate-900: oklch(0.87 0.005 240);  /* Primary text */
+  --color-slate-50: oklch(0.26 0.005 240); /* Darkest becomes lightest */
+  --color-slate-100: oklch(0.24 0.005 240); /* Elevated surfaces */
+  --color-slate-200: oklch(0.21 0.005 240); /* High containers */
+  --color-slate-300: oklch(0.18 0.005 240); /* Standard containers */
+  --color-slate-400: oklch(0.5 0.008 240); /* Medium gray */
+  --color-slate-500: oklch(0.6 0.008 240); /* Text secondary */
+  --color-slate-600: oklch(0.7 0.008 240); /* Text secondary lighter */
+  --color-slate-700: oklch(0.76 0.008 240); /* Text muted */
+  --color-slate-800: oklch(0.82 0.008 240); /* Text light */
+  --color-slate-900: oklch(0.87 0.005 240); /* Primary text */
 
   /* Dark Mode Shadows - Subtle elevation on dark backgrounds */
   --md-sys-elevation-1: 0px 1px 3px 1px oklch(0 0 0 / 0.4);
@@ -245,16 +247,16 @@
   --md-sys-elevation-5: 0px 8px 12px 6px oklch(0 0 0 / 0.7);
 
   /* Override primary colors for dark mode - Desaturated and lighter */
-  --color-primary-50: oklch(0.15 0.03 240);    /* Darkest */
-  --color-primary-100: oklch(0.20 0.04 240);
-  --color-primary-200: oklch(0.30 0.05 240);
+  --color-primary-50: oklch(0.15 0.03 240); /* Darkest */
+  --color-primary-100: oklch(0.2 0.04 240);
+  --color-primary-200: oklch(0.3 0.05 240);
   --color-primary-300: oklch(0.42 0.07 240);
-  --color-primary-400: oklch(0.55 0.10 240);
-  --color-primary-500: oklch(0.60 0.12 240);   /* Main primary - desaturated */
+  --color-primary-400: oklch(0.55 0.1 240);
+  --color-primary-500: oklch(0.6 0.12 240); /* Main primary - desaturated */
   --color-primary-600: oklch(0.68 0.11 240);
-  --color-primary-700: oklch(0.75 0.10 240);
+  --color-primary-700: oklch(0.75 0.1 240);
   --color-primary-800: oklch(0.82 0.08 240);
-  --color-primary-900: oklch(0.88 0.05 240);   /* Lightest */
+  --color-primary-900: oklch(0.88 0.05 240); /* Lightest */
   --color-primary-950: oklch(0.92 0.03 240);
 
   /* Dark mode body background and scheme */
@@ -287,7 +289,7 @@
     html {
       scroll-behavior: auto;
     }
-    
+
     *,
     *::before,
     *::after {
@@ -303,12 +305,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    font-feature-settings:
+      'kern' 1,
+      'liga' 1,
+      'calt' 1;
     /* M3 Dark Mode Support */
     background-color: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
-    transition: background-color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
-                color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    transition:
+      background-color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+      color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
     overflow-x: hidden;
     max-width: 100vw;
   }
@@ -364,7 +370,12 @@
   }
 
   /* Headings */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-weight: 600;
     line-height: 1.2;
     text-wrap: balance;
@@ -378,13 +389,16 @@
 }
 
 /* ==================== COMPONENT IMPORTS ==================== */
-@import "./styles/legacy-components.css";
-@import "./styles/m3-components.css";
-@import "./styles/m3-chips-nav.css";
-@import "./styles/map-components.css";
+@import './styles/legacy-components.css';
+@import './styles/m3-components.css';
+@import './styles/m3-chips-nav.css';
+@import './styles/map-components.css';
+
+/* ==================== TRAINING TYPE COLORS (AUFGABE 3) ==================== */
+@import './styles/training-colors.css';
 
 /* ==================== UTILITIES AND ANIMATIONS ==================== */
-@import "./styles/utilities-animations.css";
+@import './styles/utilities-animations.css';
 
 /* ==================== DARK MODE UTILITIES ==================== */
-@import "./styles/utilities-dark-mode.css";
+@import './styles/utilities-dark-mode.css';
