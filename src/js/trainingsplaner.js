@@ -73,11 +73,18 @@ export function trainingsplaner() {
 
   // Computed properties (defined as getters AFTER base properties)
   Object.defineProperties(component, {
-
     // Computed properties (MUST be defined BEFORE init() so Alpine can access them immediately)
     wochentage: {
       get() {
-        const order = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+        const order = [
+          'Montag',
+          'Dienstag',
+          'Mittwoch',
+          'Donnerstag',
+          'Freitag',
+          'Samstag',
+          'Sonntag'
+        ]
         const tage = this.metadata?.wochentage || order
         // Sort chronologically (Mo-So) instead of alphabetically
         return [...tage].sort((a, b) => {
@@ -112,29 +119,31 @@ export function trainingsplaner() {
             const aIdx = order.indexOf(a)
             const bIdx = order.indexOf(b)
             if (aIdx === -1 && bIdx === -1) return a.localeCompare(b)
-            if (aIdx === -1) return 1  // Unknown groups last
+            if (aIdx === -1) return 1 // Unknown groups last
             if (bIdx === -1) return -1
             return aIdx - bIdx
           })
         }
         const values = this.allTrainings
-          .map((t) => t.altersgruppe)
-          .filter((v) => v && String(v).trim() !== '')
+          .map(t => t.altersgruppe)
+          .filter(v => v && String(v).trim() !== '')
         const allGroups = []
-        values.forEach((val) => {
-          String(val).split(',').forEach((group) => {
-            const cleaned = group.trim()
-            if (cleaned && !allGroups.includes(cleaned)) {
-              allGroups.push(cleaned)
-            }
-          })
+        values.forEach(val => {
+          String(val)
+            .split(',')
+            .forEach(group => {
+              const cleaned = group.trim()
+              if (cleaned && !allGroups.includes(cleaned)) {
+                allGroups.push(cleaned)
+              }
+            })
         })
         // Sort age groups young → old instead of alphabetically
         return allGroups.sort((a, b) => {
           const aIdx = order.indexOf(a)
           const bIdx = order.indexOf(b)
           if (aIdx === -1 && bIdx === -1) return a.localeCompare(b)
-          if (aIdx === -1) return 1  // Unknown groups last
+          if (aIdx === -1) return 1 // Unknown groups last
           if (bIdx === -1) return -1
           return aIdx - bIdx
         })
@@ -144,7 +153,7 @@ export function trainingsplaner() {
     groupedTrainings: {
       get() {
         const grouped = {}
-        this.filteredTrainings.forEach((training) => {
+        this.filteredTrainings.forEach(training => {
           const key = training.wochentag || 'Ohne Tag'
           if (!grouped[key]) grouped[key] = []
           grouped[key].push(training)
@@ -152,7 +161,7 @@ export function trainingsplaner() {
         const groupKeys = Object.keys(grouped).sort((a, b) => {
           return (this.wochentagOrder[a] || 999) - (this.wochentagOrder[b] || 999)
         })
-        return groupKeys.map((key) => ({
+        return groupKeys.map(key => ({
           key: key,
           items: this.sortTrainings(grouped[key])
         }))
@@ -161,7 +170,7 @@ export function trainingsplaner() {
     },
     favoriteTrainings: {
       get() {
-        return this.allTrainings.filter((t) => this.favorites.includes(t.id))
+        return this.allTrainings.filter(t => this.favorites.includes(t.id))
       },
       enumerable: true
     },
@@ -170,8 +179,12 @@ export function trainingsplaner() {
         // At runtime, Alpine.js augments 'this' with $store
         const filters = this.$store?.ui?.filters
         if (!filters) return false
-        return ['wochentag', 'ort', 'training', 'altersgruppe', 'searchTerm']
-          .reduce((count, key) => (filters[key] ? count + 1 : count), 0) > 0
+        return (
+          ['wochentag', 'ort', 'training', 'altersgruppe', 'searchTerm'].reduce(
+            (count, key) => (filters[key] ? count + 1 : count),
+            0
+          ) > 0
+        )
       },
       enumerable: true
     },
@@ -184,132 +197,145 @@ export function trainingsplaner() {
   })
 
   // Define methods
-  component.init = async function() {
-      // Create Alpine context reference for managers
-      // At runtime, Alpine.js has augmented this with $store, $watch, $nextTick
-      const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+  component.init = async function () {
+    // Create Alpine context reference for managers
+    // At runtime, Alpine.js has augmented this with $store, $watch, $nextTick
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
 
-      // NOTE: Computed properties are now defined at component creation (lines 74-155)
-      // to prevent "undefined" errors during Alpine's initial template rendering
+    // NOTE: Computed properties are now defined at component creation (lines 74-155)
+    // to prevent "undefined" errors during Alpine's initial template rendering
 
-      // Initialize Managers
-      this.urlFiltersManager = new UrlFiltersManager(alpineContext)
+    // Initialize Managers
+    this.urlFiltersManager = new UrlFiltersManager(alpineContext)
 
-      this.filterEngine = new FilterEngine(state, alpineContext, {
-        isFavorite: (id) => this.favoritesManager.isFavorite(id),
-        updateUrl: () => this.urlFiltersManager.updateUrlWithFilters()
-      })
+    this.filterEngine = new FilterEngine(state, alpineContext, {
+      isFavorite: id => this.favoritesManager.isFavorite(id),
+      updateUrl: () => this.urlFiltersManager.updateUrlWithFilters()
+    })
 
-      this.favoritesManager = new FavoritesManager(state, alpineContext, {
-        applyFilters: () => this.filterEngine.applyFilters()
-      })
+    this.favoritesManager = new FavoritesManager(state, alpineContext, {
+      applyFilters: () => this.filterEngine.applyFilters()
+    })
 
-      this.geolocationManager = new GeolocationManager(state, alpineContext, {
-        applyFilters: () => this.filterEngine.applyFilters()
-      })
+    this.mapManager = new MapManager(state, alpineContext)
 
-      this.mapManager = new MapManager(state, alpineContext)
+    this.geolocationManager = new GeolocationManager(state, alpineContext, {
+      applyFilters: () => this.filterEngine.applyFilters(),
+      mapManager: this.mapManager
+    })
 
-      this.dataLoader = new DataLoader(state, alpineContext, {
-        addDistanceToTrainings: () => this.geolocationManager.addDistanceToTrainings(),
-        applyFilters: () => this.filterEngine.applyFilters(),
-        startUpdateCheck: () => this.dataLoader.startUpdateCheckInternal()
-      })
+    this.dataLoader = new DataLoader(state, alpineContext, {
+      addDistanceToTrainings: () => this.geolocationManager.addDistanceToTrainings(),
+      applyFilters: () => this.filterEngine.applyFilters(),
+      startUpdateCheck: () => this.dataLoader.startUpdateCheckInternal()
+    })
 
-      this.actionsManager = new ActionsManager(state, alpineContext, {
-        get hasActiveFilters() { return alpineContext.hasActiveFilters },
-        get filteredTrainingsCount() { return alpineContext.filteredTrainingsCount }
-      })
-
-      // Load Favorites
-      if (CONFIG.features.enableFavorites) {
-        this.favoritesManager.loadFavorites()
+    this.actionsManager = new ActionsManager(state, alpineContext, {
+      get hasActiveFilters() {
+        return alpineContext.hasActiveFilters
+      },
+      get filteredTrainingsCount() {
+        return alpineContext.filteredTrainingsCount
       }
+    })
 
-      // Load URL Filters
-      if (CONFIG.filters.persistInUrl) {
-        this.urlFiltersManager.loadFiltersFromUrl()
-      }
+    // Load Favorites
+    if (CONFIG.features.enableFavorites) {
+      this.favoritesManager.loadFavorites()
+    }
 
-      // Setup watchers
-      // @ts-expect-error - watchFilters defined below
-      this.watchFilters()
+    // Load URL Filters
+    if (CONFIG.filters.persistInUrl) {
+      this.urlFiltersManager.loadFiltersFromUrl()
+    }
 
-      // Setup keyboard shortcuts
-      // @ts-expect-error - handleKeyboardShortcuts defined below
-      window.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e))
+    // Setup watchers
+    // @ts-expect-error - watchFilters defined below
+    this.watchFilters()
 
-      // QW9: Setup scroll to top button visibility
-      window.addEventListener('scroll', () => {
+    // Setup keyboard shortcuts
+    // @ts-expect-error - handleKeyboardShortcuts defined below
+    window.addEventListener('keydown', e => this.handleKeyboardShortcuts(e))
+
+    // QW9: Setup scroll to top button visibility
+    window.addEventListener(
+      'scroll',
+      () => {
         if (alpineContext.$store?.ui) {
           alpineContext.$store.ui.showScrollTop = window.scrollY > 500
         }
-      }, { passive: true })
+      },
+      { passive: true }
+    )
 
-      // Load data
-      await this.dataLoader.init()
+    // Load data
+    await this.dataLoader.init()
 
-      // Populate filter options store for dropdowns (after data loads)
-      if (alpineContext.$store?.filterOptions) {
-        alpineContext.$store.filterOptions.wochentage = this.wochentage
-        alpineContext.$store.filterOptions.orte = this.orte
-        alpineContext.$store.filterOptions.trainingsarten = this.trainingsarten
-        alpineContext.$store.filterOptions.altersgruppen = this.altersgruppen
-      }
+    // Populate filter options store for dropdowns (after data loads)
+    if (alpineContext.$store?.filterOptions) {
+      alpineContext.$store.filterOptions.wochentage = this.wochentage
+      alpineContext.$store.filterOptions.orte = this.orte
+      alpineContext.$store.filterOptions.trainingsarten = this.trainingsarten
+      alpineContext.$store.filterOptions.altersgruppen = this.altersgruppen
+    }
   }
 
-  component.watchFilters = function() {
-      // At runtime, Alpine.js has augmented this with $store, $watch, $nextTick
-      const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+  component.watchFilters = function () {
+    // At runtime, Alpine.js has augmented this with $store, $watch, $nextTick
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
 
-      /** @type {ReturnType<typeof setTimeout> | null} */
-      let filterChangeTimeout = null
+    /** @type {ReturnType<typeof setTimeout> | null} */
+    let filterChangeTimeout = null
 
-      alpineContext.$watch(
-        '$store.ui.filters',
-        () => {
-          if (filterChangeTimeout !== null) {
-            clearTimeout(filterChangeTimeout)
-          }
-          filterChangeTimeout = setTimeout(() => {
-            alpineContext.filterEngine.applyFilters()
-
-            // Auto-update map markers when filters change and map is active
-            if (alpineContext.$store?.ui?.activeView === 'map' && alpineContext.map) {
-              alpineContext.$nextTick(() => {
-                alpineContext.mapManager.addMarkersToMap()
-              })
-            }
-          }, 100)
-        },
-        { deep: true }
-      )
-
-      // Watch for map view (activeView state replaces mapModalOpen)
-      alpineContext.$watch('$store.ui.activeView', (/** @type {string} */ activeView) => {
-        if (activeView === 'map') {
-          alpineContext.$nextTick(() => {
-            // Initialize map if not already initialized
-            if (!alpineContext.map) {
-              alpineContext.mapManager.initializeMap()
-            } else {
-              // Map exists, just make sure container is visible (handled by x-show in template)
-              // Force map to recalculate size in case container dimensions changed
-              alpineContext.map.invalidateSize()
-            }
-          })
+    alpineContext.$watch(
+      '$store.ui.filters',
+      () => {
+        if (filterChangeTimeout !== null) {
+          clearTimeout(filterChangeTimeout)
         }
-        // Note: We don't cleanup map when switching away - map instance persists
-      })
+        filterChangeTimeout = setTimeout(() => {
+          alpineContext.filterEngine.applyFilters()
 
-      // Check initial state - initialize map if activeView is already 'map'
-      if (alpineContext.$store?.ui?.activeView === 'map') {
+          // Auto-update map markers when filters change and map is active
+          if (alpineContext.$store?.ui?.activeView === 'map' && alpineContext.map) {
+            alpineContext.$nextTick(() => {
+              alpineContext.mapManager.addMarkersToMap()
+            })
+          }
+        }, 100)
+      },
+      { deep: true }
+    )
+
+    // Watch for map view (activeView state replaces mapModalOpen)
+    alpineContext.$watch('$store.ui.activeView', (/** @type {string} */ activeView) => {
+      if (activeView === 'map') {
         alpineContext.$nextTick(() => {
+          // Initialize map if not already initialized
           if (!alpineContext.map) {
             alpineContext.mapManager.initializeMap()
+          } else {
+            // Map exists, just make sure container is visible (handled by x-show in template)
+            // Force map to recalculate size in case container dimensions changed
+            alpineContext.map.invalidateSize()
           }
         })
       }
+      // Note: We don't cleanup map when switching away - map instance persists
+    })
+
+    // Check initial state - initialize map if activeView is already 'map'
+    if (alpineContext.$store?.ui?.activeView === 'map') {
+      alpineContext.$nextTick(() => {
+        if (!alpineContext.map) {
+          alpineContext.mapManager.initializeMap()
+        }
+      })
+    }
   }
 
   // ==================== DELEGATED METHODS ====================
@@ -317,33 +343,36 @@ export function trainingsplaner() {
   // because they're added dynamically in init(). These methods work correctly at runtime.
 
   // Filtering
-  component.applyFilters = function() {
+  component.applyFilters = function () {
     // @ts-expect-error - filterEngine added in init()
     return this.filterEngine.applyFilters()
   }
 
-  component.matchesAltersgruppe = function(/** @type {Training} */ training, /** @type {string} */ filterValue) {
+  component.matchesAltersgruppe = function (
+    /** @type {Training} */ training,
+    /** @type {string} */ filterValue
+  ) {
     // @ts-expect-error - filterEngine added in init()
     return this.filterEngine.matchesAltersgruppe(training, filterValue)
   }
 
   // Favorites
-  component.loadFavorites = function() {
+  component.loadFavorites = function () {
     // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.loadFavorites()
   }
 
-  component.isFavorite = function(/** @type {number} */ trainingId) {
+  component.isFavorite = function (/** @type {number} */ trainingId) {
     // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.isFavorite(trainingId)
   }
 
-  component.toggleFavorite = function(/** @type {number} */ trainingId) {
+  component.toggleFavorite = function (/** @type {number} */ trainingId) {
     // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.toggleFavorite(trainingId)
   }
 
-  component.quickFilterFavorites = function() {
+  component.quickFilterFavorites = function () {
     // @ts-expect-error - favoritesManager added in init()
     return this.favoritesManager.quickFilterFavorites()
   }
@@ -354,9 +383,11 @@ export function trainingsplaner() {
    * If already active, deactivates the filter. If not active, filters for today.
    * @returns {void}
    */
-  component.quickFilterHeute = function() {
+  component.quickFilterHeute = function () {
     // At runtime, Alpine.js augments 'this' with $store
-    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
 
     if (!alpineContext.$store?.ui?.filters) return
 
@@ -374,7 +405,15 @@ export function trainingsplaner() {
       }
     } else {
       // Aktivieren: heute's Wochentag setzen
-      const wochentage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+      const wochentage = [
+        'Sonntag',
+        'Montag',
+        'Dienstag',
+        'Mittwoch',
+        'Donnerstag',
+        'Freitag',
+        'Samstag'
+      ]
       const heute = wochentage[new Date().getDay()]
 
       alpineContext.$store.ui.filters.wochentag = heute
@@ -394,9 +433,11 @@ export function trainingsplaner() {
    * @param {string} filterName - Name of the quick filter to apply
    * @returns {Promise<void>}
    */
-  component.applyQuickFilter = async function(filterName) {
+  component.applyQuickFilter = async function (filterName) {
     // At runtime, Alpine.js augments 'this' with $store
-    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
 
     if (!alpineContext.$store?.ui?.filters) return
 
@@ -487,117 +528,120 @@ export function trainingsplaner() {
   }
 
   // Geolocation
-  component.requestUserLocation = function() {
+  component.requestUserLocation = function () {
     // @ts-expect-error - geolocationManager added in init()
     return this.geolocationManager.requestUserLocation()
   }
 
-  component.addDistanceToTrainings = function() {
+  component.addDistanceToTrainings = function () {
     // @ts-expect-error - geolocationManager added in init()
     return this.geolocationManager.addDistanceToTrainings()
   }
 
-  component.resetLocation = function() {
+  component.resetLocation = function () {
     // @ts-expect-error - geolocationManager added in init()
     return this.geolocationManager.resetLocation()
   }
 
   // Map
-  component.initializeMap = function() {
+  component.initializeMap = function () {
     // @ts-expect-error - mapManager added in init()
     return this.mapManager.initializeMap()
   }
 
-  component.addMarkersToMap = function() {
+  component.addMarkersToMap = function () {
     // @ts-expect-error - mapManager added in init()
     return this.mapManager.addMarkersToMap()
   }
 
-  component.createMapPopup = function(/** @type {Training} */ training) {
+  component.createMapPopup = function (/** @type {Training} */ training) {
     // @ts-expect-error - mapManager added in init()
     return this.mapManager.createMapPopup(training)
   }
 
-  component.cleanupMap = function() {
+  component.cleanupMap = function () {
     // @ts-expect-error - mapManager added in init()
     return this.mapManager.cleanupMap()
   }
 
   // URL Handling
-  component.loadFiltersFromUrl = function() {
+  component.loadFiltersFromUrl = function () {
     // @ts-expect-error - urlFiltersManager added in init()
     return this.urlFiltersManager.loadFiltersFromUrl()
   }
 
-  component.updateUrlWithFilters = function() {
+  component.updateUrlWithFilters = function () {
     // @ts-expect-error - urlFiltersManager added in init()
     return this.urlFiltersManager.updateUrlWithFilters()
   }
 
   // Data Loading & Caching
-  component.loadData = function(/** @type {any} */ data) {
+  component.loadData = function (/** @type {any} */ data) {
     // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.loadData(data)
   }
 
-  component.getCachedData = function() {
+  component.getCachedData = function () {
     // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.getCachedData()
   }
 
-  component.setCachedData = function(/** @type {any} */ data) {
+  component.setCachedData = function (/** @type {any} */ data) {
     // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.setCachedData(data)
   }
 
-  component.startUpdateCheck = function() {
+  component.startUpdateCheck = function () {
     // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.startUpdateCheckInternal()
   }
 
-  component.checkForUpdates = function() {
+  component.checkForUpdates = function () {
     // @ts-expect-error - dataLoader added in init()
     return this.dataLoader.checkForUpdates()
   }
 
   // Calendar & Actions
-  component.addToGoogleCalendar = function(/** @type {Training} */ training) {
+  component.addToGoogleCalendar = function (/** @type {Training} */ training) {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.addToGoogleCalendar(training)
   }
 
-  component.addToCalendar = function(/** @type {Training} */ training, /** @type {string | null} */ provider = null) {
+  component.addToCalendar = function (
+    /** @type {Training} */ training,
+    /** @type {string | null} */ provider = null
+  ) {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.addToCalendar(training, provider)
   }
 
-  component.bulkAddToGoogleCalendar = function() {
+  component.bulkAddToGoogleCalendar = function () {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.bulkAddToGoogleCalendar()
   }
 
-  component.exportAllToCalendar = function() {
+  component.exportAllToCalendar = function () {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.exportAllToCalendar()
   }
 
-  component.exportFavoritesToCalendar = function() {
+  component.exportFavoritesToCalendar = function () {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.exportFavoritesToCalendar()
   }
 
-  component.shareCurrentView = function() {
+  component.shareCurrentView = function () {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.shareCurrentView()
   }
 
-  component.shareFavorites = function() {
+  component.shareFavorites = function () {
     // @ts-expect-error - actionsManager added in init()
     return this.actionsManager.shareFavorites()
   }
 
   // Utility Methods (remain inline as they're simple)
-  component.sortTrainings = function(/** @type {Training[]} */ trainings) {
+  component.sortTrainings = function (/** @type {Training[]} */ trainings) {
     return trainings.sort((/** @type {Training} */ a, /** @type {Training} */ b) => {
       const aMin = utils.zeitZuMinuten(a.von)
       const bMin = utils.zeitZuMinuten(b.von)
@@ -605,16 +649,12 @@ export function trainingsplaner() {
     })
   }
 
-  component.getTrainingColor = function(/** @type {string} */ training) {
+  component.getTrainingColor = function (/** @type {string} */ training) {
     const t = (training || '').toLowerCase()
-    if (t.includes('parkour'))
-      return 'bg-blue-100 text-blue-800 border-blue-200'
-    if (t.includes('trampolin'))
-      return 'bg-green-100 text-green-800 border-green-200'
-    if (t.includes('tricking'))
-      return 'bg-purple-100 text-purple-800 border-purple-200'
-    if (t.includes('movement'))
-      return 'bg-orange-100 text-orange-800 border-orange-200'
+    if (t.includes('parkour')) return 'bg-blue-100 text-blue-800 border-blue-200'
+    if (t.includes('trampolin')) return 'bg-green-100 text-green-800 border-green-200'
+    if (t.includes('tricking')) return 'bg-purple-100 text-purple-800 border-purple-200'
+    if (t.includes('movement')) return 'bg-orange-100 text-orange-800 border-orange-200'
     if (t.includes('fam')) return 'bg-pink-100 text-pink-800 border-pink-200'
     if (t.includes('flips')) return 'bg-red-100 text-red-800 border-red-200'
     if (t.includes('calistenics') || t.includes('calisthenics'))
@@ -622,11 +662,11 @@ export function trainingsplaner() {
     return 'bg-slate-100 text-slate-800 border-slate-200'
   }
 
-  component.formatAlter = function(/** @type {Training} */ training) {
+  component.formatAlter = function (/** @type {Training} */ training) {
     return utils.formatAlter(training)
   }
 
-  component.formatZeitrange = function(/** @type {string} */ von, /** @type {string} */ bis) {
+  component.formatZeitrange = function (/** @type {string} */ von, /** @type {string} */ bis) {
     return utils.formatZeitrange(von, bis)
   }
 
@@ -641,9 +681,11 @@ export function trainingsplaner() {
    *
    * @returns {void}
    */
-  component.clearAllFilters = function() {
+  component.clearAllFilters = function () {
     // At runtime, Alpine.js augments 'this' with $store
-    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
 
     if (alpineContext.$store?.ui?.filters) {
       alpineContext.$store.ui.filters = {
@@ -680,9 +722,11 @@ export function trainingsplaner() {
    *
    * @returns {Array<{category: string, label: string, value: string, remove: () => void, tooltip: string, ariaLabel: string, prominent: boolean, styleClass: string, minTouchTarget: number}>}
    */
-  component.getActiveFilterChips = function() {
+  component.getActiveFilterChips = function () {
     // At runtime, Alpine.js augments 'this' with $store
-    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
     const filters = alpineContext.$store?.ui?.filters
 
     if (!filters) return []
@@ -691,70 +735,78 @@ export function trainingsplaner() {
 
     // Wochentag filters
     if (Array.isArray(filters.wochentag) && filters.wochentag.length > 0) {
-      filters.wochentag.forEach(/** @param {string} day */ (day) => {
-        chips.push({
-          category: 'wochentag',
-          label: 'Wochentag',
-          value: day,
-          remove: () => this.removeFilterChip('wochentag', day),
-          tooltip: `Wochentag: ${day} - Klicken zum Entfernen`,
-          ariaLabel: `Filter ${day} entfernen`,
-          prominent: true,
-          styleClass: 'primary-filter',
-          minTouchTarget: 44
-        })
-      })
+      filters.wochentag.forEach(
+        /** @param {string} day */ day => {
+          chips.push({
+            category: 'wochentag',
+            label: 'Wochentag',
+            value: day,
+            remove: () => this.removeFilterChip('wochentag', day),
+            tooltip: `Wochentag: ${day} - Klicken zum Entfernen`,
+            ariaLabel: `Filter ${day} entfernen`,
+            prominent: true,
+            styleClass: 'primary-filter',
+            minTouchTarget: 44
+          })
+        }
+      )
     }
 
     // Ort filters
     if (Array.isArray(filters.ort) && filters.ort.length > 0) {
-      filters.ort.forEach(/** @param {string} ort */ (ort) => {
-        chips.push({
-          category: 'ort',
-          label: 'Ort',
-          value: ort,
-          remove: () => this.removeFilterChip('ort', ort),
-          tooltip: `Ort: ${ort} - Klicken zum Entfernen`,
-          ariaLabel: `Filter ${ort} entfernen`,
-          prominent: true,
-          styleClass: 'primary-filter',
-          minTouchTarget: 44
-        })
-      })
+      filters.ort.forEach(
+        /** @param {string} ort */ ort => {
+          chips.push({
+            category: 'ort',
+            label: 'Ort',
+            value: ort,
+            remove: () => this.removeFilterChip('ort', ort),
+            tooltip: `Ort: ${ort} - Klicken zum Entfernen`,
+            ariaLabel: `Filter ${ort} entfernen`,
+            prominent: true,
+            styleClass: 'primary-filter',
+            minTouchTarget: 44
+          })
+        }
+      )
     }
 
     // Training filters
     if (Array.isArray(filters.training) && filters.training.length > 0) {
-      filters.training.forEach(/** @param {string} training */ (training) => {
-        chips.push({
-          category: 'training',
-          label: 'Training',
-          value: training,
-          remove: () => this.removeFilterChip('training', training),
-          tooltip: `Training: ${training} - Klicken zum Entfernen`,
-          ariaLabel: `Filter ${training} entfernen`,
-          prominent: true,
-          styleClass: 'primary-filter',
-          minTouchTarget: 44
-        })
-      })
+      filters.training.forEach(
+        /** @param {string} training */ training => {
+          chips.push({
+            category: 'training',
+            label: 'Training',
+            value: training,
+            remove: () => this.removeFilterChip('training', training),
+            tooltip: `Training: ${training} - Klicken zum Entfernen`,
+            ariaLabel: `Filter ${training} entfernen`,
+            prominent: true,
+            styleClass: 'primary-filter',
+            minTouchTarget: 44
+          })
+        }
+      )
     }
 
     // Altersgruppe filters
     if (Array.isArray(filters.altersgruppe) && filters.altersgruppe.length > 0) {
-      filters.altersgruppe.forEach(/** @param {string} gruppe */ (gruppe) => {
-        chips.push({
-          category: 'altersgruppe',
-          label: 'Altersgruppe',
-          value: gruppe,
-          remove: () => this.removeFilterChip('altersgruppe', gruppe),
-          tooltip: `Altersgruppe: ${gruppe} - Klicken zum Entfernen`,
-          ariaLabel: `Filter ${gruppe} entfernen`,
-          prominent: true,
-          styleClass: 'primary-filter',
-          minTouchTarget: 44
-        })
-      })
+      filters.altersgruppe.forEach(
+        /** @param {string} gruppe */ gruppe => {
+          chips.push({
+            category: 'altersgruppe',
+            label: 'Altersgruppe',
+            value: gruppe,
+            remove: () => this.removeFilterChip('altersgruppe', gruppe),
+            tooltip: `Altersgruppe: ${gruppe} - Klicken zum Entfernen`,
+            ariaLabel: `Filter ${gruppe} entfernen`,
+            prominent: true,
+            styleClass: 'primary-filter',
+            minTouchTarget: 44
+          })
+        }
+      )
     }
 
     // Search term
@@ -810,7 +862,7 @@ export function trainingsplaner() {
    *
    * @returns {Array<{category: string, label: string, value: string, remove: () => void}>}
    */
-  component.getDisplayedFilterChips = function() {
+  component.getDisplayedFilterChips = function () {
     const allChips = this.getActiveFilterChips()
     return allChips.slice(0, 3)
   }
@@ -823,7 +875,7 @@ export function trainingsplaner() {
    *
    * @returns {number}
    */
-  component.getOverflowFilterCount = function() {
+  component.getOverflowFilterCount = function () {
     const allChips = this.getActiveFilterChips()
     return Math.max(0, allChips.length - 3)
   }
@@ -836,7 +888,7 @@ export function trainingsplaner() {
    *
    * @returns {number}
    */
-  component.getActiveFilterCount = function() {
+  component.getActiveFilterCount = function () {
     return this.getActiveFilterChips().length
   }
 
@@ -850,9 +902,11 @@ export function trainingsplaner() {
    * @param {string} value - Filter value to remove
    * @returns {void}
    */
-  component.removeFilterChip = function(category, value) {
+  component.removeFilterChip = function (category, value) {
     // At runtime, Alpine.js augments 'this' with $store
-    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
     const filters = alpineContext.$store?.ui?.filters
 
     if (!filters) return
@@ -860,7 +914,7 @@ export function trainingsplaner() {
     // Handle array filters (wochentag, ort, training, altersgruppe)
     if (['wochentag', 'ort', 'training', 'altersgruppe'].includes(category)) {
       if (Array.isArray(filters[category])) {
-        filters[category] = filters[category].filter(/** @param {string} v */ (v) => v !== value)
+        filters[category] = filters[category].filter(/** @param {string} v */ v => v !== value)
       }
     }
     // Handle search term
@@ -884,7 +938,7 @@ export function trainingsplaner() {
    *
    * @returns {number}
    */
-  component.getResultsCount = function() {
+  component.getResultsCount = function () {
     return this.filteredTrainings?.length || 0
   }
 
@@ -896,7 +950,7 @@ export function trainingsplaner() {
    *
    * @returns {string}
    */
-  component.getResultsCountText = function() {
+  component.getResultsCountText = function () {
     const count = this.getResultsCount()
     if (count === 1) {
       return '1 Training gefunden'
@@ -912,7 +966,7 @@ export function trainingsplaner() {
    *
    * @returns {boolean}
    */
-  component.shouldShowFilterChips = function() {
+  component.shouldShowFilterChips = function () {
     return this.getActiveFilterCount() > 0
   }
 
@@ -925,7 +979,7 @@ export function trainingsplaner() {
    *
    * @returns {boolean}
    */
-  component.shouldClearButtonBeProminent = function() {
+  component.shouldClearButtonBeProminent = function () {
     return this.getActiveFilterCount() >= 3
   }
 
@@ -939,9 +993,11 @@ export function trainingsplaner() {
    * @param {KeyboardEvent} event - Keyboard event
    * @returns {void}
    */
-  component.handleKeyboardShortcuts = function(event) {
+  component.handleKeyboardShortcuts = function (event) {
     // At runtime, Alpine.js augments 'this' with $store
-    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
 
     // Ctrl/Cmd + F: Toggle filter sidebar (desktop only)
     if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
@@ -976,7 +1032,7 @@ export function trainingsplaner() {
 
   // ==================== CLEANUP ====================
 
-  component.destroy = function() {
+  component.destroy = function () {
     if (this.updateCheckInterval) {
       clearInterval(this.updateCheckInterval)
     }

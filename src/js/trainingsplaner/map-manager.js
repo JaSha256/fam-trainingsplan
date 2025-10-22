@@ -10,7 +10,11 @@
 import { CONFIG, log } from '../config.js'
 import { utils } from '../utils.js'
 import * as L from 'leaflet'
-import { createGeolocationControl, createResetViewControl, createLayerSwitcherControl } from './map-controls.js'
+import {
+  createGeolocationControl,
+  createResetViewControl,
+  createLayerSwitcherControl
+} from './map-controls.js'
 import {
   getOptimalClusterRadius,
   getOptimalSpiderfyMultiplier,
@@ -114,8 +118,6 @@ export class MapManager {
     }
   }
 
-
-
   /**
    * Add Keyboard Navigation
    *
@@ -135,10 +137,13 @@ export class MapManager {
     const container = map.getContainer()
     container.setAttribute('tabindex', '0')
     container.setAttribute('role', 'application')
-    container.setAttribute('aria-label', 'Interaktive Karte mit Trainingsstandorten. Verwenden Sie die Pfeiltasten zum Verschieben, Plus und Minus zum Zoomen, und die Tab-Taste um zwischen Markern zu navigieren.')
+    container.setAttribute(
+      'aria-label',
+      'Interaktive Karte mit Trainingsstandorten. Verwenden Sie die Pfeiltasten zum Verschieben, Plus und Minus zum Zoomen, und die Tab-Taste um zwischen Markern zu navigieren.'
+    )
 
     // Add keyboard event listener
-    map.on('keydown', (e) => {
+    map.on('keydown', e => {
       const key = e.originalEvent.key
 
       switch (key) {
@@ -249,7 +254,10 @@ export class MapManager {
       updateWhenIdle: false,
       updateInterval: 150,
       keepBuffer: 2,
-      bounds: [[47.9, 11.3], [48.3, 11.9]], // Munich area bounds
+      bounds: [
+        [47.9, 11.3],
+        [48.3, 11.9]
+      ], // Munich area bounds
       errorTileUrl: ''
     }
 
@@ -265,21 +273,20 @@ export class MapManager {
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
         ...commonOptions,
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        attribution:
+          'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
         className: 'md-map-tiles md-map-tiles-satellite'
       }
     )
 
     // Terrain Map (OpenTopoMap)
-    const terrainLayer = L.tileLayer(
-      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-      {
-        ...commonOptions,
-        maxZoom: 17, // OpenTopoMap only goes to 17
-        attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
-        className: 'md-map-tiles md-map-tiles-terrain'
-      }
-    )
+    const terrainLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      ...commonOptions,
+      maxZoom: 17, // OpenTopoMap only goes to 17
+      attribution:
+        'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
+      className: 'md-map-tiles md-map-tiles-terrain'
+    })
 
     // Store layers
     this.context.tileLayers = {
@@ -290,11 +297,11 @@ export class MapManager {
 
     // Add default layer (street)
     streetLayer.addTo(this.context.map)
-    this.context.tileLayer = streetLayer  // Current active layer
+    this.context.tileLayer = streetLayer // Current active layer
 
     // Handle tile loading errors gracefully
-    Object.values(this.context.tileLayers).forEach((layer) => {
-      layer.on('tileerror', (error) => {
+    Object.values(this.context.tileLayers).forEach(layer => {
+      layer.on('tileerror', error => {
         log('warn', 'Tile loading error', { coords: error.coords })
       })
     })
@@ -403,26 +410,26 @@ export class MapManager {
     // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
     const markers = L.markerClusterGroup({
       // Performance optimizations (critical for 50+ markers)
-      chunkedLoading: true,                // Split processing to prevent UI freeze
-      chunkInterval: 200,                  // Time between processing intervals (ms)
-      chunkDelay: 50,                      // Delay between chunk batches (ms)
-      removeOutsideVisibleBounds: false,   // Keep all markers in DOM for stable positioning
+      chunkedLoading: true, // Split processing to prevent UI freeze
+      chunkInterval: 200, // Time between processing intervals (ms)
+      chunkDelay: 50, // Delay between chunk batches (ms)
+      removeOutsideVisibleBounds: false, // Keep all markers in DOM for stable positioning
 
       // Clustering behavior
-      maxClusterRadius: clusterRadius,             // Responsive radius (60px mobile, 80px desktop)
-      spiderfyOnMaxZoom: true,                     // Fan out overlapping markers
-      showCoverageOnHover: false,                  // No polygon on hover (cleaner UX)
-      zoomToBoundsOnClick: true,                   // Zoom into cluster on click
-      disableClusteringAtZoom: 18,                 // Show individual markers at zoom 18+
-      animateAddingMarkers: false,                 // Faster initial render (no animation)
-      spiderfyDistanceMultiplier: spiderfyMultiplier,  // Responsive spread (1.5x on mobile)
+      maxClusterRadius: clusterRadius, // Responsive radius (60px mobile, 80px desktop)
+      spiderfyOnMaxZoom: true, // Fan out overlapping markers
+      showCoverageOnHover: false, // No polygon on hover (cleaner UX)
+      zoomToBoundsOnClick: true, // Zoom into cluster on click
+      disableClusteringAtZoom: 18, // Show individual markers at zoom 18+
+      animateAddingMarkers: false, // Faster initial render (no animation)
+      spiderfyDistanceMultiplier: spiderfyMultiplier, // Responsive spread (1.5x on mobile)
 
       // Positioning stability during zoom
-      animate: true,                               // Smooth animations
-      singleMarkerMode: false,                     // Always use cluster logic for consistency
+      animate: true, // Smooth animations
+      singleMarkerMode: false, // Always use cluster logic for consistency
 
       // Custom M3-styled cluster icon with dynamic sizing and colors
-      iconCreateFunction: (cluster) => {
+      iconCreateFunction: cluster => {
         const count = cluster.getChildCount()
 
         // Dynamic size based on marker count
@@ -475,9 +482,10 @@ export class MapManager {
       // Create marker with custom icon
       const marker = L.marker([lat, lng], {
         icon: icon,
-        title: trainingCount > 1
-          ? `${locationName} (${trainingCount} Trainings)`
-          : `${trainings[0].training} - ${locationName}`,
+        title:
+          trainingCount > 1
+            ? `${locationName} (${trainingCount} Trainings)`
+            : `${trainings[0].training} - ${locationName}`,
         alt: `Standort: ${locationName}`,
         riseOnHover: true
       })
@@ -487,19 +495,20 @@ export class MapManager {
       marker.trainingId = trainings[0].id // For backward compatibility
 
       // Bind appropriate popup (single or multi-training)
-      const popupHTML = trainingCount > 1
-        ? createLocationPopupHTML(trainings, utils)
-        : this.createMapPopup(trainings[0])
+      const popupHTML =
+        trainingCount > 1
+          ? createLocationPopupHTML(trainings, utils)
+          : this.createMapPopup(trainings[0])
 
       marker.bindPopup(popupHTML, {
         maxWidth: trainingCount > 1 ? 450 : 400,
         className: 'md-map-popup-container',
-        autoPan: false,  // Disable - we handle centering manually
+        autoPan: false, // Disable - we handle centering manually
         autoPanPadding: [50, 50]
       })
 
       // Add click handler for auto-centering
-      marker.on('click', (e) => {
+      marker.on('click', e => {
         this.centerOnMarker(e.latlng, trainingCount > 1)
       })
 
@@ -543,7 +552,7 @@ export class MapManager {
     const bounds = []
 
     // Create standard markers for each training
-    this.context.filteredTrainings.forEach((training) => {
+    this.context.filteredTrainings.forEach(training => {
       if (!training.lat || !training.lng) return
 
       const marker = L.marker([training.lat, training.lng], {
@@ -555,7 +564,7 @@ export class MapManager {
       marker.bindPopup(this.createMapPopup(training), {
         maxWidth: 400,
         className: 'md-map-popup-container',
-        autoPan: false  // Disable - we handle centering manually
+        autoPan: false // Disable - we handle centering manually
       })
 
       marker.addTo(map)
@@ -585,7 +594,7 @@ export class MapManager {
    */
   zoomToTraining(trainingId) {
     // Find the training
-    const training = this.context.allTrainings.find((t) => t.id === trainingId)
+    const training = this.context.allTrainings.find(t => t.id === trainingId)
     if (!training || !training.lat || !training.lng) {
       log('warn', `Training ${trainingId} not found or has no coordinates`)
       return
@@ -608,7 +617,7 @@ export class MapManager {
         if (!map) return
 
         // Find the marker for this training
-        const marker = this.context.markers.find((m) => m.trainingId === trainingId)
+        const marker = this.context.markers.find(m => m.trainingId === trainingId)
 
         if (marker) {
           // Smooth zoom with custom easing
@@ -617,7 +626,7 @@ export class MapManager {
           const zoomDiff = Math.abs(targetZoom - currentZoom)
 
           // Calculate duration based on zoom difference (longer for bigger jumps)
-          const duration = Math.min(1.5, 0.5 + (zoomDiff * 0.1))
+          const duration = Math.min(1.5, 0.5 + zoomDiff * 0.1)
 
           // Zoom to marker location with smooth animation
           map.flyTo([training.lat, training.lng], targetZoom, {
@@ -630,10 +639,13 @@ export class MapManager {
           this._addZoomHighlight([training.lat, training.lng])
 
           // Open the marker's popup after zoom animation
-          setTimeout(() => {
-            marker.openPopup()
-            this.announceToScreenReader(`Zu ${training.training} in ${training.ort} gezoomt`)
-          }, duration * 1000 + 100)
+          setTimeout(
+            () => {
+              marker.openPopup()
+              this.announceToScreenReader(`Zu ${training.training} in ${training.ort} gezoomt`)
+            },
+            duration * 1000 + 100
+          )
 
           log('info', `Zoomed to training ${trainingId} at ${training.ort}`)
         } else {
@@ -751,7 +763,6 @@ export class MapManager {
     return createMapPopupHTML(training, utils)
   }
 
-
   /**
    * Add Zoom Highlight
    *
@@ -794,6 +805,40 @@ export class MapManager {
   }
 
   /**
+   * Add User Location Marker to Map
+   *
+   * Adds a blue pulsing marker at the user's location.
+   * Called after successful geolocation or when manual location is loaded.
+   *
+   * @param {[number, number]} latlng - User coordinates [lat, lng]
+   * @returns {void}
+   */
+  addUserLocationMarker(latlng) {
+    if (!this.context.map) return
+
+    // Remove existing user marker if present
+    if (this.context.userLocationMarker) {
+      this.context.map.removeLayer(this.context.userLocationMarker)
+      this.context.userLocationMarker = null
+    }
+
+    // Create custom user location marker with pulsing blue dot
+    this.context.userLocationMarker = L.marker(latlng, {
+      icon: L.divIcon({
+        className: 'md-user-location-marker',
+        html: '<div class="pulse"></div>',
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      }),
+      title: 'Mein Standort',
+      zIndexOffset: 1000 // Ensure user marker appears above training markers
+    })
+
+    this.context.userLocationMarker.addTo(this.context.map)
+    log('info', 'User location marker added to map', latlng)
+  }
+
+  /**
    * Cleanup Map
    *
    * Properly destroys map instance and prevents memory leaks.
@@ -812,27 +857,27 @@ export class MapManager {
       map.stop()
 
       // 1. Remove all event listeners to prevent memory leaks
-      map.off()  // Remove ALL event listeners
+      map.off() // Remove ALL event listeners
 
       // 2. Remove tile layer and its event listeners
       if (this.context.tileLayer) {
-        this.context.tileLayer.off()  // Remove tile layer events
+        this.context.tileLayer.off() // Remove tile layer events
         map.removeLayer(this.context.tileLayer)
         this.context.tileLayer = null
       }
 
       // 3. Clean up cluster group
       if (this.context.markerClusterGroup) {
-        this.context.markerClusterGroup.off()  // Remove cluster events
+        this.context.markerClusterGroup.off() // Remove cluster events
         map.removeLayer(this.context.markerClusterGroup)
-        this.context.markerClusterGroup.clearLayers()  // Clear all markers
+        this.context.markerClusterGroup.clearLayers() // Clear all markers
         this.context.markerClusterGroup = null
       }
 
       // 4. Remove and unbind individual markers
-      this.context.markers.forEach((marker) => {
-        marker.off()  // Remove marker events
-        marker.unbindPopup()  // Remove popup binding
+      this.context.markers.forEach(marker => {
+        marker.off() // Remove marker events
+        marker.unbindPopup() // Remove popup binding
         map.removeLayer(marker)
         // Break circular reference
         marker.trainingId = null
@@ -861,7 +906,7 @@ export class MapManager {
 
       // 6a. Clean up tile layers
       if (this.context.tileLayers) {
-        Object.values(this.context.tileLayers).forEach((layer) => {
+        Object.values(this.context.tileLayers).forEach(layer => {
           layer.off()
           if (map.hasLayer(layer)) {
             map.removeLayer(layer)
@@ -871,7 +916,7 @@ export class MapManager {
       }
 
       // 7. Remove all layers (safety net)
-      map.eachLayer((layer) => {
+      map.eachLayer(layer => {
         layer.off()
         map.removeLayer(layer)
       })
@@ -952,5 +997,4 @@ export class MapManager {
       return null
     }
   }
-
 }

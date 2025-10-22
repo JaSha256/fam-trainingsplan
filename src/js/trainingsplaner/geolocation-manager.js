@@ -28,11 +28,13 @@ export class GeolocationManager {
    * @param {AlpineContext} context - Alpine.js context
    * @param {Object} dependencies - External dependencies
    * @param {() => void} dependencies.applyFilters - Apply filters function
+   * @param {Object} [dependencies.mapManager] - Map manager instance for adding user marker
    */
   constructor(state, context, dependencies) {
     this.state = state
     this.context = context
     this.applyFilters = dependencies.applyFilters
+    this.mapManager = dependencies.mapManager || null
 
     // Load manual location from store if available
     this.loadManualLocation()
@@ -52,6 +54,12 @@ export class GeolocationManager {
 
       // Add distance to trainings
       this.addDistanceToTrainings()
+
+      // Add user marker to map if map exists
+      if (this.mapManager && this.context.map) {
+        const { lat, lng } = this.context.userPosition
+        this.mapManager.addUserLocationMarker([lat, lng])
+      }
     }
   }
 
@@ -78,11 +86,13 @@ export class GeolocationManager {
       this.addDistanceToTrainings()
       this.applyFilters()
 
-      this.context.$store.ui.showNotification(
-        'Standort ermittelt! 📍',
-        'success',
-        2000
-      )
+      // Add user marker to map if map exists
+      if (this.mapManager && this.context.map) {
+        const { lat, lng } = this.context.userPosition
+        this.mapManager.addUserLocationMarker([lat, lng])
+      }
+
+      this.context.$store.ui.showNotification('Standort ermittelt! 📍', 'success', 2000)
 
       return true
     } catch (err) {
@@ -112,7 +122,7 @@ export class GeolocationManager {
       this.context.userPosition
     )
 
-    this.context.allTrainings.forEach((t) => {
+    this.context.allTrainings.forEach(t => {
       if (t.distance !== undefined) {
         t.distanceText = t.distance.toFixed(1) + ' km'
       }
@@ -139,7 +149,7 @@ export class GeolocationManager {
     localStorage.removeItem('manualLocation')
 
     // Remove distance properties from trainings
-    this.context.allTrainings.forEach((t) => {
+    this.context.allTrainings.forEach(t => {
       delete t.distance
       delete t.distanceText
     })
