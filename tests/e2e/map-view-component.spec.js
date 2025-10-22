@@ -6,6 +6,8 @@ import { test, expect } from '@playwright/test'
 test.describe('Map View Component (Task 11.4)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
+    // Set desktop viewport for desktop view tabs
+    await page.setViewportSize({ width: 1280, height: 720 })
     // Wait for Alpine to initialize
     await page.waitForFunction(() => window.Alpine !== undefined)
   })
@@ -29,15 +31,18 @@ test.describe('Map View Component (Task 11.4)', () => {
     await page.waitForLoadState('networkidle')
 
     // Initially should show list view (default)
-    const listView = page.locator('section').filter({ has: page.locator('article') }).first()
+    const listView = page
+      .locator('section')
+      .filter({ has: page.locator('article') })
+      .first()
     await expect(listView).toBeVisible()
 
     // Map view should be hidden initially
     const mapView = page.locator('section.map-view')
     await expect(mapView).toBeHidden()
 
-    // Click map tab to switch view
-    const mapTab = page.locator('[data-testid="view-tab-map"]')
+    // Click map tab to switch view (desktop tabs use desktop-view-tab prefix)
+    const mapTab = page.locator('[data-testid="desktop-view-tab-map"]')
     await mapTab.click()
 
     // Wait for Alpine reactivity
@@ -52,8 +57,8 @@ test.describe('Map View Component (Task 11.4)', () => {
   })
 
   test('should have correct dimensions for map container', async ({ page }) => {
-    // Switch to map view
-    const mapTab = page.locator('[data-testid="view-tab-map"]')
+    // Switch to map view (desktop tabs use desktop-view-tab prefix)
+    const mapTab = page.locator('[data-testid="desktop-view-tab-map"]')
     await mapTab.click()
     await page.waitForTimeout(500)
 
@@ -77,10 +82,10 @@ test.describe('Map View Component (Task 11.4)', () => {
     // Wait for page load
     await page.waitForLoadState('networkidle')
 
-    // All three view tabs should exist
-    const listTab = page.locator('[data-testid="view-tab-list"]')
-    const mapTab = page.locator('[data-testid="view-tab-map"]')
-    const favoritesTab = page.locator('[data-testid="view-tab-favorites"]')
+    // All three view tabs should exist (desktop tabs use desktop-view-tab prefix)
+    const listTab = page.locator('[data-testid="desktop-view-tab-list"]')
+    const mapTab = page.locator('[data-testid="desktop-view-tab-map"]')
+    const favoritesTab = page.locator('[data-testid="desktop-view-tab-favorites"]')
 
     await expect(listTab).toBeVisible()
     await expect(mapTab).toBeVisible()
@@ -103,8 +108,8 @@ test.describe('Map View Component (Task 11.4)', () => {
   test('should maintain map view state when switching between views', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
-    // Switch to map view
-    const mapTab = page.locator('[data-testid="view-tab-map"]')
+    // Switch to map view (desktop tabs use desktop-view-tab prefix)
+    const mapTab = page.locator('[data-testid="desktop-view-tab-map"]')
     await mapTab.click()
     await page.waitForTimeout(500)
 
@@ -112,8 +117,8 @@ test.describe('Map View Component (Task 11.4)', () => {
     const mapView = page.locator('section.map-view')
     await expect(mapView).toBeVisible()
 
-    // Switch to list view
-    const listTab = page.locator('[data-testid="view-tab-list"]')
+    // Switch to list view (desktop tabs use desktop-view-tab prefix)
+    const listTab = page.locator('[data-testid="desktop-view-tab-list"]')
     await listTab.click()
     await page.waitForTimeout(500)
 

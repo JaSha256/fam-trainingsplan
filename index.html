@@ -553,8 +553,8 @@
       <div class="flex">
         <!-- ==================== DESKTOP FILTER SIDEBAR ==================== -->
         <aside
-          class="hidden lg:block bg-slate-200 border-r border-slate-300 min-h-screen sticky top-0 h-screen transition-all duration-300 overflow-hidden"
-          :class="$store.ui.sidebarCollapsed ? 'w-16' : 'w-80'"
+          class="hidden lg:block bg-slate-200 min-h-screen sticky top-0 h-screen transition-all duration-300 overflow-hidden"
+          :class="$store.ui.sidebarCollapsed ? 'w-0 border-r-0' : 'w-80 border-r border-slate-300'"
           style="box-shadow: var(--shadow-sidebar)"
         >
           <!-- Expanded State Content -->
@@ -587,144 +587,6 @@
                     d="M15 19l-7-7 7-7"
                   />
                 </svg>
-              </button>
-            </div>
-
-            <!-- ==================== TASK 21: DESKTOP VIEW SLIDER ==================== -->
-            <!-- M3 View Switcher - Desktop Only (≥1024px) -->
-            <div
-              role="tablist"
-              aria-label="Ansichtsauswahl"
-              data-testid="desktop-view-slider"
-              x-data="{
-                       tabs: ['list', 'map', 'favorites'],
-                       getFocusedIndex() {
-                         return this.tabs.indexOf($store.ui.activeView)
-                       },
-                       focusTab(index) {
-                         const tab = this.$refs['desktopTab' + index]
-                         if (tab) {
-                           tab.focus()
-                           $store.ui.setActiveView(this.tabs[index])
-                         }
-                       }
-                     }"
-              @keydown.arrow-right.prevent="focusTab((getFocusedIndex() + 1) % tabs.length)"
-              @keydown.arrow-left.prevent="focusTab((getFocusedIndex() - 1 + tabs.length) % tabs.length)"
-              @keydown.home.prevent="focusTab(0)"
-              @keydown.end.prevent="focusTab(tabs.length - 1)"
-              class="hidden lg:flex items-center gap-0.5 px-0.5 py-0.5 bg-slate-50 rounded-lg mb-6"
-            >
-              <!-- Liste Tab -->
-              <button
-                @click="$store.ui.setActiveView('list')"
-                x-ref="desktopTab0"
-                type="button"
-                role="tab"
-                :aria-selected="$store.ui.activeView === 'list' ? 'true' : 'false'"
-                :tabindex="$store.ui.activeView === 'list' ? '0' : '-1'"
-                aria-label="Listen-Ansicht"
-                aria-controls="list-panel"
-                data-testid="desktop-view-tab-list"
-                :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm' : ''"
-                :style="$store.ui.activeView === 'list'
-                              ? 'background: var(--md-sys-color-surface); box-shadow: var(--md-sys-elevation-1); color: var(--md-sys-color-on-surface);'
-                              : 'background: transparent; color: var(--md-sys-color-on-surface-variant);'"
-                class="md-state-layer flex-1 px-3 py-2 rounded-md font-medium text-slate-700 flex items-center justify-center gap-1.5 min-h-[44px] touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 transition-all"
-                style="
-                  transition: all var(--md-sys-motion-duration-short4, 200ms)
-                    var(--md-sys-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
-                "
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-                <span class="md-typescale-label-medium">Liste</span>
-              </button>
-
-              <!-- Karte Tab -->
-              <button
-                @click="$store.ui.setActiveView('map')"
-                x-ref="desktopTab1"
-                type="button"
-                role="tab"
-                :aria-selected="$store.ui.activeView === 'map' ? 'true' : 'false'"
-                :tabindex="$store.ui.activeView === 'map' ? '0' : '-1'"
-                aria-label="Karten-Ansicht"
-                aria-controls="map-panel"
-                data-testid="desktop-view-tab-map"
-                :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm' : ''"
-                :style="$store.ui.activeView === 'map'
-                              ? 'background: var(--md-sys-color-surface); box-shadow: var(--md-sys-elevation-1); color: var(--md-sys-color-on-surface);'
-                              : 'background: transparent; color: var(--md-sys-color-on-surface-variant);'"
-                class="md-state-layer flex-1 px-3 py-2 rounded-md font-medium text-slate-700 flex items-center justify-center gap-1.5 min-h-[44px] touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 transition-all"
-                style="
-                  transition: all var(--md-sys-motion-duration-short4, 200ms)
-                    var(--md-sys-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
-                "
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  />
-                </svg>
-                <span class="md-typescale-label-medium">Karte</span>
-                <!-- AUFGABE 12: Keyboard Shortcut Hint -->
-                <kbd
-                  class="ml-1 px-1.5 py-0.5 text-xs font-mono bg-slate-200 text-slate-600 rounded border border-slate-300"
-                  aria-label="Tastenkürzel M"
-                >
-                  M
-                </kbd>
-              </button>
-
-              <!-- Favoriten Tab -->
-              <button
-                @click="$store.ui.setActiveView('favorites')"
-                x-ref="desktopTab2"
-                type="button"
-                role="tab"
-                :aria-selected="$store.ui.activeView === 'favorites' ? 'true' : 'false'"
-                :tabindex="$store.ui.activeView === 'favorites' ? '0' : '-1'"
-                aria-label="Favoriten-Ansicht"
-                aria-controls="favorites-panel"
-                data-testid="desktop-view-tab-favorites"
-                :class="$store.ui.activeView === 'favorites' ? 'bg-white shadow-sm' : ''"
-                :style="$store.ui.activeView === 'favorites'
-                              ? 'background: var(--md-sys-color-surface); box-shadow: var(--md-sys-elevation-1); color: var(--md-sys-color-on-surface);'
-                              : 'background: transparent; color: var(--md-sys-color-on-surface-variant);'"
-                class="md-state-layer flex-1 px-3 py-2 rounded-md font-medium text-slate-700 flex items-center justify-center gap-1.5 min-h-[44px] touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 transition-all"
-                style="
-                  transition: all var(--md-sys-motion-duration-short4, 200ms)
-                    var(--md-sys-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
-                "
-              >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                  />
-                </svg>
-                <span class="md-typescale-label-medium">Favoriten</span>
               </button>
             </div>
 
@@ -1274,65 +1136,32 @@
               </button>
             </div>
           </div>
-
-          <!-- Collapsed State Content -->
-          <div
-            x-show="$store.ui.sidebarCollapsed"
-            x-transition
-            class="flex flex-col items-center py-6 px-2 h-full space-y-4"
-          >
-            <!-- Expand Button -->
-            <button
-              @click="$store.ui.toggleSidebar()"
-              type="button"
-              data-testid="sidebar-expand-toggle"
-              aria-label="Filter ausklappen"
-              class="p-2 hover:bg-slate-100 rounded-lg transition-colors flex-shrink-0"
-            >
-              <svg
-                class="w-5 h-5 text-slate-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-
-            <!-- Active Filter Indicator -->
-            <div
-              x-show="hasActiveFilters"
-              data-testid="collapsed-filter-indicator"
-              class="w-10 h-10 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold mb-4"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                />
-              </svg>
-            </div>
-
-            <!-- Favorites Indicator -->
-            <div
-              x-show="favorites.length > 0"
-              class="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
-            >
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                />
-              </svg>
-            </div>
-          </div>
         </aside>
+
+        <!-- Floating Expand Button (visible when sidebar collapsed) -->
+        <button
+          x-show="$store.ui.sidebarCollapsed"
+          x-transition
+          @click="$store.ui.toggleSidebar()"
+          type="button"
+          data-testid="sidebar-expand-toggle"
+          aria-label="Filter ausklappen"
+          class="hidden lg:block fixed left-4 top-20 z-50 p-3 bg-white hover:bg-slate-50 rounded-full transition-all"
+          style="
+            box-shadow:
+              0 4px 12px 0 oklch(0 0 0 / 0.15),
+              0 2px 4px 0 oklch(0 0 0 / 0.1);
+          "
+        >
+          <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
 
         <!-- ==================== MAIN CONTENT ==================== -->
         <main class="flex-1 min-w-0" id="main-content">
@@ -1377,63 +1206,6 @@
                       von <span x-text="allTrainings.length"></span> Trainings
                     </span>
                   </h2>
-
-                  <!-- View Mode Slider (Desktop only) -->
-                  <div class="hidden md:flex items-center gap-1 px-2 py-1 bg-slate-100 rounded-lg">
-                    <button
-                      @click="$store.ui.viewMode = 'compact'"
-                      type="button"
-                      :class="$store.ui.viewMode === 'compact' ? 'bg-white shadow-sm' : 'hover:bg-slate-50'"
-                      class="px-3 py-1.5 rounded-md text-sm font-medium text-slate-700 transition-all flex items-center gap-1.5"
-                      title="Kompakte Ansicht"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                        />
-                      </svg>
-                      <span class="hidden lg:inline">Kompakt</span>
-                    </button>
-
-                    <button
-                      @click="$store.ui.viewMode = 'detailed'"
-                      type="button"
-                      :class="$store.ui.viewMode === 'detailed' ? 'bg-white shadow-sm' : 'hover:bg-slate-50'"
-                      class="px-3 py-1.5 rounded-md text-sm font-medium text-slate-700 transition-all flex items-center gap-1.5"
-                      title="Detaillierte Ansicht"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16"
-                        />
-                      </svg>
-                      <span class="hidden lg:inline">Detailliert</span>
-                    </button>
-
-                    <button
-                      @click="$store.ui.viewMode = 'list'"
-                      type="button"
-                      :class="$store.ui.viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-slate-50'"
-                      class="px-3 py-1.5 rounded-md text-sm font-medium text-slate-700 transition-all flex items-center gap-1.5"
-                      title="Listen-Ansicht"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 6h16M4 10h16M4 14h16M4 18h16"
-                        />
-                      </svg>
-                      <span class="hidden lg:inline">Liste</span>
-                    </button>
-                  </div>
 
                   <!-- Active Filters Badge -->
                   <div
@@ -1852,9 +1624,10 @@
               aria-labelledby="view-tab-list"
               x-show="$store.ui.activeView === 'list' || $store.ui.activeView === 'split'"
               x-transition
-              class="lg:w-2/5 lg:overflow-y-auto lg:border-r lg:border-slate-200"
+              class="lg:overflow-y-auto"
               :class="{
-                'lg:!block': $store.ui.activeView === 'split'
+                'lg:w-2/5 lg:border-r lg:border-slate-200': $store.ui.activeView === 'split',
+                'lg:w-full': $store.ui.activeView === 'list'
               }"
             >
               <!-- Training Cards -->
@@ -1872,14 +1645,15 @@
                     <div
                       class="grid gap-5"
                       :class="{
-                                   'grid-cols-1 md:grid-cols-2 xl:grid-cols-4': $store.ui.viewMode === 'compact',
-                                   'grid-cols-1 md:grid-cols-2 xl:grid-cols-3': $store.ui.viewMode === 'detailed',
-                                   'grid-cols-1': $store.ui.viewMode === 'list'
+                                   // Split-view: max 2 columns for readability
+                                   'grid-cols-1 md:grid-cols-2': $store.ui.activeView === 'split',
+                                   // Normal view: responsive grid up to 4 columns
+                                   'grid-cols-1 md:grid-cols-2 xl:grid-cols-4': $store.ui.activeView !== 'split'
                                  }"
                     >
                       <template x-for="training in gruppe.items" :key="training.id">
                         <article
-                          class="md-card-elevated md-state-layer p-5 training-card-stagger"
+                          class="md-card-elevated md-state-layer p-5 training-card-stagger min-w-[280px]"
                           data-training-card
                         >
                           <!-- Header mit Favoriten -->
@@ -2187,9 +1961,13 @@
               id="map-panel"
               role="tabpanel"
               aria-labelledby="view-tab-map"
-              x-show="$store.ui.activeView === 'map'"
+              x-show="$store.ui.activeView === 'map' || $store.ui.activeView === 'split'"
               x-transition
-              class="map-view w-full lg:w-3/5 lg:flex-shrink-0"
+              class="map-view lg:flex-shrink-0"
+              :class="{
+                'lg:w-3/5': $store.ui.activeView === 'split',
+                'w-full': $store.ui.activeView === 'map'
+              }"
             >
               <div id="map-view-container" class="w-full h-[calc(100vh-64px)]"></div>
             </section>

@@ -84,13 +84,13 @@ registerAlpinePlugins()
  *   filterSidebarOpen: boolean,
  *   mobileFilterOpen: boolean,
  *   mapView: boolean,
- *   activeView: 'list' | 'split' | 'map',
+ *   activeView: 'list' | 'split' | 'map' | 'favorites',
  *   notification: Notification | null,
  *   notificationTimeout: number | null,
  *   filters: Filter,
  *   groupingMode: 'wochentag' | 'ort',
  *   sortBy: string[],
- *   setActiveView: (view: 'list' | 'split' | 'map') => void,
+ *   setActiveView: (view: 'list' | 'split' | 'map' | 'favorites') => void,
  *   isActiveView: (view: string) => boolean,
  *   toggleMapView: () => void,
  *   showListView: () => void,
@@ -164,12 +164,12 @@ Alpine.store('ui', {
 
   /**
    * Set Active View (Session 3: Updated)
-   * @param {string} view - View name: 'list' | 'split' | 'map'
+   * @param {string} view - View name: 'list' | 'split' | 'map' | 'favorites'
    * @returns {void}
    */
   setActiveView(view) {
     // Validate view value - only accept valid views
-    if (!['list', 'split', 'map'].includes(view)) {
+    if (!['list', 'split', 'map', 'favorites'].includes(view)) {
       return // Silently reject invalid values
     }
 

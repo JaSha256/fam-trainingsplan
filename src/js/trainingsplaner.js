@@ -323,8 +323,12 @@ export function trainingsplaner() {
         filterChangeTimeout = setTimeout(() => {
           alpineContext.filterEngine.applyFilters()
 
-          // Auto-update map markers when filters change and map is active
-          if (alpineContext.$store?.ui?.activeView === 'map' && alpineContext.map) {
+          // Auto-update map markers when filters change and map is active or split view
+          if (
+            (alpineContext.$store?.ui?.activeView === 'map' ||
+              alpineContext.$store?.ui?.activeView === 'split') &&
+            alpineContext.map
+          ) {
             alpineContext.$nextTick(() => {
               alpineContext.mapManager.addMarkersToMap()
             })
@@ -336,7 +340,7 @@ export function trainingsplaner() {
 
     // Watch for map view (activeView state replaces mapModalOpen)
     alpineContext.$watch('$store.ui.activeView', (/** @type {string} */ activeView) => {
-      if (activeView === 'map') {
+      if (activeView === 'map' || activeView === 'split') {
         alpineContext.$nextTick(() => {
           // Initialize map if not already initialized
           if (!alpineContext.map) {
@@ -351,8 +355,11 @@ export function trainingsplaner() {
       // Note: We don't cleanup map when switching away - map instance persists
     })
 
-    // Check initial state - initialize map if activeView is already 'map'
-    if (alpineContext.$store?.ui?.activeView === 'map') {
+    // Check initial state - initialize map if activeView is already 'map' or 'split'
+    if (
+      alpineContext.$store?.ui?.activeView === 'map' ||
+      alpineContext.$store?.ui?.activeView === 'split'
+    ) {
       alpineContext.$nextTick(() => {
         if (!alpineContext.map) {
           alpineContext.mapManager.initializeMap()
