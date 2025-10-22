@@ -646,7 +646,7 @@
 
               <!-- Clear All Button with prominent state -->
               <button
-                @click="clearAllFilters()"
+                @click="$store.ui.resetFilters(); applyFilters()"
                 type="button"
                 :class="shouldClearButtonBeProminent() ?
                                     'px-4 py-2 rounded-lg bg-red-50 text-red-700 border-2 border-red-300 font-bold hover:bg-red-100 hover:border-red-400 hover:shadow-md active:bg-red-200 min-h-[44px]' :
@@ -963,6 +963,7 @@
               <!-- Wochentag Filter -->
               <fieldset
                 class="filter-group"
+                data-filter-section="wochentag"
                 x-data="{
                                   expanded: $store.ui.filters.wochentag.length > 0,
                                   get allSelected() { return $store.ui.filters.wochentag.length === $store.filterOptions.wochentage.length },
@@ -981,8 +982,8 @@
                                       } else {
                                           $store.ui.filters.wochentag = [...$store.filterOptions.wochentage]
                                       }
-                                      applyFilters()
-                                  }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                               }"
               >
                 <div class="flex items-center justify-between mb-3">
@@ -1076,8 +1077,8 @@
                                       } else {
                                           $store.ui.filters.ort = [...$store.filterOptions.orte]
                                       }
-                                      applyFilters()
-                                  }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                               }"
               >
                 <div class="flex items-center justify-between mb-3">
@@ -1171,8 +1172,8 @@
                                       } else {
                                           $store.ui.filters.training = [...$store.filterOptions.trainingsarten]
                                       }
-                                      applyFilters()
-                                  }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                               }"
               >
                 <div class="flex items-center justify-between mb-3">
@@ -1266,8 +1267,8 @@
                                       } else {
                                           $store.ui.filters.altersgruppe = [...$store.filterOptions.altersgruppen]
                                       }
-                                      applyFilters()
-                                  }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                               }"
               >
                 <div class="flex items-center justify-between mb-3">
@@ -1687,11 +1688,11 @@
                       <article
                         x-intersect="$el.classList.add('animate-fade-in')"
                         class="md-card-elevated md-state-layer p-5"
+                        data-training-card
                       >
                         <!-- Header mit Favoriten -->
                         <div class="flex items-start justify-between gap-3 mb-4">
                           <span
-                            class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold border"
                             :class="getTrainingColor(training.training)"
                             x-text="training.training"
                           ></span>
@@ -1719,7 +1720,7 @@
                             <button
                               @click="toggleFavorite(training.id)"
                               type="button"
-                              class="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                              class="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-100 transition-colors touch-manipulation flex items-center justify-center"
                               :aria-label="isFavorite(training.id) ? 'Von Favoriten entfernen' : 'Zu Favoriten hinzufügen'"
                             >
                               <svg
@@ -1832,7 +1833,7 @@
                               :href="training.link"
                               target="_blank"
                               rel="noopener noreferrer"
-                              class="flex-1 md-btn-filled md-state-layer md-typescale-label-large inline-flex items-center justify-center gap-2"
+                              class="flex-1 md-btn-filled md-state-layer md-typescale-label-large inline-flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
                             >
                               Anmelden
                               <svg
@@ -1997,11 +1998,11 @@
               <article
                 x-intersect="$el.classList.add('animate-fade-in')"
                 class="md-card-elevated md-state-layer p-5 mb-5"
+                data-training-card
               >
                 <!-- Same training card structure as list view -->
                 <div class="flex items-start justify-between gap-3 mb-4">
                   <span
-                    class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold border"
                     :class="getTrainingColor(training.training)"
                     x-text="training.training"
                   ></span>
@@ -2023,7 +2024,7 @@
                     <button
                       @click="toggleFavorite(training.id)"
                       type="button"
-                      class="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                      class="min-w-[44px] min-h-[44px] p-2 rounded-full hover:bg-slate-100 transition-colors touch-manipulation flex items-center justify-center"
                       :aria-label="isFavorite(training.id) ? 'Von Favoriten entfernen' : 'Zu Favoriten hinzufügen'"
                     >
                       <svg
@@ -2113,7 +2114,7 @@
                       :href="training.link"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="flex-1 md-btn-filled md-state-layer md-typescale-label-large inline-flex items-center justify-center gap-2"
+                      class="flex-1 md-btn-filled md-state-layer md-typescale-label-large inline-flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
                     >
                       Anmelden
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2132,6 +2133,26 @@
           </section>
         </main>
       </div>
+
+      <!-- ==================== FAB: HEUTE QUICK FILTER (AUFGABE 2) ==================== -->
+      <button
+        x-show="$store.ui.activeView === 'list'"
+        x-transition
+        @click="applyQuickFilter('heute')"
+        class="md-fab w-14 h-14 fixed z-40 rounded-full shadow-lg bg-primary-600 text-white flex items-center justify-center hover:shadow-xl hover:scale-105 active:scale-100 transition-all duration-200 bottom-20 right-6 md:bottom-6"
+        :class="{ 'bg-primary-700': isQuickFilterActive('heute') }"
+        aria-label="Heute filtern"
+        title="Nur heutige Trainings anzeigen"
+        type="button"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+          />
+        </svg>
+      </button>
 
       <!-- ==================== MOBILE FILTER DRAWER ==================== -->
       <div
@@ -2336,8 +2357,8 @@
                                   } else {
                                       $store.ui.filters.wochentag = [...$store.filterOptions.wochentage]
                                   }
-                                  applyFilters()
-                              }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                           }"
             >
               <div class="flex items-center justify-between mb-3">
@@ -2429,8 +2450,8 @@
                                   } else {
                                       $store.ui.filters.ort = [...$store.filterOptions.orte]
                                   }
-                                  applyFilters()
-                              }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                           }"
             >
               <div class="flex items-center justify-between mb-3">
@@ -2522,8 +2543,8 @@
                                   } else {
                                       $store.ui.filters.training = [...$store.filterOptions.trainingsarten]
                                   }
-                                  applyFilters()
-                              }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                           }"
             >
               <div class="flex items-center justify-between mb-3">
@@ -2615,8 +2636,8 @@
                                   } else {
                                       $store.ui.filters.altersgruppe = [...$store.filterOptions.altersgruppen]
                                   }
-                                  applyFilters()
-                              }
+                                      // applyFilters() automatically triggered by $watch in trainingsplaner.js
+}
                           }"
             >
               <div class="flex items-center justify-between mb-3">

@@ -649,16 +649,34 @@ export function trainingsplaner() {
     })
   }
 
+  /**
+   * Get Training Color Badge Class
+   * AUFGABE 3: Semantische Farbkodierung
+   *
+   * Returns semantic CSS class for training type badge with:
+   * - WCAG AAA compliant colors (≥7:1 contrast)
+   * - Dark mode support via training-colors.css
+   * - Scientific color psychology (Blue=Trust, Green=Energy, etc.)
+   *
+   * @param {string} training - Training type name
+   * @returns {string} CSS class for badge styling
+   */
   component.getTrainingColor = function (/** @type {string} */ training) {
     const t = (training || '').toLowerCase()
-    if (t.includes('parkour')) return 'bg-blue-100 text-blue-800 border-blue-200'
-    if (t.includes('trampolin')) return 'bg-green-100 text-green-800 border-green-200'
-    if (t.includes('tricking')) return 'bg-purple-100 text-purple-800 border-purple-200'
-    if (t.includes('movement')) return 'bg-orange-100 text-orange-800 border-orange-200'
-    if (t.includes('fam')) return 'bg-pink-100 text-pink-800 border-pink-200'
+
+    // AUFGABE 3: Semantic color badges (WCAG AAA compliant)
+    if (t.includes('parkour')) return 'training-badge badge-parkour'
+    if (t.includes('trampolin')) return 'training-badge badge-trampolin'
+    if (t.includes('tricking')) return 'training-badge badge-tricking'
+    if (t.includes('movement')) return 'training-badge badge-movement'
+    if (t.includes('fam')) return 'training-badge badge-fam'
+
+    // Fallback for other training types (maintain old styling for compatibility)
     if (t.includes('flips')) return 'bg-red-100 text-red-800 border-red-200'
     if (t.includes('calistenics') || t.includes('calisthenics'))
       return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+
+    // Default fallback
     return 'bg-slate-100 text-slate-800 border-slate-200'
   }
 
@@ -708,19 +726,60 @@ export function trainingsplaner() {
   // ==================== TASK 15: ACTIVE FILTER CHIPS ====================
 
   /**
-   * Get Active Filter Chips
+   * Truncate Text with Ellipsis
    *
-   * Returns array of all active filter chips with enhanced UX metadata:
-   * - tooltip: Descriptive text for hover state
-   * - ariaLabel: Accessible label for screen readers
-   * - prominent: Whether chip should have high visual prominence
-   * - styleClass: CSS classes for visual styling
-   * - minTouchTarget: Minimum touch target size (44px for mobile)
+   * Helper function to truncate long text for filter chip display.
    *
-   * Task 15: Sticky filter chips bar
-   * UX Enhancement: Prominent visual styling, tooltips, better hover states
+   * @param {string} text - Text to truncate
+   * @param {number} maxLength - Maximum length before truncation
+   * @returns {string} Truncated text with ellipsis if needed
+   */
+  component.truncateText = function (text, maxLength = 30) {
+    if (text.length <= maxLength) return text
+    return text.substring(0, maxLength) + '...'
+  }
+
+  /**
+   * Remove Category Filter
    *
-   * @returns {Array<{category: string, label: string, value: string, remove: () => void, tooltip: string, ariaLabel: string, prominent: boolean, styleClass: string, minTouchTarget: number}>}
+   * Removes ALL filters from a specific category (e.g., all weekdays).
+   *
+   * @param {string} category - Filter category to clear
+   * @returns {void}
+   */
+  component.removeCategoryFilter = function (category) {
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
+    const filters = alpineContext.$store?.ui?.filters
+    if (!filters) return
+
+    // Clear array filters
+    if (['wochentag', 'ort', 'training', 'altersgruppe'].includes(category)) {
+      filters[category] = []
+    }
+    // Clear search
+    else if (category === 'search') {
+      filters.searchTerm = ''
+    }
+    // Clear quick filter
+    else if (category === 'quickFilter') {
+      filters.activeQuickFilter = null
+    }
+
+    this.applyFilters()
+  }
+
+  /**
+   * Get Active Filter Chips (Grouped by Category)
+   *
+   * Returns array of filter chips GROUPED by category for better UX.
+   * Instead of "Wochentag: Montag", "Wochentag: Dienstag", ...
+   * Returns "Wochentag: Montag, Dienstag, ..." with truncation for long lists.
+   *
+   * UX Improvement: Grouped display, text truncation, better space usage
+   *
+   * @returns {Array<{category: string, label: string, value: string, fullValue: string, values: string[], remove: () => void, tooltip: string, ariaLabel: string, prominent: boolean, styleClass: string, minTouchTarget: number}>}
    */
   component.getActiveFilterChips = function () {
     // At runtime, Alpine.js augments 'this' with $store
@@ -733,90 +792,93 @@ export function trainingsplaner() {
 
     const chips = []
 
-    // Wochentag filters
+    // Wochentag filters (grouped)
     if (Array.isArray(filters.wochentag) && filters.wochentag.length > 0) {
-      filters.wochentag.forEach(
-        /** @param {string} day */ day => {
-          chips.push({
-            category: 'wochentag',
-            label: 'Wochentag',
-            value: day,
-            remove: () => this.removeFilterChip('wochentag', day),
-            tooltip: `Wochentag: ${day} - Klicken zum Entfernen`,
-            ariaLabel: `Filter ${day} entfernen`,
-            prominent: true,
-            styleClass: 'primary-filter',
-            minTouchTarget: 44
-          })
-        }
-      )
+      const fullValue = filters.wochentag.join(', ')
+      const displayValue = this.truncateText(fullValue, 35)
+      chips.push({
+        category: 'wochentag',
+        label: 'Wochentag',
+        value: displayValue,
+        fullValue: fullValue,
+        values: filters.wochentag,
+        remove: () => this.removeCategoryFilter('wochentag'),
+        tooltip: `Wochentag: ${fullValue}\nKlicken zum Entfernen aller Wochentage`,
+        ariaLabel: `Filter Wochentag (${filters.wochentag.length} Tage) entfernen`,
+        prominent: true,
+        styleClass: 'primary-filter',
+        minTouchTarget: 44
+      })
     }
 
-    // Ort filters
+    // Ort filters (grouped)
     if (Array.isArray(filters.ort) && filters.ort.length > 0) {
-      filters.ort.forEach(
-        /** @param {string} ort */ ort => {
-          chips.push({
-            category: 'ort',
-            label: 'Ort',
-            value: ort,
-            remove: () => this.removeFilterChip('ort', ort),
-            tooltip: `Ort: ${ort} - Klicken zum Entfernen`,
-            ariaLabel: `Filter ${ort} entfernen`,
-            prominent: true,
-            styleClass: 'primary-filter',
-            minTouchTarget: 44
-          })
-        }
-      )
+      const fullValue = filters.ort.join(', ')
+      const displayValue = this.truncateText(fullValue, 35)
+      chips.push({
+        category: 'ort',
+        label: 'Ort',
+        value: displayValue,
+        fullValue: fullValue,
+        values: filters.ort,
+        remove: () => this.removeCategoryFilter('ort'),
+        tooltip: `Ort: ${fullValue}\nKlicken zum Entfernen aller Orte`,
+        ariaLabel: `Filter Ort (${filters.ort.length} Orte) entfernen`,
+        prominent: true,
+        styleClass: 'primary-filter',
+        minTouchTarget: 44
+      })
     }
 
-    // Training filters
+    // Training filters (grouped)
     if (Array.isArray(filters.training) && filters.training.length > 0) {
-      filters.training.forEach(
-        /** @param {string} training */ training => {
-          chips.push({
-            category: 'training',
-            label: 'Training',
-            value: training,
-            remove: () => this.removeFilterChip('training', training),
-            tooltip: `Training: ${training} - Klicken zum Entfernen`,
-            ariaLabel: `Filter ${training} entfernen`,
-            prominent: true,
-            styleClass: 'primary-filter',
-            minTouchTarget: 44
-          })
-        }
-      )
+      const fullValue = filters.training.join(', ')
+      const displayValue = this.truncateText(fullValue, 35)
+      chips.push({
+        category: 'training',
+        label: 'Training',
+        value: displayValue,
+        fullValue: fullValue,
+        values: filters.training,
+        remove: () => this.removeCategoryFilter('training'),
+        tooltip: `Training: ${fullValue}\nKlicken zum Entfernen aller Trainingsarten`,
+        ariaLabel: `Filter Training (${filters.training.length} Arten) entfernen`,
+        prominent: true,
+        styleClass: 'primary-filter',
+        minTouchTarget: 44
+      })
     }
 
-    // Altersgruppe filters
+    // Altersgruppe filters (grouped)
     if (Array.isArray(filters.altersgruppe) && filters.altersgruppe.length > 0) {
-      filters.altersgruppe.forEach(
-        /** @param {string} gruppe */ gruppe => {
-          chips.push({
-            category: 'altersgruppe',
-            label: 'Altersgruppe',
-            value: gruppe,
-            remove: () => this.removeFilterChip('altersgruppe', gruppe),
-            tooltip: `Altersgruppe: ${gruppe} - Klicken zum Entfernen`,
-            ariaLabel: `Filter ${gruppe} entfernen`,
-            prominent: true,
-            styleClass: 'primary-filter',
-            minTouchTarget: 44
-          })
-        }
-      )
+      const fullValue = filters.altersgruppe.join(', ')
+      const displayValue = this.truncateText(fullValue, 35)
+      chips.push({
+        category: 'altersgruppe',
+        label: 'Altersgruppe',
+        value: displayValue,
+        fullValue: fullValue,
+        values: filters.altersgruppe,
+        remove: () => this.removeCategoryFilter('altersgruppe'),
+        tooltip: `Altersgruppe: ${fullValue}\nKlicken zum Entfernen aller Altersgruppen`,
+        ariaLabel: `Filter Altersgruppe (${filters.altersgruppe.length} Gruppen) entfernen`,
+        prominent: true,
+        styleClass: 'primary-filter',
+        minTouchTarget: 44
+      })
     }
 
     // Search term
     if (filters.searchTerm && filters.searchTerm.trim() !== '') {
+      const displayValue = this.truncateText(filters.searchTerm, 35)
       chips.push({
         category: 'search',
         label: 'Suche',
-        value: filters.searchTerm,
-        remove: () => this.removeFilterChip('search', filters.searchTerm),
-        tooltip: `Suche: "${filters.searchTerm}" - Klicken zum Entfernen`,
+        value: displayValue,
+        fullValue: filters.searchTerm,
+        values: [filters.searchTerm],
+        remove: () => this.removeCategoryFilter('search'),
+        tooltip: `Suche: "${filters.searchTerm}"\nKlicken zum Entfernen`,
         ariaLabel: `Suchfilter "${filters.searchTerm}" entfernen`,
         prominent: true,
         styleClass: 'primary-filter',
@@ -842,8 +904,10 @@ export function trainingsplaner() {
         category: 'quickFilter',
         label: 'Quick-Filter',
         value: qfValue,
-        remove: () => this.removeFilterChip('quickFilter', filters.activeQuickFilter),
-        tooltip: `Quick-Filter: ${qfValue} - Klicken zum Entfernen`,
+        fullValue: qfValue,
+        values: [filters.activeQuickFilter],
+        remove: () => this.removeCategoryFilter('quickFilter'),
+        tooltip: `Quick-Filter: ${qfValue}\nKlicken zum Entfernen`,
         ariaLabel: `Quick-Filter ${qfValue} entfernen`,
         prominent: true,
         styleClass: 'primary-filter',
