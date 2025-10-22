@@ -16,12 +16,15 @@ build/
 .env.development
 
 # IDE
-.vscode/
+# .vscode/ - included in repo for team development
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
+
+# But ignore user-specific VSCode settings
+.vscode/settings.local.json
 
 # Logs
 logs/
@@ -68,3 +71,20 @@ workbox-*.js
 
 # Test fixtures
 /tests/fixtures/trainingsplan.fixture.json
+
+logs
+dev-debug.log
+# Dependency directories
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# OS specific
+
+# Task files
+# tasks.json
+# tasks/ 

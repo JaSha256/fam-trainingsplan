@@ -1,0 +1,486 @@
+/**
+ * Material Design 3 (M3) Chips and Navigation
+ *
+ * Contains M3 chip and navigation components:
+ * - M3 Chips (4 variants: Assist, Filter, Input, Suggestion)
+ * - M3 Navigation Rail (desktop vertical navigation)
+ */
+
+@layer components {
+  /* ==================== M3 CHIPS ==================== */
+  /* M3 Chip - Base structure (all chip variants) */
+  .md-chip {
+    @apply inline-flex items-center gap-2;
+    @apply px-4 py-2 rounded-lg;
+    @apply transition-all;
+    @apply cursor-pointer select-none;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    border: 1px solid var(--md-sys-color-outline);
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* State layer for chips */
+  .md-chip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .md-chip:hover::before {
+    opacity: 0.08;
+  }
+
+  .md-chip:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  .md-chip:active::before {
+    opacity: 0.12;
+  }
+
+  /* M3 Assist Chip (action chip) */
+  .md-chip-assist {
+    /* Inherit base chip styles */
+    @apply inline-flex items-center gap-2;
+    @apply px-4 py-2 rounded-lg;
+    @apply transition-all;
+    @apply cursor-pointer select-none;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    border: 1px solid var(--md-sys-color-outline);
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+    /* Specific styles */
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  /* State layer for assist chip */
+  .md-chip-assist::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .md-chip-assist:hover::before {
+    opacity: 0.08;
+  }
+
+  .md-chip-assist:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-assist:active::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-assist:hover {
+    box-shadow: var(--md-sys-elevation-1);
+  }
+
+  .md-chip-assist:focus-visible {
+    @apply outline-2 outline-primary-500 outline-offset-2;
+    box-shadow: var(--md-sys-elevation-1);
+  }
+
+  .md-chip-assist:active {
+    box-shadow: var(--md-sys-elevation-0);
+  }
+
+  .md-chip-assist:disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+
+  /* M3 Filter Chip (selectable chip) */
+  .md-chip-filter {
+    /* Inherit base chip styles */
+    @apply inline-flex items-center gap-2;
+    @apply px-4 py-2 rounded-lg;
+    @apply transition-all;
+    @apply cursor-pointer select-none;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    border: 1px solid var(--md-sys-color-outline);
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+    /* Specific styles */
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* State layer for filter chip */
+  .md-chip-filter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .md-chip-filter:hover::before {
+    opacity: 0.08;
+  }
+
+  .md-chip-filter:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-filter:active::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-filter:hover {
+    background-color: var(--md-sys-color-surface-container-low);
+  }
+
+  .md-chip-filter:focus-visible {
+    @apply outline-2 outline-primary-500 outline-offset-2;
+  }
+
+  /* Selected state */
+  .md-chip-filter.md-chip-selected {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-color: var(--md-sys-color-primary-container);
+  }
+
+  .md-chip-filter.md-chip-selected:hover {
+    box-shadow: var(--md-sys-elevation-1);
+  }
+
+  .md-chip-filter:disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+
+  /* M3 Input Chip (removable chip with close button) */
+  .md-chip-input {
+    /* Inherit base chip styles */
+    @apply inline-flex items-center gap-2;
+    @apply px-4 py-2 rounded-lg;
+    @apply transition-all;
+    @apply cursor-pointer select-none;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    border: 1px solid var(--md-sys-color-outline);
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+    /* Specific styles */
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    padding-right: 8px;
+  }
+
+  /* State layer for input chip */
+  .md-chip-input::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .md-chip-input:hover::before {
+    opacity: 0.08;
+  }
+
+  .md-chip-input:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-input:active::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-input:hover {
+    background-color: var(--md-sys-color-surface-container-low);
+  }
+
+  .md-chip-input:focus-visible {
+    @apply outline-2 outline-primary-500 outline-offset-2;
+  }
+
+  /* Close button for input chip */
+  .md-chip-close {
+    @apply ml-1 p-1 rounded-full;
+    @apply transition-all;
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    transition-duration: var(--md-sys-motion-duration-short4);
+  }
+
+  .md-chip-close:hover {
+    background-color: oklch(0 0 0 / 0.08);
+  }
+
+  .md-chip-close:active {
+    background-color: oklch(0 0 0 / 0.12);
+  }
+
+  /* M3 Suggestion Chip (autocomplete chip) */
+  .md-chip-suggest {
+    /* Inherit base chip styles */
+    @apply inline-flex items-center gap-2;
+    @apply px-4 py-2 rounded-lg;
+    @apply transition-all;
+    @apply cursor-pointer select-none;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+    position: relative;
+    overflow: hidden;
+    /* Specific styles */
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    border: none;
+    box-shadow: var(--md-sys-elevation-1);
+  }
+
+  /* State layer for suggest chip */
+  .md-chip-suggest::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .md-chip-suggest:hover::before {
+    opacity: 0.08;
+  }
+
+  .md-chip-suggest:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-suggest:active::before {
+    opacity: 0.12;
+  }
+
+  .md-chip-suggest:hover {
+    background-color: var(--md-sys-color-surface-container-low);
+    box-shadow: var(--md-sys-elevation-2);
+  }
+
+  .md-chip-suggest:focus-visible {
+    @apply outline-2 outline-primary-500 outline-offset-2;
+  }
+
+  .md-chip-suggest:active {
+    box-shadow: var(--md-sys-elevation-1);
+  }
+
+  .md-chip-suggest:disabled {
+    @apply opacity-40 cursor-not-allowed;
+    box-shadow: var(--md-sys-elevation-0);
+  }
+
+  /* Icon sizing for chips */
+  .md-chip svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Avatar sizing for chips */
+  .md-chip-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-left: -8px;
+  }
+
+  /* ==================== M3 NAVIGATION RAIL ==================== */
+  /* M3 Navigation Rail - Desktop vertical navigation */
+  .md-nav-rail {
+    @apply fixed left-0 top-0 bottom-0;
+    @apply flex flex-col items-center;
+    @apply z-30;
+    width: 80px;
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* Rail header (optional logo/icon) */
+  .md-nav-rail-header {
+    @apply flex items-center justify-center;
+    @apply w-full py-6;
+    min-height: 80px;
+  }
+
+  /* Rail destinations container */
+  .md-nav-rail-destinations {
+    @apply flex-1 flex flex-col items-center gap-3;
+    @apply w-full py-3;
+  }
+
+  /* Rail destination item */
+  .md-nav-rail-destination {
+    @apply relative flex flex-col items-center gap-1;
+    @apply w-full py-4;
+    @apply cursor-pointer transition-all;
+    color: var(--md-sys-color-on-surface-variant);
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+  }
+
+  /* State layer for destination */
+  .md-nav-rail-destination::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    pointer-events: none;
+  }
+
+  .md-nav-rail-destination:hover::before {
+    opacity: 0.08;
+  }
+
+  .md-nav-rail-destination:focus-visible::before {
+    opacity: 0.12;
+  }
+
+  .md-nav-rail-destination:active::before {
+    opacity: 0.12;
+  }
+
+  /* Active indicator */
+  .md-nav-rail-destination::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 32px;
+    border-radius: 0 16px 16px 0;
+    background-color: var(--md-sys-color-primary-container);
+    transition: width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  }
+
+  /* Active state */
+  .md-nav-rail-destination.md-nav-rail-active {
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .md-nav-rail-destination.md-nav-rail-active::after {
+    width: 56px;
+  }
+
+  /* Icon container */
+  .md-nav-rail-icon {
+    @apply relative flex items-center justify-center;
+    @apply w-14 h-8 rounded-full;
+    @apply transition-all;
+    background-color: transparent;
+    transition-duration: var(--md-sys-motion-duration-short4);
+    transition-timing-function: var(--md-sys-motion-easing-emphasized);
+  }
+
+  .md-nav-rail-destination.md-nav-rail-active .md-nav-rail-icon {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  /* Icon sizing */
+  .md-nav-rail-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Label */
+  .md-nav-rail-label {
+    /* M3 Typography: Label Medium */
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    @apply text-center;
+    max-width: 64px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Badge (notification indicator) */
+  .md-nav-rail-badge {
+    @apply absolute;
+    @apply flex items-center justify-center;
+    @apply min-w-[16px] h-4 px-1;
+    @apply rounded-full;
+    /* M3 Typography: Label Small */
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    top: 0;
+    right: 8px;
+    background-color: var(--color-primary-500);
+    color: white;
+  }
+
+  /* Rail footer (optional FAB or menu) */
+  .md-nav-rail-footer {
+    @apply flex items-center justify-center;
+    @apply w-full py-6;
+  }
+
+  /* Hide on mobile, show on desktop */
+  .md-nav-rail {
+    @apply hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .md-nav-rail {
+      @apply flex;
+    }
+  }
+
+  /* Adjust main content when rail is visible */
+  @media (min-width: 1024px) {
+    .md-nav-rail-offset {
+      margin-left: 80px;
+    }
+  }
+}

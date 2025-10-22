@@ -37,7 +37,14 @@ export function createTrainingsplanerState() {
     // ==================== MAP STATE ====================
     map: null,
     markers: [],
+    markerClusterGroup: null,
     userHasInteractedWithMap: false,
+    tileLayer: null,
+    tileLayers: null,
+    layerControl: null,
+    geolocationControl: null,
+    resetControl: null,
+    ariaLiveRegion: null,
 
     // ==================== GEOLOCATION STATE ====================
     userPosition: null,

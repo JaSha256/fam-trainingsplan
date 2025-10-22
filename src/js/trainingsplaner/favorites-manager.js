@@ -90,19 +90,35 @@ export class FavoritesManager {
   /**
    * Quick Filter Favorites
    *
-   * Clears all filters and sets quick filter to show only favorites.
-   * Useful for "View Favorites" button functionality.
+   * Toggle filter to show only favorite trainings.
+   * If already active, deactivates the filter (shows all trainings).
+   * If not active, clears all other filters and shows only favorites.
    *
    * @returns {void}
    */
   quickFilterFavorites() {
-    this.context.$store.ui.filters = {
-      wochentag: '',
-      ort: '',
-      training: '',
-      altersgruppe: '',
-      searchTerm: '',
-      activeQuickFilter: 'favoriten'
+    const currentActive = this.context.$store.ui.filters.activeQuickFilter
+
+    // Toggle: wenn bereits aktiv → deaktivieren
+    if (currentActive === 'favoriten') {
+      this.context.$store.ui.filters = {
+        wochentag: '',
+        ort: '',
+        training: '',
+        altersgruppe: '',
+        searchTerm: '',
+        activeQuickFilter: null
+      }
+    } else {
+      // Aktivieren: alle anderen Filter löschen
+      this.context.$store.ui.filters = {
+        wochentag: '',
+        ort: '',
+        training: '',
+        altersgruppe: '',
+        searchTerm: '',
+        activeQuickFilter: 'favoriten'
+      }
     }
     this.applyFilters()
   }

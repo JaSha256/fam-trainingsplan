@@ -20,10 +20,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "setup:validate": "vitest run --project infrastructure",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:unit": "vitest run --project unit",
     "test:unit:watch": "vitest --project unit",
     "test:unit:ui": "vitest --ui --project unit",
+    "test:infrastructure": "vitest run --project infrastructure",
     "test:integration": "playwright test --config=playwright.integration.config.js",
     "test:integration:ui": "playwright test --config=playwright.integration.config.js --ui",
     "test:integration:debug": "playwright test --config=playwright.integration.config.js --debug",
@@ -45,7 +47,8 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
     "lint": "eslint src --ext .js",
-    "format": "prettier --write \"src/**/*.{js,css,html}\""
+    "format": "prettier --write \"src/**/*.{js,css,html}\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.15.0",
@@ -54,10 +57,12 @@
     "@alpinejs/persist": "^3.15.0",
     "alpinejs": "^3.15.0",
     "fuse.js": "^7.0.0",
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
+    "@eslint/js": "^9.38.0",
     "@playwright/test": "^1.48.2",
     "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/typography": "^0.5.15",
@@ -68,9 +73,13 @@
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.15.0",
+    "globals": "^16.4.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "lint-staged": "^16.2.5",
     "prettier": "^3.3.3",
     "puppeteer": "^24.23.0",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.9.3",
     "vite": "^7.1.8",
@@ -87,5 +96,17 @@
     "Safari >= 16.4",
     "Chrome >= 111",
     "Firefox >= 128"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,html}": [
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier --write"
+    ]
+  }
 }

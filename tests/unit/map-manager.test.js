@@ -9,18 +9,73 @@ vi.mock('leaflet', () => {
   const mockMap = vi.fn()
   const mockMarker = vi.fn()
   const mockTileLayer = vi.fn()
+  const mockMarkerClusterGroup = vi.fn()
+
+  // Mock Control class for custom controls
+  const mockControl = {
+    extend: vi.fn((options) => {
+      return function() {
+        return {
+          onAdd: options.onAdd || vi.fn(),
+          onRemove: options.onRemove || vi.fn(),
+          options: options.options || {}
+        }
+      }
+    })
+  }
+
+  // Mock Icon.Default for standard markers
+  const mockIconDefault = vi.fn()
 
   return {
     default: {
       map: mockMap,
       marker: mockMarker,
-      tileLayer: mockTileLayer
+      tileLayer: mockTileLayer,
+      markerClusterGroup: mockMarkerClusterGroup,
+      Control: mockControl,
+      Icon: { Default: mockIconDefault },
+      point: vi.fn((x, y) => ({ x, y })),
+      divIcon: vi.fn((options) => options)
     },
     map: mockMap,
     marker: mockMarker,
-    tileLayer: mockTileLayer
+    tileLayer: mockTileLayer,
+    markerClusterGroup: mockMarkerClusterGroup,
+    Control: mockControl,
+    Icon: { Default: mockIconDefault },
+    point: vi.fn((x, y) => ({ x, y })),
+    divIcon: vi.fn((options) => options)
   }
 })
+
+// Mock map-controls
+vi.mock('../../src/js/trainingsplaner/map-controls.js', () => ({
+  createGeolocationControl: vi.fn(() => ({ position: 'topright' })),
+  createResetViewControl: vi.fn(() => ({ position: 'topright' })),
+  createLayerSwitcherControl: vi.fn(() => ({ position: 'topright' }))
+}))
+
+// Mock map-utils
+vi.mock('../../src/js/trainingsplaner/map-utils.js', () => ({
+  getOptimalClusterRadius: vi.fn(() => 80),
+  getOptimalSpiderfyMultiplier: vi.fn(() => 1),
+  groupTrainingsByLocation: vi.fn((trainings) => {
+    const map = new Map()
+    trainings.forEach(t => {
+      if (t.lat && t.lng) {
+        const key = `${t.lat},${t.lng}`
+        if (!map.has(key)) {
+          map.set(key, [])
+        }
+        map.get(key).push(t)
+      }
+    })
+    return map
+  }),
+  createMapPopupHTML: vi.fn((training) => `<div>Popup for ${training.training}</div>`),
+  createLocationPopupHTML: vi.fn((trainings) => `<div>Location with ${trainings.length} trainings</div>`)
+}))
 
 // Import Leaflet after mock
 import * as L from 'leaflet'
@@ -54,33 +109,64 @@ describe('MapManager', () => {
   }
 
   beforeEach(() => {
-    // Create mock map container
-    document.body.innerHTML = '<div id="map-modal-container"></div>'
+    // Create mock map container (updated for Task 11.5 - now using map-view-container)
+    document.body.innerHTML = '<div id="map-view-container"></div>'
+
+    // Mock marker cluster group
+    const mockClusterGroup = {
+      addLayer: vi.fn(),
+      addLayers: vi.fn(),
+      clearLayers: vi.fn(),
+      addTo: vi.fn().mockReturnThis(),
+      off: vi.fn()
+    }
 
     // Mock map instance
     mockMap = {
       setView: vi.fn().mockReturnThis(),
       remove: vi.fn(),
       removeLayer: vi.fn(),
+      addLayer: vi.fn(),
       fitBounds: vi.fn(),
-      once: vi.fn()
+      once: vi.fn(),
+      on: vi.fn(),
+      off: vi.fn(),
+      stop: vi.fn(),
+      eachLayer: vi.fn((callback) => {
+        // Call callback for any layers that exist
+        if (mockContext.markerClusterGroup) {
+          callback(mockContext.markerClusterGroup)
+        }
+      }),
+      hasLayer: vi.fn(() => false),
+      addControl: vi.fn(),
+      removeControl: vi.fn(),
+      getContainer: vi.fn(() => document.createElement('div')),
+      invalidateSize: vi.fn() // Added for Task 11.5 - needed when switching views
     }
 
     // Mock tile layer
     mockTileLayer = {
-      addTo: vi.fn().mockReturnThis()
+      addTo: vi.fn().mockReturnThis(),
+      off: vi.fn(),
+      on: vi.fn()
     }
 
     // Mock marker
     mockMarker = {
       bindPopup: vi.fn().mockReturnThis(),
-      addTo: vi.fn().mockReturnThis()
+      addTo: vi.fn().mockReturnThis(),
+      off: vi.fn(),
+      unbindPopup: vi.fn(),
+      on: vi.fn()
     }
 
     // Setup Leaflet mocks
     L.map.mockReturnValue(mockMap)
     L.tileLayer.mockReturnValue(mockTileLayer)
     L.marker.mockReturnValue(mockMarker)
+    L.markerClusterGroup.mockReturnValue(mockClusterGroup)
+    L.Icon.Default.mockReturnValue({})
 
     // Mock state
     mockState = {}
@@ -90,7 +176,8 @@ describe('MapManager', () => {
       map: null,
       markers: [],
       filteredTrainings: [mockTraining],
-      userHasInteractedWithMap: false
+      userHasInteractedWithMap: false,
+      markerClusterGroup: null
     }
 
     // Create MapManager instance
@@ -134,7 +221,7 @@ describe('MapManager', () => {
       mapManager.initializeMap()
 
       expect(L.map).toHaveBeenCalledWith(
-        'map-modal-container',
+        'map-view-container', // Updated for Task 11.5
         expect.objectContaining({
           center: CONFIG.map.defaultCenter,
           zoom: CONFIG.map.defaultZoom,
@@ -200,14 +287,13 @@ describe('MapManager', () => {
       expect(L.marker).not.toHaveBeenCalled()
     })
 
-    it('should remove existing markers', () => {
-      const existingMarker = { remove: vi.fn() }
-      mockContext.markers = [existingMarker]
+    it('should remove existing cluster group', () => {
+      const existingCluster = { off: vi.fn(), clearLayers: vi.fn() }
+      mockContext.markerClusterGroup = existingCluster
 
       mapManager.addMarkersToMap()
 
-      expect(mockMap.removeLayer).toHaveBeenCalledWith(existingMarker)
-      expect(mockContext.markers).toHaveLength(1) // New marker added
+      expect(mockMap.removeLayer).toHaveBeenCalledWith(existingCluster)
     })
 
     it('should create marker for each training with coordinates', () => {
@@ -215,10 +301,14 @@ describe('MapManager', () => {
 
       mapManager.addMarkersToMap()
 
-      expect(L.marker).toHaveBeenCalledWith([
-        mockTraining.lat,
-        mockTraining.lng
-      ])
+      expect(L.marker).toHaveBeenCalledWith(
+        [mockTraining.lat, mockTraining.lng],
+        expect.objectContaining({
+          title: 'Parkour - LTR',
+          alt: 'Standort: LTR',
+          riseOnHover: true
+        })
+      )
     })
 
     it('should skip trainings without coordinates', () => {
@@ -232,13 +322,23 @@ describe('MapManager', () => {
     it('should bind popup to marker', () => {
       mapManager.addMarkersToMap()
 
-      expect(mockMarker.bindPopup).toHaveBeenCalledWith(expect.any(String))
+      expect(mockMarker.bindPopup).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          maxWidth: 400,
+          className: 'md-map-popup-container',
+          autoPan: false
+        })
+      )
     })
 
-    it('should add marker to map', () => {
+    it('should add markers to cluster group', () => {
+      const mockClusterGroup = L.markerClusterGroup()
+
       mapManager.addMarkersToMap()
 
-      expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap)
+      expect(mockClusterGroup.addLayers).toHaveBeenCalled()
+      expect(mockMap.addLayer).toHaveBeenCalledWith(mockClusterGroup)
     })
 
     it('should store markers in context', () => {
@@ -321,85 +421,21 @@ describe('MapManager', () => {
     it('should create popup HTML with training info', () => {
       const popup = mapManager.createMapPopup(mockTraining)
 
-      expect(popup).toContain('Parkour')
-      expect(popup).toContain('LTR')
-      expect(popup).toContain('Kids')
+      expect(popup).toContain('Popup for Parkour')
     })
 
-    it('should format time range', () => {
-      vi.spyOn(utils, 'formatZeitrange').mockReturnValue('18:00 - 20:00 Uhr')
-
+    it('should delegate to createMapPopupHTML utility', () => {
       const popup = mapManager.createMapPopup(mockTraining)
 
-      expect(utils.formatZeitrange).toHaveBeenCalledWith('18:00', '20:00')
-      expect(popup).toContain('18:00 - 20:00 Uhr')
+      // Verify it returns the mocked response
+      expect(popup).toContain('Popup for Parkour')
     })
 
-    it('should format age group', () => {
-      vi.spyOn(utils, 'formatAlter').mockReturnValue('6-12 Jahre')
-
+    it('should return HTML string', () => {
       const popup = mapManager.createMapPopup(mockTraining)
 
-      expect(utils.formatAlter).toHaveBeenCalledWith(mockTraining)
-      expect(popup).toContain('6-12 Jahre')
-    })
-
-    it('should include distance if available', () => {
-      const trainingWithDistance = {
-        ...mockTraining,
-        distance: 2.5,
-        distanceText: '2.5 km'
-      }
-
-      const popup = mapManager.createMapPopup(trainingWithDistance)
-
-      expect(popup).toContain('2.5 km entfernt')
-    })
-
-    it('should not include distance if unavailable', () => {
-      const popup = mapManager.createMapPopup(mockTraining)
-
-      expect(popup).not.toContain('entfernt')
-    })
-
-    it('should include registration link if available', () => {
-      const popup = mapManager.createMapPopup(mockTraining)
-
-      expect(popup).toContain(mockTraining.link)
-      expect(popup).toContain('Anmelden')
-    })
-
-    it('should not include registration link if unavailable', () => {
-      const trainingNoLink = { ...mockTraining }
-      delete trainingNoLink.link
-
-      const popup = mapManager.createMapPopup(trainingNoLink)
-
-      expect(popup).not.toContain('Anmelden')
-    })
-
-    it('should return valid HTML', () => {
-      const popup = mapManager.createMapPopup(mockTraining)
-
+      expect(typeof popup).toBe('string')
       expect(popup).toContain('<div')
-      expect(popup).toContain('</div>')
-      expect(popup).toContain('<h3')
-      expect(popup).toContain('<p')
-    })
-
-    it('should include all required fields', () => {
-      const popup = mapManager.createMapPopup(mockTraining)
-
-      expect(popup).toContain('Ort:')
-      expect(popup).toContain('Zeit:')
-      expect(popup).toContain('Alter:')
-    })
-
-    it('should use proper CSS classes', () => {
-      const popup = mapManager.createMapPopup(mockTraining)
-
-      expect(popup).toContain('font-bold')
-      expect(popup).toContain('text-sm')
     })
   })
 
@@ -408,8 +444,17 @@ describe('MapManager', () => {
   describe('cleanupMap()', () => {
     beforeEach(() => {
       mockContext.map = mockMap
-      mockContext.markers = [mockMarker, { remove: vi.fn() }]
+      const marker1 = { ...mockMarker, off: vi.fn(), unbindPopup: vi.fn(), trainingId: 1 }
+      const marker2 = { ...mockMarker, off: vi.fn(), unbindPopup: vi.fn(), trainingId: 2 }
+      mockContext.markers = [marker1, marker2]
       mockContext.userHasInteractedWithMap = true
+      mockContext.markerClusterGroup = {
+        off: vi.fn(),
+        clearLayers: vi.fn()
+      }
+      mockContext.tileLayer = {
+        off: vi.fn()
+      }
     })
 
     it('should do nothing if no map exists', () => {
@@ -420,10 +465,24 @@ describe('MapManager', () => {
       expect(mockMap.remove).not.toHaveBeenCalled()
     })
 
+    it('should remove cluster group', () => {
+      const clusterGroup = mockContext.markerClusterGroup
+
+      mapManager.cleanupMap()
+
+      expect(clusterGroup.off).toHaveBeenCalled()
+      expect(mockMap.removeLayer).toHaveBeenCalledWith(clusterGroup)
+      expect(clusterGroup.clearLayers).toHaveBeenCalled()
+      expect(mockContext.markerClusterGroup).toBeNull()
+    })
+
     it('should remove all markers', () => {
       mapManager.cleanupMap()
 
-      expect(mockMap.removeLayer).toHaveBeenCalledTimes(2)
+      mockContext.markers.forEach(marker => {
+        expect(marker.off).toHaveBeenCalled()
+        expect(marker.unbindPopup).toHaveBeenCalled()
+      })
     })
 
     it('should clear markers array', () => {
@@ -473,6 +532,23 @@ describe('MapManager', () => {
         mockTraining,
         { ...mockTraining, id: 2, lat: 48.135, lng: 11.582 }
       ]
+
+      // Add tile layers and markers to context for cleanup
+      mockContext.tileLayers = {
+        street: { off: vi.fn() },
+        satellite: { off: vi.fn() },
+        terrain: { off: vi.fn() }
+      }
+      mockContext.tileLayer = mockContext.tileLayers.street
+      mockContext.markers = [
+        { ...mockMarker, off: vi.fn(), unbindPopup: vi.fn(), trainingId: 1 },
+        { ...mockMarker, off: vi.fn(), unbindPopup: vi.fn(), trainingId: 2 }
+      ]
+      mockContext.markerClusterGroup = {
+        off: vi.fn(),
+        clearLayers: vi.fn()
+      }
+
       mapManager.addMarkersToMap()
       expect(mockContext.markers).toHaveLength(2)
 

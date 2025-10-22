@@ -340,6 +340,7 @@ function validateConfig() {
 if (isDev) {
   try {
     validateConfig()
+    // eslint-disable-next-line no-console
     console.info('[config] ✅ Configuration validated successfully')
   } catch (error) {
     console.error('[config] ❌ Configuration validation failed:', error)
@@ -384,19 +385,21 @@ export function shouldLog(level) {
  */
 export function log(level, message, ...args) {
   if (!shouldLog(level)) return
-  
+
   const prefix = `[trainingsplan:${level}]`
   const timestamp = new Date().toISOString()
   const logData = args.length > 0 ? args : []
-  
+
+  /* eslint-disable no-console */
   const logFn = {
     debug: console.log,
     info: console.info,
     warn: console.warn,
     error: console.error
   }[level] || console.log
-  
+
   logFn(prefix, timestamp, message, ...logData)
+  /* eslint-enable no-console */
 }
 
 /**

@@ -217,7 +217,6 @@ test.describe('Accessibility Tests (WCAG 2.1 AA)', () => {
     test('text has sufficient contrast', async ({ page }) => {
       const accessibilityScanResults = await new AxeBuilder({ page })
         .withTags(['wcag2aa'])
-        .include('color-contrast')
         .analyze()
 
       const contrastViolations = accessibilityScanResults.violations.filter(
@@ -252,9 +251,9 @@ test.describe('Accessibility Tests (WCAG 2.1 AA)', () => {
     })
 
     test('focus trap works in modal', async ({ page }) => {
-      // Open map modal
+      // Switch to map view
       await page.evaluate(() => {
-        window.Alpine.store('ui').mapModalOpen = true
+        window.Alpine.store('ui').activeView = 'map'
       })
 
       await page.waitForTimeout(500)
@@ -283,14 +282,14 @@ test.describe('Accessibility Tests (WCAG 2.1 AA)', () => {
   test.describe('ARIA Attributes', () => {
     test('modals have proper ARIA roles', async ({ page }) => {
       await page.evaluate(() => {
-        window.Alpine.store('ui').mapModalOpen = true
+        window.Alpine.store('ui').activeView = 'map'
       })
 
       await page.waitForTimeout(500)
 
-      // Modal should exist (may not have explicit role="dialog" with Alpine)
-      const modal = page.locator('[x-show="$store.ui.mapModalOpen"]')
-      await expect(modal).toBeVisible()
+      // Map view should exist and be visible
+      const mapView = page.locator('[x-show="$store.ui.activeView === \'map\'"]')
+      await expect(mapView).toBeVisible()
     })
 
     test('collapsible sections have proper ARIA', async ({ page }) => {

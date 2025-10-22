@@ -18,7 +18,16 @@ import focus from '@alpinejs/focus'
 import intersect from '@alpinejs/intersect'
 // @ts-ignore - No type declarations available
 import persist from '@alpinejs/persist'
+
+// IMPORTANT: Import Leaflet first and expose globally before markercluster
+import * as L from 'leaflet'
+window.L = L
+
+// Now import Leaflet CSS and markercluster (depends on window.L)
 import 'leaflet/dist/leaflet.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import 'leaflet.markercluster'
 import './style.css'
 
 import { trainingsplaner } from './js/trainingsplaner.js'
@@ -72,12 +81,14 @@ registerAlpinePlugins()
  * IMPORTANT: Must be defined AFTER registerAlpinePlugins() to use Alpine.$persist
  * @type {{
  *   filterSidebarOpen: boolean,
- *   mapModalOpen: boolean,
  *   mobileFilterOpen: boolean,
  *   mapView: boolean,
+ *   activeView: 'list' | 'map' | 'favorites',
  *   notification: Notification | null,
  *   notificationTimeout: number | null,
  *   filters: Filter,
+ *   setActiveView: (view: 'list' | 'map' | 'favorites') => void,
+ *   isActiveView: (view: string) => boolean,
  *   toggleMapView: () => void,
  *   showListView: () => void,
  *   showNotification: (message: string, type?: NotificationType, duration?: number) => void,
@@ -89,10 +100,36 @@ registerAlpinePlugins()
 Alpine.store('ui', {
   // View States
   // @ts-ignore - Alpine.$persist plugin API
-  filterSidebarOpen: Alpine.$persist(true).as('filterSidebarOpen'),
-  mapModalOpen: false,
+  // QW1: Responsive default - OPEN on desktop (≥1024px), CLOSED on mobile
+  filterSidebarOpen: Alpine.$persist(window.innerWidth >= 1024).as('filterSidebarOpen'),
+  // @ts-ignore - Alpine.$persist plugin API
+  // Task 12: Sidebar collapse/expand state - persisted in localStorage
+  // Default: false (sidebar expanded/open for better UX)
+  sidebarCollapsed: Alpine.$persist(false).as('fam-trainingsplan-sidebar-collapsed'),
   mobileFilterOpen: false,
+  locationSettingsOpen: false,
   mapView: false,
+  // @ts-ignore - Alpine.$persist plugin API
+  // Task #11: New view switcher state - 'list' | 'map' | 'favorites'
+  activeView: Alpine.$persist('list').as('activeView'),
+  // @ts-ignore - Alpine.$persist plugin API
+  darkMode: Alpine.$persist(false).as('darkMode'), // M3 Dark Mode toggle
+  // QW9: Scroll to top button visibility
+  showScrollTop: false,
+  // Phase 2.1/2.2: View Mode Toggle (compact/detailed/list)
+  // @ts-ignore - Alpine.$persist plugin API
+  viewMode: Alpine.$persist('compact').as('viewMode'), // 'compact' | 'detailed' | 'list'
+  // Task 19: Mobile bottom navigation scroll tracking
+  scrollDirection: 'up',
+  lastScrollY: 0,
+
+  // Location Settings
+  // @ts-ignore - Alpine.$persist plugin API
+  manualLocationSet: Alpine.$persist(false).as('manualLocationSet'),
+  // @ts-ignore - Alpine.$persist plugin API
+  manualLocation: Alpine.$persist(null).as('manualLocation'),
+  // @ts-ignore - Alpine.$persist plugin API
+  manualLocationAddress: Alpine.$persist('').as('manualLocationAddress'),
 
   // Notifications
   notification: null,
@@ -100,28 +137,70 @@ Alpine.store('ui', {
 
   // Filters (Persisted)
   // @ts-ignore - Alpine.$persist plugin API
+  // Task 13: Multi-select filters using arrays instead of strings
   filters: Alpine.$persist({
-    wochentag: '',
-    ort: '',
-    training: '',
-    altersgruppe: '',
+    wochentag: [],
+    ort: [],
+    training: [],
+    altersgruppe: [],
     searchTerm: '',
-    activeQuickFilter: null
+    activeQuickFilter: null,
+    _customTimeFilter: '',
+    _customFeatureFilter: '',
+    _customLocationFilter: '',
+    _customPersonalFilter: ''
   }).as('trainingFilters'),
 
   // ==================== VIEW METHODS ====================
 
   /**
-   * Toggle Map View
+   * Set Active View (Task 11.3)
+   * @param {string} view - View name: 'list' | 'map' | 'favorites'
+   * @returns {void}
+   */
+  setActiveView(view) {
+    // Validate view value - only accept valid views
+    if (!['list', 'map', 'favorites'].includes(view)) {
+      return // Silently reject invalid values
+    }
+
+    // @ts-ignore - Alpine.js context properties
+    this.activeView = view
+  },
+
+  /**
+   * Check if View is Active (Task 11.3)
+   * @param {string} view - View name to check
+   * @returns {boolean}
+   */
+  isActiveView(view) {
+    // @ts-ignore - Alpine.js context properties
+    return this.activeView === view
+  },
+
+  /**
+   * Toggle Map View - Backward Compatibility (Task 11.3)
+   * Toggles between current view and map view
    * @returns {void}
    */
   toggleMapView() {
     // @ts-ignore - Alpine.js context properties
-    this.mapView = !this.mapView
+    const newView = this.activeView === 'map' ? 'list' : 'map'
     // @ts-ignore - Alpine.js context properties
-    this.$nextTick(() => {
-      win.notifyParentHeight?.()
-    })
+    this.setActiveView(newView)
+
+    // Keep legacy mapView toggle for existing code
+    // @ts-ignore - Alpine.js context properties
+    this.mapView = !this.mapView
+
+    // Call $nextTick if available (not in test environment)
+    // @ts-ignore - Alpine.js context properties
+    if (this.$nextTick) {
+      // @ts-ignore - Alpine.js context properties
+      this.$nextTick(() => {
+        win.notifyParentHeight?.()
+      })
+    }
   },
 
   /**
@@ -182,20 +261,66 @@ Alpine.store('ui', {
 
   /**
    * Reset All Filters
+   * Task 13: Multi-select arrays
    * @returns {void}
    */
   resetFilters() {
     // @ts-ignore - Alpine.js context properties
     this.filters = {
-      wochentag: '',
-      ort: '',
-      training: '',
-      altersgruppe: '',
+      wochentag: [],
+      ort: [],
+      training: [],
+      altersgruppe: [],
       searchTerm: '',
-      activeQuickFilter: null
+      activeQuickFilter: null,
+      _customTimeFilter: '',
+      _customFeatureFilter: '',
+      _customLocationFilter: '',
+      _customPersonalFilter: ''
     }
+  },
+
+  /**
+   * Toggle Sidebar Collapse/Expand (Task 12)
+   * @returns {void}
+   */
+  toggleSidebar() {
+    // @ts-ignore - Alpine.js context properties
+    this.sidebarCollapsed = !this.sidebarCollapsed
+  },
+
+  /**
+   * Update Scroll Direction (Task 19)
+   * Tracks scroll direction for mobile bottom nav show/hide
+   * @returns {void}
+   */
+  updateScrollDirection() {
+    const currentScrollY = window.scrollY
+
+    // Determine scroll direction
+    // @ts-ignore - Alpine.js context properties
+    this.scrollDirection = currentScrollY > this.lastScrollY ? 'down' : 'up'
+
+    // Update last scroll position
+    // @ts-ignore - Alpine.js context properties
+    this.lastScrollY = currentScrollY
   }
 })
+
+// ==================== FILTER OPTIONS STORE ====================
+
+/**
+ * Filter Options Store
+ * Holds the available filter options populated from trainingsdata metadata
+ * Used by filter dropdowns to avoid scope issues with nested x-data
+ */
+Alpine.store('filterOptions', {
+  wochentage: [],
+  orte: [],
+  trainingsarten: [],
+  altersgruppen: []
+})
+
 Alpine.data('trainingsplaner', trainingsplaner)
 Alpine.start()
 
@@ -205,6 +330,30 @@ win.Alpine = Alpine
 log('info', 'Alpine.js initialized', {
   version: Alpine.version
 })
+
+// ==================== M3 DARK MODE INITIALIZATION ====================
+
+/**
+ * Initialize Dark Mode based on stored preference
+ * IMPORTANT: Must run after Alpine.start() to access stores
+ * @returns {void}
+ */
+function initDarkMode() {
+  // @ts-ignore - Alpine.store returns unknown
+  const darkMode = Alpine.store('ui').darkMode
+
+  // Apply dark mode on initial load
+  if (darkMode) {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    log('info', 'Dark mode activated from stored preference')
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light')
+    log('info', 'Light mode activated')
+  }
+}
+
+// Initialize dark mode after Alpine is ready
+initDarkMode()
 
 // ==================== PWA SETUP ====================
 

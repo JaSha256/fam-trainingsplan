@@ -70,17 +70,36 @@ https://example.com/?tag=montag&ort=LTR&art=parkour
 ## Installation
 
 ### Voraussetzungen
-- Node.js >= 18
-- npm oder yarn
+- Node.js >= 20.19.0
+- npm >= 10.0.0
 
 ### Setup
+
+#### Arch Linux (Automatisch)
+
+```bash
+# Repository klonen
+git clone https://github.com/jasha256/fam-trainingsplan.git
+cd fam-trainingsplan
+
+# Automatisches Setup mit Arch Linux Optimierungen
+zsh ./setup-arch.sh
+
+# Development Server starten
+npm run dev
+```
+
+**Siehe [docs/SETUP-ARCH.md](docs/SETUP-ARCH.md) für Details.**
+
+#### Standard Setup
+
 ```bash
 # Repository klonen
 git clone https://github.com/jasha256/fam-trainingsplan.git
 cd fam-trainingsplan
 
 # Dependencies installieren
-npm install
+npm ci
 
 # Development Server starten
 npm run dev
@@ -365,7 +384,23 @@ END:VCALENDAR
 
 ## Deployment
 
-### GitHub Pages
+### Deployment-Script (Empfohlen)
+
+```bash
+# Preview lokal
+./deploy.sh preview
+
+# Deploy zu nginx (Arch Linux)
+./deploy.sh --build nginx
+
+# Deploy zu Apache
+./deploy.sh --build apache
+
+# Deploy zu GitHub Pages
+./deploy.sh github
+```
+
+### GitHub Pages (Automatisch)
 ```bash
 # Build erstellen
 npm run build
@@ -374,16 +409,21 @@ npm run build
 git push origin main
 ```
 
-### Andere Plattformen
-```bash
-# Build-Ordner: dist/
-# Entry: dist/index.html
-# SPA: Alle Routes auf index.html umleiten
-```
+### Manuelle Deployment-Optionen
+
+**Siehe [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) für detaillierte Anleitungen:**
+- nginx Konfiguration (mit Gzip, Cache Headers, Security)
+- Apache .htaccess
+- CI/CD mit GitHub Actions
+- Performance-Optimierungen
+- Troubleshooting
 
 ### Umgebungsvariablen
 ```bash
-# .env.production
+# .env.example als Vorlage verwenden
+cp .env.example .env
+
+# Für Production
 VITE_API_URL=https://your-domain.com/trainingsplan.json
 ```
 
@@ -394,6 +434,9 @@ VITE_API_URL=https://your-domain.com/trainingsplan.json
 | Dokument | Beschreibung |
 |----------|--------------|
 | **[QUICK_START.md](QUICK_START.md)** | **Schnellstart-Guide** - Alle npm Scripts, Testing, Development |
+| **[SETUP-ARCH.md](docs/SETUP-ARCH.md)** | **Arch Linux Setup** - System-Dependencies, Entwicklungsumgebung |
+| **[QUICK-START-ARCH.md](docs/QUICK-START-ARCH.md)** | **Arch Quick Start** - Schnelleinstieg für Arch Linux |
+| **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** | **Deployment Guide** - Production deployment (nginx, Apache, GitHub Pages) |
 | **[TESTING_SUMMARY.md](TESTING_SUMMARY.md)** | **Test-Dokumentation** - Coverage, Metriken, Test-Details |
 | **[FINAL_PROJECT_STATUS.md](FINAL_PROJECT_STATUS.md)** | **Projekt-Status** - Aktuelle Metriken, Qualität |
 | **[ARCHITECTURE.md](ARCHITECTURE.md)** | System-Architektur & Design-Patterns |

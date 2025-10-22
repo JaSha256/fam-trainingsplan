@@ -208,15 +208,15 @@ test.describe('Visual Regression Tests - Design Upgrade v4.1', () => {
   })
 
   test.describe('Modal States', () => {
-    test('map modal matches snapshot', async ({ page }) => {
+    test('map view matches snapshot', async ({ page }) => {
       await page.evaluate(() => {
-        window.Alpine.store('ui').mapModalOpen = true
+        window.Alpine.store('ui').activeView = 'map'
       })
 
       await page.waitForTimeout(500)
 
-      const modal = page.locator('[x-show="$store.ui.mapModalOpen"]')
-      await expect(modal).toHaveScreenshot('map-modal.png', {
+      const mapView = page.locator('[x-show="$store.ui.activeView === \'map\'"]')
+      await expect(mapView).toHaveScreenshot('map-view.png', {
         maxDiffPixels: 100
       })
     })

@@ -7,7 +7,6 @@ describe('main.js - Alpine Store', () => {
     // Reset store
     Alpine.store('ui', {
       filterSidebarOpen: true,
-      mapModalOpen: false,
       notification: null
     })
   })

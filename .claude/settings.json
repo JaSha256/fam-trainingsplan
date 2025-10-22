@@ -1,81 +1,125 @@
 {
-  "permissions": {
-    "allow": [
+  "deniedTools": [
+    "mcp__task-master__initialize_project"
+  ],
+  "hooks": {
+    "SessionStart": [
       {
-        "tool": "Bash",
-        "matcher": "npm run (build|dev|test:.*|preview|lint|format)"
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/load-behavioral-system.sh"
+          }
+        ]
       },
       {
-        "tool": "Bash",
-        "matcher": "node tests/.*"
+        "matcher": "resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/load-behavioral-system.sh"
+          }
+        ]
       },
       {
-        "tool": "Bash",
-        "matcher": "git status.*"
-      },
-      {
-        "tool": "Bash",
-        "matcher": "git diff.*"
+        "matcher": "clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/load-behavioral-system.sh"
+          }
+        ]
       }
     ],
-    "deny": [
+    "PreToolUse": [
       {
-        "tool": "Read",
-        "matcher": "node_modules/.*"
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-destructive-commands.sh"
+          }
+        ]
       },
       {
-        "tool": "Edit",
-        "matcher": "node_modules/.*"
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/directive-enforcer.sh"
+          },
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/collective-metrics.sh"
+          }
+        ]
       },
       {
-        "tool": "Write",
-        "matcher": "node_modules/.*"
-      },
-      {
-        "tool": "Edit",
-        "matcher": "\\.env.*"
-      },
-      {
-        "tool": "Write",
-        "matcher": "\\.env.*"
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/collective-metrics.sh"
+          }
+        ]
       }
     ],
-    "ask": [
+    "PostToolUse": [
       {
-        "tool": "Bash",
-        "matcher": "git (commit|push|reset|rebase|merge)"
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/test-driven-handoff.sh"
+          },
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/collective-metrics.sh"
+          }
+        ]
       },
       {
-        "tool": "Write",
-        "matcher": ".*\\.config\\.js$"
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/collective-metrics.sh"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "mock-.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/mock-deliverable-generator.sh"
+          },
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/test-driven-handoff.sh"
+          },
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/collective-metrics.sh"
+          }
+        ]
       },
       {
-        "tool": "Edit",
-        "matcher": ".*\\.config\\.js$"
-      },
-      {
-        "tool": "Bash",
-        "matcher": "rm .*"
-      },
-      {
-        "tool": "Bash",
-        "matcher": "del .*"
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/test-driven-handoff.sh"
+          },
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/collective-metrics.sh"
+          }
+        ]
       }
     ]
-  },
-
-  "features": {
-    "enableTelemetry": false,
-    "autoUpdateCheck": true
-  },
-
-  "environment": {
-    "NODE_ENV": "development",
-    "VITE_DEV_PORT": "5173"
-  },
-
-  "model": {
-    "default": "claude-sonnet-4-5",
-    "thinking": "extended"
   }
 }

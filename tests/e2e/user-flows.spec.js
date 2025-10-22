@@ -49,15 +49,20 @@ test.describe('Critical User Flows', () => {
       // Prepare mobile filters if needed
       await prepareMobileFilters(page)
 
-      // Step 1: Select day filter
-      const daySelector = getSelector(page, '#filter-wochentag', '#mobile-filter-wochentag')
-      const locationSelector = getSelector(page, '#filter-ort', '#mobile-filter-ort')
-
-      await page.selectOption(daySelector, 'Montag')
+      // Step 1: Select day filter (now checkbox-based, not select dropdown)
+      await page.evaluate(() => {
+        const store = window.Alpine.store('ui')
+        store.filters.wochentag = ['Montag']
+        window.Alpine.$data(document.querySelector('[x-data]')).applyFilters()
+      })
       await page.waitForTimeout(300)
 
-      // Step 2: Select location filter
-      await page.selectOption(locationSelector, 'LTR')
+      // Step 2: Select location filter (now checkbox-based, not select dropdown)
+      await page.evaluate(() => {
+        const store = window.Alpine.store('ui')
+        store.filters.ort = ['LTR']
+        window.Alpine.$data(document.querySelector('[x-data]')).applyFilters()
+      })
       await page.waitForTimeout(300)
 
       // Step 3: Verify filtered results
@@ -135,8 +140,14 @@ test.describe('Critical User Flows', () => {
         return component?.allTrainings?.length > 0
       }, { timeout: 5000 })
 
-      // Step 1: Find first training card
-      const trainingCard = page.locator('.training-card').first()
+      // Ensure we're in list view
+      await page.evaluate(() => {
+        window.Alpine.store('ui').activeView = 'list'
+      })
+      await page.waitForTimeout(300)
+
+      // Step 1: Find first training card (using article element with classes)
+      const trainingCard = page.locator('article').first()
       await expect(trainingCard).toBeVisible()
 
       // Step 2: Verify card has essential information
@@ -190,26 +201,26 @@ test.describe('Critical User Flows', () => {
 
   test.describe('Flow 5: View Map', () => {
     test('user can open and view training locations on map', async ({ page }) => {
-      // Step 1: Open map modal
+      // Step 1: Switch to map view
       await page.evaluate(() => {
-        window.Alpine.store('ui').mapModalOpen = true
+        window.Alpine.store('ui').activeView = 'map'
       })
 
       await page.waitForTimeout(500)
 
-      // Step 2: Verify map modal is open
-      const isOpen = await page.evaluate(() => {
-        return window.Alpine.store('ui').mapModalOpen
+      // Step 2: Verify map view is active
+      const isMapView = await page.evaluate(() => {
+        return window.Alpine.store('ui').activeView === 'map'
       })
-      expect(isOpen).toBe(true)
+      expect(isMapView).toBe(true)
 
-      // Step 3: Verify map container exists
-      const mapContainer = page.locator('#map-modal-container')
+      // Step 3: Verify map container exists (updated selector)
+      const mapContainer = page.locator('#map-view-container')
       await expect(mapContainer).toBeVisible()
 
-      // Step 4: Close map
+      // Step 4: Switch back to list view
       await page.evaluate(() => {
-        window.Alpine.store('ui').mapModalOpen = false
+        window.Alpine.store('ui').activeView = 'list'
       })
 
       await page.waitForTimeout(300)
@@ -221,20 +232,21 @@ test.describe('Critical User Flows', () => {
       // Prepare mobile filters if needed
       await prepareMobileFilters(page)
 
-      // Step 1: Apply multiple filters
-      const daySelector = getSelector(page, '#filter-wochentag', '#mobile-filter-wochentag')
-      const trainingSelector = getSelector(page, '#filter-training', '#mobile-filter-training')
-
-      await page.selectOption(daySelector, 'Montag')
-      await page.selectOption(trainingSelector, 'Parkour')
+      // Step 1: Apply multiple filters (now checkbox-based arrays)
+      await page.evaluate(() => {
+        const store = window.Alpine.store('ui')
+        store.filters.wochentag = ['Montag']
+        store.filters.training = ['Parkour']
+        window.Alpine.$data(document.querySelector('[x-data]')).applyFilters()
+      })
       await page.waitForTimeout(300)
 
       // Step 2: Verify filters applied
       const filters = await page.evaluate(() => {
         return window.Alpine.store('ui').filters
       })
-      expect(filters.wochentag).toBe('Montag')
-      expect(filters.training).toBe('Parkour')
+      expect(filters.wochentag).toContain('Montag')
+      expect(filters.training).toContain('Parkour')
 
       // Step 3: Get filtered count
       const filteredCount = await page.evaluate(() => {
@@ -342,7 +354,6 @@ test.describe('Critical User Flows', () => {
       const isMobile = viewportSize && viewportSize.width < 768
 
       // Step 1: Set filters and add favorite
-      const daySelector = isMobile ? '#mobile-filter-wochentag' : '#filter-wochentag'
       const searchSelector = isMobile ? '#mobile-search' : '#search'
 
       // On mobile, open filter drawer first
@@ -353,7 +364,11 @@ test.describe('Critical User Flows', () => {
         await page.waitForTimeout(300)
       }
 
-      await page.selectOption(daySelector, 'Dienstag')
+      // Set day filter programmatically (checkbox-based array)
+      await page.evaluate(() => {
+        window.Alpine.store('ui').filters.wochentag = ['Dienstag']
+        window.Alpine.$data(document.querySelector('[x-data]')).applyFilters()
+      })
       await page.fill(searchSelector, 'Trampolin')
 
       const firstId = await page.evaluate(() => {
@@ -381,7 +396,7 @@ test.describe('Critical User Flows', () => {
       const filters = await page.evaluate(() => {
         return window.Alpine.store('ui').filters
       })
-      expect(filters.wochentag).toBe('Dienstag')
+      expect(filters.wochentag).toContain('Dienstag')
       expect(filters.searchTerm).toBe('Trampolin')
 
       // Step 4: Verify favorite persisted

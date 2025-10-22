@@ -340,4 +340,62 @@ export class ActionsManager {
       }
     }
   }
+
+  /**
+   * Share Favorites
+   *
+   * Creates shareable URL for favorite trainings and shares via Web Share API or clipboard.
+   *
+   * @returns {Promise<void>}
+   */
+  async shareFavorites() {
+    if (this.context.favorites.length === 0) {
+      this.context.$store.ui.showNotification(
+        'Keine Favoriten zum Teilen',
+        'warning',
+        3000
+      )
+      return
+    }
+
+    // Create URL by copying current URL and removing filters, only keeping the base URL
+    const baseUrl = window.location.origin + window.location.pathname
+    const shareUrl = `${baseUrl}?favorites=true`
+
+    const count = this.context.favorites.length
+
+    const shareData = {
+      title: 'FAM Trainingsplan - Meine Favoriten',
+      text: `Schau dir meine ${count} Lieblings-Trainings an!`,
+      url: shareUrl
+    }
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData)
+        log('info', 'Favorites shared via native API')
+      } else {
+        // Fallback: Copy to Clipboard
+        const success = await utils.copyToClipboard(shareUrl)
+        if (success) {
+          this.context.$store.ui.showNotification(
+            'Favoriten-Link in Zwischenablage kopiert!',
+            'success',
+            3000
+          )
+        } else {
+          throw new Error('Clipboard write failed')
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        log('error', 'Share favorites failed', error)
+        this.context.$store.ui.showNotification(
+          'Teilen fehlgeschlagen.',
+          'error',
+          3000
+        )
+      }
+    }
+  }
 }

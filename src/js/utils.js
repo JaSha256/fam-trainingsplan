@@ -606,8 +606,20 @@ export function createShareLink(filters) {
   const paramMapping = CONFIG.filters.urlParams
 
   Object.entries(filters).forEach(([key, value]) => {
-    if (value && value !== '' && value !== null && key !== 'activeQuickFilter') {
-      const paramName = /** @type {Record<string, string>} */ (paramMapping)[key] || key
+    // Skip empty values and internal filters
+    if (!value || value === null || key === 'activeQuickFilter' ||
+        key.startsWith('_custom')) {
+      return
+    }
+
+    const paramName = /** @type {Record<string, string>} */ (paramMapping)[key] || key
+
+    // Handle arrays (join with comma)
+    if (Array.isArray(value) && value.length > 0) {
+      params.set(paramName, value.join(','))
+    }
+    // Handle non-empty strings and booleans
+    else if (value !== '' && typeof value !== 'object') {
       params.set(paramName, String(value))
     }
   })
@@ -634,10 +646,10 @@ export function getFiltersFromUrl() {
 
   /** @type {any} */
   const filters = {
-    wochentag: '',
-    ort: '',
-    training: '',
-    altersgruppe: '',
+    wochentag: [],  // ✓ ARRAY for multi-select
+    ort: [],        // ✓ ARRAY for multi-select
+    training: [],   // ✓ ARRAY for multi-select
+    altersgruppe: [], // ✓ ARRAY for multi-select
     searchTerm: '',
     nearby: false
   }
@@ -645,7 +657,18 @@ export function getFiltersFromUrl() {
   params.forEach((value, key) => {
     const filterKey = reverseMapping[key] || key
     if (filterKey in filters) {
-      filters[filterKey] = value === 'true' ? true : (value === 'false' ? false : value)
+      // Handle arrays (comma-separated values in URL)
+      if (['wochentag', 'ort', 'training', 'altersgruppe'].includes(filterKey)) {
+        filters[filterKey] = value ? value.split(',').map(v => v.trim()).filter(v => v) : []
+      }
+      // Handle booleans
+      else if (filterKey === 'nearby') {
+        filters[filterKey] = value === 'true'
+      }
+      // Handle strings
+      else {
+        filters[filterKey] = value
+      }
     }
   })
 

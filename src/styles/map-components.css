@@ -1,0 +1,616 @@
+/**
+ * Leaflet Map Components - FAM Trainingsplan
+ * Version: 1.0.0
+ *
+ * Custom styles for Leaflet map with M3 design integration.
+ * Includes custom controls, user location marker, and optimizations.
+ */
+
+/* ==================== LEAFLET CUSTOM CONTROLS ==================== */
+
+/**
+ * Custom Leaflet Control Base Styles
+ *
+ * M3-styled controls that integrate with Leaflet's control system
+ */
+.leaflet-control-geolocation,
+.leaflet-control-reset {
+  background: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-2);
+  border-radius: 12px;
+  transition: box-shadow var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
+}
+
+.leaflet-control-geolocation:hover,
+.leaflet-control-reset:hover {
+  box-shadow: var(--md-sys-elevation-3);
+}
+
+/**
+ * M3 Icon Button within Leaflet Controls
+ *
+ * Styled to match Material Design 3 icon button specifications
+ */
+.leaflet-control-geolocation .md-icon-button,
+.leaflet-control-reset .md-icon-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.leaflet-control-geolocation .md-icon-button:hover,
+.leaflet-control-reset .md-icon-button:hover {
+  background-color: var(--md-sys-color-on-surface);
+  background-color: color-mix(in oklch, var(--md-sys-color-on-surface) 8%, transparent);
+}
+
+.leaflet-control-geolocation .md-icon-button:active,
+.leaflet-control-reset .md-icon-button:active {
+  background-color: color-mix(in oklch, var(--md-sys-color-on-surface) 12%, transparent);
+}
+
+.leaflet-control-geolocation .md-icon-button:disabled,
+.leaflet-control-reset .md-icon-button:disabled {
+  color: var(--md-sys-color-on-surface);
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/**
+ * Loading State for Geolocation Button
+ */
+.leaflet-control-geolocation .md-icon-button.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Focus Styles (Accessibility)
+ */
+.leaflet-control-geolocation .md-icon-button:focus-visible,
+.leaflet-control-reset .md-icon-button:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* ==================== USER LOCATION MARKER ==================== */
+
+/**
+ * User Location Marker with Pulse Animation
+ *
+ * Blue dot with pulsing ring to indicate current user location
+ */
+.md-user-location-marker {
+  position: relative;
+  background: transparent;
+  border: none;
+}
+
+.md-user-location-marker .pulse {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  position: relative;
+  box-shadow: 0 0 0 0 var(--color-primary-500);
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.md-user-location-marker .pulse::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 4px oklch(0 0 0 / 0.3);
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--color-primary-500);
+  }
+  70% {
+    box-shadow: 0 0 0 15px oklch(0 0 0 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 oklch(0 0 0 / 0);
+  }
+}
+
+/* ==================== TILE LAYER OPTIMIZATIONS ==================== */
+
+/**
+ * Tile Layer Container
+ *
+ * Optimize tile rendering performance
+ */
+.md-map-tiles {
+  /* GPU acceleration for smoother panning */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Dark mode tile adjustments */
+:root[data-theme="dark"] .md-map-tiles {
+  /* Invert and adjust tiles for dark mode */
+  filter: brightness(0.75) contrast(1.1) saturate(0.9);
+}
+
+/* ==================== MAP CONTAINER ==================== */
+
+/**
+ * Map Modal Container
+ *
+ * Ensure proper sizing and rendering
+ */
+#map-modal-container {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+
+  /* Performance optimizations */
+  contain: layout style paint;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/**
+ * Leaflet Attribution
+ *
+ * M3-styled attribution control
+ */
+.leaflet-control-attribution {
+  background: var(--md-sys-color-surface-container) !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  box-shadow: var(--md-sys-elevation-1) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-primary-500) !important;
+}
+
+/**
+ * Leaflet Zoom Control
+ *
+ * M3-styled zoom buttons
+ */
+.leaflet-bar {
+  box-shadow: var(--md-sys-elevation-2) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.leaflet-bar a {
+  background-color: var(--md-sys-color-surface-container) !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+  border: none !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--md-sys-color-surface-container-high) !important;
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+.leaflet-bar a:first-child {
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.leaflet-bar a:last-child {
+  border-radius: 0 0 12px 12px !important;
+}
+
+.leaflet-bar a:focus-visible {
+  outline: 2px solid var(--color-primary-500) !important;
+  outline-offset: -2px !important;
+}
+
+/**
+ * Leaflet Popups
+ *
+ * M3-styled popups (already styled in existing CSS, this ensures consistency)
+ */
+.leaflet-popup-content-wrapper {
+  background: var(--md-sys-color-surface-container) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  box-shadow: var(--md-sys-elevation-3) !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--md-sys-color-surface-container) !important;
+}
+
+/**
+ * Map Cluster Styles (M3 Integration)
+ *
+ * Already defined in existing CSS, ensure dark mode support
+ */
+:root[data-theme="dark"] .md-map-cluster {
+  border-color: var(--md-sys-color-surface-container-high);
+}
+
+/* ==================== ACCESSIBILITY ENHANCEMENTS ==================== */
+
+/**
+ * Keyboard Navigation Focus Indicators
+ */
+.leaflet-container:focus-visible {
+  outline: 3px solid var(--color-primary-500);
+  outline-offset: -3px;
+}
+
+/**
+ * Screen Reader Only Text
+ */
+.leaflet-control .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==================== MOBILE OPTIMIZATIONS ==================== */
+
+/**
+ * Touch-Friendly Controls on Mobile
+ */
+@media (max-width: 768px) {
+  .leaflet-control-geolocation .md-icon-button,
+  .leaflet-control-reset .md-icon-button,
+  .leaflet-bar a {
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
+  }
+
+  .leaflet-control-geolocation,
+  .leaflet-control-reset {
+    margin: 8px !important;
+  }
+
+  /* Larger tap targets */
+  .md-user-location-marker .pulse {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/**
+ * Reduced Motion Support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .md-user-location-marker .pulse {
+    animation: none;
+    box-shadow: 0 0 0 2px var(--color-primary-500);
+  }
+
+  .leaflet-control-geolocation .md-icon-button.loading svg {
+    animation: none;
+  }
+
+  .md-map-tiles {
+    will-change: auto;
+  }
+}
+
+/* ==================== DARK MODE SPECIFIC ADJUSTMENTS ==================== */
+
+:root[data-theme="dark"] {
+  /* Ensure controls are visible in dark mode */
+  .leaflet-control-geolocation,
+  .leaflet-control-reset,
+  .leaflet-bar {
+    background: var(--md-sys-color-surface-container-high);
+  }
+
+  .leaflet-control-attribution {
+    background: var(--md-sys-color-surface-container-low) !important;
+  }
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+
+/**
+ * GPU Acceleration for Smooth Interactions
+ */
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  will-change: transform;
+}
+
+/**
+ * Reduce Repaints During Interaction
+ */
+.leaflet-interactive {
+  will-change: transform;
+}
+
+/**
+ * Optimize Marker Rendering
+ */
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  /* Disable will-change to prevent positioning glitches during zoom */
+  /* will-change: transform; */
+  backface-visibility: hidden;
+  /* Ensure consistent positioning */
+  image-rendering: crisp-edges;
+}
+
+/* ==================== MAP POPUP TRAINING LIST ==================== */
+
+/**
+ * Location Popup Container
+ */
+.md-map-location-popup {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+}
+
+/**
+ * Location Popup Header
+ */
+.md-map-location-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+  background: var(--color-primary-600);
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 0;
+  box-shadow: var(--md-sys-elevation-2);
+  color: white;
+}
+
+.md-map-location-header h3,
+.md-map-location-header p {
+  color: white !important;
+  margin: 0;
+}
+
+.md-map-location-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.md-map-location-header p {
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.md-map-popup-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/**
+ * Sorting Controls
+ */
+.md-map-location-sort {
+  padding: 12px 16px;
+  background: var(--md-sys-color-surface-container-low);
+  border-bottom: 2px solid var(--color-primary-300);
+  margin-bottom: 12px;
+}
+
+.md-sort-dropdown {
+  flex: 1;
+  padding: 8px 32px 8px 12px;
+  border-radius: 8px;
+  border: 2px solid var(--color-primary-400);
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230073e6' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.md-sort-dropdown:hover {
+  border-color: var(--color-primary-600);
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.md-sort-dropdown:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-color: var(--color-primary-600);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+/**
+ * Scrollable Training List
+ */
+.md-map-location-list {
+  overflow-y: auto;
+  max-height: 360px;
+  padding: 0 16px 12px 16px;
+
+  /* Custom scrollbar for better UX */
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+.md-map-location-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.md-map-location-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.md-map-location-list::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 4px;
+}
+
+.md-map-location-list::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-outline);
+}
+
+/**
+ * Individual Training Item (Card-like)
+ */
+.md-map-location-item {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--md-sys-color-surface);
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: all var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.md-map-location-item:last-child {
+  margin-bottom: 0;
+}
+
+.md-map-location-item:hover {
+  background: var(--md-sys-color-surface-container);
+  border-color: var(--color-primary-400);
+  box-shadow: var(--md-sys-elevation-2);
+  transform: translateY(-1px);
+}
+
+/* Alternating background with color for better readability */
+.md-map-location-item:nth-child(even) {
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.md-map-location-item:nth-child(even):hover {
+  background: var(--md-sys-color-surface-container);
+}
+
+/**
+ * Training Action Button
+ */
+.md-location-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--color-primary-600);
+  color: white !important;
+  border-radius: 8px;
+  text-decoration: none !important;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+.md-location-action-btn span {
+  color: white !important;
+}
+
+.md-location-action-btn:hover {
+  background: var(--color-primary-700);
+  color: white !important;
+  box-shadow: var(--md-sys-elevation-3);
+  transform: translateY(-2px);
+}
+
+.md-location-action-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+/**
+ * Dark Mode Adjustments for Popup
+ */
+:root[data-theme="dark"] .md-map-location-item {
+  background: var(--md-sys-color-surface-container);
+}
+
+:root[data-theme="dark"] .md-map-location-item:nth-child(even) {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+:root[data-theme="dark"] .md-map-location-item:hover {
+  background: var(--md-sys-color-surface-container-highest);
+  border-color: var(--md-sys-color-outline);
+}
+
+/**
+ * Mobile Optimization for Popup List
+ */
+@media (max-width: 768px) {
+  .md-map-location-list {
+    max-height: 300px;
+  }
+
+  .md-map-location-item {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .md-map-location-header {
+    padding: 16px;
+  }
+
+  .md-map-location-header h3 {
+    font-size: 16px;
+  }
+
+  .md-map-location-sort {
+    padding: 10px 12px;
+  }
+
+  .md-sort-dropdown {
+    font-size: 13px;
+    padding: 6px 28px 6px 10px;
+  }
+
+  .md-location-action-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+}

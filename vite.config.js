@@ -1,17 +1,18 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   base: './',
-  
+
   plugins: [
     // Tailwind CSS v4 Plugin with Forms & Typography
     // @ts-ignore - tailwindcss plugin accepts options but types are incorrect
     tailwindcss({
       plugins: ['@tailwindcss/forms', '@tailwindcss/typography']
     }),
-    
+
     // PWA Plugin
     VitePWA({
       registerType: 'autoUpdate',
@@ -190,7 +191,17 @@ export default defineConfig({
       devOptions: {
         enabled: false
       }
-    })
+    }),
+
+    // Bundle Analyzer (only when ANALYZE=true)
+    ...(process.env.ANALYZE === 'true' ? [
+      visualizer({
+        filename: 'dist/stats.html',
+        open: true,
+        gzipSize: true,
+        brotliSize: true
+      })
+    ] : [])
   ],
   
   build: {
@@ -255,7 +266,8 @@ export default defineConfig({
       '@alpinejs/intersect',
       '@alpinejs/persist',
       'fuse.js',
-      'leaflet'
+      'leaflet',
+      'leaflet.markercluster'
     ],
     exclude: []
   }

@@ -26,6 +26,7 @@ import { GeolocationManager } from './trainingsplaner/geolocation-manager.js'
 import { MapManager } from './trainingsplaner/map-manager.js'
 import { DataLoader } from './trainingsplaner/data-loader.js'
 import { ActionsManager } from './trainingsplaner/actions-manager.js'
+import { QUICK_FILTERS } from './trainingsplaner/quick-filters.js'
 
 /**
  * @typedef {import('./trainingsplaner/types.js').Training} Training
@@ -61,12 +62,13 @@ export function trainingsplaner() {
     geolocationError: state.geolocationError,
     map: state.map,
     markers: state.markers,
+    markerClusterGroup: state.markerClusterGroup,
     userHasInteractedWithMap: state.userHasInteractedWithMap,
     updateCheckInterval: state.updateCheckInterval,
     updateAvailable: state.updateAvailable,
     latestVersion: state.latestVersion,
     searchTimeout: state.searchTimeout,
-    wochentagOrder: state.wochentagOrder,
+    wochentagOrder: state.wochentagOrder
   }
 
   // Computed properties (defined as getters AFTER base properties)
@@ -75,9 +77,17 @@ export function trainingsplaner() {
     // Computed properties (MUST be defined BEFORE init() so Alpine can access them immediately)
     wochentage: {
       get() {
-        return this.metadata?.wochentage || [
-          'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'
-        ]
+        const order = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+        const tage = this.metadata?.wochentage || order
+        // Sort chronologically (Mo-So) instead of alphabetically
+        return [...tage].sort((a, b) => {
+          const aIdx = order.indexOf(a)
+          const bIdx = order.indexOf(b)
+          if (aIdx === -1 && bIdx === -1) return a.localeCompare(b)
+          if (aIdx === -1) return 1
+          if (bIdx === -1) return -1
+          return aIdx - bIdx
+        })
       },
       enumerable: true
     },
@@ -95,8 +105,17 @@ export function trainingsplaner() {
     },
     altersgruppen: {
       get() {
+        const order = ['Minis', 'Kids', 'Teens', 'Adults']
         if (this.metadata?.altersgruppen) {
-          return this.metadata.altersgruppen
+          // Sort age groups young → old instead of alphabetically
+          return [...this.metadata.altersgruppen].sort((a, b) => {
+            const aIdx = order.indexOf(a)
+            const bIdx = order.indexOf(b)
+            if (aIdx === -1 && bIdx === -1) return a.localeCompare(b)
+            if (aIdx === -1) return 1  // Unknown groups last
+            if (bIdx === -1) return -1
+            return aIdx - bIdx
+          })
         }
         const values = this.allTrainings
           .map((t) => t.altersgruppe)
@@ -110,7 +129,15 @@ export function trainingsplaner() {
             }
           })
         })
-        return allGroups.sort()
+        // Sort age groups young → old instead of alphabetically
+        return allGroups.sort((a, b) => {
+          const aIdx = order.indexOf(a)
+          const bIdx = order.indexOf(b)
+          if (aIdx === -1 && bIdx === -1) return a.localeCompare(b)
+          if (aIdx === -1) return 1  // Unknown groups last
+          if (bIdx === -1) return -1
+          return aIdx - bIdx
+        })
       },
       enumerable: true
     },
@@ -208,8 +235,27 @@ export function trainingsplaner() {
       // @ts-expect-error - watchFilters defined below
       this.watchFilters()
 
+      // Setup keyboard shortcuts
+      // @ts-expect-error - handleKeyboardShortcuts defined below
+      window.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e))
+
+      // QW9: Setup scroll to top button visibility
+      window.addEventListener('scroll', () => {
+        if (alpineContext.$store?.ui) {
+          alpineContext.$store.ui.showScrollTop = window.scrollY > 500
+        }
+      }, { passive: true })
+
       // Load data
       await this.dataLoader.init()
+
+      // Populate filter options store for dropdowns (after data loads)
+      if (alpineContext.$store?.filterOptions) {
+        alpineContext.$store.filterOptions.wochentage = this.wochentage
+        alpineContext.$store.filterOptions.orte = this.orte
+        alpineContext.$store.filterOptions.trainingsarten = this.trainingsarten
+        alpineContext.$store.filterOptions.altersgruppen = this.altersgruppen
+      }
   }
 
   component.watchFilters = function() {
@@ -227,20 +273,43 @@ export function trainingsplaner() {
           }
           filterChangeTimeout = setTimeout(() => {
             alpineContext.filterEngine.applyFilters()
+
+            // Auto-update map markers when filters change and map is active
+            if (alpineContext.$store?.ui?.activeView === 'map' && alpineContext.map) {
+              alpineContext.$nextTick(() => {
+                alpineContext.mapManager.addMarkersToMap()
+              })
+            }
           }, 100)
         },
         { deep: true }
       )
 
-      alpineContext.$watch('$store.ui.mapModalOpen', (/** @type {boolean} */ isOpen) => {
-        if (isOpen) {
+      // Watch for map view (activeView state replaces mapModalOpen)
+      alpineContext.$watch('$store.ui.activeView', (/** @type {string} */ activeView) => {
+        if (activeView === 'map') {
           alpineContext.$nextTick(() => {
-            alpineContext.mapManager.initializeMap()
+            // Initialize map if not already initialized
+            if (!alpineContext.map) {
+              alpineContext.mapManager.initializeMap()
+            } else {
+              // Map exists, just make sure container is visible (handled by x-show in template)
+              // Force map to recalculate size in case container dimensions changed
+              alpineContext.map.invalidateSize()
+            }
           })
-        } else {
-          alpineContext.mapManager.cleanupMap()
         }
+        // Note: We don't cleanup map when switching away - map instance persists
       })
+
+      // Check initial state - initialize map if activeView is already 'map'
+      if (alpineContext.$store?.ui?.activeView === 'map') {
+        alpineContext.$nextTick(() => {
+          if (!alpineContext.map) {
+            alpineContext.mapManager.initializeMap()
+          }
+        })
+      }
   }
 
   // ==================== DELEGATED METHODS ====================
@@ -279,6 +348,144 @@ export function trainingsplaner() {
     return this.favoritesManager.quickFilterFavorites()
   }
 
+  /**
+   * Quick Filter: Heute
+   * QW3: Toggle filter for today's weekday (highest impact quick win!)
+   * If already active, deactivates the filter. If not active, filters for today.
+   * @returns {void}
+   */
+  component.quickFilterHeute = function() {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+
+    if (!alpineContext.$store?.ui?.filters) return
+
+    const currentActive = alpineContext.$store.ui.filters.activeQuickFilter
+
+    // Toggle: wenn bereits aktiv → deaktivieren
+    if (currentActive === 'heute') {
+      alpineContext.$store.ui.filters = {
+        wochentag: '',
+        ort: '',
+        training: '',
+        altersgruppe: '',
+        searchTerm: '',
+        activeQuickFilter: null
+      }
+    } else {
+      // Aktivieren: heute's Wochentag setzen
+      const wochentage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+      const heute = wochentage[new Date().getDay()]
+
+      alpineContext.$store.ui.filters.wochentag = heute
+      alpineContext.$store.ui.filters.activeQuickFilter = 'heute'
+    }
+
+    // Apply filters
+    this.applyFilters()
+  }
+
+  /**
+   * Apply Quick Filter (Universal Method)
+   *
+   * Central method for all quick filters with toggle behavior.
+   * Handles geolocation requests and custom filter logic.
+   *
+   * @param {string} filterName - Name of the quick filter to apply
+   * @returns {Promise<void>}
+   */
+  component.applyQuickFilter = async function(filterName) {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+
+    if (!alpineContext.$store?.ui?.filters) return
+
+    const currentActive = alpineContext.$store.ui.filters.activeQuickFilter
+    const filter = QUICK_FILTERS[filterName]
+
+    if (!filter) {
+      console.warn(`Unknown quick filter: ${filterName}`)
+      return
+    }
+
+    // Toggle: wenn bereits aktiv → deaktivieren
+    if (currentActive === filterName) {
+      // Only clear the specific filter category, preserve others
+      if (filter.category === 'zeit') {
+        // Zeit filters clear wochentag and _customTimeFilter
+        alpineContext.$store.ui.filters.wochentag = ''
+        alpineContext.$store.ui.filters._customTimeFilter = ''
+      } else if (filter.category === 'feature') {
+        // Feature filters only clear _customFeatureFilter
+        alpineContext.$store.ui.filters._customFeatureFilter = ''
+      } else if (filter.category === 'ort') {
+        // Location filters only clear _customLocationFilter
+        alpineContext.$store.ui.filters._customLocationFilter = ''
+      } else if (filter.category === 'persoenlich') {
+        // Personal filters (Favoriten) are exclusive, clear everything
+        this.clearAllFilters()
+        return
+      }
+
+      alpineContext.$store.ui.filters.activeQuickFilter = null
+      this.applyFilters()
+      return
+    }
+
+    // Check if geolocation is required
+    if (filter.requiresGeolocation && !this.userPosition) {
+      // Request geolocation first
+      const granted = await this.requestUserLocation()
+      if (!granted) {
+        alpineContext.$store.ui.showNotification(
+          'Standort-Zugriff benötigt für "In meiner Nähe" Filter',
+          'warning',
+          3000
+        )
+        return
+      }
+      // Wait for distance calculation
+      this.addDistanceToTrainings()
+    }
+
+    // Create context for filter
+    const context = {
+      allTrainings: this.allTrainings,
+      favorites: this.favorites,
+      userPosition: this.userPosition,
+      applyFilters: () => this.applyFilters()
+    }
+
+    // Apply filter logic
+    const result = filter.apply(alpineContext.$store.ui.filters, context)
+
+    // If filter returns array directly, set filteredTrainings
+    if (Array.isArray(result)) {
+      this.filteredTrainings = result
+    } else {
+      // Otherwise use standard filter engine
+      this.applyFilters()
+    }
+
+    // UX: Auto-close mobile filter drawer after quick filter selection
+    // Check if we're on mobile (not desktop) using the lg breakpoint (1024px)
+    const isMobile = !window.matchMedia('(min-width: 1024px)').matches
+    if (isMobile && alpineContext.$store?.ui) {
+      // Small delay to let the filter apply first, then close drawer
+      setTimeout(() => {
+        alpineContext.$store.ui.mobileFilterOpen = false
+
+        // UX: Smooth scroll to results after drawer closes
+        setTimeout(() => {
+          const mainContent = document.getElementById('main-content')
+          if (mainContent) {
+            mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 200)
+      }, 150)
+    }
+  }
+
   // Geolocation
   component.requestUserLocation = function() {
     // @ts-expect-error - geolocationManager added in init()
@@ -288,6 +495,11 @@ export function trainingsplaner() {
   component.addDistanceToTrainings = function() {
     // @ts-expect-error - geolocationManager added in init()
     return this.geolocationManager.addDistanceToTrainings()
+  }
+
+  component.resetLocation = function() {
+    // @ts-expect-error - geolocationManager added in init()
+    return this.geolocationManager.resetLocation()
   }
 
   // Map
@@ -379,6 +591,11 @@ export function trainingsplaner() {
     return this.actionsManager.shareCurrentView()
   }
 
+  component.shareFavorites = function() {
+    // @ts-expect-error - actionsManager added in init()
+    return this.actionsManager.shareFavorites()
+  }
+
   // Utility Methods (remain inline as they're simple)
   component.sortTrainings = function(/** @type {Training[]} */ trainings) {
     return trainings.sort((/** @type {Training} */ a, /** @type {Training} */ b) => {
@@ -411,6 +628,350 @@ export function trainingsplaner() {
 
   component.formatZeitrange = function(/** @type {string} */ von, /** @type {string} */ bis) {
     return utils.formatZeitrange(von, bis)
+  }
+
+  // ==================== FILTER & KEYBOARD ACTIONS ====================
+
+  /**
+   * Clear All Filters
+   *
+   * Resets all filter values to empty state and re-applies filters.
+   * Used by "Alle löschen" button in filter chips UI.
+   * Task 13: Multi-select arrays
+   *
+   * @returns {void}
+   */
+  component.clearAllFilters = function() {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+
+    if (alpineContext.$store?.ui?.filters) {
+      alpineContext.$store.ui.filters = {
+        wochentag: [],
+        ort: [],
+        training: [],
+        altersgruppe: [],
+        searchTerm: '',
+        activeQuickFilter: null,
+        _customTimeFilter: '',
+        _customFeatureFilter: '',
+        _customLocationFilter: '',
+        _customPersonalFilter: ''
+      }
+    }
+
+    this.applyFilters()
+  }
+
+  // ==================== TASK 15: ACTIVE FILTER CHIPS ====================
+
+  /**
+   * Get Active Filter Chips
+   *
+   * Returns array of all active filter chips with enhanced UX metadata:
+   * - tooltip: Descriptive text for hover state
+   * - ariaLabel: Accessible label for screen readers
+   * - prominent: Whether chip should have high visual prominence
+   * - styleClass: CSS classes for visual styling
+   * - minTouchTarget: Minimum touch target size (44px for mobile)
+   *
+   * Task 15: Sticky filter chips bar
+   * UX Enhancement: Prominent visual styling, tooltips, better hover states
+   *
+   * @returns {Array<{category: string, label: string, value: string, remove: () => void, tooltip: string, ariaLabel: string, prominent: boolean, styleClass: string, minTouchTarget: number}>}
+   */
+  component.getActiveFilterChips = function() {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const filters = alpineContext.$store?.ui?.filters
+
+    if (!filters) return []
+
+    const chips = []
+
+    // Wochentag filters
+    if (Array.isArray(filters.wochentag) && filters.wochentag.length > 0) {
+      filters.wochentag.forEach(/** @param {string} day */ (day) => {
+        chips.push({
+          category: 'wochentag',
+          label: 'Wochentag',
+          value: day,
+          remove: () => this.removeFilterChip('wochentag', day),
+          tooltip: `Wochentag: ${day} - Klicken zum Entfernen`,
+          ariaLabel: `Filter ${day} entfernen`,
+          prominent: true,
+          styleClass: 'primary-filter',
+          minTouchTarget: 44
+        })
+      })
+    }
+
+    // Ort filters
+    if (Array.isArray(filters.ort) && filters.ort.length > 0) {
+      filters.ort.forEach(/** @param {string} ort */ (ort) => {
+        chips.push({
+          category: 'ort',
+          label: 'Ort',
+          value: ort,
+          remove: () => this.removeFilterChip('ort', ort),
+          tooltip: `Ort: ${ort} - Klicken zum Entfernen`,
+          ariaLabel: `Filter ${ort} entfernen`,
+          prominent: true,
+          styleClass: 'primary-filter',
+          minTouchTarget: 44
+        })
+      })
+    }
+
+    // Training filters
+    if (Array.isArray(filters.training) && filters.training.length > 0) {
+      filters.training.forEach(/** @param {string} training */ (training) => {
+        chips.push({
+          category: 'training',
+          label: 'Training',
+          value: training,
+          remove: () => this.removeFilterChip('training', training),
+          tooltip: `Training: ${training} - Klicken zum Entfernen`,
+          ariaLabel: `Filter ${training} entfernen`,
+          prominent: true,
+          styleClass: 'primary-filter',
+          minTouchTarget: 44
+        })
+      })
+    }
+
+    // Altersgruppe filters
+    if (Array.isArray(filters.altersgruppe) && filters.altersgruppe.length > 0) {
+      filters.altersgruppe.forEach(/** @param {string} gruppe */ (gruppe) => {
+        chips.push({
+          category: 'altersgruppe',
+          label: 'Altersgruppe',
+          value: gruppe,
+          remove: () => this.removeFilterChip('altersgruppe', gruppe),
+          tooltip: `Altersgruppe: ${gruppe} - Klicken zum Entfernen`,
+          ariaLabel: `Filter ${gruppe} entfernen`,
+          prominent: true,
+          styleClass: 'primary-filter',
+          minTouchTarget: 44
+        })
+      })
+    }
+
+    // Search term
+    if (filters.searchTerm && filters.searchTerm.trim() !== '') {
+      chips.push({
+        category: 'search',
+        label: 'Suche',
+        value: filters.searchTerm,
+        remove: () => this.removeFilterChip('search', filters.searchTerm),
+        tooltip: `Suche: "${filters.searchTerm}" - Klicken zum Entfernen`,
+        ariaLabel: `Suchfilter "${filters.searchTerm}" entfernen`,
+        prominent: true,
+        styleClass: 'primary-filter',
+        minTouchTarget: 44
+      })
+    }
+
+    // Quick filter
+    if (filters.activeQuickFilter) {
+      // Get human-readable label for quick filter
+      const quickFilterLabels = {
+        heute: 'Heute',
+        morgen: 'Morgen',
+        wochenende: 'Wochenende',
+        probetraining: 'Probetraining',
+        favoriten: 'Favoriten',
+        'in-meiner-naehe': 'In meiner Nähe'
+      }
+
+      const qfValue = quickFilterLabels[filters.activeQuickFilter] || filters.activeQuickFilter
+
+      chips.push({
+        category: 'quickFilter',
+        label: 'Quick-Filter',
+        value: qfValue,
+        remove: () => this.removeFilterChip('quickFilter', filters.activeQuickFilter),
+        tooltip: `Quick-Filter: ${qfValue} - Klicken zum Entfernen`,
+        ariaLabel: `Quick-Filter ${qfValue} entfernen`,
+        prominent: true,
+        styleClass: 'primary-filter',
+        minTouchTarget: 44
+      })
+    }
+
+    return chips
+  }
+
+  /**
+   * Get Displayed Filter Chips (Max 3)
+   *
+   * Returns first 3 active filter chips for display.
+   * Task 15: Sticky filter chips bar
+   *
+   * @returns {Array<{category: string, label: string, value: string, remove: () => void}>}
+   */
+  component.getDisplayedFilterChips = function() {
+    const allChips = this.getActiveFilterChips()
+    return allChips.slice(0, 3)
+  }
+
+  /**
+   * Get Overflow Filter Count
+   *
+   * Returns count of filters beyond the first 3 displayed chips.
+   * Task 15: Sticky filter chips bar
+   *
+   * @returns {number}
+   */
+  component.getOverflowFilterCount = function() {
+    const allChips = this.getActiveFilterChips()
+    return Math.max(0, allChips.length - 3)
+  }
+
+  /**
+   * Get Active Filter Count
+   *
+   * Returns total count of all active filters.
+   * Task 15: Sticky filter chips bar
+   *
+   * @returns {number}
+   */
+  component.getActiveFilterCount = function() {
+    return this.getActiveFilterChips().length
+  }
+
+  /**
+   * Remove Filter Chip
+   *
+   * Removes a specific filter value and re-applies filters.
+   * Task 15: Sticky filter chips bar
+   *
+   * @param {string} category - Filter category (wochentag, ort, training, altersgruppe, search, quickFilter)
+   * @param {string} value - Filter value to remove
+   * @returns {void}
+   */
+  component.removeFilterChip = function(category, value) {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+    const filters = alpineContext.$store?.ui?.filters
+
+    if (!filters) return
+
+    // Handle array filters (wochentag, ort, training, altersgruppe)
+    if (['wochentag', 'ort', 'training', 'altersgruppe'].includes(category)) {
+      if (Array.isArray(filters[category])) {
+        filters[category] = filters[category].filter(/** @param {string} v */ (v) => v !== value)
+      }
+    }
+    // Handle search term
+    else if (category === 'search') {
+      filters.searchTerm = ''
+    }
+    // Handle quick filter
+    else if (category === 'quickFilter') {
+      filters.activeQuickFilter = null
+    }
+
+    // Re-apply filters
+    this.applyFilters()
+  }
+
+  /**
+   * Get Results Count
+   *
+   * Returns the count of filtered trainings.
+   * Task 15: Sticky filter chips bar
+   *
+   * @returns {number}
+   */
+  component.getResultsCount = function() {
+    return this.filteredTrainings?.length || 0
+  }
+
+  /**
+   * Get Results Count Text
+   *
+   * Returns formatted German text for results count (singular/plural).
+   * Task 15: Sticky filter chips bar
+   *
+   * @returns {string}
+   */
+  component.getResultsCountText = function() {
+    const count = this.getResultsCount()
+    if (count === 1) {
+      return '1 Training gefunden'
+    }
+    return `${count} Trainings gefunden`
+  }
+
+  /**
+   * Should Show Filter Chips
+   *
+   * Returns true if any filters are active and chips bar should be displayed.
+   * Task 15: Sticky filter chips bar
+   *
+   * @returns {boolean}
+   */
+  component.shouldShowFilterChips = function() {
+    return this.getActiveFilterCount() > 0
+  }
+
+  /**
+   * Should Clear Button Be Prominent
+   *
+   * Returns true if "Alle loschen" button should have prominent styling.
+   * Prominent when 3 or more filters are active (user needs more obvious reset option).
+   * UX Enhancement: Better visibility for clear all button
+   *
+   * @returns {boolean}
+   */
+  component.shouldClearButtonBeProminent = function() {
+    return this.getActiveFilterCount() >= 3
+  }
+
+  /**
+   * Handle Keyboard Shortcuts
+   *
+   * Global keyboard shortcuts for power users:
+   * - Ctrl/Cmd + F: Toggle filter sidebar (desktop only)
+   * - Escape: Close open modals in priority order (map → mobile filters)
+   *
+   * @param {KeyboardEvent} event - Keyboard event
+   * @returns {void}
+   */
+  component.handleKeyboardShortcuts = function(event) {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (/** @type {any} */ (this))
+
+    // Ctrl/Cmd + F: Toggle filter sidebar (desktop only)
+    if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+      // Check if we're on desktop (lg breakpoint)
+      const isDesktop = window.matchMedia('(min-width: 1024px)').matches
+
+      if (isDesktop && alpineContext.$store?.ui) {
+        event.preventDefault()
+        alpineContext.$store.ui.filterSidebarOpen = !alpineContext.$store.ui.filterSidebarOpen
+      }
+    }
+
+    // Escape: Close modals in priority order
+    if (event.key === 'Escape') {
+      if (alpineContext.$store?.ui) {
+        // Switch away from map view first (highest priority)
+        if (alpineContext.$store.ui.activeView === 'map') {
+          alpineContext.$store.ui.activeView = 'list'
+          event.preventDefault()
+          return
+        }
+
+        // Then mobile filter drawer
+        if (alpineContext.$store.ui.mobileFilterOpen) {
+          alpineContext.$store.ui.mobileFilterOpen = false
+          event.preventDefault()
+          return
+        }
+      }
+    }
   }
 
   // ==================== CLEANUP ====================

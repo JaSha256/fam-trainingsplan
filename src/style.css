@@ -1,7 +1,7 @@
 /**
  * FAM Trainingsplan - Tailwind CSS v4
- * Version: 3.0.0
- * 
+ * Version: 3.1.0 - Material Design 3 (M3) Integration
+ *
  * Optimizations:
  * - Reduced CSS size by 15%
  * - Modern CSS features (container queries, :has(), @layer)
@@ -9,6 +9,31 @@
  * - Enhanced animations (spring physics)
  * - Improved accessibility
  * - Better dark mode preparation
+ *
+ * Material Design 3 Integration:
+ * - M3 Dynamic Color System with surface variants
+ * - M3 Elevation System (5 levels: 0-5)
+ * - M3 Typography Scale (15 type ramp classes)
+ * - M3 Button Variants (Filled, Outlined, Text, Filled Tonal)
+ * - M3 State Layers (hover/focus/press/drag overlays)
+ * - M3 Card Variants (Elevated, Filled, Outlined)
+ * - M3 FAB (Floating Action Button)
+ * - M3 Snackbar component
+ * - M3 Motion System (emphasized/standard easing)
+ * - M3 Switch (toggle component)
+ * - M3 Chips (4 variants: Assist, Filter, Input, Suggestion)
+ * - M3 Navigation Rail (desktop vertical navigation)
+ *
+ * M3 Component Classes:
+ * - Buttons: .md-btn-filled, .md-btn-outlined, .md-btn-text, .md-btn-filled-tonal
+ * - Cards: .md-card-elevated, .md-card-filled, .md-card-outlined
+ * - Typography: .md-typescale-{display|headline|title|body|label}-{large|medium|small}
+ * - State Layers: .md-state-layer (add to interactive elements)
+ * - FAB: .md-fab, .md-fab-small, .md-fab-large
+ * - Snackbar: .md-snackbar, .md-snackbar-visible
+ * - Switch: .md-switch, .md-switch-wrapper (toggle component with label support)
+ * - Chips: .md-chip-assist, .md-chip-filter, .md-chip-input, .md-chip-suggest
+ * - Navigation Rail: .md-nav-rail, .md-nav-rail-destination, .md-nav-rail-active
  */
 
 /* ==================== TAILWIND CSS v4 IMPORTS ==================== */
@@ -28,6 +53,43 @@
   --color-primary-800: oklch(0.22 0.08 240);
   --color-primary-900: oklch(0.15 0.05 240);
   --color-primary-950: oklch(0.10 0.03 240);
+
+  /* ==================== M3 SURFACE COLORS ==================== */
+  /* M3 Dynamic Color System - Surface Variants */
+  --md-sys-color-surface: oklch(0.98 0.01 240);
+  --md-sys-color-surface-dim: oklch(0.93 0.01 240);
+  --md-sys-color-surface-bright: oklch(1 0 0);
+  --md-sys-color-surface-container-lowest: oklch(1 0 0);
+  --md-sys-color-surface-container-low: oklch(0.97 0.01 240);
+  --md-sys-color-surface-container: oklch(0.95 0.01 240);
+  --md-sys-color-surface-container-high: oklch(0.93 0.01 240);
+  --md-sys-color-surface-container-highest: oklch(0.90 0.01 240);
+
+  /* M3 On-Surface Colors */
+  --md-sys-color-on-surface: oklch(0.15 0.01 240);
+  --md-sys-color-on-surface-variant: oklch(0.42 0.01 240);
+
+  /* M3 Outline Colors */
+  --md-sys-color-outline: oklch(0.64 0.01 240);
+  --md-sys-color-outline-variant: oklch(0.82 0.01 240);
+
+  /* M3 Primary Surface Colors */
+  --md-sys-color-primary-container: oklch(0.88 0.04 240);
+  --md-sys-color-on-primary-container: oklch(0.15 0.05 240);
+
+  /* ==================== M3 DARK MODE COLORS ==================== */
+  /* Dark mode color tokens - activated via [data-theme="dark"] */
+
+  /* Note: Dark mode colors are defined in :root[data-theme="dark"] selector below */
+
+  /* ==================== M3 ELEVATION SYSTEM ==================== */
+  /* M3 Elevation Levels (spec-compliant shadows) */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0px 1px 2px 0px oklch(0 0 0 / 0.3), 0px 1px 3px 1px oklch(0 0 0 / 0.15);
+  --md-sys-elevation-2: 0px 1px 2px 0px oklch(0 0 0 / 0.3), 0px 2px 6px 2px oklch(0 0 0 / 0.15);
+  --md-sys-elevation-3: 0px 1px 3px 0px oklch(0 0 0 / 0.3), 0px 4px 8px 3px oklch(0 0 0 / 0.15);
+  --md-sys-elevation-4: 0px 2px 3px 0px oklch(0 0 0 / 0.3), 0px 6px 10px 4px oklch(0 0 0 / 0.15);
+  --md-sys-elevation-5: 0px 4px 4px 0px oklch(0 0 0 / 0.3), 0px 8px 12px 6px oklch(0 0 0 / 0.15);
 
   /* Typography */
   --font-sans: 'Inter var', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -90,6 +152,30 @@
   --transition-timing-function-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --transition-timing-function-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-timing-function-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ==================== M3 MOTION SYSTEM ==================== */
+  /* M3 Duration Tokens */
+  --md-sys-motion-duration-short1: 50ms;
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short3: 150ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium1: 250ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium3: 350ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long1: 450ms;
+  --md-sys-motion-duration-long2: 500ms;
+  --md-sys-motion-duration-long3: 550ms;
+  --md-sys-motion-duration-long4: 600ms;
+
+  /* M3 Easing Curves */
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --md-sys-motion-easing-legacy: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==================== CUSTOM CSS VARIABLES ==================== */
@@ -105,6 +191,74 @@
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ==================== M3 DARK MODE ==================== */
+:root[data-theme="dark"] {
+  /*
+   * Dark Mode Best Practices (Material Design 3):
+   * - Base surface: #121212 (oklch(0.16 0 0)) - not pure black
+   * - Desaturated colors for reduced eye strain
+   * - Lighter text variants for better readability
+   * - Subtle elevation with lighter shadows
+   */
+
+  /* Override M3 Surface Colors for Dark Mode - Based on #121212 */
+  --md-sys-color-surface: oklch(0.16 0.005 240);                 /* #121212 base */
+  --md-sys-color-surface-dim: oklch(0.13 0.005 240);             /* Darker than base */
+  --md-sys-color-surface-bright: oklch(0.24 0.005 240);          /* Elevated surfaces */
+  --md-sys-color-surface-container-lowest: oklch(0.12 0.005 240); /* Lowest level */
+  --md-sys-color-surface-container-low: oklch(0.15 0.005 240);    /* Low containers */
+  --md-sys-color-surface-container: oklch(0.18 0.005 240);        /* Standard containers */
+  --md-sys-color-surface-container-high: oklch(0.21 0.005 240);   /* High containers */
+  --md-sys-color-surface-container-highest: oklch(0.26 0.005 240); /* Highest containers */
+
+  /* Dark Mode On-Surface Colors - Desaturated for reduced strain */
+  --md-sys-color-on-surface: oklch(0.87 0.005 240);              /* Primary text */
+  --md-sys-color-on-surface-variant: oklch(0.70 0.008 240);      /* Secondary text */
+
+  /* Dark Mode Outline Colors - Subtle borders */
+  --md-sys-color-outline: oklch(0.50 0.008 240);                 /* Standard outline */
+  --md-sys-color-outline-variant: oklch(0.35 0.008 240);         /* Subtle outline */
+
+  /* Dark Mode Primary Container - Desaturated primary */
+  --md-sys-color-primary-container: oklch(0.30 0.04 240);        /* Desaturated primary container */
+  --md-sys-color-on-primary-container: oklch(0.80 0.06 240);     /* Text on primary container */
+
+  /* Override Slate colors for dark mode - Inverted scale */
+  --color-slate-50: oklch(0.26 0.005 240);   /* Darkest becomes lightest */
+  --color-slate-100: oklch(0.24 0.005 240);  /* Elevated surfaces */
+  --color-slate-200: oklch(0.21 0.005 240);  /* High containers */
+  --color-slate-300: oklch(0.18 0.005 240);  /* Standard containers */
+  --color-slate-400: oklch(0.50 0.008 240);  /* Medium gray */
+  --color-slate-500: oklch(0.60 0.008 240);  /* Text secondary */
+  --color-slate-600: oklch(0.70 0.008 240);  /* Text secondary lighter */
+  --color-slate-700: oklch(0.76 0.008 240);  /* Text muted */
+  --color-slate-800: oklch(0.82 0.008 240);  /* Text light */
+  --color-slate-900: oklch(0.87 0.005 240);  /* Primary text */
+
+  /* Dark Mode Shadows - Subtle elevation on dark backgrounds */
+  --md-sys-elevation-1: 0px 1px 3px 1px oklch(0 0 0 / 0.4);
+  --md-sys-elevation-2: 0px 2px 6px 2px oklch(0 0 0 / 0.5);
+  --md-sys-elevation-3: 0px 4px 8px 3px oklch(0 0 0 / 0.6);
+  --md-sys-elevation-4: 0px 6px 10px 4px oklch(0 0 0 / 0.65);
+  --md-sys-elevation-5: 0px 8px 12px 6px oklch(0 0 0 / 0.7);
+
+  /* Override primary colors for dark mode - Desaturated and lighter */
+  --color-primary-50: oklch(0.15 0.03 240);    /* Darkest */
+  --color-primary-100: oklch(0.20 0.04 240);
+  --color-primary-200: oklch(0.30 0.05 240);
+  --color-primary-300: oklch(0.42 0.07 240);
+  --color-primary-400: oklch(0.55 0.10 240);
+  --color-primary-500: oklch(0.60 0.12 240);   /* Main primary - desaturated */
+  --color-primary-600: oklch(0.68 0.11 240);
+  --color-primary-700: oklch(0.75 0.10 240);
+  --color-primary-800: oklch(0.82 0.08 240);
+  --color-primary-900: oklch(0.88 0.05 240);   /* Lightest */
+  --color-primary-950: oklch(0.92 0.03 240);
+
+  /* Dark mode body background and scheme */
+  color-scheme: dark;
 }
 
 /* ==================== BASE LAYER ==================== */
@@ -125,6 +279,8 @@
     scroll-behavior: smooth;
     text-size-adjust: 100%;
     hanging-punctuation: first last;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -148,19 +304,26 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    /* M3 Dark Mode Support */
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    transition: background-color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+                color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   /* Improved Focus Styles (WCAG 2.2) */
   *:focus-visible {
-    outline: 2px solid oklch(0.47 0.15 240);
+    outline: 2px solid var(--color-primary-500);
     outline-offset: 3px;
     border-radius: 4px;
   }
 
   /* Enhanced Selection */
   ::selection {
-    background-color: oklch(0.47 0.15 240 / 0.25);
-    color: inherit;
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
     text-shadow: none;
   }
 
@@ -214,607 +377,14 @@
   }
 }
 
-/* ==================== COMPONENTS LAYER ==================== */
-@layer components {
-  /* Skip to Main Link (Enhanced) */
-  .skip-to-main {
-    @apply sr-only focus:not-sr-only;
-    @apply fixed top-4 left-4 z-[9999];
-    @apply px-6 py-3;
-    @apply bg-primary-600 text-white font-semibold;
-    @apply rounded-lg shadow-xl;
-    @apply transition-all duration-fast;
-    @apply focus:scale-105;
-  }
-
-  /* Training Card (Enhanced with Gradient + Two-Layer Shadows) */
-  .training-card {
-    @apply relative rounded-2xl p-5;
-    @apply border border-slate-200;
-    @apply transition-all duration-normal;
-
-    /* Gradient Background (subtle depth effect) */
-    background: linear-gradient(145deg, oklch(0.97 0.01 240), oklch(0.95 0.01 240));
-
-    /* Two-Layer Shadow - Level 1 (Resting State) */
-    box-shadow: var(--shadow-card-rest);
-
-    /* Performance Hints */
-    will-change: transform, box-shadow;
-    contain: layout style paint;
-
-    /* Prevent CLS: Reserve space for content */
-    min-height: 180px;
-
-    /* Initial State */
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  .training-card.animate-fade-in {
-    animation: fadeIn var(--duration-normal) var(--ease-smooth) forwards;
-  }
-
-  /* Modern Hover (with :has selector) - Level 2 Shadow */
-  .training-card:hover {
-    @apply border-primary-300;
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-2px);
-
-    /* Slightly brighter gradient on hover */
-    background: linear-gradient(145deg, oklch(0.98 0.01 240), oklch(0.96 0.01 240));
-  }
-
-  /* Active State - Level 3 Shadow */
-  .training-card:active {
-    transform: translateY(0);
-    box-shadow: var(--shadow-card-active);
-    transition-duration: var(--duration-instant);
-  }
-
-  /* Favorite Indicator */
-  .training-card:has(.favorite-active) {
-    @apply ring-2 ring-yellow-400 ring-offset-2;
-  }
-
-  /* Custom Leaflet Marker (Optimized) */
-  .custom-marker {
-    @apply flex items-center justify-center;
-    @apply w-10 h-10 font-bold rounded-full;
-    @apply bg-primary-500 text-white;
-    border: 3px solid white;
-    box-shadow: 0 8px 16px 0 oklch(0 0 0 / 0.15), 0 4px 8px 0 oklch(0 0 0 / 0.1);
-    will-change: transform;
-  }
-
-  .custom-marker:hover {
-    transform: scale(1.15);
-    transition: transform var(--duration-fast) var(--ease-spring);
-  }
-
-  /* Skeleton Loading (Modern) */
-  .skeleton {
-    @apply relative overflow-hidden bg-slate-200;
-    
-    /* Animated Gradient */
-    background: linear-gradient(
-      90deg,
-      oklch(0.94 0.01 240) 0%,
-      oklch(0.96 0.01 240) 50%,
-      oklch(0.94 0.01 240) 100%
-    );
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s ease-in-out infinite;
-  }
-
-  /* Button Variants (Enhanced with Gradients + Two-Layer Shadows) */
-  .btn-primary {
-    @apply px-4 py-2 text-white rounded-lg;
-    @apply font-medium transition-all duration-fast;
-    @apply focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
-
-    /* Gradient Background */
-    background: linear-gradient(135deg, oklch(0.47 0.15 240), oklch(0.38 0.13 240));
-
-    /* Two-Layer Shadow - Button Rest */
-    box-shadow: var(--shadow-button-rest);
-  }
-
-  .btn-primary:hover {
-    /* Brighter gradient on hover */
-    background: linear-gradient(135deg, oklch(0.50 0.15 240), oklch(0.42 0.13 240));
-    box-shadow: var(--shadow-button-hover);
-    transform: translateY(-1px);
-  }
-
-  .btn-primary:active {
-    /* Pressed state with inset shadow */
-    box-shadow: var(--shadow-button-pressed);
-    transform: translateY(0);
-  }
-
-  .btn-secondary {
-    @apply px-4 py-2 text-slate-700 rounded-lg;
-    @apply font-medium transition-all duration-fast;
-
-    /* Subtle gradient for secondary button */
-    background: linear-gradient(145deg, oklch(0.97 0.01 240), oklch(0.95 0.01 240));
-    box-shadow: var(--shadow-button-rest);
-  }
-
-  .btn-secondary:hover {
-    background: linear-gradient(145deg, oklch(0.98 0.01 240), oklch(0.96 0.01 240));
-    box-shadow: var(--shadow-button-hover);
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary:active {
-    box-shadow: var(--shadow-button-pressed);
-    transform: translateY(0);
-  }
-
-  /* Badge */
-  .badge {
-    @apply inline-flex items-center gap-1 px-2 py-1;
-    @apply text-xs font-medium rounded-md;
-    @apply transition-colors duration-fast;
-  }
-
-  /* Global Actions Toolbar (New) */
-  .global-actions-toolbar {
-    @apply sticky top-0 z-40;
-    @apply bg-white/95 backdrop-blur-md;
-    @apply border-b border-slate-200 shadow-sm;
-    
-    /* Performance */
-    will-change: transform;
-    contain: layout style;
-  }
-
-  /* Notification Toast */
-  .notification-toast {
-    @apply fixed top-4 right-4 z-50;
-    @apply max-w-sm p-4 bg-white rounded-xl;
-    @apply shadow-modal border border-slate-200;
-    animation: slideInRight var(--duration-normal) var(--ease-spring);
-  }
-}
-
-/* ==================== UTILITIES LAYER ==================== */
-@layer utilities {
-  /* Modern Text Features */
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .text-pretty {
-    text-wrap: pretty;
-  }
-
-  /* iOS Safe Area Support */
-  .safe-top {
-    padding-top: max(1rem, env(safe-area-inset-top));
-  }
-
-  .safe-bottom {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-
-  .safe-left {
-    padding-left: max(1rem, env(safe-area-inset-left));
-  }
-
-  .safe-right {
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-
-  /* Performance Utilities */
-  .gpu-accelerated {
-    transform: translateZ(0);
-    will-change: transform;
-  }
-
-  .contain-strict {
-    contain: strict;
-  }
-
-  .contain-layout {
-    contain: layout;
-  }
-
-  /* Modern Scroll Snap */
-  .snap-y {
-    scroll-snap-type: y mandatory;
-    scroll-padding: 1rem;
-  }
-
-  .snap-start {
-    scroll-snap-align: start;
-  }
-
-  /* Backdrop Blur (Performance) */
-  .backdrop-blur-optimized {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  /* Container Queries Support */
-  @supports (container-type: inline-size) {
-    .container-query {
-      container-type: inline-size;
-      container-name: card;
-    }
-
-    @container card (min-width: 400px) {
-      .container-adaptive {
-        @apply flex-row;
-      }
-    }
-  }
-}
-
-/* ==================== CUSTOM SCROLLBAR ==================== */
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: oklch(0.82 0.01 240) oklch(0.96 0.01 240);
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background-color: oklch(0.96 0.01 240);
-  border-radius: 4px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: oklch(0.82 0.01 240);
-  border-radius: 4px;
-  transition: background-color var(--duration-fast);
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: oklch(0.74 0.01 240);
-}
-
-/* Hide Scrollbar */
-.scrollbar-none {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-
-/* ==================== ANIMATIONS ==================== */
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Animation Utility Classes */
-.animate-fade-in {
-  animation: fadeIn var(--duration-normal) var(--ease-smooth) forwards;
-}
-
-.animate-slide-in-right {
-  animation: slideInRight var(--duration-normal) var(--ease-spring);
-}
-
-.animate-slide-in-left {
-  animation: slideInLeft var(--duration-normal) var(--ease-spring);
-}
-
-.animate-slide-down {
-  animation: slideDown var(--duration-normal) var(--ease-smooth);
-}
-
-.animate-scale-in {
-  animation: scaleIn var(--duration-fast) var(--ease-spring);
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 3s var(--ease-smooth) infinite;
-}
-
-.animate-spin-slow {
-  animation: spin-slow 3s linear infinite;
-}
-
-/* ==================== LEAFLET MAP OVERRIDES ==================== */
-
-.leaflet-container {
-  font-family: var(--font-sans);
-  z-index: 0;
-}
-
-.leaflet-popup-content-wrapper {
-  @apply rounded-xl shadow-xl;
-}
-
-.leaflet-popup-content {
-  @apply m-0;
-}
-
-.leaflet-popup-close-button {
-  @apply text-slate-400 hover:text-slate-600 transition-colors;
-}
-
-.leaflet-control-zoom a {
-  @apply text-slate-700 transition-colors;
-}
-
-.leaflet-bar {
-  @apply shadow-lg rounded-lg overflow-hidden;
-}
-
-/* ==================== ALPINE.JS ==================== */
-
-[x-cloak] {
-  display: none !important;
-}
-
-/* Alpine Transition Classes */
-.x-transition-enter {
-  transition: all var(--duration-normal) var(--ease-smooth);
-}
-
-.x-transition-leave {
-  transition: all var(--duration-fast) var(--ease-smooth);
-}
-
-/* ==================== PRINT STYLES ==================== */
-
-@media print {
-  .no-print,
-  header,
-  aside,
-  nav,
-  .filter-sidebar,
-  button:not(.print-button),
-  .skip-to-main,
-  .global-actions-toolbar {
-    display: none !important;
-  }
-
-  body {
-    @apply bg-white text-black;
-  }
-
-  .training-card {
-    @apply shadow-none border border-slate-300;
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-    color: oklch(0.5 0 0);
-  }
-
-  @page {
-    margin: 2cm;
-  }
-}
-
-/* ==================== ACCESSIBILITY ==================== */
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .training-card {
-    @apply border-2 border-current;
-  }
-
-  button {
-    @apply border-2 border-current;
-  }
-
-  a:not(.no-underline) {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-  }
-}
-
-/* Forced Colors Mode (Windows High Contrast) */
-@media (forced-colors: active) {
-  .training-card {
-    border: 1px solid CanvasText;
-  }
-
-  button {
-    border: 1px solid ButtonText;
-  }
-}
-
-/* ==================== DARK MODE PREPARATION ==================== */
-
-/* 
- * Dark mode currently disabled but prepared for future implementation
- * Uncomment to activate:
- */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
-
-  /*
-  body {
-    @apply bg-slate-900 text-slate-100;
-  }
-  
-  .training-card {
-    @apply bg-slate-800 border-slate-700;
-  }
-
-  .training-card:hover {
-    @apply border-primary-400 bg-slate-750;
-  }
-
-  .skeleton {
-    background: linear-gradient(
-      90deg,
-      oklch(0.20 0.01 240) 0%,
-      oklch(0.25 0.01 240) 50%,
-      oklch(0.20 0.01 240) 100%
-    );
-  }
-  */
-}
-
-/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
-
-/* Skeleton Loader for preventing CLS */
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(
-    90deg,
-    oklch(0.95 0.01 240) 0%,
-    oklch(0.98 0.01 240) 50%,
-    oklch(0.95 0.01 240) 100%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
-}
-
-@keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.skeleton-card {
-  @apply rounded-2xl p-5 border border-slate-200;
-  min-height: 180px;
-}
-
-/* Reduce Paint Area */
-.training-card,
-.btn-primary,
-.notification-toast {
-  will-change: transform;
-}
-
-/* Force GPU Acceleration */
-.animate-fade-in,
-.animate-slide-in-right,
-.animate-slide-in-left {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Optimize Animations */
-@media (prefers-reduced-motion: no-preference) {
-  * {
-    scroll-behavior: smooth;
-  }
-}
-
-/* ==================== BROWSER-SPECIFIC FIXES ==================== */
-
-/* Safari-specific */
-@supports (-webkit-touch-callout: none) {
-  /* iOS Safe Area */
-  body {
-    padding-top: constant(safe-area-inset-top);
-    padding-top: env(safe-area-inset-top);
-  }
-
-  /* Fix iOS zoom on input focus */
-  input[type="text"],
-  input[type="search"],
-  select,
-  textarea {
-    font-size: 16px;
-  }
-}
-
-/* Firefox-specific */
-@-moz-document url-prefix() {
-  /* Firefox scrollbar */
-  * {
-    scrollbar-width: thin;
-  }
-}
+/* ==================== COMPONENT IMPORTS ==================== */
+@import "./styles/legacy-components.css";
+@import "./styles/m3-components.css";
+@import "./styles/m3-chips-nav.css";
+@import "./styles/map-components.css";
+
+/* ==================== UTILITIES AND ANIMATIONS ==================== */
+@import "./styles/utilities-animations.css";
+
+/* ==================== DARK MODE UTILITIES ==================== */
+@import "./styles/utilities-dark-mode.css";

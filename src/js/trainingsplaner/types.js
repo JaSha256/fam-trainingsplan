@@ -22,7 +22,6 @@
  * @typedef {Object} AlpineUIStore
  * @property {Filter} filters - Current filter state
  * @property {boolean} filterSidebarOpen - Filter sidebar open state
- * @property {boolean} mapModalOpen - Map modal open state
  * @property {boolean} mobileFilterOpen - Mobile filter open state
  * @property {boolean} mapView - Map view active
  * @property {import('../types.js').Notification | null} notification - Current notification

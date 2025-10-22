@@ -174,7 +174,7 @@ function isMapViewActive() {
       /** @type {any} */
       const uiStore = win.Alpine.store('ui')
       return uiStore.mapView === true
-    } catch (error) {
+    } catch {
       // Fallback to DOM check
     }
   }

@@ -33,6 +33,26 @@ export class GeolocationManager {
     this.state = state
     this.context = context
     this.applyFilters = dependencies.applyFilters
+
+    // Load manual location from store if available
+    this.loadManualLocation()
+  }
+
+  /**
+   * Load Manual Location from Store
+   *
+   * Loads manual location from Alpine store if set.
+   *
+   * @returns {void}
+   */
+  loadManualLocation() {
+    if (this.context.$store.ui.manualLocationSet && this.context.$store.ui.manualLocation) {
+      this.context.userPosition = this.context.$store.ui.manualLocation
+      log('info', 'Manual location loaded', this.context.userPosition)
+
+      // Add distance to trainings
+      this.addDistanceToTrainings()
+    }
   }
 
   /**
@@ -97,5 +117,47 @@ export class GeolocationManager {
         t.distanceText = t.distance.toFixed(1) + ' km'
       }
     })
+  }
+
+  /**
+   * Reset Location
+   *
+   * Clears user position, removes stored location data, and resets distance-based filters.
+   *
+   * @returns {void}
+   */
+  resetLocation() {
+    // Clear userPosition
+    this.context.userPosition = null
+
+    // Clear manual location from store
+    this.context.$store.ui.manualLocation = null
+    this.context.$store.ui.manualLocationAddress = ''
+    this.context.$store.ui.manualLocationSet = false
+
+    // Remove from localStorage
+    localStorage.removeItem('manualLocation')
+
+    // Remove distance properties from trainings
+    this.context.allTrainings.forEach((t) => {
+      delete t.distance
+      delete t.distanceText
+    })
+
+    // Remove map marker for user location if it exists
+    if (this.context.map && this.context.userLocationMarker) {
+      this.context.map.removeLayer(this.context.userLocationMarker)
+      this.context.userLocationMarker = null
+    }
+
+    // Deactivate distance-based quick filter if active
+    if (this.context.$store.ui.filters.activeQuickFilter === 'nearby') {
+      this.context.$store.ui.filters.activeQuickFilter = null
+    }
+
+    // Reapply filters to update UI
+    this.applyFilters()
+
+    log('info', 'Location reset successfully')
   }
 }
