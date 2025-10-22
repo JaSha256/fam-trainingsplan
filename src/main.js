@@ -33,6 +33,7 @@ import './style.css'
 import { trainingsplaner } from './js/trainingsplaner.js'
 import { initIframeAutoResize } from './js/iframe-resize.js'
 import { CONFIG, getBrowserInfo, log } from './js/config.js'
+import { initKeyboardShortcuts } from './js/keyboard-shortcuts.js'
 
 /**
  * @typedef {import('./js/types.js').Filter} Filter
@@ -470,6 +471,29 @@ function initDarkMode() {
 
 // Initialize dark mode after Alpine is ready
 initDarkMode()
+
+// ==================== KEYBOARD SHORTCUTS ====================
+
+/**
+ * Initialize Keyboard Shortcuts for Desktop Power Users
+ * AUFGABE 12: Desktop keyboard navigation
+ * IMPORTANT: Must run after Alpine.start() to access stores
+ * @returns {void}
+ */
+function initKeyboardShortcutsModule() {
+  // @ts-ignore - Alpine.store returns unknown
+  const alpineStore = Alpine.store('ui')
+
+  if (!alpineStore) {
+    log('error', 'Alpine UI store not available for keyboard shortcuts')
+    return
+  }
+
+  initKeyboardShortcuts(alpineStore)
+}
+
+// Initialize keyboard shortcuts after Alpine is ready
+initKeyboardShortcutsModule()
 
 // ==================== PWA SETUP ====================
 
