@@ -669,11 +669,57 @@ export function trainingsplaner() {
   }
 
   // Utility Methods (remain inline as they're simple)
+  /**
+   * Sort Trainings with Multi-Level Cascade
+   *
+   * Implements flexible multi-level sorting using the Alpine.js store's sortBy array.
+   * Supports 4 sort orders:
+   * - Standard: Wochentag → Ort → Uhrzeit → Training
+   * - Nach Uhrzeit: Uhrzeit → Wochentag → Ort → Training
+   * - Nach Standort: Ort → Wochentag → Uhrzeit → Training
+   * - Nach Training: Training → Wochentag → Ort → Uhrzeit
+   *
+   * @param {Training[]} trainings - Array of trainings to sort
+   * @returns {Training[]} Sorted array
+   */
   component.sortTrainings = function (/** @type {Training[]} */ trainings) {
+    // At runtime, Alpine.js augments 'this' with $store
+    const alpineContext = /** @type {import('./trainingsplaner/types.js').AlpineComponent} */ (
+      /** @type {any} */ (this)
+    )
+
+    // Get sort order from store (default: wochentag → ort → uhrzeit → training)
+    const sortBy = alpineContext.$store?.ui?.sortBy || ['wochentag', 'ort', 'uhrzeit', 'training']
+
     return trainings.sort((/** @type {Training} */ a, /** @type {Training} */ b) => {
-      const aMin = utils.zeitZuMinuten(a.von)
-      const bMin = utils.zeitZuMinuten(b.von)
-      return aMin - bMin
+      // Multi-level sorting cascade
+      for (const field of sortBy) {
+        let comparison = 0
+
+        if (field === 'wochentag') {
+          // Sort by weekday order (Mon-Sun)
+          const aIdx = this.wochentagOrder[a.wochentag] || 999
+          const bIdx = this.wochentagOrder[b.wochentag] || 999
+          comparison = aIdx - bIdx
+        } else if (field === 'ort') {
+          // Sort by location alphabetically
+          comparison = (a.ort || '').localeCompare(b.ort || '')
+        } else if (field === 'uhrzeit') {
+          // Sort by start time
+          const aMin = utils.zeitZuMinuten(a.von)
+          const bMin = utils.zeitZuMinuten(b.von)
+          comparison = aMin - bMin
+        } else if (field === 'training') {
+          // Sort by training type alphabetically
+          comparison = (a.training || '').localeCompare(b.training || '')
+        }
+
+        // If this field produces a difference, return it (cascade stops)
+        if (comparison !== 0) return comparison
+      }
+
+      // All fields equal
+      return 0
     })
   }
 

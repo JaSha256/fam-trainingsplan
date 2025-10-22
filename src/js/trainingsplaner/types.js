@@ -24,7 +24,9 @@
  * @property {boolean} filterSidebarOpen - Filter sidebar open state
  * @property {boolean} mobileFilterOpen - Mobile filter open state
  * @property {boolean} mapView - Map view active
- * @property {'list' | 'map'} [activeView] - Active view mode
+ * @property {'list' | 'split' | 'map'} [activeView] - Active view mode
+ * @property {'wochentag' | 'ort'} [groupingMode] - Grouping mode (by weekday or location)
+ * @property {string[]} [sortBy] - Multi-level sort order array
  * @property {boolean} [showScrollTop] - Show scroll to top button
  * @property {import('../types.js').Notification | null} notification - Current notification
  * @property {number | null} notificationTimeout - Notification timeout ID

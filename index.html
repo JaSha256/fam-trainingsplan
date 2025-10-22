@@ -477,147 +477,6 @@
         </div>
       </header>
 
-      <!-- ==================== VIEW SWITCHER BAR (Mobile Only) ==================== -->
-      <div class="lg:hidden sticky top-12 z-30 bg-slate-50 border-b border-slate-200 px-3 py-2">
-        <!-- M3 View Switcher - Segmented Button Design (Task 18) -->
-        <div
-          role="tablist"
-          aria-label="Ansichtsauswahl"
-          x-data="{
-               tabs: ['list', 'map', 'favorites'],
-               getFocusedIndex() {
-                 return this.tabs.indexOf($store.ui.activeView)
-               },
-               focusTab(index) {
-                 const tab = this.$refs['tab' + index]
-                 if (tab) {
-                   tab.focus()
-                   $store.ui.activeView = this.tabs[index]
-                 }
-               }
-             }"
-          @keydown.arrow-right.prevent="focusTab((getFocusedIndex() + 1) % tabs.length)"
-          @keydown.arrow-left.prevent="focusTab((getFocusedIndex() - 1 + tabs.length) % tabs.length)"
-          @keydown.home.prevent="focusTab(0)"
-          @keydown.end.prevent="focusTab(tabs.length - 1)"
-          class="flex items-center gap-0.5 px-0.5 py-0.5 bg-slate-100 rounded-lg w-full"
-        >
-          <!-- Liste Tab -->
-          <button
-            @click="$store.ui.activeView = 'list'"
-            x-ref="tab0"
-            type="button"
-            role="tab"
-            :aria-selected="$store.ui.activeView === 'list' ? 'true' : 'false'"
-            :tabindex="$store.ui.activeView === 'list' ? '0' : '-1'"
-            aria-label="Listen-Ansicht"
-            aria-controls="list-panel"
-            data-testid="view-tab-list"
-            :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm' : ''"
-            :style="$store.ui.activeView === 'list'
-                      ? 'background: var(--md-sys-color-surface); box-shadow: var(--md-sys-elevation-1); color: var(--md-sys-color-on-surface);'
-                      : 'background: transparent; color: var(--md-sys-color-on-surface-variant);'"
-            class="md-state-layer flex-1 px-2 py-2 rounded-md font-medium text-slate-700 flex items-center justify-center gap-1 min-h-[44px] touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 transition-all"
-            style="
-              transition: all var(--md-sys-motion-duration-short4, 200ms)
-                var(--md-sys-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
-            "
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-            <span class="md-typescale-label-medium">Liste</span>
-          </button>
-
-          <!-- Karte Tab -->
-          <button
-            @click="$store.ui.activeView = 'map'"
-            x-ref="tab1"
-            type="button"
-            role="tab"
-            :aria-selected="$store.ui.activeView === 'map' ? 'true' : 'false'"
-            :tabindex="$store.ui.activeView === 'map' ? '0' : '-1'"
-            aria-label="Karten-Ansicht"
-            aria-controls="map-panel"
-            data-testid="view-tab-map"
-            :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm' : ''"
-            :style="$store.ui.activeView === 'map'
-                      ? 'background: var(--md-sys-color-surface); box-shadow: var(--md-sys-elevation-1); color: var(--md-sys-color-on-surface);'
-                      : 'background: transparent; color: var(--md-sys-color-on-surface-variant);'"
-            class="md-state-layer flex-1 px-2 py-2 rounded-md font-medium text-slate-700 flex items-center justify-center gap-1 min-h-[44px] touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 transition-all"
-            style="
-              transition: all var(--md-sys-motion-duration-short4, 200ms)
-                var(--md-sys-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
-            "
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-              />
-            </svg>
-            <span class="md-typescale-label-medium">Karte</span>
-          </button>
-
-          <!-- Favoriten Tab -->
-          <button
-            @click="$store.ui.activeView = 'favorites'"
-            x-ref="tab2"
-            type="button"
-            role="tab"
-            :aria-selected="$store.ui.activeView === 'favorites' ? 'true' : 'false'"
-            :tabindex="$store.ui.activeView === 'favorites' ? '0' : '-1'"
-            aria-label="Favoriten-Ansicht"
-            aria-controls="favorites-panel"
-            data-testid="view-tab-favorites"
-            :class="$store.ui.activeView === 'favorites' ? 'bg-white shadow-sm' : ''"
-            :style="$store.ui.activeView === 'favorites'
-                      ? 'background: var(--md-sys-color-surface); box-shadow: var(--md-sys-elevation-1); color: var(--md-sys-color-on-surface);'
-                      : 'background: transparent; color: var(--md-sys-color-on-surface-variant);'"
-            class="md-state-layer flex-1 px-2 py-2 rounded-md font-medium text-slate-700 flex items-center justify-center gap-1 min-h-[44px] touch-manipulation cursor-pointer focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 transition-all"
-            style="
-              transition: all var(--md-sys-motion-duration-short4, 200ms)
-                var(--md-sys-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
-            "
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-            <span class="md-typescale-label-medium">❤</span>
-          </button>
-        </div>
-      </div>
-
       <!-- ==================== TASK 15: STICKY ACTIVE FILTER CHIPS BAR (UX Enhanced) ==================== -->
       <div
         x-show="shouldShowFilterChips()"
@@ -1644,6 +1503,221 @@
             </div>
           </div>
 
+          <!-- ==================== SESSION 3: VIEW CONTROL TOOLBAR ==================== -->
+          <div
+            x-show="!loading && !error"
+            class="sticky top-12 lg:top-0 z-20 bg-white border-b border-slate-200 px-4 lg:px-6 py-3"
+          >
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <!-- Left: View Switcher (Kompakt/Split-View/Karte) -->
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-semibold text-slate-700 hidden lg:inline">Ansicht:</span>
+                <div
+                  class="inline-flex rounded-lg bg-slate-100 p-1"
+                  role="group"
+                  aria-label="Ansichtsauswahl"
+                >
+                  <!-- Kompakt (List View) -->
+                  <button
+                    @click="$store.ui.activeView = 'list'"
+                    :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                    class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                    type="button"
+                    aria-label="Kompakte Listenansicht"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
+                    </svg>
+                    <span>Kompakt</span>
+                  </button>
+
+                  <!-- Split-View (Desktop only) -->
+                  <button
+                    @click="$store.ui.activeView = 'split'"
+                    :class="$store.ui.activeView === 'split' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                    class="hidden lg:flex px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] items-center gap-2 touch-manipulation"
+                    type="button"
+                    aria-label="Split-Ansicht mit Liste und Karte"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+                      />
+                    </svg>
+                    <span>Split-View</span>
+                  </button>
+
+                  <!-- Karte -->
+                  <button
+                    @click="$store.ui.activeView = 'map'"
+                    :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                    class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                    type="button"
+                    aria-label="Vollbild-Kartenansicht"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                      />
+                    </svg>
+                    <span>Karte</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right: Gruppieren & Sortieren -->
+              <div class="flex items-center gap-4 flex-wrap">
+                <!-- Gruppieren nach -->
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-semibold text-slate-700">Gruppieren:</span>
+                  <div class="inline-flex rounded-lg bg-slate-100 p-1" role="group">
+                    <button
+                      @click="$store.ui.groupingMode = 'wochentag'"
+                      :class="$store.ui.groupingMode === 'wochentag' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                      class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                      type="button"
+                      aria-label="Nach Wochentag gruppieren"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>Wochentag</span>
+                    </button>
+                    <button
+                      @click="$store.ui.groupingMode = 'ort'"
+                      :class="$store.ui.groupingMode === 'ort' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                      class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                      type="button"
+                      aria-label="Nach Ort gruppieren"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span>Ort</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Sortieren nach Dropdown -->
+                <div class="flex items-center gap-2" x-data="{ sortOpen: false }">
+                  <span class="text-sm font-semibold text-slate-700">Sortieren:</span>
+                  <div class="relative">
+                    <button
+                      @click="sortOpen = !sortOpen"
+                      @click.away="sortOpen = false"
+                      class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-md text-sm font-medium text-slate-700 min-h-[44px] transition-all touch-manipulation"
+                      type="button"
+                      :aria-expanded="sortOpen"
+                      aria-label="Sortierung ändern"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+                        />
+                      </svg>
+                      <span
+                        x-text="
+                        $store.ui.sortBy[0] === 'wochentag' ? 'Standard' :
+                        $store.ui.sortBy[0] === 'uhrzeit' ? 'Nach Uhrzeit' :
+                        $store.ui.sortBy[0] === 'ort' ? 'Nach Standort' :
+                        $store.ui.sortBy[0] === 'training' ? 'Nach Training' : 'Standard'
+                      "
+                        >Standard</span
+                      >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div
+                      x-show="sortOpen"
+                      x-transition
+                      class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-2 z-30"
+                    >
+                      <button
+                        @click="$store.ui.sortBy = ['wochentag', 'ort', 'uhrzeit', 'training']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Standard</span>
+                        <span class="text-xs text-slate-500">(Tag → Ort → Zeit → Training)</span>
+                      </button>
+                      <button
+                        @click="$store.ui.sortBy = ['uhrzeit', 'wochentag', 'ort', 'training']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Nach Uhrzeit</span>
+                        <span class="text-xs text-slate-500">(Zeit → Tag → Ort)</span>
+                      </button>
+                      <button
+                        @click="$store.ui.sortBy = ['ort', 'wochentag', 'uhrzeit', 'training']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Nach Standort</span>
+                        <span class="text-xs text-slate-500">(Ort → Tag → Zeit)</span>
+                      </button>
+                      <button
+                        @click="$store.ui.sortBy = ['training', 'wochentag', 'ort', 'uhrzeit']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Nach Training</span>
+                        <span class="text-xs text-slate-500">(Training → Tag → Ort)</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- ==================== AUFGABE 28: SKELETON LOADING STATE ==================== -->
           <!-- Skeleton cards prevent Cumulative Layout Shift (CLS) and improve perceived performance -->
           <div x-show="loading" class="p-4 lg:p-6">
@@ -1769,83 +1843,20 @@
           <!-- Desktop Split-View: Map (60%) + List (40%) when map view is active -->
           <div
             class="lg:flex lg:gap-0 lg:h-[calc(100vh-64px)]"
-            x-show="$store.ui.activeView === 'list' || $store.ui.activeView === 'map'"
+            x-show="$store.ui.activeView === 'list' || $store.ui.activeView === 'split' || $store.ui.activeView === 'map'"
           >
             <!-- ==================== LIST VIEW ==================== -->
             <section
               id="list-panel"
               role="tabpanel"
               aria-labelledby="view-tab-list"
-              x-show="$store.ui.activeView === 'list'"
+              x-show="$store.ui.activeView === 'list' || $store.ui.activeView === 'split'"
               x-transition
               class="lg:w-2/5 lg:overflow-y-auto lg:border-r lg:border-slate-200"
               :class="{
-                'lg:!block': $store.ui.activeView === 'map'
+                'lg:!block': $store.ui.activeView === 'split'
               }"
             >
-              <!-- AUFGABE 5: Grouping Mode Toggle -->
-              <div
-                x-show="!loading && !error && filteredTrainings.length > 0"
-                class="px-4 lg:px-6 pt-4 lg:pt-6 pb-3"
-              >
-                <div class="flex items-center gap-3 justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="text-sm font-semibold text-slate-700">Gruppieren nach:</span>
-                    <div class="inline-flex rounded-lg bg-slate-100 p-1" role="group">
-                      <button
-                        @click="$store.ui.groupingMode = 'wochentag'"
-                        :class="$store.ui.groupingMode === 'wochentag' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
-                        class="px-3 py-1.5 rounded-md text-sm font-medium transition-all touch-manipulation min-h-[44px] flex items-center gap-2"
-                        aria-label="Nach Wochentag gruppieren"
-                        type="button"
-                      >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-                        <span>Wochentag</span>
-                      </button>
-                      <button
-                        @click="$store.ui.groupingMode = 'ort'"
-                        :class="$store.ui.groupingMode === 'ort' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
-                        class="px-3 py-1.5 rounded-md text-sm font-medium transition-all touch-manipulation min-h-[44px] flex items-center gap-2"
-                        aria-label="Nach Ort gruppieren"
-                        type="button"
-                      >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                          />
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
-                        <span>Ort</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <!-- Training Cards -->
               <div x-show="!loading && !error && filteredTrainings.length > 0" class="p-4 lg:p-6">
                 <template x-for="gruppe in groupedTrainings" :key="gruppe.key">

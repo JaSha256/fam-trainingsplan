@@ -77,18 +77,20 @@ registerAlpinePlugins()
 // ==================== SHARED STORE ====================
 
 /**
- * Global UI Store
+ * Global UI Store (Session 3: Updated)
  * IMPROVEMENT: Centralized state management instead of scattered component state
  * IMPORTANT: Must be defined AFTER registerAlpinePlugins() to use Alpine.$persist
  * @type {{
  *   filterSidebarOpen: boolean,
  *   mobileFilterOpen: boolean,
  *   mapView: boolean,
- *   activeView: 'list' | 'map' | 'favorites',
+ *   activeView: 'list' | 'split' | 'map',
  *   notification: Notification | null,
  *   notificationTimeout: number | null,
  *   filters: Filter,
- *   setActiveView: (view: 'list' | 'map' | 'favorites') => void,
+ *   groupingMode: 'wochentag' | 'ort',
+ *   sortBy: string[],
+ *   setActiveView: (view: 'list' | 'split' | 'map') => void,
  *   isActiveView: (view: string) => boolean,
  *   toggleMapView: () => void,
  *   showListView: () => void,
@@ -123,6 +125,9 @@ Alpine.store('ui', {
   // AUFGABE 5: List view grouping mode
   // @ts-ignore - Alpine.$persist plugin API
   groupingMode: Alpine.$persist('wochentag').as('groupingMode'), // 'wochentag' | 'ort'
+  // NEW: Multi-level sorting (Session 3)
+  // @ts-ignore - Alpine.$persist plugin API
+  sortBy: Alpine.$persist(['wochentag', 'ort', 'uhrzeit', 'training']).as('sortBy'),
   // Task 19: Mobile bottom navigation scroll tracking
   scrollDirection: 'up',
   lastScrollY: 0,
@@ -158,13 +163,13 @@ Alpine.store('ui', {
   // ==================== VIEW METHODS ====================
 
   /**
-   * Set Active View (Task 11.3)
-   * @param {string} view - View name: 'list' | 'map' | 'favorites'
+   * Set Active View (Session 3: Updated)
+   * @param {string} view - View name: 'list' | 'split' | 'map'
    * @returns {void}
    */
   setActiveView(view) {
     // Validate view value - only accept valid views
-    if (!['list', 'map', 'favorites'].includes(view)) {
+    if (!['list', 'split', 'map'].includes(view)) {
       return // Silently reject invalid values
     }
 
