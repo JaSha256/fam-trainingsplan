@@ -1637,13 +1637,86 @@
             </div>
           </div>
 
-          <!-- Loading State -->
-          <div x-show="loading" class="p-6">
-            <div class="max-w-md mx-auto text-center py-16">
-              <div
-                class="animate-spin w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"
-              ></div>
-              <p class="text-slate-700 font-medium">Trainings werden geladen...</p>
+          <!-- ==================== AUFGABE 28: SKELETON LOADING STATE ==================== -->
+          <!-- Skeleton cards prevent Cumulative Layout Shift (CLS) and improve perceived performance -->
+          <div x-show="loading" class="p-4 lg:p-6">
+            <!-- Screen reader announcement -->
+            <div class="sr-only" role="status" aria-live="polite">Trainings werden geladen...</div>
+
+            <!-- Skeleton Grid matching actual layout -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6"
+            >
+              <!-- Skeleton Card 1 -->
+              <div class="skeleton-card skeleton" aria-hidden="true">
+                <div class="space-y-3">
+                  <!-- Badge skeleton -->
+                  <div class="skeleton h-6 w-24 rounded-full"></div>
+                  <!-- Title skeleton -->
+                  <div class="skeleton h-6 w-3/4 rounded"></div>
+                  <!-- Location skeleton -->
+                  <div class="skeleton h-4 w-1/2 rounded"></div>
+                  <!-- Time skeleton -->
+                  <div class="skeleton h-4 w-2/3 rounded"></div>
+                  <!-- Button skeleton -->
+                  <div class="skeleton h-10 w-full rounded-lg mt-4"></div>
+                </div>
+              </div>
+
+              <!-- Skeleton Card 2 -->
+              <div class="skeleton-card skeleton" aria-hidden="true">
+                <div class="space-y-3">
+                  <div class="skeleton h-6 w-24 rounded-full"></div>
+                  <div class="skeleton h-6 w-3/4 rounded"></div>
+                  <div class="skeleton h-4 w-1/2 rounded"></div>
+                  <div class="skeleton h-4 w-2/3 rounded"></div>
+                  <div class="skeleton h-10 w-full rounded-lg mt-4"></div>
+                </div>
+              </div>
+
+              <!-- Skeleton Card 3 -->
+              <div class="skeleton-card skeleton" aria-hidden="true">
+                <div class="space-y-3">
+                  <div class="skeleton h-6 w-24 rounded-full"></div>
+                  <div class="skeleton h-6 w-3/4 rounded"></div>
+                  <div class="skeleton h-4 w-1/2 rounded"></div>
+                  <div class="skeleton h-4 w-2/3 rounded"></div>
+                  <div class="skeleton h-10 w-full rounded-lg mt-4"></div>
+                </div>
+              </div>
+
+              <!-- Skeleton Card 4 (hidden on smaller screens) -->
+              <div class="skeleton-card skeleton hidden xl:block" aria-hidden="true">
+                <div class="space-y-3">
+                  <div class="skeleton h-6 w-24 rounded-full"></div>
+                  <div class="skeleton h-6 w-3/4 rounded"></div>
+                  <div class="skeleton h-4 w-1/2 rounded"></div>
+                  <div class="skeleton h-4 w-2/3 rounded"></div>
+                  <div class="skeleton h-10 w-full rounded-lg mt-4"></div>
+                </div>
+              </div>
+
+              <!-- Skeleton Card 5 (hidden on smaller screens) -->
+              <div class="skeleton-card skeleton hidden lg:block" aria-hidden="true">
+                <div class="space-y-3">
+                  <div class="skeleton h-6 w-24 rounded-full"></div>
+                  <div class="skeleton h-6 w-3/4 rounded"></div>
+                  <div class="skeleton h-4 w-1/2 rounded"></div>
+                  <div class="skeleton h-4 w-2/3 rounded"></div>
+                  <div class="skeleton h-10 w-full rounded-lg mt-4"></div>
+                </div>
+              </div>
+
+              <!-- Skeleton Card 6 (hidden on smaller screens) -->
+              <div class="skeleton-card skeleton hidden lg:block" aria-hidden="true">
+                <div class="space-y-3">
+                  <div class="skeleton h-6 w-24 rounded-full"></div>
+                  <div class="skeleton h-6 w-3/4 rounded"></div>
+                  <div class="skeleton h-4 w-1/2 rounded"></div>
+                  <div class="skeleton h-4 w-2/3 rounded"></div>
+                  <div class="skeleton h-10 w-full rounded-lg mt-4"></div>
+                </div>
+              </div>
             </div>
           </div>
 
