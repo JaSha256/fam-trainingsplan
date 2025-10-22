@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
-  base: './',
+  base: '/fam-trainingsplan/',
 
   plugins: [
     // Tailwind CSS v4 Plugin with Forms & Typography
@@ -17,21 +17,22 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      
+
       manifest: {
         name: 'FAM Trainingsplan',
         short_name: 'FAM',
-        description: 'Trainingsplan für Free Arts of Movement - Parkour, Trampolin, Tricking in München',
+        description:
+          'Trainingsplan für Free Arts of Movement - Parkour, Trampolin, Tricking in München',
         theme_color: '#005892',
         background_color: '#005892',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/',
-        start_url: '/',
+        scope: '/fam-trainingsplan/',
+        start_url: '/fam-trainingsplan/',
         lang: 'de',
         dir: 'ltr',
         categories: ['sports', 'lifestyle'],
-        
+
         icons: [
           {
             src: '/icons/icon-72x72.png',
@@ -88,32 +89,50 @@ export default defineConfig({
             purpose: 'maskable'
           }
         ],
-        
+
         shortcuts: [
           {
             name: 'Heute',
             short_name: 'Heute',
             description: 'Heutige Trainings anzeigen',
-            url: '/?filter=heute',
-            icons: [{ src: '/icons/shortcut-today-96x96.png', sizes: '96x96', type: 'image/png' }]
+            url: '/fam-trainingsplan/?filter=heute',
+            icons: [
+              {
+                src: '/fam-trainingsplan/icons/shortcut-today-96x96.png',
+                sizes: '96x96',
+                type: 'image/png'
+              }
+            ]
           },
           {
             name: 'Karte',
             short_name: 'Karte',
             description: 'Trainings auf Karte',
-            url: '/?view=map',
-            icons: [{ src: '/icons/shortcut-map-96x96.png', sizes: '96x96', type: 'image/png' }]
+            url: '/fam-trainingsplan/?view=map',
+            icons: [
+              {
+                src: '/fam-trainingsplan/icons/shortcut-map-96x96.png',
+                sizes: '96x96',
+                type: 'image/png'
+              }
+            ]
           },
           {
             name: 'Favoriten',
             short_name: 'Favoriten',
             description: 'Meine Favoriten',
-            url: '/?filter=favoriten',
-            icons: [{ src: '/icons/shortcut-favorites-96x96.png', sizes: '96x96', type: 'image/png' }]
+            url: '/fam-trainingsplan/?filter=favoriten',
+            icons: [
+              {
+                src: '/fam-trainingsplan/icons/shortcut-favorites-96x96.png',
+                sizes: '96x96',
+                type: 'image/png'
+              }
+            ]
           }
         ]
       },
-      
+
       workbox: {
         runtimeCaching: [
           {
@@ -178,38 +197,40 @@ export default defineConfig({
             }
           }
         ],
-        
+
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         globIgnores: ['**/node_modules/**/*', 'sw.js', 'workbox-*.js'],
-        navigateFallback: '/index.html',
+        navigateFallback: '/fam-trainingsplan/index.html',
         navigateFallbackDenylist: [/^\/api/, /\.json$/],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true
       },
-      
+
       devOptions: {
         enabled: false
       }
     }),
 
     // Bundle Analyzer (only when ANALYZE=true)
-    ...(process.env.ANALYZE === 'true' ? [
-      visualizer({
-        filename: 'dist/stats.html',
-        open: true,
-        gzipSize: true,
-        brotliSize: true
-      })
-    ] : [])
+    ...(process.env.ANALYZE === 'true'
+      ? [
+          visualizer({
+            filename: 'dist/stats.html',
+            open: true,
+            gzipSize: true,
+            brotliSize: true
+          })
+        ]
+      : [])
   ],
-  
+
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'esbuild',
-    
+
     rollupOptions: {
       output: {
         manualChunks: {
@@ -223,11 +244,11 @@ export default defineConfig({
           'vendor-utils': ['fuse.js'],
           'vendor-map': ['leaflet']
         },
-        
-        assetFileNames: (assetInfo) => {
+
+        assetFileNames: assetInfo => {
           const info = assetInfo.name?.split('.') || []
           const ext = info[info.length - 1]
-          
+
           if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
             return 'assets/images/[name].[hash][extname]'
           }
@@ -236,28 +257,28 @@ export default defineConfig({
           }
           return 'assets/[name].[hash][extname]'
         },
-        
+
         chunkFileNames: 'assets/js/[name].[hash].js',
         entryFileNames: 'assets/js/[name].[hash].js'
       }
     },
-    
+
     chunkSizeWarningLimit: 600
   },
-  
+
   server: {
     port: 5173,
     strictPort: false,
     open: false,
     cors: true
   },
-  
+
   preview: {
     port: 4173,
     strictPort: false,
     open: false
   },
-  
+
   optimizeDeps: {
     include: [
       'alpinejs',
