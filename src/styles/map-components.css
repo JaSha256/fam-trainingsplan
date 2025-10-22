@@ -45,7 +45,8 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transition: background-color var(--md-sys-motion-duration-short2)
+    var(--md-sys-motion-easing-standard);
 }
 
 .leaflet-control-geolocation .md-icon-button:hover,
@@ -154,7 +155,7 @@
 }
 
 /* Dark mode tile adjustments */
-:root[data-theme="dark"] .md-map-tiles {
+:root[data-theme='dark'] .md-map-tiles {
   /* Invert and adjust tiles for dark mode */
   filter: brightness(0.75) contrast(1.1) saturate(0.9);
 }
@@ -217,7 +218,8 @@
   width: 40px !important;
   height: 40px !important;
   line-height: 40px !important;
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard) !important;
+  transition: background-color var(--md-sys-motion-duration-short2)
+    var(--md-sys-motion-easing-standard) !important;
 }
 
 .leaflet-bar a:hover {
@@ -260,7 +262,7 @@
  *
  * Already defined in existing CSS, ensure dark mode support
  */
-:root[data-theme="dark"] .md-map-cluster {
+:root[data-theme='dark'] .md-map-cluster {
   border-color: var(--md-sys-color-surface-container-high);
 }
 
@@ -335,7 +337,7 @@
 
 /* ==================== DARK MODE SPECIFIC ADJUSTMENTS ==================== */
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   /* Ensure controls are visible in dark mode */
   .leaflet-control-geolocation,
   .leaflet-control-reset,
@@ -566,15 +568,15 @@
 /**
  * Dark Mode Adjustments for Popup
  */
-:root[data-theme="dark"] .md-map-location-item {
+:root[data-theme='dark'] .md-map-location-item {
   background: var(--md-sys-color-surface-container);
 }
 
-:root[data-theme="dark"] .md-map-location-item:nth-child(even) {
+:root[data-theme='dark'] .md-map-location-item:nth-child(even) {
   background: var(--md-sys-color-surface-container-high);
 }
 
-:root[data-theme="dark"] .md-map-location-item:hover {
+:root[data-theme='dark'] .md-map-location-item:hover {
   background: var(--md-sys-color-surface-container-highest);
   border-color: var(--md-sys-color-outline);
 }
@@ -613,4 +615,99 @@
     padding: 10px 18px;
     font-size: 13px;
   }
+}
+
+/* ==================== AUFGABE 15: CUSTOM MARKER ICONS ==================== */
+
+/**
+ * Custom Marker Icons with Training Type Colors
+ *
+ * Markers are colored based on training type (parkour, trampolin, tricking, movement, fam)
+ * Uses WCAG AAA compliant colors from training-colors.css
+ */
+.md-location-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-center: center;
+}
+
+.md-location-pin {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/**
+ * Count Badge for Multi-Training Locations
+ *
+ * Displays training count in a colored badge
+ */
+.md-location-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 12px;
+  background-color: var(--color-primary-600);
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+}
+
+/**
+ * Marker Wrapper Container
+ *
+ * Ensures proper positioning
+ */
+.md-location-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+/**
+ * Marker Hover Effect
+ */
+.leaflet-marker-icon.md-location-marker-wrapper:hover {
+  transform: scale(1.1);
+  transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized);
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+
+/**
+ * Mobile: Larger touch targets for markers
+ */
+@media (max-width: 768px) {
+  .md-location-badge {
+    min-width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+}
+
+/**
+ * Accessibility: Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .leaflet-marker-icon.md-location-marker-wrapper:hover {
+    transform: none;
+  }
+}
+
+/**
+ * Dark Mode: Enhanced badge visibility
+ */
+:root[data-theme='dark'] .md-location-badge {
+  border-color: var(--md-sys-color-surface-container-high);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }

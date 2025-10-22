@@ -476,8 +476,8 @@ export class MapManager {
       const trainingCount = trainings.length
       const locationName = trainings[0].ort
 
-      // Create custom icon with count badge if multiple trainings
-      const icon = this.createLocationIcon(trainingCount)
+      // Create custom icon with count badge and training type color
+      const icon = this.createLocationIcon(trainingCount, trainings)
 
       // Create marker with custom icon
       const marker = L.marker([lat, lng], {
@@ -720,22 +720,41 @@ export class MapManager {
   /**
    * Create Location Icon
    *
-   * Creates custom marker icon with count badge.
-   * Single training: Standard pin
-   * Multiple trainings: Pin with count badge
+   * AUFGABE 15: Enhanced Map Split-View - Custom Marker Icons
+   * Creates custom colored marker icons based on training type.
+   * Uses semantic colors from training-colors.css (WCAG AAA compliant).
    *
    * @param {number} count - Number of trainings at this location
+   * @param {Training[]} trainings - Array of trainings at this location
    * @returns {L.DivIcon} Custom Leaflet icon
    */
-  createLocationIcon(count) {
-    if (count === 1) {
-      // Standard pin for single training - use default Leaflet marker
-      return new L.Icon.Default()
+  createLocationIcon(count, trainings = []) {
+    // Determine primary training type (for color)
+    const primaryTraining = trainings[0]
+    const trainingType = primaryTraining?.training?.toLowerCase() || 'fam'
+
+    // Map training types to colors (WCAG AAA compliant colors)
+    const colorMap = {
+      parkour: '#0d47a1', // Blue 900
+      trampolin: '#194d1b', // Green 900
+      tricking: '#4a148c', // Purple 900
+      movement: '#8d2600', // Deep Orange 900
+      fam: '#880e4f' // Pink 900
     }
 
-    // Custom pin with count badge for multiple trainings
-    const size = Math.min(50, 35 + count * 2) // Scale size based on count
+    // Find matching color (fuzzy match for variants like "Parkour Training")
+    let markerColor = colorMap.fam // Default to FAM pink
+    for (const [type, color] of Object.entries(colorMap)) {
+      if (trainingType.includes(type)) {
+        markerColor = color
+        break
+      }
+    }
+
+    // Custom colored pin with optional count badge
+    const size = count > 1 ? Math.min(50, 35 + count * 2) : 40
     const fontSize = Math.min(18, 12 + count * 0.5)
+    const showBadge = count > 1
 
     return L.divIcon({
       html: `
@@ -744,14 +763,22 @@ export class MapManager {
             <svg width="36" height="48" viewBox="0 0 36 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- Pin shadow -->
               <ellipse cx="18" cy="46" rx="8" ry="2" fill="rgba(0,0,0,0.2)"/>
-              <!-- Pin body -->
+              <!-- Pin body with training type color -->
               <path d="M18 0C8.059 0 0 8.059 0 18c0 13.5 18 30 18 30s18-16.5 18-30c0-9.941-8.059-18-18-18z"
-                    fill="var(--color-primary-600)"/>
+                    fill="${markerColor}"/>
               <!-- Pin center circle -->
               <circle cx="18" cy="18" r="10" fill="white"/>
+              <!-- Training type initial/icon -->
+              <text x="18" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="${markerColor}">
+                ${trainingType.charAt(0).toUpperCase()}
+              </text>
             </svg>
           </div>
-          <div class="md-location-badge" style="font-size: ${fontSize}px;">${count}</div>
+          ${
+            showBadge
+              ? `<div class="md-location-badge" style="font-size: ${fontSize}px; background-color: ${markerColor};">${count}</div>`
+              : ''
+          }
         </div>
       `,
       className: 'md-location-marker-wrapper',
