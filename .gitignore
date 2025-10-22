@@ -88,3 +88,94 @@ dev-debug.log
 # Task files
 # tasks.json
 # tasks/ 
+
+# =====================================================
+# SECURITY ENHANCEMENTS (2025-10-22)
+# =====================================================
+
+# Extended Environment Variables
+.env.*
+.env.*.local
+.env.backup
+.env.bak
+.envrc.local
+
+# Private Keys & Certificates
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.key.pub
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+
+# GPG Keys
+*.gpg
+*.asc
+
+# Cloud Provider Credentials
+.aws/
+.gcloud/
+.azure/
+.do/
+.heroku/
+*-gcloud-*.json
+service-account*.json
+gcloud-service-key.json
+azureProfile.json
+credentials
+config
+
+# Database & Backups
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.bak
+dump.rdb
+*.dump.gz
+database_backup_*
+
+# Container & Infrastructure
+docker-compose.override.yml
+kubeconfig
+*.kubeconfig
+*.tfstate
+*.tfstate.backup
+.terraform/
+terraform.tfvars
+*.tfvars
+vault-password
+*.vault
+ansible.log
+
+# Service Configs
+.netlify/
+.vercel/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Generic Secret Patterns
+*secret*
+*secrets*
+*.token
+*.apikey
+*credentials*
+*auth*token*
+
+# Additional OS Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
