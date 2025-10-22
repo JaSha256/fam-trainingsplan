@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M3 Switch Examples - FAM Trainingsplan</title>
+
+    <!-- Main Script with Styles -->
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body class="bg-slate-300 antialiased p-8">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="md-typescale-headline-large text-primary-600 mb-8">
+        M3 Switch Component Examples
+      </h1>
+
+      <div class="space-y-6">
+        <!-- Example 1: Dark Mode Toggle (Prepared for future) -->
+        <div class="md-card-elevated p-6">
+          <h2 class="md-typescale-title-medium text-slate-900 mb-4">1. Dark Mode Toggle</h2>
+
+          <label class="md-switch-wrapper">
+            <input type="checkbox" id="dark-mode-switch" />
+            <div class="md-switch">
+              <span class="md-switch-track"></span>
+              <span class="md-switch-thumb"></span>
+              <span class="md-switch-state-layer"></span>
+            </div>
+            <div class="md-switch-label">
+              <div>Dark Mode</div>
+              <div class="md-switch-description">Enable dark theme (coming soon)</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Example 2: Compact View Toggle -->
+        <div class="md-card-elevated p-6">
+          <h2 class="md-typescale-title-medium text-slate-900 mb-4">2. Compact View Toggle</h2>
+
+          <label class="md-switch-wrapper">
+            <input type="checkbox" id="compact-view-switch" />
+            <div class="md-switch">
+              <span class="md-switch-track"></span>
+              <span class="md-switch-thumb"></span>
+              <span class="md-switch-state-layer"></span>
+            </div>
+            <div class="md-switch-label">
+              <div>Kompakte Ansicht</div>
+              <div class="md-switch-description">Zeige Trainings in kompakter Liste</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Example 3: Show Distance Toggle -->
+        <div class="md-card-elevated p-6">
+          <h2 class="md-typescale-title-medium text-slate-900 mb-4">3. Show Distance Toggle</h2>
+
+          <label class="md-switch-wrapper">
+            <input type="checkbox" id="show-distance-switch" checked />
+            <div class="md-switch">
+              <span class="md-switch-track"></span>
+              <span class="md-switch-thumb"></span>
+              <span class="md-switch-state-layer"></span>
+            </div>
+            <div class="md-switch-label">
+              <div>Entfernung anzeigen</div>
+              <div class="md-switch-description">Zeige Distanz zu Trainingsorten</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Example 4: Additional States Demo -->
+        <div class="md-card-elevated p-6">
+          <h2 class="md-typescale-title-medium text-slate-900 mb-4">Additional States</h2>
+
+          <div class="space-y-4">
+            <!-- Disabled Unchecked -->
+            <label class="md-switch-wrapper">
+              <input type="checkbox" id="disabled-unchecked" disabled />
+              <div class="md-switch">
+                <span class="md-switch-track"></span>
+                <span class="md-switch-thumb"></span>
+                <span class="md-switch-state-layer"></span>
+              </div>
+              <div class="md-switch-label">
+                <div>Disabled (Unchecked)</div>
+                <div class="md-switch-description">This switch is disabled</div>
+              </div>
+            </label>
+
+            <!-- Disabled Checked -->
+            <label class="md-switch-wrapper">
+              <input type="checkbox" id="disabled-checked" checked disabled />
+              <div class="md-switch">
+                <span class="md-switch-track"></span>
+                <span class="md-switch-thumb"></span>
+                <span class="md-switch-state-layer"></span>
+              </div>
+              <div class="md-switch-label">
+                <div>Disabled (Checked)</div>
+                <div class="md-switch-description">This switch is disabled and checked</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Example 5: Simple Switch (No Label) -->
+        <div class="md-card-elevated p-6">
+          <h2 class="md-typescale-title-medium text-slate-900 mb-4">Simple Switch (No Label)</h2>
+
+          <div class="flex items-center gap-4">
+            <span class="md-typescale-body-medium">Notifications</span>
+            <label class="md-switch">
+              <input type="checkbox" id="notifications-switch" />
+              <span class="md-switch-track"></span>
+              <span class="md-switch-thumb"></span>
+              <span class="md-switch-state-layer"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Code Examples -->
+        <div class="md-card-outlined p-6">
+          <h2 class="md-typescale-title-medium text-slate-900 mb-4">Code Examples</h2>
+
+          <div class="space-y-4">
+            <div>
+              <h3 class="md-typescale-label-large text-slate-700 mb-2">Basic Switch with Label:</h3>
+              <pre
+                class="bg-slate-800 text-slate-100 p-4 rounded-lg overflow-x-auto md-typescale-body-small"
+              ><code>&lt;label class="md-switch-wrapper"&gt;
+  &lt;input type="checkbox" id="my-switch"&gt;
+  &lt;div class="md-switch"&gt;
+    &lt;span class="md-switch-track"&gt;&lt;/span&gt;
+    &lt;span class="md-switch-thumb"&gt;&lt;/span&gt;
+    &lt;span class="md-switch-state-layer"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-switch-label"&gt;
+    &lt;div&gt;Label Text&lt;/div&gt;
+    &lt;div class="md-switch-description"&gt;Description text&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/label&gt;</code></pre>
+            </div>
+
+            <div>
+              <h3 class="md-typescale-label-large text-slate-700 mb-2">
+                Simple Switch (No Wrapper):
+              </h3>
+              <pre
+                class="bg-slate-800 text-slate-100 p-4 rounded-lg overflow-x-auto md-typescale-body-small"
+              ><code>&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" id="simple-switch"&gt;
+  &lt;span class="md-switch-track"&gt;&lt;/span&gt;
+  &lt;span class="md-switch-thumb"&gt;&lt;/span&gt;
+  &lt;span class="md-switch-state-layer"&gt;&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple demo script to log switch state changes
+      document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', e => {
+          console.log(`${e.target.id}: ${e.target.checked ? 'ON' : 'OFF'}`)
+        })
+      })
+    </script>
+  </body>
+</html>

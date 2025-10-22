@@ -1,0 +1,81 @@
+{
+  "permissions": {
+    "allow": [
+      {
+        "tool": "Bash",
+        "matcher": "npm run (build|dev|test:.*|preview|lint|format)"
+      },
+      {
+        "tool": "Bash",
+        "matcher": "node tests/.*"
+      },
+      {
+        "tool": "Bash",
+        "matcher": "git status.*"
+      },
+      {
+        "tool": "Bash",
+        "matcher": "git diff.*"
+      }
+    ],
+    "deny": [
+      {
+        "tool": "Read",
+        "matcher": "node_modules/.*"
+      },
+      {
+        "tool": "Edit",
+        "matcher": "node_modules/.*"
+      },
+      {
+        "tool": "Write",
+        "matcher": "node_modules/.*"
+      },
+      {
+        "tool": "Edit",
+        "matcher": "\\.env.*"
+      },
+      {
+        "tool": "Write",
+        "matcher": "\\.env.*"
+      }
+    ],
+    "ask": [
+      {
+        "tool": "Bash",
+        "matcher": "git (commit|push|reset|rebase|merge)"
+      },
+      {
+        "tool": "Write",
+        "matcher": ".*\\.config\\.js$"
+      },
+      {
+        "tool": "Edit",
+        "matcher": ".*\\.config\\.js$"
+      },
+      {
+        "tool": "Bash",
+        "matcher": "rm .*"
+      },
+      {
+        "tool": "Bash",
+        "matcher": "del .*"
+      }
+    ]
+  },
+
+  "features": {
+    "enableTelemetry": false,
+    "autoUpdateCheck": true
+  },
+
+  "environment": {
+    "NODE_ENV": "development",
+    "VITE_DEV_PORT": "5173"
+  },
+
+  "model": {
+    "default": "claude-sonnet-4-5",
+    "thinking": "extended"
+  }
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Filter Bug Debug</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      .debug {
+        background: #f0f0f0;
+        padding: 10px;
+        margin: 10px 0;
+      }
+      input[type='checkbox'] {
+        margin-right: 8px;
+      }
+      label {
+        display: block;
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Alpine.js Checkbox Array Bug Test</h1>
+
+    <div
+      x-data="{
+        filters: {
+            wochentag: []
+        },
+        wochentage: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
+        logChange() {
+            console.log('Change detected:', JSON.stringify(this.filters.wochentag))
+        }
+    }"
+      x-init="$watch('filters.wochentag', () => logChange())"
+    >
+      <div class="debug">
+        <strong>Current Array:</strong>
+        <pre x-text="JSON.stringify(filters.wochentag, null, 2)"></pre>
+        <strong>Array Length:</strong> <span x-text="filters.wochentag.length"></span>
+      </div>
+
+      <h2>Checkboxen (x-model auf Array)</h2>
+      <template x-for="tag in wochentage" :key="tag">
+        <label>
+          <input type="checkbox" x-model="filters.wochentag" :value="tag" @change="logChange()" />
+          <span x-text="tag"></span>
+          <span x-show="filters.wochentag.includes(tag)">(✓)</span>
+        </label>
+      </template>
+
+      <button @click="filters.wochentag = []" style="margin-top: 20px">Reset</button>
+    </div>
+
+    <hr />
+
+    <h2>Test mit Store (wie im echten Code)</h2>
+    <div
+      x-data="{
+        wochentage: ['Montag', 'Dienstag', 'Mittwoch'],
+        init() {
+            Alpine.store('testUi', {
+                filters: { wochentag: [] }
+            })
+        }
+    }"
+    >
+      <div class="debug">
+        <strong>Store Array:</strong>
+        <pre x-text="JSON.stringify($store.testUi.filters.wochentag, null, 2)"></pre>
+      </div>
+
+      <template x-for="tag in wochentage" :key="tag">
+        <label>
+          <input type="checkbox" x-model="$store.testUi.filters.wochentag" :value="tag" />
+          <span x-text="tag"></span>
+        </label>
+      </template>
+
+      <button @click="$store.testUi.filters.wochentag = []">Reset Store</button>
+    </div>
+  </body>
+</html>

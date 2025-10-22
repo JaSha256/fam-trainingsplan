@@ -20,6 +20,7 @@
  * @property {string} altersgruppe - Age group (Kids, Teens, Adults, ...)
  * @property {number} alterVon - Minimum age
  * @property {number} alterBis - Maximum age
+ * @property {number} [vonalter] - Alias for alterVon (backward compatibility)
  * @property {string} trainer - Trainer name
  * @property {string} probetraining - Trial training allowed ("ja" or "nein")
  * @property {string} [anmerkung] - Optional notes/remarks
@@ -37,12 +38,16 @@
  * Represents the current filter state in the UI
  *
  * @typedef {Object} Filter
- * @property {string} wochentag - Selected day filter (empty = all)
- * @property {string} ort - Selected location filter (empty = all)
- * @property {string} training - Selected training type filter (empty = all)
- * @property {string} altersgruppe - Selected age group filter (empty = all)
+ * @property {string | string[]} wochentag - Selected day filter (empty = all)
+ * @property {string | string[]} ort - Selected location filter (empty = all)
+ * @property {string | string[]} training - Selected training type filter (empty = all)
+ * @property {string | string[]} altersgruppe - Selected age group filter (empty = all)
  * @property {string} searchTerm - Search query string
  * @property {string | null} activeQuickFilter - Active quick filter name
+ * @property {((training: Training) => boolean) | string | null} [_customTimeFilter] - Custom time filter function (or empty string to clear)
+ * @property {((training: Training) => boolean) | string | null} [_customFeatureFilter] - Custom feature filter function (or empty string to clear)
+ * @property {((training: Training) => boolean) | string | null} [_customLocationFilter] - Custom location filter function (or empty string to clear)
+ * @property {((training: Training) => boolean) | string | null} [_customPersonalFilter] - Custom personal filter function (or empty string to clear)
  */
 
 /**

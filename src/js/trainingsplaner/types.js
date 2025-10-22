@@ -24,8 +24,13 @@
  * @property {boolean} filterSidebarOpen - Filter sidebar open state
  * @property {boolean} mobileFilterOpen - Mobile filter open state
  * @property {boolean} mapView - Map view active
+ * @property {'list' | 'map'} [activeView] - Active view mode
+ * @property {boolean} [showScrollTop] - Show scroll to top button
  * @property {import('../types.js').Notification | null} notification - Current notification
  * @property {number | null} notificationTimeout - Notification timeout ID
+ * @property {boolean} [manualLocation] - Manual location set flag
+ * @property {boolean} [manualLocationSet] - Manual location was set
+ * @property {string} [manualLocationAddress] - Manual location address
  * @property {() => void} toggleMapView - Toggle map view
  * @property {() => void} showListView - Show list view
  * @property {(message: string, type?: import('../types.js').NotificationType, duration?: number) => void} showNotification - Show notification
@@ -34,17 +39,31 @@
  */
 
 /**
+ * Filter Options
+ * @typedef {Object} FilterOptions
+ * @property {string[]} wochentage - Available weekdays
+ * @property {string[]} orte - Available locations
+ * @property {string[]} trainingsarten - Available training types
+ * @property {string[]} altersgruppen - Available age groups
+ */
+
+/**
  * Alpine.js Store Context
  * @typedef {Object} AlpineStoreContext
  * @property {AlpineUIStore} ui - UI Store
+ * @property {FilterOptions} [filterOptions] - Available filter options
  */
 
 /**
  * Alpine.js Component Context (this binding)
- * @typedef {Object} AlpineContext
- * @property {AlpineStoreContext} $store - Alpine store
- * @property {(callback: () => void) => Promise<void>} $nextTick - Next tick callback
- * @property {(expression: string, callback: (value: any) => void, options?: {deep?: boolean}) => void} $watch - Watch reactive property
+ *
+ * This includes all TrainingsplanerState properties plus Alpine.js context.
+ *
+ * @typedef {TrainingsplanerState & {
+ *   $store: AlpineStoreContext
+ *   $nextTick: (callback: () => void) => Promise<void>
+ *   $watch: (expression: string, callback: (value: any) => void, options?: {deep?: boolean}) => void
+ * }} AlpineContext
  */
 
 // ==================== STATE TYPES ====================
@@ -61,6 +80,7 @@
  * @property {ReturnType<typeof setTimeout> | null} searchTimeout - Search debounce timeout
  * @property {import('fuse.js').default<Training> | null} fuse - Fuse.js instance
  * @property {import('leaflet').Map | null} map - Leaflet map instance
+ * @property {any} [markerClusterGroup] - Leaflet marker cluster group
  * @property {import('leaflet').Marker[]} markers - Map markers
  * @property {boolean} userHasInteractedWithMap - User has interacted with map
  * @property {UserPosition | null} userPosition - User's geolocation
@@ -71,6 +91,13 @@
  * @property {string | null} latestVersion - Latest app version
  * @property {ReturnType<typeof setInterval> | null} updateCheckInterval - Update check interval ID
  * @property {Record<string, number>} wochentagOrder - Weekday sorting order
+ * @property {any} [tileLayers] - Map tile layers
+ * @property {any} [tileLayer] - Current tile layer
+ * @property {any} [layerControl] - Layer control
+ * @property {any} [geolocationControl] - Geolocation control
+ * @property {any} [resetControl] - Reset control
+ * @property {any} [userLocationMarker] - User location marker
+ * @property {string} [ariaLiveRegion] - ARIA live region for announcements
  */
 
 // ==================== COMPONENT TYPES ====================
@@ -80,6 +107,14 @@
  * @typedef {Object} GroupedTraining
  * @property {string} key - Group key (weekday)
  * @property {Training[]} items - Trainings in group
+ */
+
+/**
+ * Filter Chip
+ * @typedef {Object} FilterChip
+ * @property {string} type - Filter type (wochentag, ort, training, altersgruppe, quickfilter)
+ * @property {string} value - Filter value
+ * @property {string} label - Display label
  */
 
 /**
@@ -108,12 +143,16 @@
  *   exportAllToCalendar: () => Promise<void>
  *   exportFavoritesToCalendar: () => Promise<void>
  *   shareCurrentView: () => Promise<void>
+ *   shareFavorites: () => Promise<void>
  *   loadFavorites: () => void
  *   isFavorite: (trainingId: number) => boolean
  *   toggleFavorite: (trainingId: number) => boolean
  *   quickFilterFavorites: () => void
+ *   quickFilterHeute: () => void
+ *   applyQuickFilter: (filterName: string, customFilter?: (training: Training) => boolean) => void
  *   requestUserLocation: () => Promise<boolean>
  *   addDistanceToTrainings: () => void
+ *   resetLocation: () => void
  *   initializeMap: () => void
  *   addMarkersToMap: () => void
  *   createMapPopup: (training: Training) => string
@@ -127,6 +166,17 @@
  *   getTrainingColor: (training: string) => string
  *   formatAlter: (training: Training) => string
  *   formatZeitrange: (von: string, bis: string) => string
+ *   clearAllFilters: () => void
+ *   getActiveFilterChips: () => FilterChip[]
+ *   removeFilterChip: (chip: FilterChip) => void
+ *   getDisplayedFilterChips: () => FilterChip[]
+ *   getOverflowFilterCount: () => number
+ *   getActiveFilterCount: () => number
+ *   getResultsCount: () => number
+ *   getResultsCountText: () => string
+ *   shouldShowFilterChips: () => boolean
+ *   shouldClearButtonBeProminent: () => boolean
+ *   handleKeyboardShortcuts: (event: KeyboardEvent) => void
  *   destroy: () => void
  * }} TrainingsplanerComponent
  */
@@ -157,12 +207,16 @@
  *   exportAllToCalendar: () => Promise<void>
  *   exportFavoritesToCalendar: () => Promise<void>
  *   shareCurrentView: () => Promise<void>
+ *   shareFavorites: () => Promise<void>
  *   loadFavorites: () => void
  *   isFavorite: (trainingId: number) => boolean
  *   toggleFavorite: (trainingId: number) => boolean
  *   quickFilterFavorites: () => void
+ *   quickFilterHeute: () => void
+ *   applyQuickFilter: (filterName: string, customFilter?: (training: Training) => boolean) => void
  *   requestUserLocation: () => Promise<boolean>
  *   addDistanceToTrainings: () => void
+ *   resetLocation: () => void
  *   initializeMap: () => void
  *   addMarkersToMap: () => void
  *   createMapPopup: (training: Training) => string
@@ -176,6 +230,17 @@
  *   getTrainingColor: (training: string) => string
  *   formatAlter: (training: Training) => string
  *   formatZeitrange: (von: string, bis: string) => string
+ *   clearAllFilters: () => void
+ *   getActiveFilterChips: () => FilterChip[]
+ *   removeFilterChip: (chip: FilterChip) => void
+ *   getDisplayedFilterChips: () => FilterChip[]
+ *   getOverflowFilterCount: () => number
+ *   getActiveFilterCount: () => number
+ *   getResultsCount: () => number
+ *   getResultsCountText: () => string
+ *   shouldShowFilterChips: () => boolean
+ *   shouldClearButtonBeProminent: () => boolean
+ *   handleKeyboardShortcuts: (event: KeyboardEvent) => void
  *   destroy: () => void
  *   wochentage: string[]
  *   orte: string[]

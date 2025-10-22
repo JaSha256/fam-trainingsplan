@@ -1,0 +1,52 @@
+# Prettier ignore patterns
+# https://prettier.io/docs/en/ignore.html
+
+# Build output
+dist/
+build/
+coverage/
+test-results/
+playwright-report/
+.vite/
+
+# Dependencies
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# Cache directories
+.cache/
+.turbo/
+.next/
+.nuxt/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated files
+*.min.js
+*.min.css
+
+# Collective framework
+.claude-collective/
+.claude/
+.taskmaster/
+.husky/
+
+# Documentation that should preserve formatting
+CHANGELOG.md
