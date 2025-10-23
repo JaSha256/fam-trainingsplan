@@ -78,10 +78,10 @@ define(['./workbox-414b1829'], (function (workbox) { 'use strict';
    * See https://goo.gl/S9QRab
    */
   workbox.precacheAndRoute([{
-    "url": "assets/index.BEaQcuwl.css",
+    "url": "assets/index.DWafkTSs.css",
     "revision": null
   }, {
-    "url": "assets/js/index.CFeKNBrz.js",
+    "url": "assets/js/index.D1Xi_K9u.js",
     "revision": null
   }, {
     "url": "assets/js/vendor-alpine.D9MLegQT.js",
@@ -93,14 +93,20 @@ define(['./workbox-414b1829'], (function (workbox) { 'use strict';
     "url": "assets/js/vendor-utils.Dw8P0qyA.js",
     "revision": null
   }, {
-    "url": "assets/js/virtual_pwa-register.BaRIUusY.js",
+    "url": "assets/js/virtual_pwa-register.cTC8mKgz.js",
     "revision": null
   }, {
     "url": "assets/js/workbox-window.prod.es5.CwtvwXb3.js",
     "revision": null
   }, {
+    "url": "fam-logo-dark.svg",
+    "revision": "de8317348f10939bc8af7b010234e4c2"
+  }, {
+    "url": "fam-logo.svg",
+    "revision": "d84416198ac83404635fe3c8018b53aa"
+  }, {
     "url": "index.html",
-    "revision": "1dbe2f3e0938f0bcf5416b372f7ecd3a"
+    "revision": "e482a5eb9642e5f0936cf704314d17dd"
   }, {
     "url": "offline.html",
     "revision": "27d63b495e0cc4307617e5f5a6153a8a"
