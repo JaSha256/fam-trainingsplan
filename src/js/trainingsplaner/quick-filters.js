@@ -10,7 +10,7 @@
 
 /**
  * @typedef {import('./types.js').Training} Training
- * @typedef {import('./types.js').Filters} Filters
+ * @typedef {import('../types.js').Filter} Filter
  */
 
 /**
@@ -27,7 +27,8 @@
  * @property {'zeit' | 'feature' | 'ort' | 'persoenlich'} category - Filter category
  * @property {string} [color] - Custom color classes (default: primary)
  * @property {boolean} [requiresGeolocation] - Whether filter needs user location
- * @property {(filters: Filters, context: QuickFilterContext) => Training[] | void} apply - Filter logic
+ * @property {boolean} [customFilter] - Whether this uses custom filtering logic
+ * @property {(filters: Filter, context: QuickFilterContext) => Training[] | void} apply - Filter logic
  */
 
 /**
@@ -216,6 +217,7 @@ export function getQuickFilterColorClasses(filterName, isActive) {
   const filter = QUICK_FILTERS[filterName]
   const color = filter?.color || 'primary'
 
+  /** @type {Record<string, string>} */
   const colorMap = {
     primary: 'bg-primary-50 text-primary-700 hover:bg-primary-100',
     yellow: 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100',
@@ -234,6 +236,6 @@ export function getQuickFilterColorClasses(filterName, isActive) {
  */
 export function getFiltersByCategory(category) {
   return Object.entries(QUICK_FILTERS).filter(
-    ([_, filter]) => filter.category === category
+    ([/** @type {string} */ _, /** @type {QuickFilter} */ filter]) => filter.category === category
   )
 }

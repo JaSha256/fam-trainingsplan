@@ -34,9 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: TypeScript Type Check
+        run: pnpm run typecheck
+
       - name: Run tests
         run: pnpm run test:unit
-        continue-on-error: true
 
       - name: Build for production
         run: pnpm run build

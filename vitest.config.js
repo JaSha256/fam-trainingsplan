@@ -1,11 +1,13 @@
 import { defineConfig } from 'vitest/config'
 
-// Main Vitest configuration with projects
 export default defineConfig({
   test: {
-    projects: [
-      './vitest.unit.config.js',
-      './vitest.infrastructure.config.js'
-    ]
+    globals: true,
+    environment: 'node',
+    include: ['.claude-collective/tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    // Configure vitest to find dependencies in the .claude-collective subdirectory
+    deps: {
+      external: ['fs-extra']
+    }
   }
 })

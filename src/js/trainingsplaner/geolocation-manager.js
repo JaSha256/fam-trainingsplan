@@ -49,15 +49,18 @@ export class GeolocationManager {
    */
   loadManualLocation() {
     if (this.context.$store.ui.manualLocationSet && this.context.$store.ui.manualLocation) {
-      this.context.userPosition = this.context.$store.ui.manualLocation
+      /** @type {import('../types.js').UserPosition} */
+      const manualLocation = this.context.$store.ui.manualLocation
+      this.context.userPosition = manualLocation
       log('info', 'Manual location loaded', this.context.userPosition)
 
       // Add distance to trainings
       this.addDistanceToTrainings()
 
       // Add user marker to map if map exists
-      if (this.mapManager && this.context.map) {
+      if (this.mapManager && this.context.map && this.context.userPosition) {
         const { lat, lng } = this.context.userPosition
+        // @ts-expect-error - mapManager type is not fully defined
         this.mapManager.addUserLocationMarker([lat, lng])
       }
     }
@@ -87,8 +90,9 @@ export class GeolocationManager {
       this.applyFilters()
 
       // Add user marker to map if map exists
-      if (this.mapManager && this.context.map) {
+      if (this.mapManager && this.context.map && this.context.userPosition) {
         const { lat, lng } = this.context.userPosition
+        // @ts-expect-error - mapManager type is not fully defined
         this.mapManager.addUserLocationMarker([lat, lng])
       }
 
@@ -122,7 +126,7 @@ export class GeolocationManager {
       this.context.userPosition
     )
 
-    this.context.allTrainings.forEach(t => {
+    this.context.allTrainings.forEach((/** @type {import('./types.js').Training} */ t) => {
       if (t.distance !== undefined) {
         t.distanceText = t.distance.toFixed(1) + ' km'
       }
@@ -149,7 +153,7 @@ export class GeolocationManager {
     localStorage.removeItem('manualLocation')
 
     // Remove distance properties from trainings
-    this.context.allTrainings.forEach(t => {
+    this.context.allTrainings.forEach((/** @type {import('./types.js').Training} */ t) => {
       delete t.distance
       delete t.distanceText
     })

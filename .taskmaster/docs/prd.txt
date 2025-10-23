@@ -1,735 +1,443 @@
-# 🎨 UI/UX Design Meisterwerk - Wissenschaftlich fundierte Optimierung
+# Product Requirements Document: FAM Trainingsplan - Interaktive Trainingsplattform
 
-## 🎯 Mission Statement
-Transformiere den FAM Trainingsplan in ein Design-Meisterwerk durch die Integration modernster UX-Wissenschaft, Material Design 3 Prinzipien und bewährter Best Practices für Mobile & Desktop.
+## Projekt-Übersicht
 
----
+**Projektname:** FAM Trainingsplan
+**Version:** 2.4.0 → 3.0.0
+**Zielgruppe:** Free Arts of Movement (FAM) München - Parkour, Trampolin, Tricking Community
+**Plattform:** Progressive Web App (PWA) - Desktop, Mobile, Tablet
+**Tech-Stack:** Alpine.js 3.15, Vite 7, Tailwind CSS v4, Leaflet, Fuse.js
 
-## 🚨 KRITISCHE UI-ANFORDERUNGEN (Höchste Priorität!)
+## Projekt-Status
 
-### **Content-First Prinzip**
-**"Der Inhalt ist König - UI-Elemente dienen nur der Navigation"**
-
-Alle UI-Verbesserungen MÜSSEN folgende Kernregeln befolgen:
-
-#### 1. **Karte ist eigene View (nicht Modal/Popout)**
-```markdown
-AKTUELL (FALSCH):
-- Karte öffnet als Modal-Overlay
-- Verdeckt gesamten Content
-- Nimmt Fokus weg von Trainings
-
-ZIEL (RICHTIG):
-- Karte ist gleichwertige View wie Liste
-- Tabs/Segmente: [Liste] [Karte] [Favoriten]
-- Beide Views nutzen selbe Filter
-- Nahtloser Wechsel ohne Unterbrechung
-
-IMPLEMENTIERUNG:
-Desktop:
-┌──────────┬─────────────────────────────────┐
-│  Filter  │  View Switcher: [Liste] [Karte] │
-│ (Sticky) │                                  │
-│          │  Content (Liste ODER Karte)     │
-│  Sidebar │  (Scrollable)                   │
-│          │                                  │
-│ (Fixed)  │                                  │
-└──────────┴─────────────────────────────────┘
-
-Mobile:
-┌─────────────────────────────────────────┐
-│ Bottom Nav: [Liste] [Karte] [Favoriten] │
-│ ────────────────────────────────────── │
-│         Content (Fullscreen)            │
-│                                         │
-│   [Filter FAB ↓ - öffnet Bottom Sheet] │
-└─────────────────────────────────────────┘
-```
-
-#### 2. **Filter Sidebar - Immer zugänglich & Sticky**
-```markdown
-PROBLEM:
-✗ Desktop: Filter-Button verschwindet (Toggle in Header)
-✗ Sidebar scrollt mit Content (verliert Kontext)
-✗ Kein visueller Hinweis auf aktive Filter
-✗ Kann nur 1 Filter pro Kategorie anwenden
-
-LÖSUNG:
-✓ Filter-Sidebar IMMER sichtbar (Desktop ≥1024px)
-✓ Sidebar ist position: sticky (scrollt NICHT mit)
-✓ Toggle-Button in Sidebar selbst (Collapse/Expand Icon)
-✓ Aktive Filter mit farbigem Badge + Count
-
-LAYOUT (Desktop):
-┌────────────────┬────────────────────────────┐
-│  🔽 FILTER     │  📍 TRAININGSPLAN          │ ← Sticky Header
-│  ────────────  │  ──────────────────────    │
-│                │                            │
-│  ✓ Montag      │  Training Cards / Karte    │
-│  ✓ Probetr.    │  (Scrollable Content)     │
-│  □ LTR         │                            │
-│                │                            │
-│  [2 aktiv]     │  ↓ Scroll                  │
-│  [Zurückset.]  │  ↓ Content                 │
-│                │  ↓ Weiter                  │
-│  (Sticky!)     │                            │
-└────────────────┴────────────────────────────┘
-      ↑                    ↑
-  Fixed Width        Flexible Content
-  (280px)            (Rest of Viewport)
-```
-
-#### 3. **Multi-Filter System - Kombinierbar**
-```markdown
-AKTUELL (Limitation):
-- Nur 1 Wochentag ODER 1 Ort ODER 1 Training
-- Schnellfilter überschreiben normale Filter
-
-ZIEL (Flexibel):
-- Mehrere Wochentage: Montag + Mittwoch + Freitag ✓
-- Mehrere Trainingsarten: Parkour + Tricking ✓
-- Kombinationen: Probetraining + Montag + LTR ✓
-- AND-Verknüpfung: Alle Bedingungen müssen erfüllt sein
-
-BEISPIEL Use-Case:
-User will: "Alle Probetrainings am Montag oder Mittwoch in LTR"
-Filter:
-✓ Probetraining: Ja
-✓ Wochentag: Montag, Mittwoch
-✓ Ort: LTR
-→ Ergebnis: Nur Trainings die ALLE 3 Bedingungen erfüllen
-
-FILTER UI:
-┌──────────────────────────────────┐
-│ 🔽 FILTER (3 aktiv)              │
-│ ─────────────────────────────── │
-│                                  │
-│ Wochentag:                       │
-│ ☑ Montag     ☑ Mittwoch         │
-│ ☐ Dienstag   ☐ Donnerstag       │
-│ ☐ Freitag    ☐ Samstag          │
-│ ☐ Sonntag                        │
-│                                  │
-│ Trainingsart:                    │
-│ ☑ Parkour    ☐ Trampolin        │
-│ ☑ Tricking   ☐ Movement         │
-│                                  │
-│ Besonderheiten:                  │
-│ ☑ Probetraining                 │
-│ ☐ Neu (30 Tage)                 │
-│                                  │
-│ [Alle zurücksetzen]              │
-└──────────────────────────────────┘
-```
-
-#### 4. **Schnellfilter - Prominent platziert**
-```markdown
-AKTUELL:
-✗ Schnellfilter fehlen komplett
-✗ Waren in Quick Wins implementiert, jetzt weg
-
-ZIEL:
-✓ Schnellfilter OBERHALB normaler Filter
-✓ Horizontal scrollbar (mobile)
-✓ Sticky beim Scrollen
-✓ Kombinierbar mit normalen Filtern
-
-SCHNELLFILTER DESIGN:
-┌─────────────────────────────────────────┐
-│ ⚡ SCHNELLFILTER                         │
-│ ─────────────────────────────────────── │
-│                                         │
-│ Zeit:                                   │
-│ [📅 Heute] [🌅 Morgen] [🎉 Wochenende] │
-│                                         │
-│ Besonderheiten:                         │
-│ [🆓 Probetraining] [✨ Neu] [🌙 Abends]│
-│                                         │
-│ Persönlich:                             │
-│ [❤️ Favoriten (5)] [⭐ Empfohlen]      │
-│ ─────────────────────────────────────── │
-│                                         │
-│ 🎯 ERWEITERTE FILTER                    │
-│ [siehe oben: Wochentag, Training, etc.] │
-└─────────────────────────────────────────┘
-
-VERHALTEN:
-- Schnellfilter "Heute" → Setzt Wochentag-Checkbox
-- Zusätzlich "Probetraining" → Kombiniert beide
-- "Zurücksetzen" → Löscht alle (Schnell + Normal)
-```
-
-#### 5. **Aktive Filter - Kompakte Anzeige**
-```markdown
-PROBLEM:
-✗ Aktive Filter schwer erkennbar
-✗ Nehmen zu viel Platz weg
-✗ Keine schnelle Übersicht
-
-LÖSUNG - Sticky Filter Chips:
-┌─────────────────────────────────────────┐
-│ 📍 TRAININGSPLAN              [🔍 Such] │ ← Header
-│ ─────────────────────────────────────── │
-│ Aktiv: [Montag ×] [Probetraining ×]    │ ← Sticky Chip Bar
-│        [3 Trainings gefunden]            │
-│ ─────────────────────────────────────── │
-│                                         │
-│     Training Cards / Karte Content      │
-│     (Scrollable)                        │
-└─────────────────────────────────────────┘
-
-CHIPS SPECS:
-- Max. 3 Chips sichtbar, Rest "+2 weitere"
-- Click auf Chip → Entfernt diesen Filter
-- Click auf "+2 weitere" → Zeigt alle
-- Immer sichtbar beim Scrollen (sticky)
-- Kompakte Höhe: 40px total
-```
-
-#### 6. **Content-Maximierung - UI-Minimierung**
-```markdown
-PRINZIP: "80% Content, 20% UI"
-
-VIEWPORT ALLOCATION:
-Desktop (1920px):
-┌──────────┬───────────────────────────────┐
-│  Filter  │         Content               │
-│  280px   │         1640px (85%)         │
-│  (15%)   │                               │
-└──────────┴───────────────────────────────┘
-
-Mobile (375px):
-┌─────────────────────────────────────────┐
-│ Header: 64px (17%)                      │
-├─────────────────────────────────────────┤
-│                                         │
-│ Content: 100% Width                     │
-│         100% - 64px - 56px (73%)       │
-│                                         │
-├─────────────────────────────────────────┤
-│ Bottom Nav: 56px (15%)                  │
-└─────────────────────────────────────────┘
-
-HEADER REDUCTION:
-Before:
-┌─────────────────────────────────────────┐
-│ Logo | Title | Actions | Settings (80px)│
-
-After:
-┌─────────────────────────────────────────┐
-│ Title | [View: Liste] [Filter ↓] (48px)│
-```
-
----
-
-### **Zusammenfassung der Kern-Anforderungen:**
-
-| Anforderung | Aktuell | Ziel |
-|-------------|---------|------|
-| **Karten-View** | Modal/Popout | Eigene View mit Tab |
-| **Filter Sidebar** | Toggle, scrollt mit | Immer sichtbar, sticky |
-| **Multi-Filter** | Nur 1 pro Kategorie | Kombinierbar (Checkboxen) |
-| **Schnellfilter** | Verloren | Wiederhergestellt, prominent |
-| **Aktive Filter** | Unklare Anzeige | Sticky Chips, kompakt |
-| **Content-Anteil** | ~60% Viewport | ~80% Viewport |
-| **Desktop Filter-Button** | Verschwindet | Immer in Sidebar |
-
----
-
-## 📊 Aktueller Tech-Stack (Voll ausreizen!)
-
-### Frontend Framework
-- **Alpine.js 3.x** - Reaktives State Management
-- **Tailwind CSS 3.x** - Utility-First Styling
-- **Material Design 3** - Design System (vollständig implementiert in `src/styles/m3-components.css`)
-- **Leaflet.js 1.9.4** - Interaktive Karten mit Clustering
-- **Vite 7.x** - Build-Tool mit PWA Support
-
-### Verfügbare Features
-- ✅ Dark Mode (vollständig implementiert)
-- ✅ View Modes: Kompakt/Detailliert/Liste (implementiert)
-- ✅ M3 Components: Buttons, Cards, Switch, Typography, State Layers
+### Bestehende Implementierung (v2.4.0)
+- ✅ Vollständig modulare Architektur mit 10+ spezialisierten Modulen
+- ✅ TypeScript Type Safety via JSDoc
+- ✅ 81.71% Test Coverage (313 Unit Tests, 60 Integration Tests)
+- ✅ Responsive Design mit Mobile-First Ansatz
+- ✅ PWA-Ready mit Offline-Funktionalität
+- ✅ Alpine.js Store-basiertes State Management
+- ✅ URL-basierte Filter-Persistierung
 - ✅ Favoriten-System mit LocalStorage
-- ✅ Standort-basierte Entfernungsberechnung
-- ✅ Quick Filters (Heute, Favoriten, etc.)
-- ✅ Responsive Design (Mobile-First)
-- ✅ PWA mit Service Worker
-- ✅ Geolocation API Integration
+- ✅ Geolocation mit Distanz-Berechnung
+- ✅ Leaflet Karten-Integration mit Clustering
+- ✅ Kalender-Export (.ics) für Google/Apple/Outlook
+- ✅ Fuzzy-Search mit Fuse.js
+- ✅ Quick-Filter System
+- ✅ Auto-Update-Check Mechanismus
 
----
+### Existierende Module
 
-## 🎯 AUFGABE 0: KRITISCHE UI-REFACTORING (SOFORT UMSETZEN!)
+#### Core Architecture (/src/js/trainingsplaner/)
+1. **state.js** - Zentrales State Management
+2. **url-filters-manager.js** - URL-Parameter Handling & Sharing
+3. **filter-engine.js** - Filtering Logic & Fuse.js Integration
+4. **favorites-manager.js** - Favoriten CRUD & LocalStorage
+5. **geolocation-manager.js** - GPS & Distanz-Berechnung
+6. **map-manager.js** - Leaflet Map & Clustering
+7. **map-controls.js** - Map Interactions
+8. **data-loader.js** - JSON Loading & Caching
+9. **actions-manager.js** - Calendar Export & Share API
+10. **quick-filters.js** - Quick Filter Definitions
 
-**Priorität:** 🔴🔴🔴 KRITISCH - Muss VOR allen anderen Aufgaben implementiert werden!
+#### Support Modules
+- **utils.js** - Helper Functions (Zeit-Parsing, Favoriten API)
+- **config.js** - Zentrale Konfiguration & Feature Flags
+- **types.js** - TypeScript Type Definitions
 
-Diese Aufgabe implementiert alle 6 kritischen UI-Anforderungen aus der obigen Sektion.
+### Test-Infrastruktur
+- **Unit Tests:** Vitest mit jsdom (81.71% Coverage)
+- **Integration Tests:** Playwright Integration Config (60 Tests)
+- **E2E Tests:** Playwright mit 20+ Testsuites
+  - Accessibility Tests (WCAG)
+  - Performance Tests
+  - Visual Regression Tests
+  - PWA Offline Tests
+  - User Flow Tests
+  - Touch Target Tests
 
----
+## Identifizierte Verbesserungsbereiche
 
-### Teil 1: Karte als eigene View (nicht Modal)
+### 1. Performance Optimierung
 
-**ENTFERNEN:**
-```html
-<!-- DIESE MAP MODAL LÖSCHEN -->
-<div x-show="$store.ui.mapModalOpen" class="fixed inset-0 bg-black/80 z-50">
-  <!-- ... gesamtes Map Modal ... -->
-</div>
+#### 1.1 Virtual Scrolling für große Datensätze
+**Problem:** Bei >200 Trainings wird DOM-Rendering langsam
+**Lösung:** Implementiere Virtual Scrolling mit `@tanstack/virtual` oder ähnlich
+**User Story:** Als User möchte ich auch bei 1000+ Trainings flüssige Performance
+**Akzeptanzkriterien:**
+- Smooth scrolling auch bei 1000+ Trainings
+- <16ms Frame Time (60fps)
+- Lighthouse Performance Score >95
+
+#### 1.2 Code Splitting Optimierung
+**Problem:** Vendor Bundle könnte weiter optimiert werden
+**Lösung:** Dynamic Imports für Leaflet, Fuse.js, weniger genutzte Features
+**Akzeptanzkriterien:**
+- Initial Bundle <150KB (gzipped)
+- Leaflet lazy-loaded beim ersten Map-Open
+- Fuse.js lazy-loaded beim ersten Search
+
+#### 1.3 Image Optimization
+**Problem:** Training-Bilder (falls zukünftig hinzugefügt) nicht optimiert
+**Lösung:** WebP/AVIF mit Fallbacks, Lazy Loading, Responsive Images
+**Akzeptanzkriterien:**
+- WebP/AVIF format support
+- Lazy loading mit Intersection Observer
+- srcset für responsive images
+
+### 2. UX/UI Verbesserungen
+
+#### 2.1 Multi-Select Filter Enhancement
+**Problem:** User können nur einen Wochentag/Ort gleichzeitig filtern
+**Lösung:** Multi-Select Dropdowns oder Checkbox-Groups
+**User Story:** Als User möchte ich Trainings für mehrere Tage gleichzeitig sehen
+**Akzeptanzkriterien:**
+- Multi-Select für Wochentag, Ort, Training, Altersgruppe
+- Visuelle Kennzeichnung der Anzahl gewählter Filter
+- "Alle auswählen" / "Alle abwählen" Buttons
+
+#### 2.2 Advanced Sorting Options
+**Problem:** Nur Standard-Sortierung verfügbar
+**Lösung:** User-definierbare Sortierung
+**User Story:** Als User möchte ich Trainings nach verschiedenen Kriterien sortieren
+**Akzeptanzkriterien:**
+- Sortierung nach: Uhrzeit, Entfernung, Wochentag, Ort, Training
+- Multi-Level Sorting (Primär, Sekundär, Tertiär)
+- Persistent Sorting Preferences in LocalStorage
+
+#### 2.3 Training Detail Modal
+**Problem:** Alle Infos in Card-Ansicht kann überladen wirken
+**Lösung:** Kompakte Cards + Detail-Modal bei Klick
+**Akzeptanzkriterien:**
+- Kompakte Training Cards mit wichtigsten Infos
+- Modal mit vollständigen Details
+- Modal mit Kalender-Export, Share, Favorit Buttons
+- Keyboard-Navigation (Arrow Keys für nächstes/vorheriges Training)
+
+#### 2.4 Dark Mode
+**Problem:** Nur Light Mode verfügbar
+**Lösung:** Dark Mode mit System Preference Detection
+**Akzeptanzkriterien:**
+- Dark Mode Theme
+- Auto-Detection via `prefers-color-scheme`
+- Toggle-Button im Header
+- Persistent Preference in LocalStorage
+
+#### 2.5 Accessibility Improvements
+**Problem:** WCAG AAA Compliance noch nicht vollständig
+**Lösung:** Umfassende A11y Verbesserungen
+**Akzeptanzkriterien:**
+- WCAG 2.1 Level AAA Compliance
+- Screen Reader friendly ARIA labels
+- Keyboard Navigation für alle Features
+- Focus Management in Modals
+- High Contrast Mode Support
+
+### 3. Feature Erweiterungen
+
+#### 3.1 Trainer-Profile
+**Problem:** User wissen nicht, wer trainiert
+**Lösung:** Trainer-Profile mit Bild, Bio, Spezialisierung
+**User Story:** Als User möchte ich mehr über die Trainer erfahren
+**Akzeptanzkriterien:**
+- Trainer-Profil Modal
+- Trainer-Bild, Name, Bio, Spezialisierung
+- Verknüpfung von Training → Trainer
+- "Alle Trainings von Trainer X" Filter
+
+#### 3.2 Trainings-Historie & Statistiken
+**Problem:** User können nicht sehen, welche Trainings sie besucht haben
+**Lösung:** Check-In System mit Historie
+**User Story:** Als User möchte ich sehen, wie oft ich trainiert habe
+**Akzeptanzkriterien:**
+- "Check-In" Button pro Training
+- Historie in LocalStorage
+- Statistik-Dashboard (Trainings pro Woche/Monat, häufigste Trainingsart, etc.)
+- Streak-Counter ("Du hast 10 Tage in Folge trainiert!")
+
+#### 3.3 Benachrichtigungen für Favoriten
+**Problem:** User verpassen ihre Lieblings-Trainings
+**Lösung:** Push Notifications für Favoriten
+**User Story:** Als User möchte ich erinnert werden, bevor mein Lieblings-Training beginnt
+**Akzeptanzkriterien:**
+- Push Notification Opt-In
+- Konfigurierbare Erinnerungszeit (30min, 1h, 2h vorher)
+- Notifications nur für Favoriten
+- "Snooze" Funktion
+
+#### 3.4 Social Features
+**Problem:** Community kann sich nicht vernetzen
+**Lösung:** "Wer geht hin?" Feature
+**User Story:** Als User möchte ich sehen, wer zu welchem Training geht
+**Akzeptanzkriterien:**
+- "Ich gehe hin" Button
+- Liste der Teilnehmer (optional öffentlich)
+- User-Profile mit Trainingsaktivität
+- Benachrichtigung wenn Freunde sich anmelden
+
+#### 3.5 Trainings-Bewertungen
+**Problem:** Keine Qualitäts-Feedback Möglichkeit
+**Lösung:** 5-Sterne Rating + Reviews
+**User Story:** Als User möchte ich Trainings bewerten und Reviews lesen
+**Akzeptanzkriterien:**
+- 5-Sterne Rating System
+- Text-Reviews (optional)
+- Durchschnittliche Bewertung pro Training
+- Moderation für Reviews
+
+#### 3.6 Kalender-Integration (fortgeschritten)
+**Problem:** .ics Export ist umständlich
+**Lösung:** Direkte Google/Apple Calendar Integration
+**User Story:** Als User möchte ich Trainings direkt in meinen Kalender synchronisieren
+**Akzeptanzkriterien:**
+- Google Calendar API Integration
+- Apple Calendar API Integration (iOS)
+- Auto-Sync für Favoriten
+- Bi-direktional (Training-Änderungen updaten Kalender)
+
+#### 3.7 Probetraining-Workflow
+**Problem:** Probetraining-Anmeldung führt zu externer Seite
+**Lösung:** Integrierter Probetraining-Workflow
+**User Story:** Als Neuer möchte ich Probetraining direkt buchen
+**Akzeptanzkriterien:**
+- "Probetraining buchen" Modal
+- Formular mit Name, Email, Telefon, gewünschte Trainingsart
+- Email-Benachrichtigung an FAM Team
+- Bestätigungs-Email an User
+
+### 4. Technische Verbesserungen
+
+#### 4.1 Backend API statt statischem JSON
+**Problem:** Statisches JSON nicht skalierbar für dynamische Features
+**Lösung:** REST API oder GraphQL Backend
+**Akzeptanzkriterien:**
+- Node.js/Deno Backend mit REST API
+- Endpoints: `/trainings`, `/trainers`, `/bookings`, `/reviews`
+- PostgreSQL oder MongoDB Datenbank
+- Authentication (JWT) für User Features
+- Admin Panel für Trainings-Management
+
+#### 4.2 Real-time Updates
+**Problem:** User sehen keine Live-Änderungen
+**Lösung:** WebSocket für Real-time Updates
+**Akzeptanzkriterien:**
+- WebSocket Connection für Live Updates
+- Training-Änderungen erscheinen sofort bei allen Users
+- "X User schauen gerade diese Seite an" Indicator
+
+#### 4.3 Error Tracking & Analytics
+**Problem:** Keine Fehler-Überwachung
+**Lösung:** Sentry für Error Tracking, Plausible für Privacy-friendly Analytics
+**Akzeptanzkriterien:**
+- Sentry Integration für Error Tracking
+- Plausible Analytics (DSGVO-konform)
+- Performance Monitoring (Core Web Vitals)
+- User Feedback Widget
+
+#### 4.4 Internationalization (i18n)
+**Problem:** Nur deutsche Sprache
+**Lösung:** Multi-Language Support
+**Akzeptanzkriterien:**
+- i18n Framework (z.B. `@formatjs/intl`)
+- Deutsch, Englisch als Sprachen
+- Language Toggle im Header
+- Persistent Language Preference
+
+#### 4.5 Testing Erweiterungen
+**Problem:** Function Coverage nur 72.94%
+**Lösung:** Erhöhung der Test Coverage auf >90%
+**Akzeptanzkriterien:**
+- Function Coverage >90%
+- Integration Tests für alle Critical Paths
+- Visual Regression Tests für alle Components
+- Performance Tests mit Lighthouse CI
+
+### 5. DevOps & Deployment
+
+#### 5.1 CI/CD Pipeline Optimierung
+**Problem:** Manuelle Deployment-Schritte
+**Lösung:** Vollautomatische CI/CD mit GitHub Actions
+**Akzeptanzkriterien:**
+- GitHub Actions Workflow
+- Auto-Tests bei Pull Requests
+- Auto-Deploy zu Production bei Merge zu Main
+- Staging Environment für Testing
+
+#### 5.2 Monitoring & Alerting
+**Problem:** Keine Production Monitoring
+**Lösung:** Uptime Monitoring & Error Alerting
+**Akzeptanzkriterien:**
+- Uptime Monitoring (z.B. UptimeRobot)
+- Error Alerting via Sentry
+- Performance Degradation Alerts
+- Weekly/Monthly Reports
+
+#### 5.3 Documentation
+**Problem:** Code Documentation teilweise unvollständig
+**Lösung:** Umfassende Documentation mit JSDoc + Storybook
+**Akzeptanzkriterien:**
+- JSDoc für alle Public Functions
+- Storybook für UI Components
+- Architecture Decision Records (ADRs)
+- Contributor Guide
+
+## Implementierungs-Phasen
+
+### Phase 1: UX Improvements (Priorität: Hoch)
+**Geschätzte Dauer:** 3-4 Wochen
+- Multi-Select Filter (2.1)
+- Training Detail Modal (2.3)
+- Advanced Sorting (2.2)
+- Dark Mode (2.4)
+- Accessibility Improvements (2.5)
+
+### Phase 2: Performance Optimierung (Priorität: Hoch)
+**Geschätzte Dauer:** 2-3 Wochen
+- Virtual Scrolling (1.1)
+- Code Splitting Optimierung (1.2)
+- Image Optimization (1.3)
+
+### Phase 3: Basic Backend (Priorität: Mittel)
+**Geschätzte Dauer:** 4-6 Wochen
+- Backend API Setup (4.1)
+- Authentication System
+- Admin Panel (Basic)
+- Probetraining-Workflow (3.7)
+
+### Phase 4: Social Features (Priorität: Mittel)
+**Geschätzte Dauer:** 3-4 Wochen
+- Trainer-Profile (3.1)
+- Trainings-Historie (3.2)
+- Social Features (3.4)
+
+### Phase 5: Advanced Features (Priorität: Niedrig)
+**Geschätzte Dauer:** 4-5 Wochen
+- Push Notifications (3.3)
+- Kalender-Integration (3.6)
+- Trainings-Bewertungen (3.5)
+- Real-time Updates (4.2)
+
+### Phase 6: DevOps & Quality (Priorität: Kontinuierlich)
+**Geschätzte Dauer:** Kontinuierlich
+- CI/CD Optimierung (5.1)
+- Error Tracking & Analytics (4.3)
+- Monitoring & Alerting (5.2)
+- Documentation (5.3)
+- Testing Erweiterungen (4.5)
+
+## Erfolgskriterien
+
+### Quantitative Metriken
+- **Performance:** Lighthouse Score >95 (aktuell: keine Baseline)
+- **Test Coverage:** >90% (aktuell: 81.71%)
+- **Bundle Size:** <150KB initial (aktuell: nicht gemessen)
+- **Load Time:** <2s (aktuell: nicht gemessen)
+- **Error Rate:** <0.1% (aktuell: keine Überwachung)
+
+### Qualitative Metriken
+- **User Satisfaction:** User Feedback Score >4.5/5
+- **Accessibility:** WCAG 2.1 AAA Compliance
+- **Mobile Experience:** Touch-optimiert, flüssige Gesten
+- **Developer Experience:** Gute Documentation, leichte Contribution
+
+## Risiken & Mitigationen
+
+### Risiko 1: Komplexität durch Backend
+**Wahrscheinlichkeit:** Mittel
+**Impact:** Hoch
+**Mitigation:** Inkrementelle Backend-Einführung, Feature Flags, Rollback-Plan
+
+### Risiko 2: Performance-Regression durch neue Features
+**Wahrscheinlichkeit:** Mittel
+**Impact:** Mittel
+**Mitigation:** Performance Budgets, Lighthouse CI, regelmäßige Audits
+
+### Risiko 3: Accessibility-Probleme
+**Wahrscheinlichkeit:** Niedrig
+**Impact:** Hoch (rechtlich relevant)
+**Mitigation:** Automated A11y Tests, manuelle Screen Reader Tests, externe Audits
+
+### Risiko 4: User-Adoption von neuen Features
+**Wahrscheinlichkeit:** Mittel
+**Impact:** Mittel
+**Mitigation:** User Research, Beta Testing, schrittweise Rollouts, Onboarding
+
+## Anhang
+
+### Technische Architektur (Aktuell)
+```
+src/
+├── js/
+│   ├── trainingsplaner.js          # Main Alpine Component (Factory Pattern)
+│   ├── config.js                    # Zentrale Config & Feature Flags
+│   ├── utils.js                     # Helper Functions
+│   └── trainingsplaner/             # Modular Architecture
+│       ├── state.js                 # State Factory
+│       ├── filter-engine.js         # FilterEngine Class
+│       ├── favorites-manager.js     # FavoritesManager Class
+│       ├── geolocation-manager.js   # GeolocationManager Class
+│       ├── map-manager.js           # MapManager Class
+│       ├── data-loader.js           # DataLoader Class
+│       ├── actions-manager.js       # ActionsManager Class
+│       ├── url-filters-manager.js   # UrlFiltersManager Class
+│       └── quick-filters.js         # Quick Filter Definitions
 ```
 
-**HINZUFÜGEN:**
-```html
-<!-- View Switcher in Header -->
-<div class="flex items-center gap-1 px-2 py-1 bg-slate-100 rounded-lg">
-  <button @click="$store.ui.activeView = 'list'"
-          :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm' : ''"
-          class="px-3 py-2 rounded-md text-sm font-medium transition-all">
-    <svg class="w-4 h-4"><!-- List Icon --></svg>
-    <span class="hidden md:inline ml-1">Liste</span>
-  </button>
-
-  <button @click="$store.ui.activeView = 'map'"
-          :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm' : ''"
-          class="px-3 py-2 rounded-md text-sm font-medium transition-all">
-    <svg class="w-4 h-4"><!-- Map Icon --></svg>
-    <span class="hidden md:inline ml-1">Karte</span>
-  </button>
-
-  <button @click="$store.ui.activeView = 'favorites'"
-          :class="$store.ui.activeView === 'favorites' ? 'bg-white shadow-sm' : ''"
-          class="px-3 py-2 rounded-md text-sm font-medium transition-all">
-    <svg class="w-4 h-4"><!-- Heart Icon --></svg>
-    <span class="hidden md:inline ml-1">Favoriten</span>
-  </button>
-</div>
-
-<!-- Content Views -->
-<main class="flex-1">
-  <!-- Liste View -->
-  <div x-show="$store.ui.activeView === 'list'" class="p-6">
-    <!-- Existing training cards grid -->
-  </div>
-
-  <!-- Karte View -->
-  <div x-show="$store.ui.activeView === 'map'" class="h-[calc(100vh-64px)]">
-    <div id="map-container" class="w-full h-full"></div>
-  </div>
-
-  <!-- Favoriten View -->
-  <div x-show="$store.ui.activeView === 'favorites'" class="p-6">
-    <!-- Filtered by favorites -->
-  </div>
-</main>
+### Deployment-Architektur (Vorgeschlagen)
+```
+Frontend (Vite + Alpine.js)
+    ↓
+CDN (Cloudflare/Vercel)
+    ↓
+Backend API (Node.js + Express/Fastify)
+    ↓
+Database (PostgreSQL/MongoDB)
+    ↓
+File Storage (S3 für Trainer-Bilder)
 ```
 
-**Alpine Store Update:**
-```javascript
-// In main.js
-Alpine.store('ui', {
-  activeView: Alpine.$persist('list').as('activeView'), // 'list' | 'map' | 'favorites'
-  // ... rest
-})
-```
+### Technologie-Stack (Aktuell vs. Vorgeschlagen)
 
----
+| Komponente | Aktuell | Vorgeschlagen |
+|------------|---------|---------------|
+| Frontend Framework | Alpine.js 3.15 | Alpine.js 3.15 (beibehalten) |
+| Build Tool | Vite 7 | Vite 7 (beibehalten) |
+| CSS Framework | Tailwind CSS v4 | Tailwind CSS v4 (beibehalten) |
+| State Management | Alpine Store | Alpine Store (beibehalten) |
+| Maps | Leaflet 1.9.4 | Leaflet 1.9.4 (beibehalten) |
+| Search | Fuse.js 7.0 | Fuse.js 7.0 (beibehalten) |
+| Testing (Unit) | Vitest | Vitest (beibehalten) |
+| Testing (E2E) | Playwright | Playwright (beibehalten) |
+| Backend | - | Node.js + Fastify |
+| Database | - | PostgreSQL |
+| ORM | - | Prisma |
+| Authentication | - | JWT + Passport.js |
+| Error Tracking | - | Sentry |
+| Analytics | - | Plausible |
+| Hosting Frontend | GitHub Pages | Vercel/Cloudflare |
+| Hosting Backend | - | Railway/Render |
 
-### Teil 2: Sticky Filter Sidebar (Desktop)
+## Zusammenfassung
 
-**AKTUELLES LAYOUT ÄNDERN:**
-```html
-<!-- VON (Collapsible Sidebar): -->
-<aside x-show="$store.ui.filterSidebarOpen" x-collapse>
-  <!-- Filter Content -->
-</aside>
+Dieses PRD definiert einen evolutionären Entwicklungsplan für den FAM Trainingsplan von v2.4.0 zu v3.0.0. Die bestehende, gut strukturierte Codebasis wird als Fundament genutzt, um schrittweise neue Features und Verbesserungen einzuführen.
 
-<!-- ZU (Always Visible + Sticky): -->
-<aside class="hidden lg:block w-80 bg-slate-200 border-r border-slate-300
-              h-screen sticky top-0 overflow-y-auto">
+**Kern-Prioritäten:**
+1. **UX Improvements** für bessere User Experience
+2. **Performance Optimierung** für Skalierbarkeit
+3. **Backend-Integration** für dynamische Features
+4. **Social Features** für Community-Building
 
-  <!-- Collapse Button (INNEN in Sidebar, nicht außen) -->
-  <div class="flex items-center justify-between p-4">
-    <h2 class="text-xl font-bold">Filter</h2>
-    <button @click="$store.ui.filterSidebarCollapsed = !$store.ui.filterSidebarCollapsed"
-            class="p-2 hover:bg-slate-300 rounded-lg">
-      <svg x-show="!$store.ui.filterSidebarCollapsed"><!-- Collapse Icon --></svg>
-      <svg x-show="$store.ui.filterSidebarCollapsed"><!-- Expand Icon --></svg>
-    </button>
-  </div>
+**Philosophie:**
+- Evolutionär statt revolutionär
+- Bestehende Architektur respektieren
+- TDD-Ansatz beibehalten
+- Hohe Test Coverage anstreben
+- Accessibility als Pflicht, nicht Kür
+- Performance Budgets einhalten
 
-  <!-- Filter Content (Show/Hide based on collapsed state) -->
-  <div x-show="!$store.ui.filterSidebarCollapsed" x-collapse>
-    <!-- Schnellfilter -->
-    <div class="px-4 pb-4">
-      <h3 class="text-xs font-semibold text-slate-600 mb-3 uppercase">⚡ Schnellfilter</h3>
-      <!-- Quick Filter Chips -->
-    </div>
-
-    <!-- Erweiterte Filter -->
-    <div class="px-4 space-y-4">
-      <!-- Checkboxes für Multi-Select -->
-    </div>
-  </div>
-
-  <!-- Active Filter Summary (ALWAYS visible, even when collapsed) -->
-  <div class="p-4 border-t border-slate-300 bg-slate-100">
-    <div class="text-xs font-medium text-slate-600">
-      <span x-show="activeFilterCount > 0">
-        <span x-text="activeFilterCount"></span> Filter aktiv
-      </span>
-      <span x-show="activeFilterCount === 0">
-        Keine Filter
-      </span>
-    </div>
-    <button x-show="activeFilterCount > 0"
-            @click="clearAllFilters()"
-            class="mt-2 w-full text-xs text-primary-600 hover:underline">
-      Alle zurücksetzen
-    </button>
-  </div>
-</aside>
-```
-
-**CSS für Sticky Sidebar:**
-```css
-/* Sidebar sticky positioning */
-aside.filter-sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  /* Smooth scrolling */
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-aside.filter-sidebar::-webkit-scrollbar {
-  width: 8px;
-}
-
-aside.filter-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-aside.filter-sidebar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-```
-
----
-
-### Teil 3: Multi-Filter System (Checkboxen statt Dropdowns)
-
-**ERSETZE SELECT-DROPDOWNS:**
-```html
-<!-- ALT (Single Select): -->
-<select x-model="$store.ui.filters.wochentag">
-  <option value="">Alle Tage</option>
-  <option value="Montag">Montag</option>
-  <!-- ... -->
-</select>
-
-<!-- NEU (Multi Select Checkboxen): -->
-<fieldset class="space-y-2">
-  <legend class="text-sm font-semibold text-slate-700 mb-2">Wochentag</legend>
-
-  <template x-for="tag in wochentage" :key="tag">
-    <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-100 px-2 py-1 rounded">
-      <input type="checkbox"
-             :value="tag"
-             x-model="$store.ui.filters.wochentage"
-             @change="applyFilters()"
-             class="w-4 h-4 text-primary-600 rounded focus:ring-2 focus:ring-primary-500">
-      <span class="text-sm" x-text="tag"></span>
-    </label>
-  </template>
-</fieldset>
-```
-
-**Alpine Store Update (Arrays statt Strings):**
-```javascript
-// In main.js
-Alpine.store('ui', {
-  filters: Alpine.$persist({
-    wochentage: [],      // Array: ['Montag', 'Mittwoch']
-    orte: [],            // Array: ['LTR', 'Balanstraße']
-    trainingsarten: [],  // Array: ['Parkour', 'Tricking']
-    altersgruppen: [],   // Array
-    probetraining: false, // Boolean
-    searchTerm: ''
-  }).as('trainingFilters'),
-  // ...
-})
-```
-
-**Filter Engine Update:**
-```javascript
-// In filter-engine.js
-applyFilters() {
-  let filtered = this.state.allTrainings
-
-  // Multi-Wochentag Filter (OR-Verknüpfung innerhalb, AND zwischen Kategorien)
-  if (this.alpineContext.$store.ui.filters.wochentage.length > 0) {
-    filtered = filtered.filter(t =>
-      this.alpineContext.$store.ui.filters.wochentage.includes(t.wochentag)
-    )
-  }
-
-  // Multi-Ort Filter
-  if (this.alpineContext.$store.ui.filters.orte.length > 0) {
-    filtered = filtered.filter(t =>
-      this.alpineContext.$store.ui.filters.orte.includes(t.ort)
-    )
-  }
-
-  // Multi-Training Filter
-  if (this.alpineContext.$store.ui.filters.trainingsarten.length > 0) {
-    filtered = filtered.filter(t =>
-      this.alpineContext.$store.ui.filters.trainingsarten.includes(t.training)
-    )
-  }
-
-  // Probetraining Filter
-  if (this.alpineContext.$store.ui.filters.probetraining) {
-    filtered = filtered.filter(t => t.probetraining === 'ja')
-  }
-
-  this.state.filteredTrainings = filtered
-}
-```
-
----
-
-### Teil 4: Schnellfilter wiederherstellen
-
-**WICHTIG:** Diese waren in `src/js/trainingsplaner/quick-filters.js` definiert!
-
-```javascript
-// In quick-filters.js (bereits vorhanden, muss reaktiviert werden)
-export const QUICK_FILTERS = {
-  heute: {
-    label: '📅 Heute',
-    category: 'zeit',
-    apply: (filters, context) => {
-      const heute = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'][new Date().getDay()]
-
-      // Add to wochentage array if not already there
-      if (!filters.wochentage.includes(heute)) {
-        filters.wochentage.push(heute)
-      }
-    }
-  },
-
-  probetraining: {
-    label: '🆓 Probetraining',
-    category: 'feature',
-    apply: (filters, context) => {
-      filters.probetraining = true
-    }
-  },
-
-  favoriten: {
-    label: '❤️ Favoriten',
-    category: 'personal',
-    apply: (filters, context) => {
-      // Filter to only show favorites
-      return context.allTrainings.filter(t => context.favorites.includes(t.id))
-    }
-  }
-
-  // ... weitere Quick Filters
-}
-```
-
-**Schnellfilter UI:**
-```html
-<div class="px-4 pb-4 border-b border-slate-300">
-  <h3 class="text-xs font-semibold text-slate-600 mb-3 uppercase">⚡ Schnellfilter</h3>
-
-  <!-- Zeit -->
-  <div class="mb-3">
-    <p class="text-xs text-slate-500 mb-1.5">Zeit</p>
-    <div class="flex flex-wrap gap-2">
-      <button @click="applyQuickFilter('heute')"
-              :class="quickFilterActive('heute') ? 'bg-primary-100 text-primary-700' : 'bg-slate-100 text-slate-700'"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-medium hover:bg-primary-50 transition-colors">
-        📅 Heute
-      </button>
-      <button @click="applyQuickFilter('morgen')"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-primary-50">
-        🌅 Morgen
-      </button>
-      <button @click="applyQuickFilter('wochenende')"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-primary-50">
-        🎉 Wochenende
-      </button>
-    </div>
-  </div>
-
-  <!-- Besonderheiten -->
-  <div class="mb-3">
-    <p class="text-xs text-slate-500 mb-1.5">Besonderheiten</p>
-    <div class="flex flex-wrap gap-2">
-      <button @click="applyQuickFilter('probetraining')"
-              :class="$store.ui.filters.probetraining ? 'bg-primary-100 text-primary-700' : 'bg-slate-100'"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-medium hover:bg-primary-50">
-        🆓 Probetraining
-      </button>
-      <button @click="applyQuickFilter('abends')"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-primary-50">
-        🌙 Abends
-      </button>
-    </div>
-  </div>
-
-  <!-- Persönlich -->
-  <div>
-    <p class="text-xs text-slate-500 mb-1.5">Persönlich</p>
-    <div class="flex flex-wrap gap-2">
-      <button x-show="favorites.length > 0"
-              @click="applyQuickFilter('favoriten')"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-yellow-50 text-yellow-700 hover:bg-yellow-100">
-        ❤️ Favoriten
-        <span class="ml-1 px-1.5 py-0.5 bg-yellow-200 rounded-full text-xs" x-text="favorites.length"></span>
-      </button>
-    </div>
-  </div>
-</div>
-```
-
----
-
-### Teil 5: Aktive Filter Chips (Sticky)
-
-**Sticky Chip Bar nach Header:**
-```html
-<!-- NACH dem Header, VOR dem Content -->
-<div x-show="activeFilterCount > 0"
-     x-transition
-     class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-2">
-
-  <div class="flex items-center justify-between gap-4 flex-wrap">
-    <!-- Active Filter Chips -->
-    <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-xs font-medium text-slate-600">Aktiv:</span>
-
-      <!-- Wochentag Chips -->
-      <template x-for="tag in $store.ui.filters.wochentage.slice(0, 3)" :key="'chip-' + tag">
-        <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
-          <span x-text="tag"></span>
-          <button @click="removeFilter('wochentag', tag)"
-                  class="hover:bg-primary-200 rounded-full p-0.5">
-            <svg class="w-3 h-3"><!-- X Icon --></svg>
-          </button>
-        </span>
-      </template>
-
-      <!-- Overflow indicator -->
-      <span x-show="activeFilterCount > 3"
-            @click="$store.ui.filterSidebarCollapsed = false"
-            class="inline-flex items-center px-2 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium cursor-pointer hover:bg-slate-200">
-        +<span x-text="activeFilterCount - 3"></span> weitere
-      </span>
-
-      <!-- Results Count -->
-      <span class="text-xs text-slate-600 font-medium">
-        →
-        <span x-text="filteredTrainingsCount"></span>
-        <span class="text-slate-500">Trainings</span>
-      </span>
-    </div>
-
-    <!-- Clear All -->
-    <button @click="clearAllFilters()"
-            class="text-xs text-primary-600 hover:underline font-medium">
-      Alle löschen
-    </button>
-  </div>
-</div>
-```
-
-**Computed Property für activeFilterCount:**
-```javascript
-// In component
-get activeFilterCount() {
-  const filters = this.$store?.ui?.filters
-  if (!filters) return 0
-
-  return (
-    filters.wochentage.length +
-    filters.orte.length +
-    filters.trainingsarten.length +
-    filters.altersgruppen.length +
-    (filters.probetraining ? 1 : 0) +
-    (filters.searchTerm ? 1 : 0)
-  )
-}
-```
-
----
-
-### Teil 6: Content-Maximierung
-
-**Header kompakt machen:**
-```html
-<!-- ALT (80px hoch): -->
-<header class="sticky top-0 z-40 bg-slate-100 border-b border-slate-300 px-4 py-6">
-  <div class="flex items-center justify-between">
-    <div>
-      <h1 class="text-2xl font-bold text-primary-600">Trainingsplan</h1>
-      <p class="text-sm text-slate-700">Free Arts of Movement</p>
-    </div>
-    <div class="flex gap-4">
-      <!-- Multiple buttons -->
-    </div>
-  </div>
-</header>
-
-<!-- NEU (48px hoch): -->
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-2">
-  <div class="flex items-center justify-between">
-    <!-- Just essentials -->
-    <h1 class="text-lg font-semibold">Trainingsplan</h1>
-
-    <!-- View Switcher (compact) -->
-    <div class="flex items-center gap-2">
-      <!-- View buttons -->
-      <!-- Dark mode toggle -->
-    </div>
-  </div>
-</header>
-```
-
-**Keine Toolbar mehr - alles in Header oder Sidebar:**
-```html
-<!-- ENTFERNEN: -->
-<div class="global-actions-toolbar">
-  <!-- Share, Export, etc. -->
-</div>
-
-<!-- VERSCHIEBEN zu: -->
-<!-- Share/Export Buttons → in Sidebar unten -->
-<!-- View Switcher → in Header -->
-<!-- Dark Mode → in Header -->
-```
-
----
-
-### Zusammenfassung Teil 0
-
-**Änderungen:**
-1. ✅ Map Modal → Map View (eigener Tab)
-2. ✅ Sidebar always visible + sticky
-3. ✅ Select → Checkboxen (Multi-Filter)
-4. ✅ Schnellfilter reaktiviert
-5. ✅ Sticky Filter Chips
-6. ✅ Header kompakt (48px statt 80px)
-
-**Files to modify:**
-- `index.html` - Layout restructure
-- `src/main.js` - Filter state (arrays)
-- `src/js/trainingsplaner/filter-engine.js` - Multi-filter logic
-- `src/js/trainingsplaner/quick-filters.js` - Reactive wieder
-- `src/style.css` - Sticky sidebar CSS
-
-**Effort:** 🔴 High (1 Woche)
-**Impact:** 🔥🔥🔥🔥🔥 MASSIVE - Fixes ALL critical UI issues
+**Nächste Schritte:**
+1. Stakeholder-Review dieses PRDs
+2. Priorisierung der Features mit Product Owner
+3. Technische Spikes für kritische Komponenten (Virtual Scrolling, Backend Architecture)
+4. Erstellung detaillierter User Stories & Tasks
+5. Sprint Planning für Phase 1

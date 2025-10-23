@@ -1,7 +1,10 @@
+// @ts-check
 import { defineConfig, mergeConfig } from 'vitest/config'
 import viteConfig from './vite.config.js'
 
+// @ts-ignore - mergeConfig with imported viteConfig produces complex union type
 export default mergeConfig(
+  // @ts-ignore - viteConfig type inference issue from default export
   viteConfig,
   defineConfig({
     test: {

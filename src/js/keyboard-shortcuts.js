@@ -76,6 +76,7 @@ function applyTodayFilter(alpineStore) {
  */
 function applyWeekdayFilter(dayNumber, alpineStore) {
   // Map 1-7 to Monday-Sunday (German weekdays)
+  /** @type {Record<number, string>} */
   const weekdayMap = {
     1: 'Montag',
     2: 'Dienstag',
@@ -113,12 +114,13 @@ function applyWeekdayFilter(dayNumber, alpineStore) {
  * Initialize Keyboard Shortcuts
  * Registers global keydown event listener
  * @param {any} alpineStore - Alpine.js store instance (window.Alpine.store('ui'))
- * @returns {void}
+ * @returns {() => void} Cleanup function to remove event listener
  */
 export function initKeyboardShortcuts(alpineStore) {
   if (!alpineStore) {
     log('error', 'Alpine store not provided to keyboard shortcuts')
-    return
+    // Return empty cleanup function to satisfy type signature
+    return () => {}
   }
 
   /**

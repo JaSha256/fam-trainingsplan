@@ -89,6 +89,7 @@ export class MapManager {
         inertiaMaxSpeed: 1500,
         // Smooth scrollwheel zoom
         scrollWheelZoom: true,
+        // @ts-expect-error - smoothWheelZoom is a Leaflet plugin feature (leaflet.smoothwheelzoom)
         smoothWheelZoom: true,
         smoothSensitivity: 1
       })
@@ -159,13 +160,17 @@ export class MapManager {
           break
         case 'Home':
           // Reset to default view
-          map.setView(CONFIG.map.defaultCenter, CONFIG.map.defaultZoom, { animate: true })
+          map.setView(
+            /** @type {[number, number]} */ (CONFIG.map.defaultCenter),
+            CONFIG.map.defaultZoom,
+            { animate: true }
+          )
           e.originalEvent.preventDefault()
           break
         case 'End':
           // Fit all markers in view
           if (this.context.markers.length > 0) {
-            const bounds = this.context.markers.map(m => m.getLatLng())
+            const bounds = L.latLngBounds(this.context.markers.map(m => m.getLatLng()))
             map.fitBounds(bounds, { padding: [50, 50] })
           }
           e.originalEvent.preventDefault()
@@ -248,16 +253,13 @@ export class MapManager {
     if (!this.context.map) return
 
     const commonOptions = {
-      maxZoom: CONFIG.map.maxZoom || 19,
-      minZoom: CONFIG.map.minZoom || 10,
+      maxZoom: /** @type {any} */ (CONFIG.map).maxZoom || 19,
+      minZoom: /** @type {any} */ (CONFIG.map).minZoom || 10,
       detectRetina: true,
       updateWhenIdle: false,
       updateInterval: 150,
       keepBuffer: 2,
-      bounds: [
-        [47.9, 11.3],
-        [48.3, 11.9]
-      ], // Munich area bounds
+      bounds: /** @type {L.LatLngBoundsLiteral} */ ([[47.9, 11.3], [48.3, 11.9]]), // Munich area bounds
       errorTileUrl: ''
     }
 
@@ -301,7 +303,7 @@ export class MapManager {
 
     // Handle tile loading errors gracefully
     Object.values(this.context.tileLayers).forEach(layer => {
-      layer.on('tileerror', error => {
+      layer.on('tileerror', (/** @type {any} */ error) => {
         log('warn', 'Tile loading error', { coords: error.coords })
       })
     })
@@ -429,7 +431,7 @@ export class MapManager {
       singleMarkerMode: false, // Always use cluster logic for consistency
 
       // Custom M3-styled cluster icon with dynamic sizing and colors
-      iconCreateFunction: cluster => {
+      iconCreateFunction: (/** @type {any} */ cluster) => {
         const count = cluster.getChildCount()
 
         // Dynamic size based on marker count
@@ -491,13 +493,15 @@ export class MapManager {
       })
 
       // Store location data in marker for easy lookup
+      // @ts-expect-error - Adding custom properties to marker for data storage
       marker.locationTrainings = trainings
+      // @ts-expect-error - Adding custom properties to marker for data storage
       marker.trainingId = trainings[0].id // For backward compatibility
 
       // Bind appropriate popup (single or multi-training)
       const popupHTML =
         trainingCount > 1
-          ? createLocationPopupHTML(trainings, utils)
+          ? createLocationPopupHTML(trainings)
           : this.createMapPopup(trainings[0])
 
       marker.bindPopup(popupHTML, {
@@ -607,10 +611,14 @@ export class MapManager {
       log('info', 'No favorites with coordinates found')
       this.announceToScreenReader('Keine Favoriten mit Standorten gefunden')
       // Reset to default view
-      this.context.map.setView(CONFIG.map.defaultCenter, CONFIG.map.defaultZoom, {
-        animate: true,
-        duration: 1
-      })
+      this.context.map.setView(
+        /** @type {[number, number]} */ (CONFIG.map.defaultCenter),
+        CONFIG.map.defaultZoom,
+        {
+          animate: true,
+          duration: 1
+        }
+      )
       return
     }
 
@@ -670,6 +678,7 @@ export class MapManager {
         if (!map) return
 
         // Find the marker for this training
+        // @ts-expect-error - Custom trainingId property added to markers
         const marker = this.context.markers.find(m => m.trainingId === trainingId)
 
         if (marker) {
@@ -876,7 +885,9 @@ export class MapManager {
 
       if (opacity <= 0) {
         clearInterval(interval)
-        this.context.map.removeLayer(highlight)
+        if (this.context.map) {
+          this.context.map.removeLayer(highlight)
+        }
       } else {
         highlight.setRadius(radius)
         highlight.setStyle({ opacity: opacity, fillOpacity: opacity * 0.3 })
@@ -960,6 +971,7 @@ export class MapManager {
         marker.unbindPopup() // Remove popup binding
         map.removeLayer(marker)
         // Break circular reference
+        // @ts-expect-error - Custom trainingId property cleanup
         marker.trainingId = null
       })
       this.context.markers = []

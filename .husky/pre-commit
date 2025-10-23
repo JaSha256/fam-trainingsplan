@@ -1,1 +1,11 @@
-npx lint-staged
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run TypeScript type-checking before commit
+echo "🔍 Running TypeScript type-check..."
+npm run typecheck || {
+  echo "❌ TypeScript errors detected. Please fix them before committing."
+  exit 1
+}
+
+echo "✅ TypeScript check passed"

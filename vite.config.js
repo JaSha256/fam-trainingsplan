@@ -8,8 +8,9 @@ export default defineConfig({
 
   plugins: [
     // Tailwind CSS v4 Plugin with Forms & Typography
-    // @ts-ignore - tailwindcss plugin accepts options but types are incorrect
+    // @ts-ignore - tailwindcss plugin accepts options but types are incomplete
     tailwindcss({
+      // @ts-ignore - plugins property exists but not in type definition
       plugins: ['@tailwindcss/forms', '@tailwindcss/typography']
     }),
 
@@ -213,6 +214,7 @@ export default defineConfig({
     }),
 
     // Bundle Analyzer (only when ANALYZE=true)
+    // @ts-expect-error - Conditional plugin spreading is valid but TypeScript can't infer the union type correctly
     ...(process.env.ANALYZE === 'true'
       ? [
           visualizer({

@@ -74,14 +74,14 @@ export class FilterEngine {
     // Custom filters are applied first and may be mutually exclusive with standard filters
 
     // 1. Personal Filter: Favoriten (EXCLUSIVE - overrides ALL other filters)
-    if (this.matchesCustomPersonalFilter(filters._customPersonalFilter)) {
-      result = result.filter((t) => this.isFavorite(t.id))
+    if (typeof filters._customPersonalFilter === 'string' && this.matchesCustomPersonalFilter(filters._customPersonalFilter)) {
+      result = result.filter((/** @type {Training} */ t) => this.isFavorite(t.id))
       this._finalizeFiltering(result)
       return
     }
 
     // 2. Time Filter: Wochenende/Wochentags (mutually exclusive with standard weekday filter)
-    if (this.hasCustomTimeFilter(filters._customTimeFilter)) {
+    if (typeof filters._customTimeFilter === 'string' && this.hasCustomTimeFilter(filters._customTimeFilter)) {
       result = this.applyCustomTimeFilter(result, filters._customTimeFilter)
     } else {
       // Standard Weekday Filter: array-based with OR logic
@@ -89,12 +89,12 @@ export class FilterEngine {
     }
 
     // 3. Feature Filter: Probetraining (combinable with other filters)
-    if (this.hasCustomFeatureFilter(filters._customFeatureFilter)) {
+    if (typeof filters._customFeatureFilter === 'string' && this.hasCustomFeatureFilter(filters._customFeatureFilter)) {
       result = this.applyCustomFeatureFilter(result, filters._customFeatureFilter)
     }
 
     // 4. Location Filter: In meiner Nähe (mutually exclusive with standard location filter)
-    if (this.hasCustomLocationFilter(filters._customLocationFilter)) {
+    if (typeof filters._customLocationFilter === 'string' && this.hasCustomLocationFilter(filters._customLocationFilter)) {
       result = this.applyCustomLocationFilter(result, filters._customLocationFilter)
     } else {
       // Standard Location Filter: array-based with OR logic
@@ -117,12 +117,12 @@ export class FilterEngine {
 
     // Distance Filter: only if user position exists and NOT using custom location filter
     if (!filters._customLocationFilter && this.context.userPosition && CONFIG.map.geolocation.maxDistance > 0) {
-      result = result.filter((t) => t.distance && t.distance <= CONFIG.map.geolocation.maxDistance)
+      result = result.filter((/** @type {Training} */ t) => t.distance && t.distance <= CONFIG.map.geolocation.maxDistance)
     }
 
     // Distance Sorting: sort by proximity if user position available
     if (this.context.userPosition) {
-      result.sort((a, b) => (a.distance || 999) - (b.distance || 999))
+      result.sort((/** @type {Training} */ a, /** @type {Training} */ b) => (a.distance || 999) - (b.distance || 999))
     }
 
     this._finalizeFiltering(result)
@@ -165,10 +165,10 @@ export class FilterEngine {
    */
   applyCustomTimeFilter(trainings, filterValue) {
     if (filterValue === 'wochenende') {
-      return trainings.filter((t) => t.wochentag === 'Samstag' || t.wochentag === 'Sonntag')
+      return trainings.filter((/** @type {Training} */ t) => t.wochentag === 'Samstag' || t.wochentag === 'Sonntag')
     }
     if (filterValue === 'wochentags') {
-      return trainings.filter((t) => t.wochentag && t.wochentag !== 'Samstag' && t.wochentag !== 'Sonntag')
+      return trainings.filter((/** @type {Training} */ t) => t.wochentag && t.wochentag !== 'Samstag' && t.wochentag !== 'Sonntag')
     }
     return trainings
   }
@@ -196,7 +196,7 @@ export class FilterEngine {
    */
   applyCustomFeatureFilter(trainings, filterValue) {
     if (filterValue === 'probetraining') {
-      return trainings.filter((t) => t.probetraining?.toLowerCase() === 'ja')
+      return trainings.filter((/** @type {Training} */ t) => t.probetraining?.toLowerCase() === 'ja')
     }
     return trainings
   }
@@ -224,9 +224,9 @@ export class FilterEngine {
    */
   applyCustomLocationFilter(trainings, filterValue) {
     if (filterValue === 'inMeinerNaehe') {
-      return trainings.filter((t) => {
+      return trainings.filter((/** @type {Training} */ t) => {
         if (!t.distance) return false
-        const distance = parseFloat(t.distance)
+        const distance = typeof t.distance === 'number' ? t.distance : parseFloat(String(t.distance))
         return !isNaN(distance) && distance <= 5.0
       })
     }
@@ -247,10 +247,10 @@ export class FilterEngine {
   applyStandardWeekdayFilter(trainings, filterValue) {
     if (!this.hasFilterValue(filterValue)) return trainings
 
-    const wochentagArray = this.normalizeToArray(filterValue)
-    return trainings.filter((t) =>
+    const wochentagArray = this.normalizeToArray(filterValue || '')
+    return trainings.filter((/** @type {Training} */ t) =>
       t.wochentag && wochentagArray.some(
-        (day) => t.wochentag.toLowerCase() === day.toLowerCase()
+        (/** @type {string} */ day) => t.wochentag.toLowerCase() === day.toLowerCase()
       )
     )
   }
@@ -267,10 +267,10 @@ export class FilterEngine {
   applyStandardLocationFilter(trainings, filterValue) {
     if (!this.hasFilterValue(filterValue)) return trainings
 
-    const ortArray = this.normalizeToArray(filterValue)
-    return trainings.filter((t) =>
+    const ortArray = this.normalizeToArray(filterValue || '')
+    return trainings.filter((/** @type {Training} */ t) =>
       t.ort && ortArray.some(
-        (ort) => t.ort.toLowerCase() === ort.toLowerCase()
+        (/** @type {string} */ ort) => t.ort.toLowerCase() === ort.toLowerCase()
       )
     )
   }
@@ -287,10 +287,10 @@ export class FilterEngine {
   applyTrainingTypeFilter(trainings, filterValue) {
     if (!this.hasFilterValue(filterValue)) return trainings
 
-    const trainingArray = this.normalizeToArray(filterValue)
-    return trainings.filter((t) =>
+    const trainingArray = this.normalizeToArray(filterValue || '')
+    return trainings.filter((/** @type {Training} */ t) =>
       t.training && trainingArray.some(
-        (training) => t.training.toLowerCase().includes(training.toLowerCase())
+        (/** @type {string} */ training) => t.training.toLowerCase().includes(training.toLowerCase())
       )
     )
   }
@@ -308,9 +308,9 @@ export class FilterEngine {
   applyAgeGroupFilter(trainings, filterValue) {
     if (!this.hasFilterValue(filterValue)) return trainings
 
-    const altersgruppeArray = this.normalizeToArray(filterValue)
-    return trainings.filter((t) =>
-      altersgruppeArray.some((gruppe) =>
+    const altersgruppeArray = this.normalizeToArray(filterValue || '')
+    return trainings.filter((/** @type {Training} */ t) =>
+      altersgruppeArray.some((/** @type {string} */ gruppe) =>
         this.matchesAltersgruppe(t, gruppe)
       )
     )
@@ -328,9 +328,10 @@ export class FilterEngine {
   applySearchFilter(trainings, searchTerm) {
     if (!searchTerm || !searchTerm.trim() || !this.context.fuse) return trainings
 
+    /** @type {import('fuse.js').FuseResult<Training>[]} */
     const fuseResults = this.context.fuse.search(searchTerm.trim())
-    const searchIds = new Set(fuseResults.map((r) => r.item.id))
-    return trainings.filter((t) => searchIds.has(t.id))
+    const searchIds = new Set(fuseResults.map((/** @type {import('fuse.js').FuseResult<Training>} */ r) => r.item.id))
+    return trainings.filter((/** @type {Training} */ t) => searchIds.has(t.id))
   }
 
   // ==================== UTILITY METHODS ====================
@@ -385,7 +386,7 @@ export class FilterEngine {
    */
   normalizeToArray(filterValue) {
     if (Array.isArray(filterValue)) {
-      return filterValue.filter(v => v && v.trim() !== '')
+      return filterValue.filter((/** @type {string} */ v) => v && v.trim() !== '')
     }
     if (typeof filterValue === 'string' && filterValue.trim() !== '') {
       return [filterValue.trim()]
@@ -408,8 +409,8 @@ export class FilterEngine {
 
     const groups = String(training.altersgruppe)
       .split(',')
-      .map((g) => g.trim().toLowerCase())
+      .map((/** @type {string} */ g) => g.trim().toLowerCase())
 
-    return groups.some((g) => g === filterValue.toLowerCase())
+    return groups.some((/** @type {string} */ g) => g === filterValue.toLowerCase())
   }
 }

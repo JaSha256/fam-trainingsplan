@@ -24,8 +24,10 @@ describe('AUFGABE 0.3 - Helper Methods', () => {
       Alpine._isBooted = false
     }
 
-    // Re-register persist plugin
-    Alpine.plugin(persist)
+    // Register persist plugin only once
+    if (!Alpine.$persist) {
+      Alpine.plugin(persist)
+    }
   })
 
   describe('clearAllFilters()', () => {

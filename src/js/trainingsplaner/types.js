@@ -30,7 +30,7 @@
  * @property {boolean} [showScrollTop] - Show scroll to top button
  * @property {import('../types.js').Notification | null} notification - Current notification
  * @property {number | null} notificationTimeout - Notification timeout ID
- * @property {boolean} [manualLocation] - Manual location set flag
+ * @property {UserPosition | null} [manualLocation] - Manual location coordinates
  * @property {boolean} [manualLocationSet] - Manual location was set
  * @property {string} [manualLocationAddress] - Manual location address
  * @property {() => void} toggleMapView - Toggle map view
@@ -99,7 +99,7 @@
  * @property {any} [geolocationControl] - Geolocation control
  * @property {any} [resetControl] - Reset control
  * @property {any} [userLocationMarker] - User location marker
- * @property {string} [ariaLiveRegion] - ARIA live region for announcements
+ * @property {HTMLElement | null} [ariaLiveRegion] - ARIA live region for announcements
  */
 
 // ==================== COMPONENT TYPES ====================
@@ -133,6 +133,14 @@
  *   mapManager?: any
  *   dataLoader?: any
  *   actionsManager?: any
+ *   wochentage: string[]
+ *   orte: string[]
+ *   trainingsarten: string[]
+ *   altersgruppen: string[]
+ *   groupedTrainings: GroupedTraining[]
+ *   favoriteTrainings: Training[]
+ *   hasActiveFilters: boolean
+ *   filteredTrainingsCount: number
  *   init: () => Promise<void>
  *   watchFilters: () => void
  *   loadData: (data: ApiResponse) => void

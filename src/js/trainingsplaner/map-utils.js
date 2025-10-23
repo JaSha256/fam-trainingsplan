@@ -12,6 +12,12 @@
  */
 
 /**
+ * @typedef {Object} UtilsFormatters
+ * @property {(von: string, bis: string) => string} formatZeitrange - Format time range
+ * @property {(training: Training) => string} formatAlter - Format age range
+ */
+
+/**
  * Calculate distance between two coordinates using Haversine formula
  *
  * Returns distance in kilometers between two lat/lng points.
@@ -314,6 +320,7 @@ export function groupTrainingsByLocation(trainings) {
 export function sortTrainings(trainings, sortBy) {
   const sorted = [...trainings]
 
+  /** @type {Record<string, number>} */
   const dayOrder = {
     'Montag': 1, 'Dienstag': 2, 'Mittwoch': 3, 'Donnerstag': 4,
     'Freitag': 5, 'Samstag': 6, 'Sonntag': 7
@@ -334,8 +341,8 @@ export function sortTrainings(trainings, sortBy) {
       })
     case 'age':
       return sorted.sort((a, b) => {
-        const ageA = parseInt(a.vonalter) || 0
-        const ageB = parseInt(b.vonalter) || 0
+        const ageA = parseInt(String(a.vonalter || 0))
+        const ageB = parseInt(String(b.vonalter || 0))
         return ageA - ageB
       })
     case 'name':
@@ -351,14 +358,13 @@ export function sortTrainings(trainings, sortBy) {
  * Generates scrollable list of trainings at the same location with sorting.
  *
  * @param {Training[]} trainings - Array of trainings at this location
- * @param {Object} utils - Utils object with formatters
  * @returns {string} HTML string for popup
  *
  * @example
- * const html = createLocationPopupHTML(trainings, utils)
+ * const html = createLocationPopupHTML(trainings)
  * marker.bindPopup(html)
  */
-export function createLocationPopupHTML(trainings, _utils) {
+export function createLocationPopupHTML(trainings) {
   const locationName = trainings[0].ort || 'Standort'
   const address = trainings[0].adresse || ''
   const count = trainings.length
@@ -508,7 +514,7 @@ export function createLocationPopupHTML(trainings, _utils) {
  * Generates M3-styled HTML content for a single training.
  *
  * @param {Training} training - Training object
- * @param {Object} utils - Utils object with formatters
+ * @param {UtilsFormatters} utils - Utils object with formatters
  * @returns {string} HTML string for popup
  *
  * @example
