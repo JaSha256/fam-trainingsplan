@@ -78,10 +78,10 @@ define(['./workbox-414b1829'], (function (workbox) { 'use strict';
    * See https://goo.gl/S9QRab
    */
   workbox.precacheAndRoute([{
-    "url": "assets/index.DWafkTSs.css",
+    "url": "assets/index.DAjZZqKQ.css",
     "revision": null
   }, {
-    "url": "assets/js/index.D1Xi_K9u.js",
+    "url": "assets/js/index.ClEB0Q-F.js",
     "revision": null
   }, {
     "url": "assets/js/vendor-alpine.D9MLegQT.js",
@@ -93,7 +93,7 @@ define(['./workbox-414b1829'], (function (workbox) { 'use strict';
     "url": "assets/js/vendor-utils.Dw8P0qyA.js",
     "revision": null
   }, {
-    "url": "assets/js/virtual_pwa-register.cTC8mKgz.js",
+    "url": "assets/js/virtual_pwa-register.BD0sidaw.js",
     "revision": null
   }, {
     "url": "assets/js/workbox-window.prod.es5.CwtvwXb3.js",
@@ -106,7 +106,7 @@ define(['./workbox-414b1829'], (function (workbox) { 'use strict';
     "revision": "d84416198ac83404635fe3c8018b53aa"
   }, {
     "url": "index.html",
-    "revision": "e482a5eb9642e5f0936cf704314d17dd"
+    "revision": "b62bad62f7b82108029e6b262fa98d16"
   }, {
     "url": "offline.html",
     "revision": "27d63b495e0cc4307617e5f5a6153a8a"
