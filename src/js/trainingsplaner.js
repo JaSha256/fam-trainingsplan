@@ -208,7 +208,14 @@ export function trainingsplaner() {
         if (!filters) return false
         return (
           ['wochentag', 'ort', 'training', 'altersgruppe', 'searchTerm'].reduce(
-            (/** @type {number} */ count, /** @type {string} */ key) => (filters[key] ? count + 1 : count),
+            (/** @type {number} */ count, /** @type {string} */ key) => {
+              const value = filters[key]
+              // Array filters: check length
+              if (Array.isArray(value)) return value.length > 0 ? count + 1 : count
+              // String filters: check non-empty
+              if (typeof value === 'string') return value.trim() !== '' ? count + 1 : count
+              return count
+            },
             0
           ) > 0
         )
@@ -246,12 +253,17 @@ export function trainingsplaner() {
       applyFilters: () => this.filterEngine.applyFilters()
     })
 
+    // Create MapManager without geolocationManager initially
     this.mapManager = new MapManager(state, alpineContext)
 
+    // Create GeolocationManager with mapManager dependency
     this.geolocationManager = new GeolocationManager(state, alpineContext, {
       applyFilters: () => this.filterEngine.applyFilters(),
       mapManager: this.mapManager
     })
+
+    // Now inject geolocationManager back into mapManager for the location control
+    this.mapManager.geolocationManager = this.geolocationManager
 
     this.dataLoader = new DataLoader(state, alpineContext, {
       addDistanceToTrainings: () => this.geolocationManager.addDistanceToTrainings(),
@@ -328,6 +340,7 @@ export function trainingsplaner() {
           alpineContext.filterEngine.applyFilters()
 
           // Auto-update map markers when filters change and map is active or split view
+          // CRITICAL: Increased debounce delay to prevent rapid marker updates during animations
           if (
             (alpineContext.$store?.ui?.activeView === 'map' ||
               alpineContext.$store?.ui?.activeView === 'split') &&
@@ -337,7 +350,7 @@ export function trainingsplaner() {
               alpineContext.mapManager.addMarkersToMap()
             })
           }
-        }, 100)
+        }, 250) // Increased from 100ms to 250ms to reduce rapid updates
       },
       { deep: true }
     )
@@ -352,7 +365,13 @@ export function trainingsplaner() {
           } else {
             // Map exists, just make sure container is visible (handled by x-show in template)
             // Force map to recalculate size in case container dimensions changed
-            alpineContext.map.invalidateSize()
+            // CRITICAL: Stop animations and wait before invalidateSize to prevent race conditions
+            alpineContext.map.stop()
+            setTimeout(() => {
+              if (alpineContext.map) {
+                alpineContext.map.invalidateSize()
+              }
+            }, 100)
           }
         })
       }
@@ -564,6 +583,14 @@ export function trainingsplaner() {
     return this.geolocationManager.addDistanceToTrainings()
   }
 
+  component.setManualLocation = function (
+    /** @type {number} */ lat,
+    /** @type {number} */ lng,
+    /** @type {string} */ address = ''
+  ) {
+    return this.geolocationManager.setManualLocation(lat, lng, address)
+  }
+
   component.resetLocation = function () {
     return this.geolocationManager.resetLocation()
   }
@@ -587,6 +614,10 @@ export function trainingsplaner() {
 
   component.zoomToFavorites = function () {
     return this.mapManager.zoomToFavorites()
+  }
+
+  component.zoomToTraining = function (/** @type {number} */ trainingId) {
+    return this.mapManager.zoomToTraining(trainingId)
   }
 
   // URL Handling

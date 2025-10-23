@@ -134,6 +134,44 @@ export class GeolocationManager {
   }
 
   /**
+   * Set Manual Location
+   *
+   * Sets a manual user location and updates map marker.
+   * Called when user manually enters coordinates in settings.
+   *
+   * @param {number} lat - Latitude
+   * @param {number} lng - Longitude
+   * @param {string} address - Optional address string for display
+   * @returns {void}
+   */
+  setManualLocation(lat, lng, address = '') {
+    // Set userPosition
+    this.context.userPosition = { lat, lng }
+
+    // Update Alpine store
+    this.context.$store.ui.manualLocation = { lat, lng }
+    this.context.$store.ui.manualLocationAddress = address
+    this.context.$store.ui.manualLocationSet = true
+
+    // Save to localStorage for persistence
+    localStorage.setItem('manualLocation', JSON.stringify({ lat, lng, address }))
+
+    // Add distance to trainings
+    this.addDistanceToTrainings()
+
+    // Apply filters to update UI
+    this.applyFilters()
+
+    // Add user marker to map if map exists
+    if (this.mapManager && this.context.map) {
+      // @ts-expect-error - mapManager type is not fully defined
+      this.mapManager.addUserLocationMarker([lat, lng])
+    }
+
+    log('info', 'Manual location set', { lat, lng, address })
+  }
+
+  /**
    * Reset Location
    *
    * Clears user position, removes stored location data, and resets distance-based filters.
@@ -159,9 +197,18 @@ export class GeolocationManager {
     })
 
     // Remove map marker for user location if it exists
-    if (this.context.map && this.context.userLocationMarker) {
-      this.context.map.removeLayer(this.context.userLocationMarker)
-      this.context.userLocationMarker = null
+    if (this.context.map) {
+      // Remove MapManager's marker
+      if (this.context.userLocationMarker) {
+        this.context.map.removeLayer(this.context.userLocationMarker)
+        this.context.userLocationMarker = null
+      }
+      
+      // CRITICAL FIX: Also remove GeolocationControl's marker
+      if (this.context.geolocationControl && this.context.geolocationControl._userMarker) {
+        this.context.map.removeLayer(this.context.geolocationControl._userMarker)
+        this.context.geolocationControl._userMarker = null
+      }
     }
 
     // Deactivate distance-based quick filter if active

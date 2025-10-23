@@ -19,6 +19,7 @@ import { CONFIG, log } from '../config.js'
  * @property {string} [strings.locating] - Locating message
  * @property {string} [strings.found] - Success message
  * @property {string} [strings.error] - Error message
+ * @property {import('./geolocation-manager.js').GeolocationManager} [geolocationManager] - Geolocation manager instance
  */
 
 /**
@@ -108,6 +109,49 @@ export const GeolocationControl = L.Control.extend({
    * @returns {void}
    */
   _handleClick() {
+    // Check if manual location is set via geolocationManager
+    const geolocationManager = this.options.geolocationManager
+
+    if (geolocationManager && geolocationManager.context?.$store?.ui) {
+      const manualLocationSet = geolocationManager.context.$store.ui.manualLocationSet
+      const manualLocation = geolocationManager.context.$store.ui.manualLocation
+
+      // Prioritize manual location if set
+      if (manualLocationSet && manualLocation) {
+        this._setLoading(true)
+
+        // Simulate async behavior for consistency
+        setTimeout(() => {
+          const latlng = L.latLng(manualLocation.lat, manualLocation.lng)
+          this._setLoading(false)
+
+          // Set view to manual location
+          // @ts-expect-error - Leaflet Control extend pattern
+          this._map.setView(latlng, 16, { animate: true })
+
+          this._showSuccess(latlng)
+
+          // Get address for notification
+          const address = geolocationManager.context.$store.ui.manualLocationAddress || ''
+          const message = address
+            ? `Gespeicherter Standort: ${address}`
+            : 'Gespeicherter Standort angezeigt'
+
+          log('info', 'Using saved manual location', { lat: manualLocation.lat, lng: manualLocation.lng })
+
+          // Show notification
+          // @ts-expect-error - Alpine.js is loaded globally
+          if (window.Alpine && window.Alpine.store) {
+            // @ts-expect-error - Alpine.js is loaded globally
+            window.Alpine.store('ui').showNotification(message, 'success', 3000)
+          }
+        }, 100) // Short delay for loading indicator
+
+        return // Don't proceed to GPS
+      }
+    }
+
+    // No manual location saved - use GPS as before
     if (!navigator.geolocation) {
       this._showError('Geolocation wird von diesem Browser nicht unterstützt')
       return

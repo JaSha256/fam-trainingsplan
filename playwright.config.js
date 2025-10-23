@@ -11,10 +11,17 @@ export default defineConfig({
     baseURL: 'http://localhost:5173/fam-trainingsplan/',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
+    headless: true // Run in headless mode to avoid window spawning on unused screens
   },
 
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [{
+    name: 'chromium',
+    use: {
+      ...devices['Desktop Chrome'],
+      viewport: { width: 1280, height: 720 } // Ensure desktop viewport for view buttons
+    }
+  }],
 
   webServer: {
     command: 'pnpm run dev',

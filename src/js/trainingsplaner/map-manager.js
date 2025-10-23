@@ -41,10 +41,13 @@ export class MapManager {
    *
    * @param {TrainingsplanerState} state - Component state
    * @param {AlpineContext} context - Alpine.js context
+   * @param {Object} [dependencies] - External dependencies
+   * @param {import('./geolocation-manager.js').GeolocationManager} [dependencies.geolocationManager] - Geolocation manager instance
    */
-  constructor(state, context) {
+  constructor(state, context, dependencies = {}) {
     this.state = state
     this.context = context
+    this.geolocationManager = dependencies.geolocationManager || null
   }
 
   /**
@@ -99,6 +102,13 @@ export class MapManager {
         this.saveMapState()
       })
 
+      // CRITICAL FIX: Override Leaflet's _animateZoom methods to prevent race conditions
+      // Problem: _latLngToNewLayerPoint is called on markers/popups after they're removed from map
+      // Solution: Add null check before accessing this._map
+      // Reference: https://github.com/Leaflet/Leaflet/issues/4453
+      // Reference: https://stackoverflow.com/questions/44803875/leaflet-error-when-zoom-after-close-popup
+      this.applyLeafletRaceConditionFix()
+
       // Add keyboard navigation support
       this.addKeyboardNavigation()
 
@@ -117,6 +127,59 @@ export class MapManager {
     } catch (error) {
       log('error', 'Map initialization failed', error)
     }
+  }
+
+  /**
+   * Apply Leaflet Race Condition Fix
+   *
+   * Overrides Leaflet's internal _animateZoom methods on Marker, Popup, and Tooltip prototypes
+   * to add null checks before accessing this._map._latLngToNewLayerPoint().
+   *
+   * This prevents the "Cannot read properties of null (reading '_latLngToNewLayerPoint')" error
+   * that occurs when zoom animations trigger on markers/popups that have been removed from the map.
+   *
+   * This is a documented solution for a known Leaflet race condition:
+   * - https://github.com/Leaflet/Leaflet/issues/4453
+   * - https://stackoverflow.com/questions/44803875/leaflet-error-when-zoom-after-close-popup
+   *
+   * @returns {void}
+   */
+  applyLeafletRaceConditionFix() {
+    // Fix for Markers
+    // Type definitions for internal APIs: src/types/leaflet-internals.d.ts
+    L.Marker.prototype._animateZoom = function (/** @type {{zoom: number, center: L.LatLng}} */ opt) {
+      if (!this._map) {
+        return // Map reference lost - skip animation
+      }
+      const pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round()
+      this._setPos(pos)
+    }
+
+    // Fix for Popups
+    // Type definitions for internal APIs: src/types/leaflet-internals.d.ts
+    L.Popup.prototype._animateZoom = function (/** @type {{zoom: number, center: L.LatLng}} */ e) {
+      if (!this._map) {
+        return // Map reference lost - skip animation
+      }
+      const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center)
+      const anchor = this._getAnchor()
+      L.DomUtil.setPosition(this._container, pos.add(anchor))
+    }
+
+    // Fix for Tooltips (if present)
+    // Type definitions for internal APIs: src/types/leaflet-internals.d.ts
+    if (L.Tooltip && L.Tooltip.prototype._animateZoom) {
+      L.Tooltip.prototype._animateZoom = function (/** @type {{zoom: number, center: L.LatLng}} */ e) {
+        if (!this._map) {
+          return // Map reference lost - skip animation
+        }
+        const pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center)
+        const anchor = this._getAnchor()
+        L.DomUtil.setPosition(this._container, pos.add(anchor))
+      }
+    }
+
+    log('info', 'Leaflet race condition fix applied (Marker, Popup, Tooltip _animateZoom overrides)')
   }
 
   /**
@@ -252,15 +315,21 @@ export class MapManager {
   createTileLayers() {
     if (!this.context.map) return
 
+    // Leaflet tile layer configuration optimized for mobile-first PWA
+    // Using Leaflet defaults where appropriate for best performance
+    // Reference: https://leafletjs.com/reference.html#gridlayer
     const commonOptions = {
       maxZoom: /** @type {any} */ (CONFIG.map).maxZoom || 19,
       minZoom: /** @type {any} */ (CONFIG.map).minZoom || 10,
       detectRetina: true,
-      updateWhenIdle: false,
-      updateInterval: 150,
-      keepBuffer: 2,
+      // Leaflet defaults optimized for mobile-first PWA
+      updateWhenIdle: true, // Leaflet default (mobile optimized) - updates after pan/zoom complete
+      updateInterval: 200, // Leaflet default (balanced performance) - throttle tile requests
+      keepBuffer: 3, // Keep extra tiles cached for smoother panning
       bounds: /** @type {L.LatLngBoundsLiteral} */ ([[47.9, 11.3], [48.3, 11.9]]), // Munich area bounds
-      errorTileUrl: ''
+      errorTileUrl: '',
+      // updateWhenZooming removed - Leaflet default (false) prevents tile flickering during zoom
+      noWrap: false
     }
 
     // Street Map (OpenStreetMap - Default)
@@ -334,7 +403,10 @@ export class MapManager {
 
     // Geolocation control (if feature enabled)
     if (CONFIG.features?.enableGeolocation) {
-      const geolocationControl = createGeolocationControl({ position: 'topright' })
+      const geolocationControl = createGeolocationControl({
+        position: 'topright',
+        geolocationManager: this.geolocationManager
+      })
       this.context.map.addControl(geolocationControl)
       this.context.geolocationControl = geolocationControl
     }
@@ -358,6 +430,11 @@ export class MapManager {
    * Uses standard Leaflet markers and follows markercluster best practices.
    * Automatically fits bounds to show all markers.
    *
+   * CRITICAL FIX: Prevents race conditions with zoom animations by:
+   * 1. Stopping all animations before marker updates
+   * 2. Deferring updates until current frame completes
+   * 3. Preventing rapid successive calls
+   *
    * @returns {void}
    */
   addMarkersToMap() {
@@ -365,23 +442,35 @@ export class MapManager {
 
     const map = this.context.map
 
-    // Remove existing markers and cluster group
-    if (this.context.markerClusterGroup) {
-      map.removeLayer(this.context.markerClusterGroup)
-      this.context.markerClusterGroup = null
-    }
-    this.context.markers = []
+    // CRITICAL: Stop all animations to prevent race conditions
+    // This fixes the "_latLngToNewLayerPoint" null error during zoom
+    map.stop()
 
-    // Check if markerClusterGroup is available (loaded via ES6 import in main.js)
-    // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
-    if (typeof L.markerClusterGroup !== 'function') {
-      log('error', 'Leaflet.markercluster not available - check imports in main.js')
-      this.addMarkersWithoutClustering()
-      return
-    }
+    // CRITICAL: Defer marker update to next animation frame
+    // This ensures any pending animations have fully stopped
+    requestAnimationFrame(() => {
+      if (!this.context.map) return // Map might have been cleaned up
 
-    // Markercluster is available - proceed with clustering
-    this.addMarkersWithClustering()
+      // Remove existing markers and cluster group
+      if (this.context.markerClusterGroup) {
+        // Stop cluster animations before removal
+        this.context.markerClusterGroup.off() // Remove event listeners
+        map.removeLayer(this.context.markerClusterGroup)
+        this.context.markerClusterGroup = null
+      }
+      this.context.markers = []
+
+      // Check if markerClusterGroup is available (loaded via ES6 import in main.js)
+      // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
+      if (typeof L.markerClusterGroup !== 'function') {
+        log('error', 'Leaflet.markercluster not available - check imports in main.js')
+        this.addMarkersWithoutClustering()
+        return
+      }
+
+      // Markercluster is available - proceed with clustering
+      this.addMarkersWithClustering()
+    })
   }
 
   /**
@@ -389,6 +478,8 @@ export class MapManager {
    *
    * Internal method to add markers with clustering enabled.
    * Extracted for reuse by polling mechanism.
+   *
+   * CRITICAL: Ensures safe removal of existing cluster group
    *
    * @returns {void}
    */
@@ -398,6 +489,8 @@ export class MapManager {
 
     // Remove existing markers if called again
     if (this.context.markerClusterGroup) {
+      // CRITICAL: Remove event listeners before removing layer
+      this.context.markerClusterGroup.off()
       map.removeLayer(this.context.markerClusterGroup)
       this.context.markerClusterGroup = null
     }
@@ -508,10 +601,13 @@ export class MapManager {
         maxWidth: trainingCount > 1 ? 450 : 400,
         className: 'md-map-popup-container',
         autoPan: false, // Disable - we handle centering manually
+        autoClose: true, // Close popup on zoom to prevent race condition
         autoPanPadding: [50, 50]
       })
 
       // Add click handler for auto-centering
+      // Leaflet automatically loads tiles for new viewport after panBy()
+      // No manual invalidateSize() needed - per Leaflet best practices
       marker.on('click', e => {
         this.centerOnMarker(e.latlng, trainingCount > 1)
       })
@@ -568,7 +664,8 @@ export class MapManager {
       marker.bindPopup(this.createMapPopup(training), {
         maxWidth: 400,
         className: 'md-map-popup-container',
-        autoPan: false // Disable - we handle centering manually
+        autoPan: false, // Disable - we handle centering manually
+        autoClose: true // Close popup on zoom to prevent race condition
       })
 
       marker.addTo(map)
@@ -801,7 +898,13 @@ export class MapManager {
    * Center Map on Marker
    *
    * Pans the map to center on the clicked marker with proper offset for popup visibility.
-   * Best practice: Use Leaflet's built-in autoPan with custom padding.
+   * Uses Leaflet's panBy() which automatically loads tiles for the new viewport.
+   *
+   * IMPORTANT: No invalidateSize() needed after panBy() - Leaflet handles tile loading
+   * automatically. invalidateSize() should ONLY be used when container dimensions change,
+   * NOT for pan/zoom operations (per Leaflet documentation).
+   *
+   * Reference: https://leafletjs.com/reference.html#map-panby
    *
    * @param {L.LatLng} latlng - Marker coordinates
    * @param {boolean} _isMultiTraining - Whether location has multiple trainings (for future use)
@@ -901,16 +1004,29 @@ export class MapManager {
    * Adds a blue pulsing marker at the user's location.
    * Called after successful geolocation or when manual location is loaded.
    *
+   * CRITICAL FIX: Removes BOTH possible user location markers:
+   * 1. MapManager's marker (this.context.userLocationMarker)
+   * 2. GeolocationControl's marker (this.context.geolocationControl._userMarker)
+   *
+   * This prevents duplicate markers when switching between GPS and manual location.
+   *
    * @param {[number, number]} latlng - User coordinates [lat, lng]
    * @returns {void}
    */
   addUserLocationMarker(latlng) {
     if (!this.context.map) return
 
-    // Remove existing user marker if present
+    // Remove existing MapManager user marker if present
     if (this.context.userLocationMarker) {
       this.context.map.removeLayer(this.context.userLocationMarker)
       this.context.userLocationMarker = null
+    }
+
+    // CRITICAL FIX: Remove GeolocationControl's user marker if it exists
+    // GeolocationControl stores marker in control._userMarker
+    if (this.context.geolocationControl && this.context.geolocationControl._userMarker) {
+      this.context.map.removeLayer(this.context.geolocationControl._userMarker)
+      this.context.geolocationControl._userMarker = null
     }
 
     // Create custom user location marker with pulsing blue dot
@@ -969,6 +1085,7 @@ export class MapManager {
       this.context.markers.forEach(marker => {
         marker.off() // Remove marker events
         marker.unbindPopup() // Remove popup binding
+        // @ts-expect-error - Marker extends Layer but TypeScript needs explicit cast
         map.removeLayer(marker)
         // Break circular reference
         // @ts-expect-error - Custom trainingId property cleanup
