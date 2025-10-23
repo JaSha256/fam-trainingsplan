@@ -584,28 +584,29 @@
 
       <!-- ==================== DESKTOP HEADER ==================== -->
       <header
-        class="hidden lg:flex items-center gap-3 px-6 py-4 bg-white border-b border-slate-200"
+        class="hidden lg:flex items-center justify-between gap-3 px-6 py-3 bg-white border-b border-slate-200"
         role="banner"
         style="box-shadow: var(--shadow-sidebar)"
+        x-data="{ desktopMenuOpen: false }"
       >
-        <!-- Toggle Sidebar Button (visible when sidebar collapsed) -->
-        <button
-          x-show="$store.ui.sidebarCollapsed"
-          x-transition
-          @click="$store.ui.toggleSidebar()"
-          type="button"
-          data-testid="desktop-sidebar-expand-toggle"
-          aria-label="Filter einblenden"
-          class="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-          title="Filter einblenden"
-        >
-          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-
-        <!-- Logo + Title -->
+        <!-- Left: Toggle + Logo + Title -->
         <div class="flex items-center gap-3">
+          <!-- Toggle Sidebar Button (visible when sidebar collapsed) -->
+          <button
+            x-show="$store.ui.sidebarCollapsed"
+            x-transition
+            @click="$store.ui.toggleSidebar()"
+            type="button"
+            data-testid="desktop-sidebar-expand-toggle"
+            aria-label="Filter einblenden"
+            class="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            title="Filter einblenden"
+          >
+            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+
           <img
             src="/fam-logo-dark.svg"
             alt="Free Arts of Movement"
@@ -613,6 +614,153 @@
             aria-label="FAM Logo"
           />
           <h1 class="text-xl font-bold text-primary-600">Trainingsplan</h1>
+        </div>
+
+        <!-- Right: View Switcher + Overflow Menu -->
+        <div class="flex items-center gap-2">
+          <!-- View Switcher -->
+          <div class="flex items-center bg-slate-200 rounded-lg p-0.5" role="group" aria-label="Ansicht wechseln">
+            <!-- List View -->
+            <button
+              @click="$store.ui.activeView = 'list'"
+              :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
+              class="p-2 rounded-md transition-all"
+              type="button"
+              :aria-label="$store.ui.activeView === 'list' ? 'Listenansicht aktiv' : 'Zu Listenansicht wechseln'"
+              :aria-pressed="$store.ui.activeView === 'list'"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+
+            <!-- Split View -->
+            <button
+              @click="$store.ui.activeView = 'split'"
+              :class="$store.ui.activeView === 'split' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
+              class="p-2 rounded-md transition-all"
+              type="button"
+              :aria-label="$store.ui.activeView === 'split' ? 'Geteilte Ansicht aktiv' : 'Zu geteilter Ansicht wechseln'"
+              :aria-pressed="$store.ui.activeView === 'split'"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 4H5a2 2 0 00-2 2v14a2 2 0 002 2h4M9 4v16M9 4h6m-6 16h6m0-16h4a2 2 0 012 2v14a2 2 0 01-2 2h-4m0-16v16"/>
+              </svg>
+            </button>
+
+            <!-- Map View -->
+            <button
+              @click="$store.ui.activeView = 'map'"
+              :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
+              class="p-2 rounded-md transition-all"
+              type="button"
+              :aria-label="$store.ui.activeView === 'map' ? 'Kartenansicht aktiv' : 'Zu Kartenansicht wechseln'"
+              :aria-pressed="$store.ui.activeView === 'map'"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Overflow Menu -->
+          <div class="relative" @click.outside="desktopMenuOpen = false" @keydown.escape="desktopMenuOpen = false">
+            <button
+              @click="desktopMenuOpen = !desktopMenuOpen"
+              type="button"
+              aria-label="Weitere Optionen"
+              :aria-expanded="desktopMenuOpen"
+              aria-haspopup="menu"
+              class="relative p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+              </svg>
+              <span
+                x-show="$store.ui.manualLocationSet"
+                class="absolute top-0 right-0 w-2 h-2 bg-primary-500 rounded-full ring-1 ring-white"
+                aria-hidden="true"
+              ></span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+              x-show="desktopMenuOpen"
+              x-transition:enter="transition ease-out duration-200"
+              x-transition:enter-start="opacity-0 scale-95"
+              x-transition:enter-end="opacity-100 scale-100"
+              x-transition:leave="transition ease-in duration-150"
+              x-transition:leave-start="opacity-100 scale-100"
+              x-transition:leave-end="opacity-0 scale-95"
+              class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-1 z-50"
+              role="menu"
+            >
+              <!-- Export Section -->
+              <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Export</div>
+              <button
+                @click="exportAllToCalendar(); desktopMenuOpen = false"
+                :disabled="filteredTrainingsCount === 0"
+                type="button"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span>Als ICS exportieren</span>
+              </button>
+              <button
+                @click="window.print(); desktopMenuOpen = false"
+                type="button"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                </svg>
+                <span>Drucken</span>
+              </button>
+              <template x-if="favorites.length > 0">
+                <button
+                  @click="exportFavoritesToCalendar(); desktopMenuOpen = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  </svg>
+                  <span>Favoriten exportieren</span>
+                </button>
+              </template>
+
+              <div class="border-t border-slate-200 my-1"></div>
+
+              <!-- Settings Section -->
+              <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Einstellungen</div>
+              <button
+                @click="enableGeolocation(); desktopMenuOpen = false"
+                :disabled="!('geolocation' in navigator)"
+                type="button"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span>Standort aktivieren</span>
+              </button>
+              <template x-if="$store.ui.manualLocationSet">
+                <button
+                  @click="clearManualLocation(); desktopMenuOpen = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  <span>Standort zurücksetzen</span>
+                </button>
+              </template>
+            </div>
+          </div>
         </div>
       </header>
 
