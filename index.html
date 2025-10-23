@@ -759,6 +759,24 @@
                   <span>Standort zurücksetzen</span>
                 </button>
               </template>
+
+              <div class="border-t border-slate-200 my-1"></div>
+
+              <!-- Dark Mode Toggle -->
+              <div class="px-4 py-2.5">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-2 text-sm text-slate-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <span>Dark Mode</span>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" x-model="$store.ui.darkMode" class="sr-only peer">
+                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1408,98 +1426,7 @@
                   </div>
                 </div>
 
-                <!-- Right: Action Buttons -->
-                <div class="flex items-center gap-2">
-                  <!-- View Switcher (Desktop only) -->
-                  <div class="hidden lg:flex items-center bg-slate-200 rounded-lg p-0.5" role="group" aria-label="Ansicht wechseln">
-                    <!-- List View -->
-                    <button
-                      @click="$store.ui.activeView = 'list'"
-                      :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
-                      class="p-2 rounded-md transition-all min-w-[40px] min-h-[40px] flex items-center justify-center"
-                      type="button"
-                      :aria-label="$store.ui.activeView === 'list' ? 'Listenansicht aktiv' : 'Zu Listenansicht wechseln'"
-                      :aria-pressed="$store.ui.activeView === 'list'"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16"
-                        />
-                      </svg>
-                    </button>
-
-                    <!-- Split View -->
-                    <button
-                      @click="$store.ui.activeView = 'split'"
-                      :class="$store.ui.activeView === 'split' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
-                      class="p-2 rounded-md transition-all min-w-[40px] min-h-[40px] flex items-center justify-center"
-                      type="button"
-                      :aria-label="$store.ui.activeView === 'split' ? 'Geteilte Ansicht aktiv' : 'Zu geteilter Ansicht wechseln'"
-                      :aria-pressed="$store.ui.activeView === 'split'"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 4H5a2 2 0 00-2 2v14a2 2 0 002 2h4M9 4v16M9 4h6m-6 16h6m0-16h4a2 2 0 012 2v14a2 2 0 01-2 2h-4m0-16v16"
-                        />
-                      </svg>
-                    </button>
-
-                    <!-- Map View -->
-                    <button
-                      @click="$store.ui.activeView = 'map'"
-                      :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
-                      class="p-2 rounded-md transition-all min-w-[40px] min-h-[40px] flex items-center justify-center"
-                      type="button"
-                      :aria-label="$store.ui.activeView === 'map' ? 'Kartenansicht aktiv' : 'Zu Kartenansicht wechseln'"
-                      :aria-pressed="$store.ui.activeView === 'map'"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <!-- Dark Mode Toggle (Desktop only - Mobile has icon in header) -->
-                  <div
-                    class="hidden lg:flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-lg border border-slate-200"
-                  >
-                    <svg
-                      class="w-4 h-4 text-slate-700"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                      />
-                    </svg>
-                    <label class="md-switch">
-                      <span class="sr-only">Dark Mode umschalten</span>
-                      <input
-                        type="checkbox"
-                        x-model="$store.ui.darkMode"
-                        aria-label="Dark Mode umschalten"
-                        @change="document.documentElement.setAttribute('data-theme', $store.ui.darkMode ? 'dark' : 'light')"
-                      />
-                      <span class="md-switch-track"></span>
-                      <span class="md-switch-thumb"></span>
-                    </label>
-                  </div>
-                </div>
+              </div>
               </div>
             </div>
           </div>
