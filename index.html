@@ -582,6 +582,40 @@
         </div>
       </div>
 
+      <!-- ==================== DESKTOP HEADER ==================== -->
+      <header
+        class="hidden lg:flex items-center gap-3 px-6 py-4 bg-white border-b border-slate-200"
+        role="banner"
+        style="box-shadow: var(--shadow-sidebar)"
+      >
+        <!-- Toggle Sidebar Button (visible when sidebar collapsed) -->
+        <button
+          x-show="$store.ui.sidebarCollapsed"
+          x-transition
+          @click="$store.ui.toggleSidebar()"
+          type="button"
+          data-testid="desktop-sidebar-expand-toggle"
+          aria-label="Filter einblenden"
+          class="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          title="Filter einblenden"
+        >
+          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <!-- Logo + Title -->
+        <div class="flex items-center gap-3">
+          <img
+            src="/fam-logo-dark.svg"
+            alt="Free Arts of Movement"
+            class="h-8 w-auto"
+            aria-label="FAM Logo"
+          />
+          <h1 class="text-xl font-bold text-primary-600">Trainingsplan</h1>
+        </div>
+      </header>
+
       <div class="flex">
         <!-- ==================== DESKTOP FILTER SIDEBAR ==================== -->
         <aside
@@ -1175,31 +1209,6 @@
             </div>
           </div>
         </aside>
-
-        <!-- Floating Expand Button (visible when sidebar collapsed) -->
-        <button
-          x-show="$store.ui.sidebarCollapsed"
-          x-transition
-          @click="$store.ui.toggleSidebar()"
-          type="button"
-          data-testid="sidebar-expand-toggle"
-          aria-label="Filter ausklappen"
-          class="hidden lg:block fixed left-4 top-20 z-50 p-3 bg-white hover:bg-slate-50 rounded-full transition-all"
-          style="
-            box-shadow:
-              0 4px 12px 0 oklch(0 0 0 / 0.15),
-              0 2px 4px 0 oklch(0 0 0 / 0.1);
-          "
-        >
-          <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
 
         <!-- ==================== MAIN CONTENT ==================== -->
         <main class="flex-1 min-w-0" id="main-content">
