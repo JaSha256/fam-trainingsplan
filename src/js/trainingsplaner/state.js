@@ -45,6 +45,7 @@ export function createTrainingsplanerState() {
     geolocationControl: null,
     resetControl: null,
     ariaLiveRegion: null,
+    userLocationMarker: null,
 
     // ==================== GEOLOCATION STATE ====================
     userPosition: null,

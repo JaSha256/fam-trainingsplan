@@ -293,17 +293,33 @@ export const CONFIG = /** @type {Readonly<ConfigType>} */ (/** @type {any} */ (O
 function validateConfig() {
   const errors = []
   
-  // Validate URLs
+  // Validate URLs (allow both absolute and relative URLs)
   try {
     // @ts-ignore - CONFIG properties exist at runtime
-    new URL(CONFIG.jsonUrl)
+    const jsonUrl = CONFIG.jsonUrl
+    // Relative URLs (starting with /) are valid in Vite
+    if (!jsonUrl.startsWith('/') && !jsonUrl.startsWith('http')) {
+      throw new Error('URL must be absolute (http/https) or relative (/)')
+    }
+    // Only validate absolute URLs with URL constructor
+    if (jsonUrl.startsWith('http')) {
+      new URL(jsonUrl)
+    }
   } catch {
     errors.push('Invalid jsonUrl')
   }
 
   try {
     // @ts-ignore - CONFIG properties exist at runtime
-    new URL(CONFIG.versionUrl)
+    const versionUrl = CONFIG.versionUrl
+    // Relative URLs (starting with /) are valid in Vite
+    if (!versionUrl.startsWith('/') && !versionUrl.startsWith('http')) {
+      throw new Error('URL must be absolute (http/https) or relative (/)')
+    }
+    // Only validate absolute URLs with URL constructor
+    if (versionUrl.startsWith('http')) {
+      new URL(versionUrl)
+    }
   } catch {
     errors.push('Invalid versionUrl')
   }

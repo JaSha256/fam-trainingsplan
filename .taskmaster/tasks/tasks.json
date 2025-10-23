@@ -276,13 +276,41 @@
         "priority": "medium",
         "subtasks": [],
         "updatedAt": "2025-10-22T10:14:18.436Z"
+      },
+      {
+        "id": "22",
+        "title": "Redesign Mobile Menu Structure for Enhanced UX and Visual Hierarchy",
+        "description": "Restructure mobile header to reduce visual clutter and improve navigation hierarchy using Material Design 3 principles while maintaining all functionality.",
+        "details": "**Scope:** Redesign mobile header (lines 189-487 in index.html) to address visual clutter and improve user experience while maintaining ALL existing functionality.\n\n**Problems Identified:**\n1. **Visual Clutter:** Mobile header contains too many competing elements (logo, filter button, view switcher, overflow menu)\n2. **Poor Hierarchy:** Unclear distinction between primary (filter, view switch) and secondary actions (export, share, settings)\n3. **Filter Experience:** Filter button, quick filters, and active filter chips create chaotic visual flow\n4. **Hidden Discoverability:** Important actions buried in overflow menu\n\n**Solution Architecture:**\n1. **Primary Action Bar:** Keep essential actions (Filter, View Switcher) in compact header\n2. **Bottom Navigation:** Move view switching to bottom nav (Tasks 19/21 completed) - integrate better\n3. **Collapsible Sections:** Implement progressive disclosure for quick filters using Alpine.js collapse\n4. **Action Sheet Pattern:** Replace overflow menu with Material Design action sheet for bulk actions\n5. **Visual Separation:** Use M3 elevation tokens and surface containers for clear hierarchy\n\n**Implementation Details:**\n- **Header Redesign:** Reduce header height to 48px (Task 16 done), consolidate logo+title, single primary filter button with badge\n- **Progressive Disclosure:** Implement collapsible quick filters section with slide-down animation using @alpinejs/collapse\n- **Action Grouping:** Group related actions (Export: ICS/Print, Share: Link/Favorites, Settings: Dark Mode/Location) with clear visual separation\n- **M3 Components:** Use existing .md-state-layer, .md-surface-container-high classes from src/styles/m3-components.css\n- **Touch Targets:** Maintain ≥44px touch targets per WCAG guidelines\n- **Accessibility:** Preserve all ARIA labels, keyboard navigation, screen reader support\n\n**Technical Implementation:**\n- **Alpine.js Store:** Add new state for collapsible sections (quickFiltersExpanded, actionSheetOpen)\n- **CSS Classes:** Use M3 surface containers (.md-surface-container, .md-surface-container-high) for elevation hierarchy\n- **Animation:** Implement smooth transitions using Alpine collapse plugin and M3 motion tokens\n- **Responsive:** Ensure design works across mobile breakpoints (375px, 390px, 428px)\n- **Integration:** Coordinate with existing filter chips bar (Task 15) and bottom navigation (Task 19)\n\n**Files Modified:**\n- index.html (lines 189-487): Mobile header restructure\n- src/styles/m3-components.css: Add action sheet and collapsible components if needed\n- src/main.js: Add new Alpine store state for UI controls",
+        "testStrategy": "**Testing Strategy:**\n1. **Responsive Testing:** Validate across mobile viewports (375px iPhone SE, 390px iPhone 12, 428px iPhone 14 Pro Max)\n2. **Touch Target Validation:** Verify all interactive elements meet 44px minimum requirement\n3. **Accessibility Testing:** Run axe-core accessibility audit, test keyboard navigation, verify ARIA attributes\n4. **Visual Regression:** Compare before/after screenshots to ensure visual improvements\n5. **Integration Testing:** Verify interaction with existing filter chips (Task 15) and bottom navigation (Task 19)\n6. **User Flow Testing:** Test complete filter → view → action flows on mobile devices\n7. **Animation Performance:** Verify smooth transitions and no janky animations\n8. **Cross-Browser Testing:** Test on Chrome 111+, Firefox 128+, Safari 16.4+ (per package.json browserslist)\n9. **Screen Reader Testing:** Validate with VoiceOver (iOS) and TalkBack (Android)\n10. **Progressive Enhancement:** Ensure functionality degrades gracefully without JavaScript\n\n**Test Files:**\n- tests/e2e/mobile-menu-redesign.spec.js: Mobile-specific header interactions\n- tests/e2e/accessibility.spec.js: Update for new structure\n- tests/e2e/visual-regression.spec.js: Screenshot comparisons\n- tests/integration/mobile-navigation.test.js: Integration with filter system",
+        "status": "done",
+        "dependencies": [
+          "15",
+          "16",
+          "19"
+        ],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2025-10-23T18:06:28.568Z"
+      },
+      {
+        "id": "23",
+        "title": "Intelligente Standort-Button Logik mit Priorität für manuellen Standort",
+        "description": "Modifiziere die 'Mein Standort' Button-Funktionalität in der Karte, um gespeicherte manuelle Standorte zu bevorzugen und GPS nur bei fehlenden manuellen Standorten zu verwenden.",
+        "details": "**Implementierung in src/js/trainingsplaner/map-controls.js:**\n\n1. **Modifikation der _handleClick() Methode (Zeile 110-129):**\n   - Vor GPS-Abfrage prüfen: `this.options.geolocationManager?.$store.ui.manualLocationSet`\n   - Falls manueller Standort gesetzt: gespeicherte Koordinaten aus `this.options.geolocationManager?.$store.ui.manualLocation` verwenden\n   - Map-Ansicht zu manuellem Standort setzen: `this._map.setView([lat, lng], 16)`\n   - Bestehenden User-Marker aktualisieren oder erstellen\n   - Erfolgs-Callback ohne GPS-Abfrage ausführen\n   - Nur bei fehlendem manuellen Standort: bestehende GPS-Logik verwenden\n\n2. **GeolocationManager Dependency Integration:**\n   - GeolocationManager-Instanz an GeolocationControl übergeben (in createGeolocationControl())\n   - Zugriff auf Alpine Store über geolocationManager.context.$store\n   - Nutzung bestehender setManualLocation() und loadManualLocation() Methoden\n\n3. **User Experience Verbesserungen:**\n   - Button-Tooltip je nach Zustand: 'Zu manuellem Standort' vs 'Mein Standort ermitteln'\n   - Konsistente Notification-Messages für manuellen vs GPS-Standort\n   - Loading-State auch für manuelle Standort-Navigation\n\n4. **Integration mit bestehender Architektur:**\n   - Verwendung der GeolocationManager.addDistanceToTrainings() Methode\n   - Konsistente Marker-Verwaltung über MapManager.addUserLocationMarker()\n   - Erhaltung der bestehenden Fehlerbehandlung für GPS-Fälle",
+        "testStrategy": "**Unit Tests:**\n\n1. **Map Controls Tests:** Erweitere tests/unit/map-controls.test.js:\n   - Test für manuelle Standort-Priorität in _handleClick()\n   - Verifikation dass GPS nur bei fehlendem manuellen Standort aufgerufen wird\n   - Button-Tooltip-Tests für verschiedene Zustände\n   \n2. **Integration Tests:** Ergänze tests/integration/map-features.spec.js:\n   - Vollständiger Workflow: Manuellen Standort setzen → Karte öffnen → 'Mein Standort' klicken\n   - Verifikation dass gespeicherter Standort verwendet wird\n   - Test für Fallback zu GPS bei fehlendem manuellen Standort\n   \n3. **E2E Tests:** Neue Testszenarien in tests/e2e/geolocation-intelligence.spec.js:\n   - Benutzer setzt manuellen Standort in Settings\n   - Benutzer öffnet Karte und klickt 'Mein Standort'\n   - Verifikation: Karte zentriert auf manuellen Standort ohne GPS-Abfrage\n   - Test GPS-Fallback wenn kein manueller Standort gesetzt\n   \n4. **State Management Tests:**\n   - Alpine Store Integration für manualLocationSet/manualLocation\n   - localStorage Persistierung-Tests\n   - GeolocationManager Dependency Injection Tests",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": [],
+        "updatedAt": "2025-10-23T21:03:00.249Z"
       }
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-10-22T10:14:18.436Z",
-      "taskCount": 11,
-      "completedCount": 11,
+      "lastModified": "2025-10-23T21:03:00.251Z",
+      "taskCount": 13,
+      "completedCount": 13,
       "tags": [
         "master"
       ]

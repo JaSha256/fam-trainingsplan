@@ -186,124 +186,137 @@
         </div>
       </div>
 
-      <!-- ==================== MOBILE HEADER (REDESIGNED: CLEANER HIERARCHY WITH OVERFLOW MENU) ==================== -->
+      <!-- ==================== MOBILE HEADER (TASK 16: OPTIMIZED TO 48px + RESTRUCTURED) ==================== -->
       <header
         class="lg:hidden sticky top-0 z-40 h-12 bg-slate-100 border-b border-slate-300"
         role="banner"
         style="box-shadow: var(--shadow-sidebar)"
-        x-data="{ overflowMenuOpen: false }"
       >
         <div class="flex items-center justify-between h-full px-3 gap-2">
-          <!-- Left: Logo + Title -->
-          <div class="flex items-center gap-2 min-w-0 flex-shrink">
-            <img
-              src="/fam-logo-dark.svg"
-              alt="Free Arts of Movement"
-              class="h-6 w-auto flex-shrink-0"
-              aria-label="FAM Logo"
-            />
-            <h1 class="text-base font-bold text-primary-600 whitespace-nowrap truncate">Trainingsplan</h1>
+          <!-- Left: Logo -->
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold text-primary-600 whitespace-nowrap">Trainingsplan</h1>
           </div>
 
-          <!-- Right: Primary Actions + Overflow Menu -->
-          <div class="flex items-center gap-1 flex-shrink-0">
-            <!-- Filter Button (Primary Action) -->
-            <button
-              @click="$store.ui.mobileFilterOpen = true"
-              type="button"
-              aria-label="Filter öffnen"
-              class="relative p-2.5 hover:bg-primary-100 bg-primary-50 rounded-lg transition-colors min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center"
-            >
-              <svg
-                class="w-5 h-5 text-primary-700"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                />
-              </svg>
-              <!-- Active filter indicator badge -->
-              <span
-                x-show="getActiveFilterCount() > 0"
-                x-text="getActiveFilterCount()"
-                class="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-primary-600 text-white text-xs font-bold rounded-full flex items-center justify-center px-1"
-                aria-label="Anzahl aktiver Filter"
-              ></span>
-            </button>
-
-            <!-- View Switcher (Primary Action) -->
-            <div class="flex items-center bg-slate-200 rounded-lg p-0.5" role="group" aria-label="Ansicht wechseln">
-              <!-- List View -->
+          <!-- Right: Action Icons -->
+          <div class="flex items-center gap-1">
+            <!-- Export Menu -->
+            <div x-data="{ open: false }" class="relative" @click.outside="open = false">
               <button
-                @click="$store.ui.activeView = 'list'"
-                :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
-                class="p-2 rounded-md transition-all min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation"
+                @click="open = !open"
+                :disabled="filteredTrainingsCount === 0"
                 type="button"
-                :aria-label="$store.ui.activeView === 'list' ? 'Listenansicht aktiv' : 'Zu Listenansicht wechseln'"
-                :aria-pressed="$store.ui.activeView === 'list'"
+                aria-label="Export"
+                class="relative p-2.5 hover:bg-slate-200 rounded-lg transition-colors min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  class="w-5 h-5 text-slate-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                   />
                 </svg>
               </button>
 
-              <!-- Split View (Desktop Only) -->
-              <button
-                @click="$store.ui.activeView = 'split'"
-                :class="$store.ui.activeView === 'split' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
-                class="hidden lg:flex p-2 rounded-md transition-all min-w-[40px] min-h-[40px] items-center justify-center"
-                type="button"
-                :aria-label="$store.ui.activeView === 'split' ? 'Geteilte Ansicht aktiv' : 'Zu geteilter Ansicht wechseln'"
-                :aria-pressed="$store.ui.activeView === 'split'"
+              <!-- Export Menu Dropdown -->
+              <div
+                x-show="open"
+                x-transition
+                class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 4H5a2 2 0 00-2 2v14a2 2 0 002 2h4M9 4v16M9 4h6m-6 16h6m0-16h4a2 2 0 012 2v14a2 2 0 01-2 2h-4m0-16v16"
-                  />
-                </svg>
-              </button>
-
-              <!-- Map View -->
-              <button
-                @click="$store.ui.activeView = 'map'"
-                :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600'"
-                class="p-2 rounded-md transition-all min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation"
-                type="button"
-                :aria-label="$store.ui.activeView === 'map' ? 'Kartenansicht aktiv' : 'Zu Kartenansicht wechseln'"
-                :aria-pressed="$store.ui.activeView === 'map'"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  />
-                </svg>
-              </button>
+                <button
+                  @click="exportAllToCalendar(); open = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  Als ICS exportieren
+                </button>
+                <button
+                  @click="alert('PDF-Export kommt bald'); open = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                  Als PDF exportieren
+                </button>
+                <button
+                  @click="alert('JSON-Export kommt bald'); open = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                    />
+                  </svg>
+                  Als JSON exportieren
+                </button>
+                <template x-if="favorites.length > 0">
+                  <div>
+                    <div class="border-t border-slate-200 my-1"></div>
+                    <button
+                      @click="exportFavoritesToCalendar(); open = false"
+                      type="button"
+                      class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                    >
+                      <svg class="w-5 h-5 fill-current text-yellow-500" viewBox="0 0 24 24">
+                        <path
+                          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                        />
+                      </svg>
+                      Favoriten als ICS exportieren
+                    </button>
+                  </div>
+                </template>
+                <div class="border-t border-slate-200 my-1"></div>
+                <button
+                  @click="window.print(); open = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                    />
+                  </svg>
+                  Drucken
+                </button>
+              </div>
             </div>
 
-            <!-- Overflow Menu (Secondary Actions) -->
-            <div class="relative" @click.outside="overflowMenuOpen = false" @keydown.escape="overflowMenuOpen = false">
+            <!-- Share Menu -->
+            <div x-data="{ open: false }" class="relative" @click.outside="open = false">
               <button
-                @click="overflowMenuOpen = !overflowMenuOpen"
+                @click="open = !open"
                 type="button"
-                aria-label="Weitere Optionen"
-                :aria-expanded="overflowMenuOpen"
-                aria-haspopup="menu"
+                aria-label="Teilen"
                 class="relative p-2.5 hover:bg-slate-200 rounded-lg transition-colors min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center"
               >
                 <svg
@@ -316,96 +329,23 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
                   />
                 </svg>
-                <!-- Indicator dot for active settings -->
-                <span
-                  x-show="$store.ui.manualLocationSet || $store.ui.darkMode"
-                  class="absolute top-1 right-1 w-2 h-2 bg-primary-500 rounded-full ring-1 ring-slate-100"
-                  aria-hidden="true"
-                ></span>
               </button>
 
-              <!-- Overflow Menu Dropdown -->
+              <!-- Share Menu Dropdown -->
               <div
-                x-show="overflowMenuOpen"
-                x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 scale-95"
-                x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95"
-                class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-1 z-50"
-                role="menu"
-                aria-orientation="vertical"
+                x-show="open"
+                x-transition
+                class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50"
               >
-                <!-- Export Section -->
-                <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Export
-                </div>
                 <button
-                  @click="exportAllToCalendar(); overflowMenuOpen = false"
-                  :disabled="filteredTrainingsCount === 0"
+                  @click="shareCurrentView(); open = false"
                   type="button"
-                  role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-[44px]"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
                 >
-                  <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  <span>Als ICS exportieren</span>
-                </button>
-                <button
-                  @click="window.print(); overflowMenuOpen = false"
-                  type="button"
-                  role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                >
-                  <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-                    />
-                  </svg>
-                  <span>Drucken</span>
-                </button>
-                <template x-if="favorites.length > 0">
-                  <button
-                    @click="exportFavoritesToCalendar(); overflowMenuOpen = false"
-                    type="button"
-                    role="menuitem"
-                    class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                  >
-                    <svg class="w-5 h-5 flex-shrink-0 fill-current text-yellow-500" viewBox="0 0 24 24">
-                      <path
-                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                      />
-                    </svg>
-                    <span>Favoriten exportieren</span>
-                  </button>
-                </template>
-
-                <div class="border-t border-slate-200 my-1"></div>
-
-                <!-- Share Section -->
-                <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Teilen
-                </div>
-                <button
-                  @click="shareCurrentView(); overflowMenuOpen = false"
-                  type="button"
-                  role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                >
-                  <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -413,95 +353,127 @@
                       d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                     />
                   </svg>
-                  <span>Link kopieren</span>
+                  Link kopieren
+                </button>
+                <button
+                  @click="alert('E-Mail-Teilen kommt bald'); open = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  Per E-Mail teilen
+                </button>
+                <button
+                  @click="alert('QR-Code kommt bald'); open = false"
+                  type="button"
+                  class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                    />
+                  </svg>
+                  QR-Code generieren
                 </button>
                 <template x-if="favorites.length > 0">
-                  <button
-                    @click="shareFavorites(); overflowMenuOpen = false"
-                    type="button"
-                    role="menuitem"
-                    class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                  >
-                    <svg class="w-5 h-5 flex-shrink-0 fill-current text-yellow-500" viewBox="0 0 24 24">
-                      <path
-                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                      />
-                    </svg>
-                    <span>Favoriten teilen</span>
-                  </button>
+                  <div>
+                    <div class="border-t border-slate-200 my-1"></div>
+                    <button
+                      @click="shareFavorites(); open = false"
+                      type="button"
+                      class="w-full text-left px-4 py-2 hover:bg-slate-100 flex items-center gap-3 text-sm text-slate-700"
+                    >
+                      <svg class="w-5 h-5 fill-current text-yellow-500" viewBox="0 0 24 24">
+                        <path
+                          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                        />
+                      </svg>
+                      Favoriten teilen
+                    </button>
+                  </div>
                 </template>
-
-                <div class="border-t border-slate-200 my-1"></div>
-
-                <!-- Settings Section -->
-                <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Einstellungen
-                </div>
-                <button
-                  @click="$store.ui.darkMode = !$store.ui.darkMode; document.documentElement.setAttribute('data-theme', $store.ui.darkMode ? 'dark' : 'light'); overflowMenuOpen = false"
-                  type="button"
-                  role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                >
-                  <svg
-                    x-show="!$store.ui.darkMode"
-                    class="w-5 h-5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                    />
-                  </svg>
-                  <svg
-                    x-show="$store.ui.darkMode"
-                    class="w-5 h-5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                    />
-                  </svg>
-                  <span x-text="$store.ui.darkMode ? 'Dark Mode deaktivieren' : 'Dark Mode aktivieren'"></span>
-                </button>
-                <button
-                  @click="$store.ui.locationSettingsOpen = true; overflowMenuOpen = false"
-                  type="button"
-                  role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                >
-                  <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  <span>Standort-Einstellungen</span>
-                  <span
-                    x-show="$store.ui.manualLocationSet"
-                    class="ml-auto w-2 h-2 bg-green-500 rounded-full"
-                    aria-label="Standort gesetzt"
-                  ></span>
-                </button>
               </div>
             </div>
+
+            <!-- Dark Mode Toggle (Icon-only) -->
+            <button
+              @click="$store.ui.darkMode = !$store.ui.darkMode; document.documentElement.setAttribute('data-theme', $store.ui.darkMode ? 'dark' : 'light')"
+              type="button"
+              aria-label="Dark Mode umschalten"
+              class="relative p-2.5 hover:bg-slate-200 rounded-lg transition-colors min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center"
+            >
+              <svg
+                x-show="!$store.ui.darkMode"
+                class="w-5 h-5 text-slate-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+              <svg
+                x-show="$store.ui.darkMode"
+                class="w-5 h-5 text-slate-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+            </button>
+
+            <!-- Settings Button -->
+            <button
+              @click="$store.ui.locationSettingsOpen = true"
+              type="button"
+              aria-label="Einstellungen öffnen"
+              class="relative p-2.5 hover:bg-slate-200 rounded-lg transition-colors min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center"
+            >
+              <svg
+                class="w-5 h-5 text-slate-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <!-- Green Indicator Dot when manual location is set -->
+              <span
+                x-show="$store.ui.manualLocationSet"
+                class="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full ring-1 ring-slate-100"
+              ></span>
+            </button>
           </div>
         </div>
       </header>
@@ -582,372 +554,6 @@
         </div>
       </div>
 
-      <!-- ==================== DESKTOP HEADER (STREAMLINED UX) ==================== -->
-      <header
-        class="hidden lg:flex items-center justify-between gap-6 px-6 py-2.5 bg-white border-b border-slate-200"
-        role="banner"
-        style="box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1)"
-        x-data="{ desktopMenuOpen: false }"
-      >
-        <!-- Left Section: Branding & Toggle -->
-        <div class="flex items-center gap-3 flex-shrink-0">
-          <!-- Toggle Sidebar Button (visible when sidebar collapsed) -->
-          <button
-            x-show="$store.ui.sidebarCollapsed"
-            x-transition
-            @click="$store.ui.toggleSidebar()"
-            type="button"
-            data-testid="desktop-sidebar-expand-toggle"
-            aria-label="Filter einblenden"
-            class="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-            title="Filter einblenden"
-          >
-            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </button>
-
-          <!-- Logo + Title (always visible, smooth transition) -->
-          <div class="flex items-center gap-2.5 transition-all duration-300">
-            <img
-              src="/fam-logo-dark.svg"
-              alt="Free Arts of Movement"
-              class="h-7 w-auto"
-              aria-label="FAM Logo"
-            />
-            <h1 class="text-lg font-bold text-primary-600 whitespace-nowrap">Trainingsplan</h1>
-          </div>
-        </div>
-
-        <!-- Center Section: Status Information -->
-        <div class="flex items-center gap-4 flex-1 min-w-0 justify-center">
-          <!-- Results Count with subtle background -->
-          <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
-            <span class="text-base font-bold text-slate-900" x-text="filteredTrainingsCount"></span>
-            <span class="text-sm text-slate-500">
-              / <span x-text="allTrainings.length"></span> Trainings
-            </span>
-          </div>
-
-          <!-- Status Badges Group -->
-          <div class="flex items-center gap-2">
-            <!-- Active Filters Badge -->
-            <div
-              x-show="hasActiveFilters"
-              x-transition
-              class="flex items-center gap-1.5 px-2.5 py-1 bg-primary-50 text-primary-700 border border-primary-200 rounded-md text-xs font-medium whitespace-nowrap"
-            >
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                />
-              </svg>
-              Filter aktiv
-            </div>
-
-            <!-- Favorites Badge -->
-            <div
-              x-show="favorites.length > 0"
-              x-transition
-              class="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-md text-xs font-medium whitespace-nowrap"
-            >
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                <path
-                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                />
-              </svg>
-              <span x-text="favorites.length"></span> Favoriten
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Section: Controls & Actions -->
-        <div class="flex items-center gap-3 flex-shrink-0">
-          <!-- Sort & Group Controls (only in list view) - Compact Design -->
-          <div
-            x-show="!loading && !error && $store.ui.activeView === 'list'"
-            x-transition
-            class="flex items-center gap-2 px-2 py-1 bg-slate-50 rounded-lg border border-slate-200"
-          >
-            <!-- Sort Controls - More compact -->
-            <div class="flex items-center gap-0.5" role="group" aria-label="Sortierung">
-              <span class="text-xs font-medium text-slate-600 mr-1">Sort:</span>
-              <!-- Sort by Weekday -->
-              <button
-                @click="$store.ui.sortBy = ['wochentag', 'ort', 'uhrzeit', 'training']"
-                :class="$store.ui.sortBy[0] === 'wochentag' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'wochentag'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Wochentag sortieren"
-                title="Wochentag"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </button>
-
-              <!-- Sort by Location -->
-              <button
-                @click="$store.ui.sortBy = ['ort', 'wochentag', 'uhrzeit', 'training']"
-                :class="$store.ui.sortBy[0] === 'ort' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'ort'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Ort sortieren"
-                title="Ort"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
-
-              <!-- Sort by Time -->
-              <button
-                @click="$store.ui.sortBy = ['uhrzeit', 'wochentag', 'ort', 'training']"
-                :class="$store.ui.sortBy[0] === 'uhrzeit' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'uhrzeit'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Uhrzeit sortieren"
-                title="Zeit"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
-
-              <!-- Sort by Training Type -->
-              <button
-                @click="$store.ui.sortBy = ['training', 'wochentag', 'ort', 'uhrzeit']"
-                :class="$store.ui.sortBy[0] === 'training' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'training'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Training sortieren"
-                title="Training"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </button>
-            </div>
-
-            <!-- Divider -->
-            <div class="h-5 w-px bg-slate-300" aria-hidden="true"></div>
-
-            <!-- Group Controls - More compact -->
-            <div class="flex items-center gap-0.5" role="group" aria-label="Gruppierung">
-              <span class="text-xs font-medium text-slate-600 mr-1">Group:</span>
-              <!-- Group by Weekday -->
-              <button
-                @click="$store.ui.groupingMode = 'wochentag'"
-                :class="$store.ui.groupingMode === 'wochentag' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.groupingMode === 'wochentag'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Wochentag gruppieren"
-                title="Nach Wochentag"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 16v2M12 16v2M17 16v2" opacity="0.5" />
-                </svg>
-              </button>
-
-              <!-- Group by Location -->
-              <button
-                @click="$store.ui.groupingMode = 'ort'"
-                :class="$store.ui.groupingMode === 'ort' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.groupingMode === 'ort'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Ort gruppieren"
-                title="Nach Ort"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 11h6M9 13h6" opacity="0.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Divider -->
-          <div class="h-6 w-px bg-slate-300" aria-hidden="true"></div>
-
-          <!-- View Switcher - Refined styling -->
-          <div class="flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200" role="group" aria-label="Ansicht wechseln">
-            <!-- List View -->
-            <button
-              @click="$store.ui.activeView = 'list'"
-              :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm text-primary-600 border border-slate-200' : 'text-slate-600 border border-transparent'"
-              class="p-1.5 rounded transition-all"
-              type="button"
-              :aria-label="$store.ui.activeView === 'list' ? 'Listenansicht aktiv' : 'Zu Listenansicht wechseln'"
-              :aria-pressed="$store.ui.activeView === 'list'"
-              title="Liste"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-              </svg>
-            </button>
-
-            <!-- Split View -->
-            <button
-              @click="$store.ui.activeView = 'split'"
-              :class="$store.ui.activeView === 'split' ? 'bg-white shadow-sm text-primary-600 border border-slate-200' : 'text-slate-600 border border-transparent'"
-              class="p-1.5 rounded transition-all"
-              type="button"
-              :aria-label="$store.ui.activeView === 'split' ? 'Geteilte Ansicht aktiv' : 'Zu geteilter Ansicht wechseln'"
-              :aria-pressed="$store.ui.activeView === 'split'"
-              title="Geteilt"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 4H5a2 2 0 00-2 2v14a2 2 0 002 2h4M9 4v16M9 4h6m-6 16h6m0-16h4a2 2 0 012 2v14a2 2 0 01-2 2h-4m0-16v16"/>
-              </svg>
-            </button>
-
-            <!-- Map View -->
-            <button
-              @click="$store.ui.activeView = 'map'"
-              :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm text-primary-600 border border-slate-200' : 'text-slate-600 border border-transparent'"
-              class="p-1.5 rounded transition-all"
-              type="button"
-              :aria-label="$store.ui.activeView === 'map' ? 'Kartenansicht aktiv' : 'Zu Kartenansicht wechseln'"
-              :aria-pressed="$store.ui.activeView === 'map'"
-              title="Karte"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Overflow Menu -->
-          <div class="relative" @click.outside="desktopMenuOpen = false" @keydown.escape="desktopMenuOpen = false">
-            <button
-              @click="desktopMenuOpen = !desktopMenuOpen"
-              type="button"
-              aria-label="Weitere Optionen"
-              :aria-expanded="desktopMenuOpen"
-              aria-haspopup="menu"
-              class="relative p-2 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200"
-            >
-              <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
-              </svg>
-              <span
-                x-show="$store.ui.manualLocationSet"
-                class="absolute top-0 right-0 w-2 h-2 bg-primary-500 rounded-full ring-1 ring-white"
-                aria-hidden="true"
-              ></span>
-            </button>
-
-            <!-- Dropdown Menu -->
-            <div
-              x-show="desktopMenuOpen"
-              x-transition:enter="transition ease-out duration-200"
-              x-transition:enter-start="opacity-0 scale-95"
-              x-transition:enter-end="opacity-100 scale-100"
-              x-transition:leave="transition ease-in duration-150"
-              x-transition:leave-start="opacity-100 scale-100"
-              x-transition:leave-end="opacity-0 scale-95"
-              class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-1 z-50"
-              role="menu"
-            >
-              <!-- Export Section -->
-              <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Export</div>
-              <button
-                @click="exportAllToCalendar(); desktopMenuOpen = false"
-                :disabled="filteredTrainingsCount === 0"
-                type="button"
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                <span>Als ICS exportieren</span>
-              </button>
-              <button
-                @click="window.print(); desktopMenuOpen = false"
-                type="button"
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                </svg>
-                <span>Drucken</span>
-              </button>
-              <template x-if="favorites.length > 0">
-                <button
-                  @click="exportFavoritesToCalendar(); desktopMenuOpen = false"
-                  type="button"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                  </svg>
-                  <span>Favoriten exportieren</span>
-                </button>
-              </template>
-
-              <div class="border-t border-slate-200 my-1"></div>
-
-              <!-- Settings Section -->
-              <div class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Einstellungen</div>
-              <button
-                @click="enableGeolocation(); desktopMenuOpen = false"
-                :disabled="!('geolocation' in navigator)"
-                type="button"
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <span>Standort aktivieren</span>
-              </button>
-              <template x-if="$store.ui.manualLocationSet">
-                <button
-                  @click="clearManualLocation(); desktopMenuOpen = false"
-                  type="button"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                  </svg>
-                  <span>Standort zurücksetzen</span>
-                </button>
-              </template>
-
-              <div class="border-t border-slate-200 my-1"></div>
-
-              <!-- Dark Mode Toggle -->
-              <div class="px-4 py-2.5">
-                <div class="flex items-center justify-between gap-3">
-                  <div class="flex items-center gap-2 text-sm text-slate-700">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                    </svg>
-                    <span>Dark Mode</span>
-                  </div>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" x-model="$store.ui.darkMode" class="sr-only peer">
-                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <div class="flex">
         <!-- ==================== DESKTOP FILTER SIDEBAR ==================== -->
         <aside
@@ -960,12 +566,6 @@
             <!-- Header -->
             <div class="flex items-start justify-between mb-6">
               <div>
-                <img
-                  src="/fam-logo-dark.svg"
-                  alt="Free Arts of Movement"
-                  class="h-8 w-auto mb-2"
-                  aria-label="FAM Logo"
-                />
                 <h2 class="text-2xl font-bold text-primary-600 mb-1">Trainingsplan</h2>
                 <p class="text-sm text-slate-700">
                   <span x-text="allTrainings.length"></span> Trainings verfügbar
@@ -1542,8 +1142,358 @@
           </div>
         </aside>
 
+        <!-- Floating Expand Button (visible when sidebar collapsed) -->
+        <button
+          x-show="$store.ui.sidebarCollapsed"
+          x-transition
+          @click="$store.ui.toggleSidebar()"
+          type="button"
+          data-testid="sidebar-expand-toggle"
+          aria-label="Filter ausklappen"
+          class="hidden lg:block fixed left-4 top-20 z-50 p-3 bg-white hover:bg-slate-50 rounded-full transition-all"
+          style="
+            box-shadow:
+              0 4px 12px 0 oklch(0 0 0 / 0.15),
+              0 2px 4px 0 oklch(0 0 0 / 0.1);
+          "
+        >
+          <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+
         <!-- ==================== MAIN CONTENT ==================== -->
         <main class="flex-1 min-w-0" id="main-content">
+          <!-- ==================== GLOBAL ACTIONS TOOLBAR (NEU!) ==================== -->
+          <div
+            class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm"
+          >
+            <div class="px-4 lg:px-6 py-3">
+              <div class="flex items-center justify-between gap-4 flex-wrap">
+                <!-- Left: Results Info & View Controls -->
+                <div class="flex items-center gap-3 flex-wrap">
+                  <!-- Filter Button (Mobile Only) - Opens Filter Drawer from Left -->
+                  <button
+                    @click="$store.ui.mobileFilterOpen = true"
+                    type="button"
+                    class="lg:hidden relative p-2.5 hover:bg-slate-200 rounded-lg transition-colors min-w-[44px] min-h-[44px] touch-manipulation flex items-center justify-center"
+                    aria-label="Filter öffnen"
+                  >
+                    <svg
+                      class="w-5 h-5 text-slate-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                      />
+                    </svg>
+                    <span
+                      x-show="hasActiveFilters"
+                      class="absolute top-1 right-1 w-2 h-2 bg-primary-500 rounded-full ring-1 ring-slate-100"
+                    ></span>
+                  </button>
+
+                  <!-- Results Count -->
+                  <h2 class="text-lg font-semibold text-slate-900">
+                    <span x-text="filteredTrainingsCount"></span>
+                    <span class="text-sm text-slate-700">
+                      von <span x-text="allTrainings.length"></span> Trainings
+                    </span>
+                  </h2>
+
+                  <!-- Active Filters Badge -->
+                  <div
+                    x-show="hasActiveFilters"
+                    x-transition
+                    class="flex items-center gap-2 px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-medium"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                      />
+                    </svg>
+                    Filter aktiv
+                  </div>
+
+                  <!-- Favorites Badge -->
+                  <div
+                    x-show="favorites.length > 0"
+                    x-transition
+                    class="flex items-center gap-2 px-3 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs font-medium"
+                  >
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      />
+                    </svg>
+                    <span x-text="favorites.length"></span> Favoriten
+                  </div>
+                </div>
+
+                <!-- Right: Action Buttons -->
+                <div class="flex items-center gap-2">
+                  <!-- Dark Mode Toggle (Desktop only - Mobile has icon in header) -->
+                  <div
+                    class="hidden lg:flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-lg border border-slate-200"
+                  >
+                    <svg
+                      class="w-4 h-4 text-slate-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                      />
+                    </svg>
+                    <label class="md-switch">
+                      <span class="sr-only">Dark Mode umschalten</span>
+                      <input
+                        type="checkbox"
+                        x-model="$store.ui.darkMode"
+                        aria-label="Dark Mode umschalten"
+                        @change="document.documentElement.setAttribute('data-theme', $store.ui.darkMode ? 'dark' : 'light')"
+                      />
+                      <span class="md-switch-track"></span>
+                      <span class="md-switch-thumb"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== SESSION 3: VIEW CONTROL TOOLBAR ==================== -->
+          <div
+            x-show="!loading && !error"
+            class="sticky top-12 lg:top-0 z-20 bg-white border-b border-slate-200 px-4 lg:px-6 py-3"
+          >
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <!-- Left: View Switcher (Kompakt/Split-View/Karte) -->
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-semibold text-slate-700 hidden lg:inline">Ansicht:</span>
+                <div
+                  class="inline-flex rounded-lg bg-slate-100 p-1"
+                  role="group"
+                  aria-label="Ansichtsauswahl"
+                >
+                  <!-- Kompakt (List View) -->
+                  <button
+                    @click="$store.ui.activeView = 'list'"
+                    :class="$store.ui.activeView === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                    class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                    type="button"
+                    aria-label="Kompakte Listenansicht"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
+                    </svg>
+                    <span>Kompakt</span>
+                  </button>
+
+                  <!-- Split-View (Desktop only) -->
+                  <button
+                    @click="$store.ui.activeView = 'split'"
+                    :class="$store.ui.activeView === 'split' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                    class="hidden lg:flex px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] items-center gap-2 touch-manipulation"
+                    type="button"
+                    aria-label="Split-Ansicht mit Liste und Karte"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+                      />
+                    </svg>
+                    <span>Split-View</span>
+                  </button>
+
+                  <!-- Karte -->
+                  <button
+                    @click="$store.ui.activeView = 'map'"
+                    :class="$store.ui.activeView === 'map' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                    class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                    type="button"
+                    aria-label="Vollbild-Kartenansicht"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                      />
+                    </svg>
+                    <span>Karte</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right: Gruppieren & Sortieren -->
+              <div class="flex items-center gap-4 flex-wrap">
+                <!-- Gruppieren nach -->
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-semibold text-slate-700">Gruppieren:</span>
+                  <div class="inline-flex rounded-lg bg-slate-100 p-1" role="group">
+                    <button
+                      @click="$store.ui.groupingMode = 'wochentag'"
+                      :class="$store.ui.groupingMode === 'wochentag' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                      class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                      type="button"
+                      aria-label="Nach Wochentag gruppieren"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>Wochentag</span>
+                    </button>
+                    <button
+                      @click="$store.ui.groupingMode = 'ort'"
+                      :class="$store.ui.groupingMode === 'ort' ? 'bg-white shadow-sm text-primary-600' : 'text-slate-600 hover:text-slate-900'"
+                      class="px-3 py-1.5 rounded-md text-sm font-medium transition-all min-h-[44px] flex items-center gap-2 touch-manipulation"
+                      type="button"
+                      aria-label="Nach Ort gruppieren"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span>Ort</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Sortieren nach Dropdown -->
+                <div class="flex items-center gap-2" x-data="{ sortOpen: false }">
+                  <span class="text-sm font-semibold text-slate-700">Sortieren:</span>
+                  <div class="relative">
+                    <button
+                      @click="sortOpen = !sortOpen"
+                      @click.away="sortOpen = false"
+                      class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-md text-sm font-medium text-slate-700 min-h-[44px] transition-all touch-manipulation"
+                      type="button"
+                      :aria-expanded="sortOpen"
+                      aria-label="Sortierung ändern"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+                        />
+                      </svg>
+                      <span
+                        x-text="
+                        $store.ui.sortBy[0] === 'wochentag' ? 'Standard' :
+                        $store.ui.sortBy[0] === 'uhrzeit' ? 'Nach Uhrzeit' :
+                        $store.ui.sortBy[0] === 'ort' ? 'Nach Standort' :
+                        $store.ui.sortBy[0] === 'training' ? 'Nach Training' : 'Standard'
+                      "
+                        >Standard</span
+                      >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div
+                      x-show="sortOpen"
+                      x-transition
+                      class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-slate-200 py-2 z-30"
+                    >
+                      <button
+                        @click="$store.ui.sortBy = ['wochentag', 'ort', 'uhrzeit', 'training']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Standard</span>
+                        <span class="text-xs text-slate-700">(Tag → Ort → Zeit → Training)</span>
+                      </button>
+                      <button
+                        @click="$store.ui.sortBy = ['uhrzeit', 'wochentag', 'ort', 'training']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Nach Uhrzeit</span>
+                        <span class="text-xs text-slate-700">(Zeit → Tag → Ort)</span>
+                      </button>
+                      <button
+                        @click="$store.ui.sortBy = ['ort', 'wochentag', 'uhrzeit', 'training']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Nach Standort</span>
+                        <span class="text-xs text-slate-700">(Ort → Tag → Zeit)</span>
+                      </button>
+                      <button
+                        @click="$store.ui.sortBy = ['training', 'wochentag', 'ort', 'uhrzeit']; sortOpen = false"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 flex items-center gap-2"
+                        type="button"
+                      >
+                        <span class="font-medium">Nach Training</span>
+                        <span class="text-xs text-slate-700">(Training → Tag → Ort)</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- ==================== AUFGABE 28: SKELETON LOADING STATE ==================== -->
           <!-- Skeleton cards prevent Cumulative Layout Shift (CLS) and improve perceived performance -->
           <div x-show="loading" class="p-4 lg:p-6">
@@ -1552,7 +1502,7 @@
 
             <!-- Skeleton Grid matching actual layout -->
             <div
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-5 lg:gap-6"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6"
             >
               <!-- Skeleton Card 1 -->
               <div class="skeleton-card skeleton" aria-hidden="true">
@@ -1697,17 +1647,17 @@
                     </h2>
 
                     <div
-                      class="grid gap-4 md:gap-5 lg:gap-6"
+                      class="grid gap-5"
                       :class="{
                                    // Split-view: max 2 columns for readability
                                    'grid-cols-1 md:grid-cols-2': $store.ui.activeView === 'split',
-                                   // Normal view: responsive grid with smooth progression
-                                   'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5': $store.ui.activeView !== 'split'
+                                   // Normal view: responsive grid up to 4 columns
+                                   'grid-cols-1 md:grid-cols-2 xl:grid-cols-4': $store.ui.activeView !== 'split'
                                  }"
                     >
                       <template x-for="training in gruppe.items" :key="training.id">
                         <article
-                          class="md-card-elevated md-state-layer p-4 sm:p-5 md:p-6 training-card-stagger w-full max-w-sm mx-auto"
+                          class="md-card-elevated md-state-layer p-5 training-card-stagger min-w-[280px]"
                           data-training-card
                         >
                           <!-- Header mit Favoriten -->
@@ -1763,18 +1713,18 @@
                           <!-- Training Info -->
                           <div class="space-y-3">
                             <div>
-                              <h3 class="text-lg sm:text-xl md:text-2xl font-semibold mb-1 leading-tight" x-text="training.ort"></h3>
-                              <p class="text-sm sm:text-base text-slate-600" x-text="training.wochentag"></p>
+                              <h3 class="md-typescale-title-large mb-1" x-text="training.ort"></h3>
+                              <p class="md-typescale-body-medium" x-text="training.wochentag"></p>
                             </div>
 
                             <dl class="space-y-2">
                               <div
-                                class="flex items-center gap-2 sm:gap-2.5 md:gap-3 text-sm md:text-base text-slate-700"
+                                class="flex items-center gap-2.5 md-typescale-body-medium text-slate-700"
                               >
                                 <dt class="sr-only">Zeit:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
+                                    class="w-4 h-4 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1792,12 +1742,12 @@
                               </div>
 
                               <div
-                                class="flex items-center gap-2 sm:gap-2.5 md:gap-3 text-sm md:text-base text-slate-700"
+                                class="flex items-center gap-2.5 md-typescale-body-medium text-slate-700"
                               >
                                 <dt class="sr-only">Altersgruppe:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
+                                    class="w-4 h-4 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1821,7 +1771,7 @@
                                 <dt class="sr-only">Trainer:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
+                                    class="w-4 h-4 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1845,7 +1795,7 @@
                                 <dt class="sr-only">Entfernung:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+                                    class="w-4 h-4 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -2114,7 +2064,7 @@
               :key="training.id"
             >
               <article
-                class="md-card-elevated md-state-layer p-4 sm:p-5 md:p-6 mb-5 training-card-stagger w-full max-w-sm mx-auto"
+                class="md-card-elevated md-state-layer p-5 mb-5 training-card-stagger"
                 data-training-card
               >
                 <!-- Same training card structure as list view -->
@@ -2965,12 +2915,15 @@
                         return;
                     }
 
-                    // Use GeolocationManager to set manual location with map marker
-                    const trainingsplanerEl = document.querySelector('[x-data]');
-                    const trainingsplanerContext = trainingsplanerEl ? Alpine.$data(trainingsplanerEl) : null;
-                    if (trainingsplanerContext?.setManualLocation) {
-                        trainingsplanerContext.setManualLocation(lat, lng, this.manualAddress);
-                    }
+                    this.$store.ui.manualLocation = { lat, lng };
+                    this.$store.ui.manualLocationAddress = this.manualAddress;
+                    this.$store.ui.manualLocationSet = true;
+                    localStorage.setItem('manualLocation', JSON.stringify({ lat, lng, address: this.manualAddress }));
+
+                    // Set userPosition to manual location
+                    userPosition = { lat, lng };
+                    addDistanceToTrainings();
+                    applyFilters();
 
                     this.$store.ui.showNotification('Standort gespeichert! 📍', 'success', 2000);
                     this.$store.ui.locationSettingsOpen = false;

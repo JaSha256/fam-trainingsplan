@@ -277,15 +277,6 @@ describe('MapManager', () => {
   describe('addMarkersToMap()', () => {
     beforeEach(() => {
       mockContext.map = mockMap
-      
-      // Mock requestAnimationFrame to execute immediately
-      // CRITICAL FIX: addMarkersToMap() now uses requestAnimationFrame (line 302 in map-manager.js)
-      // for async marker updates (Leaflet best practice - prevents race conditions).
-      // Tests need requestAnimationFrame to execute synchronously.
-      vi.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => {
-        cb()
-        return 0
-      })
     })
 
     it('should return early if no map exists', () => {
@@ -530,15 +521,6 @@ describe('MapManager', () => {
   // ==================== INTEGRATION TESTS ====================
 
   describe('Integration', () => {
-    beforeEach(() => {
-      // Mock requestAnimationFrame to execute immediately for Integration tests
-      // These tests call addMarkersToMap() indirectly via initializeMap()
-      vi.spyOn(global, 'requestAnimationFrame').mockImplementation(cb => {
-        cb()
-        return 0
-      })
-    })
-
     it('should handle complete map lifecycle', () => {
       // Initialize
       mapManager.initializeMap()

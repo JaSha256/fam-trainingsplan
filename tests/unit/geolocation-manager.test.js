@@ -439,6 +439,141 @@ describe('GeolocationManager', () => {
     })
   })
 
+  // ==================== SET MANUAL LOCATION ====================
+
+  describe('setManualLocation()', () => {
+    beforeEach(() => {
+      mockContext.$store.ui.manualLocation = null
+      mockContext.$store.ui.manualLocationAddress = ''
+      mockContext.$store.ui.manualLocationSet = false
+      mockContext.userPosition = null
+      mockContext.map = {
+        removeLayer: vi.fn()
+      }
+    })
+
+    it('should set userPosition to manual location', () => {
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(mockContext.userPosition).toEqual({
+        lat: 48.1351,
+        lng: 11.5820
+      })
+    })
+
+    it('should update Alpine store with manual location', () => {
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(mockContext.$store.ui.manualLocation).toEqual({
+        lat: 48.1351,
+        lng: 11.5820
+      })
+      expect(mockContext.$store.ui.manualLocationAddress).toBe('Munich Center')
+      expect(mockContext.$store.ui.manualLocationSet).toBe(true)
+    })
+
+    it('should save manual location to localStorage', () => {
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(setItemSpy).toHaveBeenCalledWith(
+        'manualLocation',
+        JSON.stringify({
+          lat: 48.1351,
+          lng: 11.5820,
+          address: 'Munich Center'
+        })
+      )
+
+      setItemSpy.mockRestore()
+    })
+
+    it('should add distance to trainings', () => {
+      const addDistanceSpy = vi.spyOn(geolocationManager, 'addDistanceToTrainings')
+
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(addDistanceSpy).toHaveBeenCalled()
+    })
+
+    it('should apply filters after setting location', () => {
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(mockDependencies.applyFilters).toHaveBeenCalled()
+    })
+
+    it('should add user marker to map if map exists', () => {
+      const mockMapManager = {
+        addUserLocationMarker: vi.fn()
+      }
+      geolocationManager.mapManager = mockMapManager
+
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(mockMapManager.addUserLocationMarker).toHaveBeenCalledWith([48.1351, 11.5820])
+    })
+
+    it('should not add marker if map does not exist', () => {
+      mockContext.map = null
+      const mockMapManager = {
+        addUserLocationMarker: vi.fn()
+      }
+      geolocationManager.mapManager = mockMapManager
+
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(mockMapManager.addUserLocationMarker).not.toHaveBeenCalled()
+    })
+
+    it('should not add marker if mapManager is not available', () => {
+      geolocationManager.mapManager = null
+
+      // Should not throw error
+      expect(() => {
+        geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+      }).not.toThrow()
+    })
+
+    it('should handle address parameter as optional (default empty string)', () => {
+      geolocationManager.setManualLocation(48.1351, 11.5820)
+
+      expect(mockContext.$store.ui.manualLocationAddress).toBe('')
+    })
+
+    it('should work with negative coordinates', () => {
+      geolocationManager.setManualLocation(-33.8688, 151.2093, 'Sydney')
+
+      expect(mockContext.userPosition).toEqual({
+        lat: -33.8688,
+        lng: 151.2093
+      })
+    })
+
+    it('should handle zero coordinates', () => {
+      geolocationManager.setManualLocation(0, 0, 'Null Island')
+
+      expect(mockContext.userPosition).toEqual({
+        lat: 0,
+        lng: 0
+      })
+    })
+
+    it('should update trainings with distance after manual location', () => {
+      const trainingsWithDistance = [
+        { ...mockTrainings[0], distance: 2.5 },
+        { ...mockTrainings[1], distance: 1.2 }
+      ]
+
+      vi.spyOn(utils, 'addDistanceToTrainings').mockReturnValue(trainingsWithDistance)
+
+      geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
+
+      expect(mockContext.allTrainings[0].distance).toBe(2.5)
+      expect(mockContext.allTrainings[0].distanceText).toBe('2.5 km')
+    })
+  })
+
   // ==================== EDGE CASES ====================
 
   describe('Edge Cases', () => {

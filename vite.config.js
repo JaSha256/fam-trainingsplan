@@ -244,7 +244,7 @@ export default defineConfig({
             '@alpinejs/persist'
           ],
           'vendor-utils': ['fuse.js'],
-          'vendor-map': ['leaflet']
+          'vendor-map': ['leaflet', 'leaflet.markercluster']
         },
 
         assetFileNames: assetInfo => {
