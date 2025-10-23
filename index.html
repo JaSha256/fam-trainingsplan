@@ -1502,7 +1502,7 @@
 
             <!-- Skeleton Grid matching actual layout -->
             <div
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6"
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-5 lg:gap-6"
             >
               <!-- Skeleton Card 1 -->
               <div class="skeleton-card skeleton" aria-hidden="true">
@@ -1647,17 +1647,17 @@
                     </h2>
 
                     <div
-                      class="grid gap-5"
+                      class="grid gap-4 md:gap-5 lg:gap-6"
                       :class="{
                                    // Split-view: max 2 columns for readability
                                    'grid-cols-1 md:grid-cols-2': $store.ui.activeView === 'split',
-                                   // Normal view: responsive grid up to 4 columns
-                                   'grid-cols-1 md:grid-cols-2 xl:grid-cols-4': $store.ui.activeView !== 'split'
+                                   // Normal view: responsive grid with smooth progression
+                                   'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5': $store.ui.activeView !== 'split'
                                  }"
                     >
                       <template x-for="training in gruppe.items" :key="training.id">
                         <article
-                          class="md-card-elevated md-state-layer p-5 training-card-stagger min-w-[280px]"
+                          class="md-card-elevated md-state-layer p-4 sm:p-5 md:p-6 training-card-stagger w-full max-w-sm mx-auto"
                           data-training-card
                         >
                           <!-- Header mit Favoriten -->
@@ -1713,18 +1713,18 @@
                           <!-- Training Info -->
                           <div class="space-y-3">
                             <div>
-                              <h3 class="md-typescale-title-large mb-1" x-text="training.ort"></h3>
-                              <p class="md-typescale-body-medium" x-text="training.wochentag"></p>
+                              <h3 class="text-lg sm:text-xl md:text-2xl font-semibold mb-1 leading-tight" x-text="training.ort"></h3>
+                              <p class="text-sm sm:text-base text-slate-600" x-text="training.wochentag"></p>
                             </div>
 
                             <dl class="space-y-2">
                               <div
-                                class="flex items-center gap-2.5 md-typescale-body-medium text-slate-700"
+                                class="flex items-center gap-2 sm:gap-2.5 md:gap-3 text-sm md:text-base text-slate-700"
                               >
                                 <dt class="sr-only">Zeit:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 text-primary-500 flex-shrink-0"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1742,12 +1742,12 @@
                               </div>
 
                               <div
-                                class="flex items-center gap-2.5 md-typescale-body-medium text-slate-700"
+                                class="flex items-center gap-2 sm:gap-2.5 md:gap-3 text-sm md:text-base text-slate-700"
                               >
                                 <dt class="sr-only">Altersgruppe:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 text-primary-500 flex-shrink-0"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1771,7 +1771,7 @@
                                 <dt class="sr-only">Trainer:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 text-primary-500 flex-shrink-0"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1795,7 +1795,7 @@
                                 <dt class="sr-only">Entfernung:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 flex-shrink-0"
+                                    class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -2064,7 +2064,7 @@
               :key="training.id"
             >
               <article
-                class="md-card-elevated md-state-layer p-5 mb-5 training-card-stagger"
+                class="md-card-elevated md-state-layer p-4 sm:p-5 md:p-6 mb-5 training-card-stagger w-full max-w-sm mx-auto"
                 data-training-card
               >
                 <!-- Same training card structure as list view -->
