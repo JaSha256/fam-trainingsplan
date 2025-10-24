@@ -50,4 +50,4 @@ jobs:
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'deploy: Update GitHub Pages from ${{ github.sha }}'
           keep_files: true
-          exclude_assets: 'trainingsplan.json'
+          exclude_assets: 'trainingsplan.json,version.json'
