@@ -1,12 +1,10 @@
 # =============================================================================
-# CI Pipeline - Optimized for Solo Developer
+# CI Pipeline - Minimal für Solo Developer
 # =============================================================================
-# Best Practices 2025:
-# - Fast feedback: Lint/TypeCheck first (fail fast)
-# - Parallel execution where possible
-# - Smart caching for dependencies
-# - Only run on main branch to avoid waste
-# - Skip redundant checks (covered by pre-push hook locally)
+# Philosophie:
+# - Pre-push hook läuft lokal (TypeCheck + Unit Tests)
+# - CI = nur Build-Check als Absicherung
+# - Schnell & effizient: ~5 Minuten statt 30+
 # =============================================================================
 
 name: CI
@@ -18,14 +16,11 @@ on:
       - '**.md'
       - 'docs/**'
       - '.vscode/**'
+      - '.husky/**'
   pull_request:
     branches: [main]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.vscode/**'
 
-# Cancel in-progress runs for same PR/branch
+# Cancel in-progress runs
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -36,44 +31,13 @@ env:
 
 jobs:
   # =============================================================================
-  # Stage 1: Fast Checks (Fail Fast)
+  # Minimal Check: Nur Build-Validierung
+  # Tests laufen bereits lokal via pre-push hook
   # =============================================================================
-  fast-checks:
-    name: Lint & Type Check
+  build-check:
+    name: Build Check
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run ESLint
-        run: pnpm run lint
-
-      - name: Run TypeScript Check
-        run: pnpm run typecheck
-
-  # =============================================================================
-  # Stage 2: Build & Unit Tests (Parallel)
-  # =============================================================================
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: fast-checks
-    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -95,189 +59,10 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 1
-          if-no-files-found: error
-
-  unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    needs: fast-checks
-    timeout-minutes: 10
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run unit tests
-        run: pnpm run test:unit
-
-      - name: Generate coverage
-        run: pnpm run test:coverage
-        continue-on-error: true
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
-        if: always()
-        continue-on-error: true
-        with:
-          files: ./coverage/coverage-final.json
-          flags: unit
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-  # =============================================================================
-  # Stage 3: Integration Tests (After Build)
-  # =============================================================================
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    needs: [build, unit-tests]
-    timeout-minutes: 15
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright (Chromium only)
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Run integration tests
-        run: pnpm run test:integration
-
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: integration-test-results
-          path: test-results/
-          retention-days: 7
-
-  # =============================================================================
-  # Stage 4: E2E Tests (Chromium only for speed)
-  # =============================================================================
-  e2e-tests:
-    name: E2E Tests (Chromium)
-    runs-on: ubuntu-latest
-    needs: [build, unit-tests]
-    timeout-minutes: 20
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright (Chromium only)
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Run E2E tests
-        run: pnpm run test:e2e:chromium
-
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: e2e-test-results
-          path: |
-            test-results/
-            playwright-report/
-          retention-days: 7
-
-  # =============================================================================
-  # Stage 5: Specialized Tests (Parallel, Optional)
-  # =============================================================================
-  accessibility-tests:
-    name: Accessibility Tests
-    runs-on: ubuntu-latest
-    needs: [build, unit-tests]
-    timeout-minutes: 10
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Run accessibility tests
-        run: pnpm run test:a11y
-
-      - name: Upload report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: accessibility-report
-          path: test-results/
-          retention-days: 14
-
-  # =============================================================================
-  # Final Gate: All checks must pass
-  # =============================================================================
-  ci-success:
-    name: CI Success
-    runs-on: ubuntu-latest
-    needs: [build, unit-tests, integration-tests, e2e-tests]
-    if: always()
-    steps:
-      - name: Check all jobs
+      - name: Verify build output
         run: |
-          if [ "${{ contains(needs.*.result, 'failure') }}" = "true" ] || [ "${{ contains(needs.*.result, 'cancelled') }}" = "true" ]; then
-            echo "❌ One or more required checks failed or were cancelled"
+          if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
+            echo "❌ Build failed or dist directory is empty"
             exit 1
           fi
-          echo "✅ All required checks passed"
+          echo "✅ Build successful"

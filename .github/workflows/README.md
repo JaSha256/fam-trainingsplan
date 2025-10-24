@@ -1,12 +1,12 @@
 # GitHub Actions Workflows
 
-**Production-Ready CI/CD Pipeline für Solo Developer**
+**Minimal CI/CD für Solo Developer**
 
-Optimiert nach Best Practices 2025 mit Fokus auf:
-- **Fast Feedback Loop**: Schnelle Tests zuerst, langsame später
-- **Resource Efficiency**: Parallele Ausführung, Smart Caching
-- **No Infinite Loops**: GITHUB_TOKEN + [skip ci] Pattern
-- **Local-First**: Pre-push Hook verhindert CI-Failures
+Philosophie:
+- **Local-First**: Tests laufen lokal via pre-push hook
+- **CI = Safety Net**: Nur Build-Check als Absicherung
+- **Ultra-Fast**: ~5 Minuten statt 30+
+- **No Infinite Loops**: GITHUB_TOKEN + [skip ci]
 
 ---
 
@@ -16,43 +16,23 @@ Optimiert nach Best Practices 2025 mit Fokus auf:
 
 **Trigger:** Push/PR auf `main` Branch
 
-**Pipeline Stages:**
-
+**Was läuft:**
 ```
-Stage 1: Fast Checks (5 min)
-└── Lint & TypeCheck (fail fast)
-
-Stage 2: Build & Unit Tests (Parallel, 10 min)
-├── Build → dist artifacts
-└── Unit Tests → Coverage
-
-Stage 3: Integration Tests (15 min)
-└── Integration Tests (Chromium)
-
-Stage 4: E2E Tests (20 min)
-└── E2E Tests (Chromium only)
-
-Stage 5: Specialized Tests (Parallel, optional)
-└── Accessibility Tests (can fail without blocking)
-
-Final Gate: CI Success
-└── All required checks must pass
+Build Check (~5 min)
+└── pnpm install + build + verify
 ```
+
+**Warum so minimal?**
+- ✅ TypeCheck läuft bereits lokal (pre-push hook)
+- ✅ Unit Tests laufen bereits lokal (pre-push hook)
+- ✅ Infrastructure Tests laufen bereits lokal (pre-push hook)
+- → CI nur noch als **finale Absicherung** dass Build funktioniert
 
 **Features:**
-- ✅ Fail-Fast: Lint/TypeCheck first
-- ✅ Parallel Execution: Build + Unit Tests gleichzeitig
-- ✅ Smart Caching: pnpm dependencies cached
-- ✅ Chromium Only: Schneller als Multi-Browser
-- ✅ Timeout Protection: Alle Jobs mit Timeouts
-- ✅ Artifact Upload: Nur bei Failures
+- ✅ Ultra-Fast: ~5 Minuten
+- ✅ Smart Caching: pnpm dependencies
 - ✅ Concurrency: Cancel in-progress runs
-
-**Resourcen-Optimierung:**
-- Keine redundanten Tests (bereits durch pre-push hook lokal)
-- Nur Chromium statt 3 Browser = 60% schneller
-- Upload nur bei Failures = weniger Storage
-- retention-days: 1-14 Tage statt default 90
+- ✅ Minimal: Nur was nötig ist
 
 ---
 
@@ -60,64 +40,18 @@ Final Gate: CI Success
 
 **Trigger:** Nur manuell via `workflow_dispatch`
 
-**Pipeline:**
-
+**Was läuft:**
 ```
-Deploy (10 min)
-├── Checkout
-├── Install Dependencies (cached)
-├── Build Production
-└── Deploy to GitHub Pages (gh-pages branch)
+Deploy (~5 min)
+├── pnpm install + build
+└── Deploy to gh-pages
 ```
 
 **Features:**
-- ✅ Manual Only: Kontrolliertes Deployment
-- ✅ No Tests: Vertrauen in CI + pre-push hook
-- ✅ [skip ci] Tag: Verhindert Endlosschleifen
-- ✅ keep_files: Erhält trainingsplan.json
-- ✅ Deployment Summary: Direktes Feedback im UI
-- ✅ Concurrency Protection: Keine parallelen Deployments
-
-**Anti-Loop Mechanismus:**
-```yaml
-commit_message: 'deploy: ${{ github.sha }} [skip ci]'
-github_token: ${{ secrets.GITHUB_TOKEN }}  # nicht PAT!
-```
-
----
-
-## Best Practices umgesetzt
-
-### 1. Prevent Infinite Loops ✅
-- GITHUB_TOKEN statt Personal Access Token
-- [skip ci] in commit messages
-- No push triggers auf gh-pages
-
-### 2. Fast Feedback ✅
-- Fail-Fast: Lint/TypeCheck vor allen anderen
-- Parallel Jobs wo möglich
-- Chromium-only für Speed
-
-### 3. Resource Efficiency ✅
-- Smart Dependency Caching (pnpm)
-- Kurze Artifact Retention (1-14 Tage)
-- Upload nur bei Failures
-- Timeouts für alle Jobs
-
-### 4. Local-First Development ✅
-```bash
-# Pre-push Hook (.husky/pre-push)
-├── TypeScript Check
-├── Unit Tests
-└── Infrastructure Tests
-```
-→ CI läuft nur bei erfolgreichen lokalen Tests
-
-### 5. Solo Developer Optimierungen ✅
-- Kein Matrix Build (1 Browser statt 3)
-- Keine Cross-Platform Tests (Linux only)
-- Manual Deployment (kein Auto-Deploy)
-- Minimal aber vollständig
+- ✅ Manual Only: Du entscheidest wann
+- ✅ [skip ci]: Keine Loops
+- ✅ keep_files: trainingsplan.json bleibt erhalten
+- ✅ Fast: ~5 Minuten
 
 ---
 
@@ -125,106 +59,44 @@ github_token: ${{ secrets.GITHUB_TOKEN }}  # nicht PAT!
 
 ### CI Pipeline
 ```bash
-# Automatisch bei Push auf main
-git push origin main
-
-# Tests laufen bereits lokal via pre-push hook
-# CI = Final validation + Integration/E2E Tests
+git push origin main  # Läuft automatisch
 ```
 
 ### Deployment
 ```bash
 # GitHub UI: Actions → Deploy → Run workflow
-# Oder via CLI:
-gh workflow run deploy.yml
-```
-
-### Monitoring
-```bash
-# Aktuelle Workflows
-gh run list
-
-# Workflow Status
-gh run view
-
-# Logs anzeigen
-gh run view --log
+gh workflow run deploy.yml  # via CLI
 ```
 
 ---
 
-## Entfernte redundante Workflows
+## Warum so minimal?
 
-- ❌ `tests.yml` - Komplett redundant zu `ci.yml`
-- ❌ `visual-regression.yml` - Nicht aktiv genutzt
+**Alte Pipeline:** 30-40 min/Push
+**Neue Pipeline:** ~5 min/Push
 
-**Konsolidierung = Einfachheit = Wartbarkeit**
+**Grund:**
+- Pre-push hook macht bereits: TypeCheck + Unit Tests + Infrastructure Tests
+- CI = nur noch Build-Check als Sicherheitsnetz
+- Kein Overkill für Solo-Projekt
 
----
-
-## Pipeline-Diagramm
-
-```mermaid
-graph TB
-    A[Push to main] --> B{CI Pipeline}
-    B --> C[Fast Checks<br/>5 min]
-    C --> D[Build]
-    C --> E[Unit Tests]
-    D --> F[Integration Tests]
-    E --> F
-    F --> G[E2E Tests]
-    G --> H[A11y Tests<br/>optional]
-    H --> I{All Pass?}
-    I -->|Yes| J[✅ CI Success]
-    I -->|No| K[❌ CI Failed]
-
-    L[Manual Trigger] --> M{Deploy}
-    M --> N[Build Production]
-    N --> O[Deploy to gh-pages]
-    O --> P[✅ Live]
-```
-
----
-
-## Troubleshooting
-
-### Problem: Zu viele Actions laufen
-**Lösung:**
-- Push nur auf `main` branch
-- PRs in eigenen Branches
-- Nutze `concurrency` um alte Runs zu canceln
-
-### Problem: Deployment Loop
-**Lösung:**
-- Verwende `GITHUB_TOKEN` (nicht PAT)
-- Checke `[skip ci]` im commit message
-- Nur manual trigger für deploy
-
-### Problem: Tests zu langsam
-**Lösung:**
-- Läuft bereits optimiert (Chromium only)
-- Bei Bedarf: E2E Tests optional machen
-- Oder: Weitere Tests in pre-push hook
-
----
-
-## Metriken
-
-**CI Pipeline:**
-- ⏱️ Fast Checks: ~5 min
-- ⏱️ Full Pipeline: ~20-30 min
-- 💰 GitHub Actions Minutes: ~30-40 min/push
-
-**Deploy Pipeline:**
-- ⏱️ Build + Deploy: ~10 min
-- 💰 GitHub Actions Minutes: ~10 min/deployment
-
-**Gesamt (typischer Workflow):**
-- 1 Push = 30-40 min CI
-- 1 Deploy/Woche = 10 min
-- **~120-200 min/Monat** bei aktivem Development
+**Resource Usage:**
+- ~5-10 min/Monat (bei aktivem Development)
 - Free Tier: 2000 min/Monat ✅
+- **Mehr als genug!**
 
 ---
 
-**Designed with ❤️ for Solo Developers**
+## Anti-Loop Mechanismus
+
+```yaml
+# deploy.yml
+commit_message: 'deploy: ${{ github.sha }} [skip ci]'
+github_token: ${{ secrets.GITHUB_TOKEN }}  # nicht PAT!
+```
+
+→ Keine Endlosschleifen mehr!
+
+---
+
+**Minimal, aber effektiv für Solo Developer**

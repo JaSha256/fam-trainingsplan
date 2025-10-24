@@ -1,30 +1,18 @@
 # =============================================================================
-# Deploy Pipeline - Production Deployment to GitHub Pages
+# Deploy - Manual Deployment to GitHub Pages
 # =============================================================================
-# Best Practices 2025:
-# - Manual trigger only (workflow_dispatch) for controlled deployments
-# - Uses GITHUB_TOKEN to prevent infinite loops
-# - Fast-only: No tests (covered by CI + pre-push hook)
-# - Preserves user data (trainingsplan.json) with keep_files
-# - Clear deployment messages with commit SHA tracking
+# - Manual trigger only
+# - [skip ci] prevents infinite loops
+# - Fast: ~5 minutes
 # =============================================================================
 
 name: Deploy
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment environment'
-        required: false
-        default: 'production'
-        type: choice
-        options:
-          - production
 
-# Prevent concurrent deployments
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy
   cancel-in-progress: false
 
 env:
@@ -33,22 +21,14 @@ env:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: write
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -61,16 +41,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build for production
-        run: pnpm run build
-        env:
-          NODE_ENV: production
+      - name: Install & Build
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -80,13 +56,3 @@ jobs:
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'deploy: ${{ github.sha }} [skip ci]'
           keep_files: true
-          exclude_assets: ''
-
-      - name: Deployment Summary
-        run: |
-          echo "## Deployment Successful ✅" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Deployed to:** gh-pages" >> $GITHUB_STEP_SUMMARY
-          echo "- **URL:** https://jasha256.github.io/fam-trainingsplan/" >> $GITHUB_STEP_SUMMARY
