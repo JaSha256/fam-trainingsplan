@@ -147,7 +147,9 @@ export class MapManager {
   applyLeafletRaceConditionFix() {
     // Fix for Markers
     // Type definitions for internal APIs: src/types/leaflet-internals.d.ts
-    L.Marker.prototype._animateZoom = function (/** @type {{zoom: number, center: L.LatLng}} */ opt) {
+    L.Marker.prototype._animateZoom = function (
+      /** @type {{zoom: number, center: L.LatLng}} */ opt
+    ) {
       if (!this._map) {
         return // Map reference lost - skip animation
       }
@@ -169,7 +171,9 @@ export class MapManager {
     // Fix for Tooltips (if present)
     // Type definitions for internal APIs: src/types/leaflet-internals.d.ts
     if (L.Tooltip && L.Tooltip.prototype._animateZoom) {
-      L.Tooltip.prototype._animateZoom = function (/** @type {{zoom: number, center: L.LatLng}} */ e) {
+      L.Tooltip.prototype._animateZoom = function (
+        /** @type {{zoom: number, center: L.LatLng}} */ e
+      ) {
         if (!this._map) {
           return // Map reference lost - skip animation
         }
@@ -179,7 +183,10 @@ export class MapManager {
       }
     }
 
-    log('info', 'Leaflet race condition fix applied (Marker, Popup, Tooltip _animateZoom overrides)')
+    log(
+      'info',
+      'Leaflet race condition fix applied (Marker, Popup, Tooltip _animateZoom overrides)'
+    )
   }
 
   /**
@@ -326,7 +333,10 @@ export class MapManager {
       updateWhenIdle: true, // Leaflet default (mobile optimized) - updates after pan/zoom complete
       updateInterval: 200, // Leaflet default (balanced performance) - throttle tile requests
       keepBuffer: 3, // Keep extra tiles cached for smoother panning
-      bounds: /** @type {L.LatLngBoundsLiteral} */ ([[47.9, 11.3], [48.3, 11.9]]), // Munich area bounds
+      bounds: /** @type {L.LatLngBoundsLiteral} */ ([
+        [47.9, 11.3],
+        [48.3, 11.9]
+      ]), // Munich area bounds
       errorTileUrl: '',
       // updateWhenZooming removed - Leaflet default (false) prevents tile flickering during zoom
       noWrap: false
@@ -593,9 +603,7 @@ export class MapManager {
 
       // Bind appropriate popup (single or multi-training)
       const popupHTML =
-        trainingCount > 1
-          ? createLocationPopupHTML(trainings)
-          : this.createMapPopup(trainings[0])
+        trainingCount > 1 ? createLocationPopupHTML(trainings) : this.createMapPopup(trainings[0])
 
       marker.bindPopup(popupHTML, {
         maxWidth: trainingCount > 1 ? 450 : 400,

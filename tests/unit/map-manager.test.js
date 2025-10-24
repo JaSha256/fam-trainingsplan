@@ -10,11 +10,47 @@ vi.mock('leaflet', () => {
   const mockMarker = vi.fn()
   const mockTileLayer = vi.fn()
   const mockMarkerClusterGroup = vi.fn()
+  const mockLatLngBounds = vi.fn()
+
+  // Mock Marker class with prototype
+  const mockMarkerClass = function (...args) {
+    return mockMarker(...args)
+  }
+  mockMarkerClass.prototype = {
+    _animateZoom: vi.fn(),
+    _setPos: vi.fn(),
+    _latlng: null,
+    _map: null
+  }
+
+  // Mock Popup class with prototype
+  const mockPopupClass = function (...args) {
+    return { ...args }
+  }
+  mockPopupClass.prototype = {
+    _animateZoom: vi.fn(),
+    _getAnchor: vi.fn(() => ({ x: 0, y: 0 })),
+    _container: null,
+    _latlng: null,
+    _map: null
+  }
+
+  // Mock Tooltip class with prototype (if exists)
+  const mockTooltipClass = function (...args) {
+    return { ...args }
+  }
+  mockTooltipClass.prototype = {
+    _animateZoom: vi.fn(),
+    _getAnchor: vi.fn(() => ({ x: 0, y: 0 })),
+    _container: null,
+    _latlng: null,
+    _map: null
+  }
 
   // Mock Control class for custom controls
   const mockControl = {
-    extend: vi.fn((options) => {
-      return function() {
+    extend: vi.fn(options => {
+      return function () {
         return {
           onAdd: options.onAdd || vi.fn(),
           onRemove: options.onRemove || vi.fn(),
@@ -31,21 +67,29 @@ vi.mock('leaflet', () => {
     default: {
       map: mockMap,
       marker: mockMarker,
+      Marker: mockMarkerClass,
+      Popup: mockPopupClass,
+      Tooltip: mockTooltipClass,
       tileLayer: mockTileLayer,
       markerClusterGroup: mockMarkerClusterGroup,
+      latLngBounds: mockLatLngBounds,
       Control: mockControl,
       Icon: { Default: mockIconDefault },
       point: vi.fn((x, y) => ({ x, y })),
-      divIcon: vi.fn((options) => options)
+      divIcon: vi.fn(options => options)
     },
     map: mockMap,
     marker: mockMarker,
+    Marker: mockMarkerClass,
+    Popup: mockPopupClass,
+    Tooltip: mockTooltipClass,
     tileLayer: mockTileLayer,
     markerClusterGroup: mockMarkerClusterGroup,
+    latLngBounds: mockLatLngBounds,
     Control: mockControl,
     Icon: { Default: mockIconDefault },
     point: vi.fn((x, y) => ({ x, y })),
-    divIcon: vi.fn((options) => options)
+    divIcon: vi.fn(options => options)
   }
 })
 
@@ -60,7 +104,7 @@ vi.mock('../../src/js/trainingsplaner/map-controls.js', () => ({
 vi.mock('../../src/js/trainingsplaner/map-utils.js', () => ({
   getOptimalClusterRadius: vi.fn(() => 80),
   getOptimalSpiderfyMultiplier: vi.fn(() => 1),
-  groupTrainingsByLocation: vi.fn((trainings) => {
+  groupTrainingsByLocation: vi.fn(trainings => {
     const map = new Map()
     trainings.forEach(t => {
       if (t.lat && t.lng) {
@@ -73,8 +117,10 @@ vi.mock('../../src/js/trainingsplaner/map-utils.js', () => ({
     })
     return map
   }),
-  createMapPopupHTML: vi.fn((training) => `<div>Popup for ${training.training}</div>`),
-  createLocationPopupHTML: vi.fn((trainings) => `<div>Location with ${trainings.length} trainings</div>`)
+  createMapPopupHTML: vi.fn(training => `<div>Popup for ${training.training}</div>`),
+  createLocationPopupHTML: vi.fn(
+    trainings => `<div>Location with ${trainings.length} trainings</div>`
+  )
 }))
 
 // Import Leaflet after mock
@@ -132,7 +178,7 @@ describe('MapManager', () => {
       on: vi.fn(),
       off: vi.fn(),
       stop: vi.fn(),
-      eachLayer: vi.fn((callback) => {
+      eachLayer: vi.fn(callback => {
         // Call callback for any layers that exist
         if (mockContext.markerClusterGroup) {
           callback(mockContext.markerClusterGroup)
@@ -166,6 +212,14 @@ describe('MapManager', () => {
     L.tileLayer.mockReturnValue(mockTileLayer)
     L.marker.mockReturnValue(mockMarker)
     L.markerClusterGroup.mockReturnValue(mockClusterGroup)
+    L.latLngBounds.mockReturnValue({
+      getBounds: vi.fn(() => [
+        [48.1, 11.5],
+        [48.2, 11.6]
+      ]),
+      pad: vi.fn().mockReturnThis(),
+      extend: vi.fn().mockReturnThis()
+    })
     L.Icon.Default.mockReturnValue({})
 
     // Mock state
@@ -277,7 +331,7 @@ describe('MapManager', () => {
   describe('addMarkersToMap()', () => {
     beforeEach(() => {
       mockContext.map = mockMap
-      
+
       // Mock requestAnimationFrame to execute immediately
       // CRITICAL FIX: addMarkersToMap() now uses requestAnimationFrame (line 302 in map-manager.js)
       // for async marker updates (Leaflet best practice - prevents race conditions).
@@ -366,9 +420,7 @@ describe('MapManager', () => {
       mapManager.addMarkersToMap()
 
       expect(mockMap.fitBounds).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          [mockTraining.lat, mockTraining.lng]
-        ]),
+        expect.arrayContaining([[mockTraining.lat, mockTraining.lng]]),
         { padding: [50, 50] }
       )
     })
@@ -414,7 +466,7 @@ describe('MapManager', () => {
       mockContext.filteredTrainings = [
         mockTraining,
         { ...mockTraining, id: 2, lat: 48.135, lng: 11.582 },
-        { ...mockTraining, id: 3, lat: 48.140, lng: 11.590 }
+        { ...mockTraining, id: 3, lat: 48.14, lng: 11.59 }
       ]
 
       mapManager.addMarkersToMap()
@@ -589,7 +641,7 @@ describe('MapManager', () => {
       mockContext.filteredTrainings = [
         mockTraining,
         mockTrainingNoCoords,
-        { ...mockTraining, id: 3, lat: 48.140, lng: 11.590 }
+        { ...mockTraining, id: 3, lat: 48.14, lng: 11.59 }
       ]
 
       mapManager.initializeMap()
@@ -602,9 +654,7 @@ describe('MapManager', () => {
       mapManager.initializeMap()
 
       // Simulate user interaction
-      const moveStartCallback = mockMap.once.mock.calls.find(
-        call => call[0] === 'movestart'
-      )?.[1]
+      const moveStartCallback = mockMap.once.mock.calls.find(call => call[0] === 'movestart')?.[1]
 
       if (moveStartCallback) {
         moveStartCallback()
@@ -632,9 +682,7 @@ describe('MapManager', () => {
         mapManager.initializeMap()
 
         // Check if zoomend event listener exists (for screen reader support)
-        const zoomendCallback = mockMap.on.mock.calls.find(
-          call => call[0] === 'zoomend'
-        )?.[1]
+        const zoomendCallback = mockMap.on.mock.calls.find(call => call[0] === 'zoomend')?.[1]
 
         // If zoomend callback exists (for screen reader), verify it doesn't call invalidateSize
         if (zoomendCallback) {
@@ -847,7 +895,10 @@ describe('MapManager', () => {
         const options = tileLayerCall[1]
 
         expect(options.bounds).toBeDefined()
-        expect(options.bounds).toEqual([[47.9, 11.3], [48.3, 11.9]])
+        expect(options.bounds).toEqual([
+          [47.9, 11.3],
+          [48.3, 11.9]
+        ])
 
         // RATIONALE: Restricts tile loading to relevant geographic area
         // reducing unnecessary network requests
@@ -949,9 +1000,7 @@ describe('MapManager', () => {
 
         // zoomend callback exists BUT only for accessibility (screen reader announcements)
         // It does NOT call invalidateSize() - that's the key fix
-        const zoomendCallback = mockMap.on.mock.calls.find(
-          call => call[0] === 'zoomend'
-        )?.[1]
+        const zoomendCallback = mockMap.on.mock.calls.find(call => call[0] === 'zoomend')?.[1]
 
         // zoomend is used for screen reader support (valid), but should never call invalidateSize
         if (zoomendCallback) {

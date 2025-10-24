@@ -955,10 +955,11 @@
         </div>
       </header>
 
-      <div class="flex">
+      <!-- Desktop Layout Wrapper -->
+      <div class="hidden lg:flex">
         <!-- ==================== DESKTOP FILTER SIDEBAR ==================== -->
         <aside
-          class="hidden lg:block bg-slate-200 min-h-screen sticky top-0 h-screen transition-all duration-300 overflow-hidden"
+          class="bg-slate-200 min-h-screen sticky top-0 h-screen transition-all duration-300 overflow-hidden flex-shrink-0"
           :class="$store.ui.sidebarCollapsed ? 'w-0 border-r-0' : 'w-80 border-r border-slate-300'"
           style="box-shadow: var(--shadow-sidebar)"
         >
