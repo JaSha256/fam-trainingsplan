@@ -1,27 +1,59 @@
+# =============================================================================
+# Deploy Pipeline - Production Deployment to GitHub Pages
+# =============================================================================
+# Best Practices 2025:
+# - Manual trigger only (workflow_dispatch) for controlled deployments
+# - Uses GITHUB_TOKEN to prevent infinite loops
+# - Fast-only: No tests (covered by CI + pre-push hook)
+# - Preserves user data (trainingsplan.json) with keep_files
+# - Clear deployment messages with commit SHA tracking
+# =============================================================================
+
 name: Deploy
 
 on:
-  # push:
-  #   branches: [main, master]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+
+# Prevent concurrent deployments
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
-  NODE_VERSION: '20.x'
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
 
 jobs:
   deploy:
-    name: Build and Deploy
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,15 +64,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Tests run locally via pre-push hook for faster feedback
-      # Only build check in CI for faster deployment
       - name: Build for production
         run: pnpm run build
         env:
           NODE_ENV: production
 
-      # Deploy to gh-pages branch
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,6 +78,15 @@ jobs:
           publish_branch: gh-pages
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'deploy: Update GitHub Pages from ${{ github.sha }}'
+          commit_message: 'deploy: ${{ github.sha }} [skip ci]'
           keep_files: true
-          exclude_assets: 'trainingsplan.json,version.json'
+          exclude_assets: ''
+
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Successful ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed to:** gh-pages" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://jasha256.github.io/fam-trainingsplan/" >> $GITHUB_STEP_SUMMARY
