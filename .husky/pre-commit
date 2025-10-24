@@ -1,11 +1,16 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
-# Run TypeScript type-checking before commit
-echo "🔍 Running TypeScript type-check..."
-npm run typecheck || {
-  echo "❌ TypeScript errors detected. Please fix them before committing."
+# =============================================================================
+# Pre-Commit Hook - Ultra-Fast Safety Net
+# =============================================================================
+# Nur TypeCheck - schnell genug um nicht zu nerven
+# =============================================================================
+
+echo "⚡ Pre-commit: TypeScript Check..."
+pnpm run typecheck || {
+  echo ""
+  echo "❌ TypeScript errors. Fix before committing."
   exit 1
 }
 
-echo "✅ TypeScript check passed"
+echo "✅ TypeCheck passed"
