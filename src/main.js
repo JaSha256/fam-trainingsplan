@@ -30,7 +30,8 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 // CRITICAL: Import markercluster LAST to ensure window.L is available
-import 'leaflet.markercluster'
+// Import the full library to extend window.L with markerClusterGroup
+import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 import './style.css'
 
 import { trainingsplaner } from './js/trainingsplaner.js'
@@ -520,6 +521,12 @@ async function setupPWA() {
   const browserInfo = getBrowserInfo()
   if (!browserInfo.supportsServiceWorker) {
     log('warn', 'Service Worker not supported')
+    return
+  }
+
+  // Only load PWA in production or when explicitly enabled in dev
+  if (!import.meta.env.PROD) {
+    log('info', 'PWA disabled in development mode (use production build to test PWA)')
     return
   }
 
