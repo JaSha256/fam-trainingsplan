@@ -1,39 +1,29 @@
-# =============================================================================
-# Deploy - Manual Deployment to GitHub Pages
-# =============================================================================
-# - Manual trigger only
-# - [skip ci] prevents infinite loops
-# - Fast: ~5 minutes
-# =============================================================================
-
 name: Deploy
 
 on:
+  # push:
+  #   branches: [main, master]
   workflow_dispatch:
 
-concurrency:
-  group: deploy
-  cancel-in-progress: false
-
 env:
-  NODE_VERSION: '20'
-  PNPM_VERSION: '9'
+  NODE_VERSION: '20.x'
 
 jobs:
   deploy:
-    name: Deploy
+    name: Build and Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,11 +31,30 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - name: Install & Build
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm run build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
+      # Tests run locally via pre-push hook for faster feedback
+      # Only build check in CI for faster deployment
+      - name: Build for production
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+
+      # Backup trainingsplan.json from gh-pages before deployment
+      - name: Backup trainingsplan.json
+        run: |
+          echo "Checking for trainingsplan.json in gh-pages..."
+          git fetch origin gh-pages || true
+          if git ls-tree origin/gh-pages trainingsplan.json | grep -q trainingsplan.json; then
+            echo "Found trainingsplan.json, backing up..."
+            git show origin/gh-pages:trainingsplan.json > /tmp/trainingsplan.json
+            echo "Backup created at /tmp/trainingsplan.json"
+          else
+            echo "No trainingsplan.json found in gh-pages"
+          fi
+
+      # Deploy to gh-pages branch
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -54,5 +63,23 @@ jobs:
           publish_branch: gh-pages
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'deploy: ${{ github.sha }} [skip ci]'
-          keep_files: true
+          commit_message: 'deploy: Update GitHub Pages from ${{ github.sha }} ${{ github.sha }}'
+          keep_files: false
+
+      # Restore trainingsplan.json after deployment
+      - name: Restore trainingsplan.json
+        run: |
+          if [ -f /tmp/trainingsplan.json ]; then
+            echo "Restoring trainingsplan.json..."
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git fetch origin gh-pages
+            git checkout gh-pages
+            cp /tmp/trainingsplan.json trainingsplan.json
+            git add trainingsplan.json
+            git commit -m "chore: restore trainingsplan.json after deployment [skip ci]"
+            git push origin gh-pages
+            echo "trainingsplan.json restored successfully"
+          else
+            echo "No trainingsplan.json to restore"
+          fi
