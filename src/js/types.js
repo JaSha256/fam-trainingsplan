@@ -44,6 +44,8 @@
  * @property {string | string[]} altersgruppe - Selected age group filter (empty = all)
  * @property {string} searchTerm - Search query string
  * @property {string | null} activeQuickFilter - Active quick filter name
+ * @property {boolean} [distanceFilterActive] - Distance filter active state
+ * @property {number} [maxDistanceKm] - Maximum distance in kilometers (for distance filter)
  * @property {((training: Training) => boolean) | string | null} [_customTimeFilter] - Custom time filter function (or empty string to clear)
  * @property {((training: Training) => boolean) | string | null} [_customFeatureFilter] - Custom feature filter function (or empty string to clear)
  * @property {((training: Training) => boolean) | string | null} [_customLocationFilter] - Custom location filter function (or empty string to clear)

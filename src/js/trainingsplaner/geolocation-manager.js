@@ -51,6 +51,8 @@ export class GeolocationManager {
     if (this.context.$store.ui.manualLocationSet && this.context.$store.ui.manualLocation) {
       /** @type {import('../types.js').UserPosition} */
       const manualLocation = this.context.$store.ui.manualLocation
+      // Update both state and context for proper reactivity
+      this.state.userPosition = manualLocation
       this.context.userPosition = manualLocation
       log('info', 'Manual location loaded', this.context.userPosition)
 
@@ -76,14 +78,20 @@ export class GeolocationManager {
   async requestUserLocation() {
     if (!CONFIG.features.enableGeolocation) {
       this.context.geolocationError = 'Geolocation ist deaktiviert'
+      this.state.geolocationError = 'Geolocation ist deaktiviert'
       return false
     }
 
     this.context.geolocationLoading = true
+    this.state.geolocationLoading = true
     this.context.geolocationError = null
+    this.state.geolocationError = null
 
     try {
-      this.context.userPosition = await utils.getCurrentPosition()
+      const position = await utils.getCurrentPosition()
+      // Update both state and context for proper reactivity
+      this.state.userPosition = position
+      this.context.userPosition = position
       log('info', 'Position obtained', this.context.userPosition)
 
       this.addDistanceToTrainings()
@@ -103,10 +111,12 @@ export class GeolocationManager {
       log('error', 'Geolocation failed', err)
       const errorMessage = err instanceof Error ? err.message : String(err)
       this.context.geolocationError = errorMessage
+      this.state.geolocationError = errorMessage
       this.context.$store.ui.showNotification(errorMessage, 'error', 5000)
       return false
     } finally {
       this.context.geolocationLoading = false
+      this.state.geolocationLoading = false
     }
   }
 
@@ -121,16 +131,21 @@ export class GeolocationManager {
   addDistanceToTrainings() {
     if (!this.context.userPosition) return
 
-    this.context.allTrainings = utils.addDistanceToTrainings(
+    // Update trainings with distance in both state and context
+    const trainingsWithDistance = utils.addDistanceToTrainings(
       this.context.allTrainings,
       this.context.userPosition
     )
 
-    this.context.allTrainings.forEach((/** @type {import('./types.js').Training} */ t) => {
+    trainingsWithDistance.forEach((/** @type {import('./types.js').Training} */ t) => {
       if (t.distance !== undefined) {
         t.distanceText = t.distance.toFixed(1) + ' km'
       }
     })
+
+    // Update both state and context for proper reactivity
+    this.state.allTrainings = trainingsWithDistance
+    this.context.allTrainings = trainingsWithDistance
   }
 
   /**
@@ -145,7 +160,8 @@ export class GeolocationManager {
    * @returns {void}
    */
   setManualLocation(lat, lng, address = '') {
-    // Set userPosition
+    // Set userPosition in both state and context for proper reactivity
+    this.state.userPosition = { lat, lng }
     this.context.userPosition = { lat, lng }
 
     // Update Alpine store
@@ -179,7 +195,8 @@ export class GeolocationManager {
    * @returns {void}
    */
   resetLocation() {
-    // Clear userPosition
+    // Clear userPosition in both state and context for proper reactivity
+    this.state.userPosition = null
     this.context.userPosition = null
 
     // Clear manual location from store

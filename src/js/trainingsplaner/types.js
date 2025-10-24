@@ -88,6 +88,8 @@
  * @property {UserPosition | null} userPosition - User's geolocation
  * @property {string | null} geolocationError - Geolocation error message
  * @property {boolean} geolocationLoading - Geolocation loading state
+ * @property {number} maxDistanceKm - Maximum distance in kilometers for distance filter
+ * @property {boolean} distanceFilterActive - Distance filter active state
  * @property {number[]} favorites - Favorite training IDs
  * @property {boolean} updateAvailable - Update available flag
  * @property {string | null} latestVersion - Latest app version

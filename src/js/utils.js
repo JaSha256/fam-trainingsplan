@@ -624,6 +624,11 @@ export function createShareLink(filters) {
     }
   })
 
+  // Add maxDistanceKm parameter if set and not default (Task 25: Distance filter)
+  if (filters.maxDistanceKm && filters.maxDistanceKm !== 5) {
+    params.set('distanz', filters.maxDistanceKm.toString())
+  }
+
   const query = params.toString()
   const base = window.location.origin + window.location.pathname
 
@@ -671,6 +676,17 @@ export function getFiltersFromUrl() {
       }
     }
   })
+
+  // Parse maxDistanceKm parameter from URL (Task 25: Distance filter)
+  if (params.has('distanz')) {
+    const distanzValue = params.get('distanz')
+    if (distanzValue) {
+      const distanz = parseFloat(distanzValue)
+      if (!isNaN(distanz) && distanz >= 0.5 && distanz <= 25) {
+        filters.maxDistanceKm = distanz
+      }
+    }
+  }
 
   return /** @type {Partial<Filter>} */ (filters)
 }

@@ -56,6 +56,11 @@ const TIME = Object.freeze({
  * @property {boolean} features.enableUpdateCheck
  * @property {Object} filters
  * @property {boolean} filters.persistInUrl
+ * @property {Object} filters.distanceSlider
+ * @property {number} filters.distanceSlider.min
+ * @property {number} filters.distanceSlider.max
+ * @property {number} filters.distanceSlider.default
+ * @property {number} filters.distanceSlider.step
  * @property {Object} map
  * @property {Object} map.geolocation
  * @property {number} map.geolocation.maxDistance
@@ -117,14 +122,22 @@ export const CONFIG = /** @type {Readonly<ConfigType>} */ (/** @type {any} */ (O
   filters: Object.freeze({
     persistInUrl: true,
     debounceDelay: 100,
-    
+
     urlParams: Object.freeze({
       wochentag: 'tag',
       ort: 'ort',
       training: 'art',
       altersgruppe: 'alter',
       searchTerm: 'suche',
-      nearby: 'naehe'
+      nearby: 'naehe',
+      maxDistance: 'distanz'
+    }),
+
+    distanceSlider: Object.freeze({
+      min: 0.5,
+      max: 25,
+      default: 5,
+      step: 0.5
     })
   }),
   
