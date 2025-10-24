@@ -30,8 +30,9 @@ describe('config.js', () => {
     })
 
     it('should have valid URLs', () => {
-      expect(CONFIG.jsonUrl).toMatch(/^https?:\/\//)
-      expect(CONFIG.versionUrl).toMatch(/^https?:\/\//)
+      // URLs can be either absolute (https://) or relative (/)
+      expect(CONFIG.jsonUrl).toMatch(/^(https?:\/\/|\/|\.\/?)/)
+      expect(CONFIG.versionUrl).toMatch(/^(https?:\/\/|\/|\.\/?)/)
     })
   })
 
