@@ -52,15 +52,15 @@ jobs:
           path: dist/
           retention-days: 30
 
-      # GitHub Pages deployment (optional - enable if using)
-      # - name: Setup Pages
-      #   uses: actions/configure-pages@v4
-      #
-      # - name: Upload artifact for Pages
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: dist/
-      #
-      # - name: Deploy to GitHub Pages
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
+      # GitHub Pages deployment
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
