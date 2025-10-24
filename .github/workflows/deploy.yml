@@ -17,6 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -39,6 +41,19 @@ jobs:
         env:
           NODE_ENV: production
 
+      # Backup trainingsplan.json from gh-pages before deployment
+      - name: Backup trainingsplan.json
+        run: |
+          echo "Checking for trainingsplan.json in gh-pages..."
+          git fetch origin gh-pages || true
+          if git ls-tree origin/gh-pages trainingsplan.json | grep -q trainingsplan.json; then
+            echo "Found trainingsplan.json, backing up..."
+            git show origin/gh-pages:trainingsplan.json > /tmp/trainingsplan.json
+            echo "Backup created at /tmp/trainingsplan.json"
+          else
+            echo "No trainingsplan.json found in gh-pages"
+          fi
+
       # Deploy to gh-pages branch
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -48,6 +63,23 @@ jobs:
           publish_branch: gh-pages
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'deploy: Update GitHub Pages from ${{ github.sha }}'
-          keep_files: true
-          exclude_assets: 'trainingsplan.json,version.json'
+          commit_message: 'deploy: Update GitHub Pages from ${{ github.sha }} ${{ github.sha }}'
+          keep_files: false
+
+      # Restore trainingsplan.json after deployment
+      - name: Restore trainingsplan.json
+        run: |
+          if [ -f /tmp/trainingsplan.json ]; then
+            echo "Restoring trainingsplan.json..."
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git fetch origin gh-pages
+            git checkout gh-pages
+            cp /tmp/trainingsplan.json trainingsplan.json
+            git add trainingsplan.json
+            git commit -m "chore: restore trainingsplan.json after deployment [skip ci]"
+            git push origin gh-pages
+            echo "trainingsplan.json restored successfully"
+          else
+            echo "No trainingsplan.json to restore"
+          fi
