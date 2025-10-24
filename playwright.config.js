@@ -3,6 +3,9 @@ import { defineConfig, devices } from '@playwright/test'
 /**
  * Playwright Configuration for FAM Trainingsplan
  * Supports multi-browser testing with environment-aware base URL
+ *
+ * Visual Regression Testing Fix:
+ * Uses route mocking to serve test fixture data for consistent snapshots
  */
 export default defineConfig({
   testDir: './tests/e2e',

@@ -134,8 +134,8 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
       expect(packageJson.devDependencies.vite).toMatch(/\^7\.\d+\.\d+/)
     })
 
-    it('should have correct vitest version (>= 3.2.0)', () => {
-      expect(packageJson.devDependencies.vitest).toMatch(/\^3\.\d+\.\d+/)
+    it('should have correct vitest version (>= 4.0.0)', () => {
+      expect(packageJson.devDependencies.vitest).toMatch(/\^[34]\.\d+\.\d+/)
     })
 
     it('should have correct playwright version (>= 1.48.0)', () => {

@@ -272,6 +272,11 @@ describe('trainingsplaner.js - Core Functionality', () => {
       await component.init()
     })
 
+    afterEach(() => {
+      // Vitest 4.0: Explicitly clear mocks after each test
+      vi.restoreAllMocks()
+    })
+
     it('should export all filtered trainings', async () => {
       await component.exportAllToCalendar()
 

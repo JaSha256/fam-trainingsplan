@@ -457,6 +457,32 @@ log('info', 'Alpine.js initialized', {
   version: Alpine.version
 })
 
+// ==================== DISTANCE FILTER LOCALSTORAGE ====================
+
+/**
+ * Load saved maxDistanceKm from localStorage (Task 25: Distance filter)
+ * IMPORTANT: Must run after Alpine.start() to access stores
+ * @returns {void}
+ */
+function loadSavedDistanceFilter() {
+  try {
+    const savedDistance = localStorage.getItem('maxDistanceKm')
+    if (savedDistance) {
+      const distance = parseFloat(savedDistance)
+      if (!isNaN(distance) && distance >= 0.5 && distance <= 25) {
+        // @ts-ignore - Alpine.store returns unknown
+        Alpine.store('ui').filters.maxDistanceKm = distance
+        log('debug', 'Loaded saved distance filter', { distance })
+      }
+    }
+  } catch (error) {
+    log('warn', 'Failed to load saved distance filter', error)
+  }
+}
+
+// Load saved distance filter after Alpine is ready
+loadSavedDistanceFilter()
+
 // ==================== M3 DARK MODE INITIALIZATION ====================
 
 /**

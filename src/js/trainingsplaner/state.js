@@ -52,6 +52,10 @@ export function createTrainingsplanerState() {
     geolocationError: null,
     geolocationLoading: false,
 
+    // ==================== DISTANCE FILTER STATE ====================
+    maxDistanceKm: 5, // Default: 5 km Radius
+    distanceFilterActive: false, // Default: Inactive until user enables
+
     // ==================== FAVORITES STATE ====================
     favorites: [],
 

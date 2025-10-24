@@ -115,9 +115,10 @@ export class FilterEngine {
 
     // ==================== POST-PROCESSING ====================
 
-    // Distance Filter: only if user position exists and NOT using custom location filter
-    if (!filters._customLocationFilter && this.context.userPosition && CONFIG.map.geolocation.maxDistance > 0) {
-      result = result.filter((/** @type {Training} */ t) => t.distance && t.distance <= CONFIG.map.geolocation.maxDistance)
+    // Distance Filter: Apply slider-based distance filter if enabled and user position exists
+    if (!filters._customLocationFilter && this.context.userPosition && filters.distanceFilterActive) {
+      const maxDistanceKm = this.getDistanceFilterValue()
+      result = this.applyDistanceFilter(result, maxDistanceKm, this.context.userPosition)
     }
 
     // Distance Sorting: sort by proximity if user position available
@@ -216,7 +217,8 @@ export class FilterEngine {
   /**
    * Apply Custom Location Filter
    *
-   * Filters trainings by custom location criteria (e.g., within 5km).
+   * Filters trainings by custom location criteria using dynamic distance from state.
+   * REFACTORED: Now uses dynamic maxDistanceKm from context instead of hardcoded 5 km.
    *
    * @param {Training[]} trainings - Trainings to filter
    * @param {string} filterValue - Custom location filter value ('inMeinerNaehe')
@@ -224,13 +226,47 @@ export class FilterEngine {
    */
   applyCustomLocationFilter(trainings, filterValue) {
     if (filterValue === 'inMeinerNaehe') {
-      return trainings.filter((/** @type {Training} */ t) => {
-        if (!t.distance) return false
-        const distance = typeof t.distance === 'number' ? t.distance : parseFloat(String(t.distance))
-        return !isNaN(distance) && distance <= 5.0
-      })
+      const maxDistanceKm = this.getDistanceFilterValue()
+      return this.applyDistanceFilter(trainings, maxDistanceKm, this.context.userPosition)
     }
     return trainings
+  }
+
+  /**
+   * Apply Distance Filter
+   *
+   * Filters trainings by maximum distance from user position.
+   * Extracted method for reusability and testability.
+   *
+   * @param {Training[]} trainings - Trainings to filter
+   * @param {number | null} maxDistanceKm - Maximum distance in kilometers
+   * @param {Object | null} userPosition - User position (lat, lng)
+   * @returns {Training[]} Filtered trainings
+   */
+  applyDistanceFilter(trainings, maxDistanceKm, userPosition) {
+    if (!userPosition || !maxDistanceKm || maxDistanceKm <= 0) {
+      return trainings
+    }
+
+    return trainings.filter((/** @type {Training} */ t) => {
+      // If no distance calculated, include training (coordinates missing or not yet calculated)
+      if (!t.distance) return true
+      const distance = typeof t.distance === 'number' ? t.distance : parseFloat(String(t.distance))
+      return !isNaN(distance) && distance <= maxDistanceKm
+    })
+  }
+
+  /**
+   * Get Distance Filter Value
+   *
+   * Returns the current distance filter value from store or config default.
+   * Provides centralized access to distance filter configuration.
+   *
+   * @returns {number} Distance filter value in kilometers
+   */
+  getDistanceFilterValue() {
+    const storeValue = this.context.$store.ui.filters.maxDistanceKm
+    return storeValue || CONFIG.filters.distanceSlider.default
   }
 
   // ==================== STANDARD FILTER HELPERS ====================

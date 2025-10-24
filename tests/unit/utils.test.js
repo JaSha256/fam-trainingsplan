@@ -294,9 +294,9 @@ describe('utils.js', () => {
         training: '',
         activeQuickFilter: null
       }
-      
+
       const link = utils.createShareLink(filters)
-      
+
       expect(link).toContain('?')
       expect(link).toContain('tag=Montag')
       expect(link).toContain('ort=LTR')
@@ -306,8 +306,113 @@ describe('utils.js', () => {
     it('should create base URL without filters', () => {
       const filters = {}
       const link = utils.createShareLink(filters)
-      
+
       expect(link).not.toContain('?')
+    })
+
+    it('should include distance filter in URL (Task 25)', () => {
+      const filters = {
+        maxDistanceKm: 10.5
+      }
+
+      const link = utils.createShareLink(filters)
+
+      expect(link).toContain('?')
+      expect(link).toContain('distanz=10.5')
+    })
+
+    it('should not include default distance (5km) in URL (Task 25)', () => {
+      const filters = {
+        maxDistanceKm: 5
+      }
+
+      const link = utils.createShareLink(filters)
+
+      expect(link).not.toContain('distanz')
+    })
+
+    it('should combine distance filter with other filters (Task 25)', () => {
+      const filters = {
+        wochentag: ['Montag'],
+        maxDistanceKm: 7.5
+      }
+
+      const link = utils.createShareLink(filters)
+
+      expect(link).toContain('tag=Montag')
+      expect(link).toContain('distanz=7.5')
+    })
+  })
+
+  describe('getFiltersFromUrl()', () => {
+    const originalLocation = global.window.location
+
+    afterEach(() => {
+      // Restore original location
+      delete global.window.location
+      global.window.location = originalLocation
+    })
+
+    it('should parse distance filter from URL (Task 25)', () => {
+      delete global.window.location
+      global.window.location = {
+        search: '?distanz=10.5',
+        origin: 'http://localhost',
+        pathname: '/'
+      }
+
+      const filters = utils.getFiltersFromUrl()
+
+      expect(filters.maxDistanceKm).toBe(10.5)
+    })
+
+    it('should validate distance range (0.5-25km) (Task 25)', () => {
+      // Too small
+      delete global.window.location
+      global.window.location = {
+        search: '?distanz=0.1',
+        origin: 'http://localhost',
+        pathname: '/'
+      }
+      let filters = utils.getFiltersFromUrl()
+      expect(filters.maxDistanceKm).toBeUndefined()
+
+      // Too large
+      global.window.location.search = '?distanz=100'
+      filters = utils.getFiltersFromUrl()
+      expect(filters.maxDistanceKm).toBeUndefined()
+
+      // Valid range
+      global.window.location.search = '?distanz=15'
+      filters = utils.getFiltersFromUrl()
+      expect(filters.maxDistanceKm).toBe(15)
+    })
+
+    it('should ignore invalid distance values (Task 25)', () => {
+      delete global.window.location
+      global.window.location = {
+        search: '?distanz=invalid',
+        origin: 'http://localhost',
+        pathname: '/'
+      }
+
+      const filters = utils.getFiltersFromUrl()
+
+      expect(filters.maxDistanceKm).toBeUndefined()
+    })
+
+    it('should combine distance with other filters (Task 25)', () => {
+      delete global.window.location
+      global.window.location = {
+        search: '?tag=Montag&distanz=7.5',
+        origin: 'http://localhost',
+        pathname: '/'
+      }
+
+      const filters = utils.getFiltersFromUrl()
+
+      expect(filters.wochentag).toEqual(['Montag'])
+      expect(filters.maxDistanceKm).toBe(7.5)
     })
   })
 
