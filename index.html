@@ -49,11 +49,11 @@
     />
 
     <!-- Main Script -->
-    <script type="module" crossorigin src="/fam-trainingsplan/assets/js/index.Bl4cFjeN.js"></script>
+    <script type="module" crossorigin src="/fam-trainingsplan/assets/js/index.-Xpf7Tz4.js"></script>
     <link rel="modulepreload" crossorigin href="/fam-trainingsplan/assets/js/vendor-map.zdHhRoWp.js">
     <link rel="modulepreload" crossorigin href="/fam-trainingsplan/assets/js/vendor-alpine.D9MLegQT.js">
     <link rel="modulepreload" crossorigin href="/fam-trainingsplan/assets/js/vendor-utils.Dw8P0qyA.js">
-    <link rel="stylesheet" crossorigin href="/fam-trainingsplan/assets/index.CNjXuQi-.css">
+    <link rel="stylesheet" crossorigin href="/fam-trainingsplan/assets/index.CbKBuIpX.css">
   <link rel="manifest" href="/fam-trainingsplan/manifest.webmanifest"></head>
   <body class="bg-slate-300 antialiased">
     <!-- Skip Link -->
@@ -463,11 +463,10 @@
                   <span x-text="$store.ui.darkMode ? 'Dark Mode deaktivieren' : 'Dark Mode aktivieren'"></span>
                 </button>
                 <button
-                  @click="requestUserLocation(); overflowMenuOpen = false"
-                  :disabled="!('geolocation' in navigator)"
+                  @click="$store.ui.locationSettingsOpen = true; overflowMenuOpen = false"
                   type="button"
                   role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
                 >
                   <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -483,21 +482,13 @@
                       d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                  <span>Standort aktivieren</span>
+                  <span>Standort-Einstellungen</span>
+                  <span
+                    x-show="$store.ui.manualLocationSet"
+                    class="ml-auto w-2 h-2 bg-green-500 rounded-full"
+                    aria-label="Standort gesetzt"
+                  ></span>
                 </button>
-                <template x-if="$store.ui.manualLocationSet">
-                  <button
-                    @click="resetLocation(); overflowMenuOpen = false"
-                    type="button"
-                    role="menuitem"
-                    class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                  >
-                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                    <span>Standort zurücksetzen</span>
-                  </button>
-                </template>
               </div>
             </div>
           </div>
@@ -986,11 +977,10 @@
                 <span x-text="$store.ui.darkMode ? 'Dark Mode deaktivieren' : 'Dark Mode aktivieren'"></span>
               </button>
               <button
-                @click="requestUserLocation(); overflowMenuOpen = false"
-                :disabled="!('geolocation' in navigator)"
+                @click="$store.ui.locationSettingsOpen = true; overflowMenuOpen = false"
                 type="button"
                 role="menuitem"
-                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
               >
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -1006,21 +996,13 @@
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span>Standort aktivieren</span>
+                <span>Standort-Einstellungen</span>
+                <span
+                  x-show="$store.ui.manualLocationSet"
+                  class="ml-auto w-2 h-2 bg-green-500 rounded-full"
+                  aria-label="Standort gesetzt"
+                ></span>
               </button>
-              <template x-if="$store.ui.manualLocationSet">
-                <button
-                  @click="resetLocation(); overflowMenuOpen = false"
-                  type="button"
-                  role="menuitem"
-                  class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-3 text-sm text-slate-700 transition-colors min-h-[44px]"
-                >
-                  <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                  </svg>
-                  <span>Standort zurücksetzen</span>
-                </button>
-              </template>
             </div>
           </div>
         </div>
@@ -1196,6 +1178,114 @@
                   </button>
                 </div>
               </div>
+            </div>
+
+            <!-- ==================== DISTANCE FILTER SLIDER (Task 25) ==================== -->
+            <div
+              class="distance-filter-section mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200"
+              x-show="userPosition"
+              x-data="{ localValue: $store.ui.filters.maxDistanceKm || 5 }"
+              x-cloak
+            >
+              <fieldset id="distance-filter-fieldset" class="space-y-3">
+                <legend class="block mb-3 text-sm font-semibold text-slate-700">
+                  Umkreis-Filter
+                </legend>
+
+                <!-- Toggle Enable/Disable Distance Filter -->
+                <div class="distance-filter-toggle-container flex items-center justify-between min-h-[44px] mb-3">
+                  <label for="distance-filter-toggle" class="text-sm font-medium text-slate-700 cursor-pointer">
+                    Distanz-Filter aktivieren
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="distance-filter-toggle"
+                    x-model="$store.ui.filters.distanceFilterActive"
+                    class="w-10 h-6 bg-slate-200 rounded-full appearance-none cursor-pointer transition-colors
+                           checked:bg-primary-600 relative
+                           before:content-[''] before:absolute before:top-1 before:left-1 before:w-4 before:h-4
+                           before:bg-white before:rounded-full before:transition-transform
+                           checked:before:translate-x-4"
+                    aria-label="Distanz-Filter aktivieren oder deaktivieren"
+                  />
+                </div>
+
+                <!-- Slider Section (shown when toggle is active) -->
+                <div x-show="$store.ui.filters.distanceFilterActive" x-transition>
+                  <!-- Label with current value -->
+                  <label
+                    for="distance-slider"
+                    class="flex items-center justify-between mb-2 text-sm font-medium text-slate-700"
+                  >
+                    <span>Maximale Entfernung:</span>
+                    <output
+                      id="distance-value"
+                      for="distance-slider"
+                      class="text-primary-600 font-semibold"
+                      x-text="localValue.toFixed(1) + ' km'"
+                      role="status"
+                      aria-live="polite"
+                    ></output>
+                  </label>
+
+                  <!-- Range Slider -->
+                  <input
+                    type="range"
+                    id="distance-slider"
+                    class="md-slider w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer
+                           accent-primary-600 min-h-[44px] py-4
+                           disabled:opacity-50 disabled:cursor-not-allowed
+                           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    min="0.5"
+                    max="25"
+                    step="0.5"
+                    x-model.number="localValue"
+                    @input.debounce.100ms="
+                      $store.ui.filters.maxDistanceKm = localValue;
+                      applyFilters();
+                      localStorage.setItem('maxDistanceKm', localValue);
+                    "
+                    :disabled="!userPosition"
+                    aria-label="Umkreis in Kilometern"
+                    aria-valuemin="0.5"
+                    aria-valuemax="25"
+                    :aria-valuenow="localValue"
+                    :aria-valuetext="localValue.toFixed(1) + ' Kilometer'"
+                  >
+
+                  <!-- Distance Markers -->
+                  <div class="distance-markers flex justify-between text-xs text-slate-500 mt-1 px-1">
+                    <span>0.5 km</span>
+                    <span>10 km</span>
+                    <span>25 km</span>
+                  </div>
+
+                  <!-- Result Count -->
+                  <p
+                    class="filter-result-count text-sm text-slate-600 mt-3 flex items-center gap-2"
+                    x-show="filteredTrainings && filteredTrainings.length > 0"
+                  >
+                    <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    </svg>
+                    <span>
+                      <strong x-text="filteredTrainings.length"></strong>
+                      <span x-text="filteredTrainings.length === 1 ? 'Training' : 'Trainings'"></span>
+                      in deiner Nähe
+                    </span>
+                  </p>
+
+                  <!-- Empty State (optional) -->
+                  <p
+                    class="distance-filter-empty-state text-sm text-slate-500 mt-3 italic"
+                    x-show="userPosition && $store.ui.filters.distanceFilterActive && filteredTrainings && filteredTrainings.length === 0"
+                  >
+                    Keine Trainings in <span x-text="localValue.toFixed(1)"></span> km Umkreis.
+                    Erhöhe die Distanz.
+                  </p>
+                </div>
+              </fieldset>
             </div>
 
             <!-- Filters -->
@@ -2946,21 +3036,24 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         @click="$store.ui.locationSettingsOpen = false"
-        class="fixed inset-0 bg-black/50 z-50"
+        class="fixed inset-0 bg-black/50 lg:bg-black/60 z-50"
       ></div>
 
-      <!-- Modal (Bottom Sheet for Mobile) -->
+      <!-- Modal (Bottom Sheet for Mobile, Centered for Desktop) -->
       <div
         x-show="$store.ui.locationSettingsOpen"
         x-trap.inert.noscroll="$store.ui.locationSettingsOpen"
         x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="translate-y-full"
-        x-transition:enter-end="translate-y-0"
+        x-transition:enter-start="translate-y-full lg:translate-y-0 lg:scale-95 lg:opacity-0"
+        x-transition:enter-end="translate-y-0 lg:scale-100 lg:opacity-100"
         x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="translate-y-0"
-        x-transition:leave-end="translate-y-full"
+        x-transition:leave-start="translate-y-0 lg:scale-100 lg:opacity-100"
+        x-transition:leave-end="translate-y-full lg:translate-y-0 lg:scale-95 lg:opacity-0"
         @click.outside="$store.ui.locationSettingsOpen = false"
         @keydown.escape.window="$store.ui.locationSettingsOpen = false"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="location-modal-title"
         x-data="{
             locationType: $store.ui.manualLocationSet ? 'manual' : 'auto',
             manualLat: $store.ui.manualLocation?.lat || '',
@@ -3066,14 +3159,15 @@
                 }
             }
         }"
-        class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 max-h-[85vh] overflow-y-auto"
-        style="box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15)"
+        class="fixed bottom-0 left-0 right-0 lg:inset-0 lg:flex lg:items-center lg:justify-center lg:p-4 z-50"
       >
-        <div class="p-6">
+        <!-- Inner Container with fixed width for desktop -->
+        <div class="bg-white rounded-t-2xl lg:rounded-2xl lg:w-full lg:max-w-2xl lg:shadow-2xl max-h-[85vh] lg:max-h-[90vh] overflow-y-auto" style="box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15)">
+          <div class="p-6 lg:p-8">
           <!-- Header -->
-          <div class="flex items-start justify-between mb-6">
+          <div class="flex items-start justify-between mb-6 lg:mb-8">
             <div>
-              <h2 class="text-2xl font-bold text-slate-900 mb-1">Standort-Einstellungen</h2>
+              <h2 id="location-modal-title" class="text-2xl font-bold text-slate-900 mb-1">Standort-Einstellungen</h2>
               <p class="text-sm text-slate-600">Wähle, wie dein Standort ermittelt werden soll</p>
             </div>
             <button
@@ -3098,7 +3192,7 @@
           </div>
 
           <!-- Location Type Selection -->
-          <div class="space-y-4 mb-6">
+          <div class="space-y-4 mb-6 lg:mb-8">
             <h3 class="text-sm font-semibold text-slate-700 mb-3">Standort-Methode</h3>
 
             <!-- Auto Location -->
@@ -3178,7 +3272,7 @@
           <div
             x-show="locationType === 'manual'"
             x-transition
-            class="space-y-4 mb-6 p-4 bg-slate-50 rounded-lg"
+            class="space-y-4 mb-6 lg:mb-8 p-4 bg-slate-50 rounded-lg"
           >
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">
@@ -3315,7 +3409,7 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-3 lg:gap-4">
             <button
               @click="saveLocation()"
               type="button"
@@ -3349,6 +3443,7 @@
             >
               Abbrechen
             </button>
+          </div>
           </div>
         </div>
       </div>
