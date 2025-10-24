@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp trainingsplan.json dist/ 2>/dev/null || echo 'No trainingsplan.json to copy'",
     "preview": "vite preview",
     "setup:validate": "vitest run --project infrastructure",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
