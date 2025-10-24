@@ -44,6 +44,8 @@
     "test:puppeteer:slow": "node tests/puppeteer/run-tests.js --slow",
     "test:coverage": "vitest run --coverage",
     "test:all": "npm run test:coverage && npm run test:e2e",
+    "test:quick": "./quick-test.sh",
+    "test:pre-push": "./quick-test.sh && echo '✅ Ready to push!'",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
     "lint": "eslint src --ext .js",

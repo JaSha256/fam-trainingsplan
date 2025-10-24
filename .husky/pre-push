@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+echo "🧪 Running tests before push..."
+echo ""
+
+# Run TypeScript type check
+echo "📝 TypeScript type check..."
+pnpm run typecheck || {
+    echo ""
+    echo "❌ TypeScript errors found. Fix them before pushing."
+    exit 1
+}
+
+# Run unit tests
+echo ""
+echo "🧪 Running unit tests..."
+pnpm run test:unit || {
+    echo ""
+    echo "❌ Unit tests failed. Fix them before pushing."
+    exit 1
+}
+
+# Run infrastructure tests
+echo ""
+echo "🔧 Running infrastructure tests..."
+pnpm run test:infrastructure || {
+    echo ""
+    echo "❌ Infrastructure tests failed. Fix them before pushing."
+    exit 1
+}
+
+echo ""
+echo "✅ All tests passed! Pushing to remote..."
