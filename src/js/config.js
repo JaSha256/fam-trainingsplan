@@ -77,9 +77,9 @@ const TIME = Object.freeze({
 export const CONFIG = /** @type {Readonly<ConfigType>} */ (/** @type {any} */ (Object.freeze({
   // ==================== DATA ====================
   // @ts-ignore - Vite import.meta.env
-  jsonUrl: import.meta.env.VITE_API_URL || 'https://jasha256.github.io/fam-trainingsplan/trainingsplan.json',
+  jsonUrl: import.meta.env.VITE_API_URL || `${import.meta.env.BASE_URL}trainingsplan.json`,
   // @ts-ignore - Vite import.meta.env
-  versionUrl: import.meta.env.VITE_VERSION_URL || 'https://jasha256.github.io/fam-trainingsplan/version.json',
+  versionUrl: import.meta.env.VITE_VERSION_URL || `${import.meta.env.BASE_URL}version.json`,
 
   // ==================== CACHE ====================
   cacheEnabled: true,
