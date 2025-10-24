@@ -2,10 +2,14 @@
 import { defineConfig, mergeConfig } from 'vitest/config'
 import viteConfig from './vite.config.js'
 
+// Resolve vite config function with test mode
+const resolvedViteConfig = typeof viteConfig === 'function'
+  ? viteConfig({ mode: 'test', command: 'serve' })
+  : viteConfig
+
 // @ts-ignore - mergeConfig with imported viteConfig produces complex union type
 export default mergeConfig(
-  // @ts-ignore - viteConfig type inference issue from default export
-  viteConfig,
+  resolvedViteConfig,
   defineConfig({
     test: {
       name: 'unit',

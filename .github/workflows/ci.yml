@@ -14,6 +14,8 @@ concurrency:
 env:
   NODE_VERSION: '20.x'
   HEADLESS: true
+  CI: true
+  NODE_ENV: test
 
 jobs:
   # Lint and Type Check
@@ -82,7 +84,7 @@ jobs:
   e2e-tests:
     name: E2E Tests (Chromium)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 

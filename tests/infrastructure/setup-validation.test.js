@@ -160,11 +160,13 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
       expect(viteConfig).toContain('vite-plugin-pwa')
     })
 
-    it('should have vite config with correct base path', () => {
+    it('should have vite config with environment-aware base path', () => {
       const viteConfigPath = resolve(projectRoot, 'vite.config.js')
       const viteConfig = readFileSync(viteConfigPath, 'utf8')
 
-      expect(viteConfig).toContain("base: './'")
+      // Environment-aware: relative for dev/test, absolute for production
+      expect(viteConfig).toContain('basePath')
+      expect(viteConfig).toMatch(/base:\s*basePath/)
     })
 
     it('should have vite server config with correct port', () => {
@@ -190,11 +192,11 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
       expect(playwrightConfig).toContain("name: 'firefox'")
     })
 
-    it('should have playwright config with system browser support', () => {
+    it('should have playwright config with webkit project', () => {
       const playwrightConfigPath = resolve(projectRoot, 'playwright.config.js')
       const playwrightConfig = readFileSync(playwrightConfigPath, 'utf8')
 
-      expect(playwrightConfig).toContain('USE_SYSTEM_BROWSERS')
+      expect(playwrightConfig).toContain("name: 'webkit'")
     })
 
     it('should have playwright config with webServer setup', () => {
@@ -202,7 +204,7 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
       const playwrightConfig = readFileSync(playwrightConfigPath, 'utf8')
 
       expect(playwrightConfig).toContain('webServer')
-      expect(playwrightConfig).toContain('npm run dev')
+      expect(playwrightConfig).toMatch(/pnpm run dev|npm run dev/)
     })
 
     it('should have test scripts in package.json', () => {
@@ -284,8 +286,8 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
       const setupScriptPath = resolve(projectRoot, 'setup-arch.sh')
       const stats = execSync(`stat -c %a ${setupScriptPath}`, { encoding: 'utf8' }).trim()
 
-      // Should be executable (755 or 775)
-      expect(['755', '775', '777', '775']).toContain(stats)
+      // Should be executable (755, 775, or 777)
+      expect(['755', '775', '777']).toContain(stats)
     })
 
     it('should have SETUP-ARCH.md documentation', () => {
@@ -310,12 +312,12 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
       expect(viteConfig).toContain('strictPort: false')
     })
 
-    it('should have correct base path for file access', () => {
+    it('should have environment-aware base path for file access', () => {
       const viteConfigPath = resolve(projectRoot, 'vite.config.js')
       const viteConfig = readFileSync(viteConfigPath, 'utf8')
 
-      // Relative base path works better in WSL2
-      expect(viteConfig).toContain("base: './'")
+      // Environment-aware base path (relative for dev, absolute for prod)
+      expect(viteConfig).toContain('basePath')
     })
   })
 
