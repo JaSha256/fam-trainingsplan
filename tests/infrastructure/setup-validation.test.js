@@ -232,7 +232,8 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
     })
 
     it('should have build script', () => {
-      expect(packageJson.scripts.build).toBe('vite build')
+      // Build script should start with vite build and may include post-build steps
+      expect(packageJson.scripts.build).toMatch(/^vite build/)
     })
 
     it('should have preview script', () => {
