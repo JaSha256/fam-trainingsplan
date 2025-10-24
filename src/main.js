@@ -8,6 +8,12 @@
 
 // @ts-check
 
+// CRITICAL: Import Leaflet FIRST and expose globally BEFORE any other imports
+// This ensures window.L is available for leaflet.markercluster in production builds
+import * as L from 'leaflet'
+window.L = L
+
+// Now import Alpine and other dependencies AFTER window.L assignment
 // @ts-ignore - No type declarations available
 import Alpine from 'alpinejs'
 // @ts-ignore - No type declarations available
@@ -19,16 +25,12 @@ import intersect from '@alpinejs/intersect'
 // @ts-ignore - No type declarations available
 import persist from '@alpinejs/persist'
 
-// IMPORTANT: Import Leaflet first and expose globally before markercluster
-import * as L from 'leaflet'
-window.L = L
-
-// Now import Leaflet CSS and markercluster (depends on window.L)
+// Import Leaflet CSS and markercluster (depends on window.L being set above)
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
-// CRITICAL: Import the actual dist file, not the package name (Vite bundling issue)
-import 'leaflet.markercluster/dist/leaflet.markercluster.js'
+// CRITICAL: Import markercluster LAST to ensure window.L is available
+import 'leaflet.markercluster'
 import './style.css'
 
 import { trainingsplaner } from './js/trainingsplaner.js'
