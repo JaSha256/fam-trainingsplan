@@ -512,6 +512,11 @@ export class MapManager {
       return
     }
 
+    // CRITICAL: Wait for next animation frame to ensure plugin registration
+    // The dynamic import loads the module, but the browser needs time to execute
+    // the plugin code and register L.markerClusterGroup on the global L object
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
     // Double-check that L.markerClusterGroup is now available
     if (typeof L.markerClusterGroup !== 'function') {
       log('error', 'L.markerClusterGroup still not available after dynamic import')
