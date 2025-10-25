@@ -25,14 +25,12 @@ import intersect from '@alpinejs/intersect'
 // @ts-ignore - No type declarations available
 import persist from '@alpinejs/persist'
 
-// Import Leaflet CSS and markercluster (depends on window.L being set above)
+// Import Leaflet CSS (MarkerCluster CSS is now imported dynamically in map-manager.js)
 import 'leaflet/dist/leaflet.css'
-import 'leaflet.markercluster/dist/MarkerCluster.css'
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
-// CRITICAL: Import markercluster LAST to ensure window.L is available
-// Import the full library to extend window.L with markerClusterGroup
-import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 import './style.css'
+
+// NOTE: leaflet.markercluster is now imported dynamically in map-manager.js
+// This prevents "L.MarkerClusterGroup is not a constructor" errors in production builds
 
 import { trainingsplaner } from './js/trainingsplaner.js'
 import { initIframeAutoResize } from './js/iframe-resize.js'

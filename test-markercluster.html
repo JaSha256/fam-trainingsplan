@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkerCluster Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; }
+        #status {
+            padding: 20px;
+            background: #f0f0f0;
+            margin: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>MarkerCluster Production Build Test</h1>
+    <div id="status">Loading...</div>
+    <div id="map"></div>
+
+    <script type="module">
+        const statusEl = document.getElementById('status');
+
+        function log(message, isError = false) {
+            const time = new Date().toLocaleTimeString();
+            const className = isError ? 'error' : 'success';
+            statusEl.innerHTML += `<div class="${className}">[${time}] ${message}</div>`;
+        }
+
+        async function testMarkerCluster() {
+            try {
+                // Import Leaflet
+                log('✓ Step 1: Importing Leaflet...');
+                const L = (await import('https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js')).default;
+                window.L = L;
+                log('✓ Step 2: Leaflet loaded successfully');
+
+                // Import MarkerCluster
+                log('✓ Step 3: Importing leaflet.markercluster...');
+                await import('https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js');
+                log('✓ Step 4: MarkerCluster loaded');
+
+                // Check if L.markerClusterGroup exists
+                if (typeof L.markerClusterGroup !== 'function') {
+                    throw new Error('L.markerClusterGroup is not a function!');
+                }
+                log('✓ Step 5: L.markerClusterGroup is available');
+
+                // Create map
+                const map = L.map('map').setView([48.1351, 11.5820], 12);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                log('✓ Step 6: Map created');
+
+                // Create marker cluster group
+                const markers = L.markerClusterGroup();
+                log('✓ Step 7: MarkerClusterGroup created successfully!');
+
+                // Add some test markers
+                for (let i = 0; i < 10; i++) {
+                    const lat = 48.1351 + (Math.random() - 0.5) * 0.1;
+                    const lng = 11.5820 + (Math.random() - 0.5) * 0.1;
+                    markers.addLayer(L.marker([lat, lng]));
+                }
+                map.addLayer(markers);
+                log('✓ Step 8: Added 10 test markers to cluster group');
+
+                log('✅ SUCCESS: All tests passed! MarkerCluster works correctly.');
+
+            } catch (error) {
+                log(`❌ ERROR: ${error.message}`, true);
+                console.error('Full error:', error);
+            }
+        }
+
+        testMarkerCluster();
+    </script>
+</body>
+</html>

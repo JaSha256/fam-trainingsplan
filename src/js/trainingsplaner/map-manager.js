@@ -22,7 +22,7 @@ import {
   createMapPopupHTML,
   createLocationPopupHTML
 } from './map-utils.js'
-// markerClusterGroup is added to L by importing 'leaflet.markercluster' in main.js
+// markerClusterGroup is dynamically imported when needed to prevent production build issues
 
 /**
  * @typedef {import('./types.js').Training} Training
@@ -470,15 +470,7 @@ export class MapManager {
       }
       this.context.markers = []
 
-      // Check if markerClusterGroup is available (loaded via ES6 import in main.js)
-      // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
-      if (typeof L.markerClusterGroup !== 'function') {
-        log('error', 'Leaflet.markercluster not available - check imports in main.js')
-        this.addMarkersWithoutClustering()
-        return
-      }
-
-      // Markercluster is available - proceed with clustering
+      // Proceed with clustering (async dynamic import handles availability check)
       this.addMarkersWithClustering()
     })
   }
@@ -490,10 +482,11 @@ export class MapManager {
    * Extracted for reuse by polling mechanism.
    *
    * CRITICAL: Ensures safe removal of existing cluster group
+   * DEPLOYMENT FIX: Uses async dynamic import to guarantee plugin is loaded
    *
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  addMarkersWithClustering() {
+  async addMarkersWithClustering() {
     if (!this.context.map) return
     const map = this.context.map
 
@@ -505,6 +498,30 @@ export class MapManager {
       this.context.markerClusterGroup = null
     }
     this.context.markers = []
+
+    // DEPLOYMENT FIX: Dynamically import leaflet.markercluster to ensure it's loaded
+    // This prevents "L.MarkerClusterGroup is not a constructor" in production builds
+    try {
+      // @ts-ignore - No type declarations available for leaflet.markercluster
+      await import('leaflet.markercluster')
+      // @ts-ignore - CSS imports
+      await import('leaflet.markercluster/dist/MarkerCluster.css')
+      // @ts-ignore - CSS imports
+      await import('leaflet.markercluster/dist/MarkerCluster.Default.css')
+      log('debug', 'MarkerCluster plugin loaded dynamically')
+    } catch (error) {
+      log('error', 'Failed to load MarkerCluster plugin', error)
+      this.addMarkersWithoutClustering()
+      return
+    }
+
+    // Double-check that L.markerClusterGroup is now available
+    // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
+    if (typeof L.markerClusterGroup !== 'function') {
+      log('error', 'L.markerClusterGroup still not available after dynamic import')
+      this.addMarkersWithoutClustering()
+      return
+    }
 
     // Responsive cluster radius based on screen size (from map-utils)
     const clusterRadius = getOptimalClusterRadius()

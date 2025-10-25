@@ -308,7 +308,11 @@ export default defineConfig(({ mode }) => {
         'leaflet',
         'leaflet.markercluster'
       ],
-      exclude: []
+      exclude: [],
+      // Force Leaflet to be treated as ESM
+      esbuildOptions: {
+        resolveExtensions: ['.js', '.ts', '.mjs']
+      }
     }
   }
 })

@@ -1149,6 +1149,57 @@ performance.measure('init-to-loaded', 'navigationStart', 'trainings-loaded')
 
 ---
 
+## ⚠️ CRITICAL: Vite Plugin Loading Anti-Pattern
+
+**🚨 READ THIS BEFORE MODIFYING LEAFLET/VITE CODE**
+
+### The Problem: Race Conditions in Production Builds
+Vite's production build creates optimized chunks that load in UNPREDICTABLE order.
+Static imports of Leaflet plugins (like markercluster) can fail with:
+```
+Uncaught TypeError: L.MarkerClusterGroup is not a constructor
+```
+
+### ✅ THE SOLUTION: Dynamic Imports at Point of Use
+**Location:** `src/js/trainingsplaner/map-manager.js:497`
+
+```javascript
+// CORRECT: Dynamic import RIGHT BEFORE using plugin
+async addMarkersWithClustering() {
+  await import('leaflet.markercluster')
+  await import('leaflet.markercluster/dist/MarkerCluster.css')
+
+  // NOW safe to use
+  const markers = L.markerClusterGroup({ ... })
+}
+```
+
+### ❌ ANTI-PATTERNS - NEVER DO THIS
+```javascript
+// DON'T: Static import in main.js
+import 'leaflet.markercluster' // ❌ Race condition!
+
+// DON'T: Assume load order from vite.config.js
+manualChunks: { 'vendor-map': ['leaflet', 'leaflet.markercluster'] } // ❌ Doesn't guarantee order!
+
+// DON'T: Import in separate utility file
+// map-utils.js
+import 'leaflet.markercluster' // ❌ May load after map-manager!
+```
+
+### 📋 Pre-Deployment Checklist
+**MANDATORY before ANY deployment:**
+1. `npm run build && npm run preview`
+2. Open Map View in browser
+3. Verify Console: "MarkerCluster plugin loaded dynamically" ✅
+4. Test on Chrome, Firefox, Safari (Desktop + Mobile)
+
+**Full Documentation:** `.claude/lessons-learned/VITE-PLUGIN-LOADING.md`
+
+**This problem occurred 3 times. DO NOT try static imports again.**
+
+---
+
 ## 📦 Build & Deployment
 
 ### Build-Prozess
