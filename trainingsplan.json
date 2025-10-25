@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-25T12:57:29.301Z",
+  "generated": "2025-10-25T13:57:28.114Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -260,7 +260,7 @@
   },
   "stats": {
     "total": 60,
-    "mitProbetraining": 40,
+    "mitProbetraining": 38,
     "mitLink": 60,
     "nachWochentag": {
       "Montag": 1,
@@ -1221,7 +1221,7 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Steven, Julian W.",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
@@ -1239,7 +1239,7 @@
       "alterVon": 10,
       "alterBis": null,
       "trainer": "Steven, Julian W.",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
