@@ -502,11 +502,8 @@ export class MapManager {
     // DEPLOYMENT FIX: Dynamically import leaflet.markercluster to ensure it's loaded
     // This prevents "L.MarkerClusterGroup is not a constructor" in production builds
     try {
-      // @ts-ignore - No type declarations available for leaflet.markercluster
       await import('leaflet.markercluster')
-      // @ts-ignore - CSS imports
       await import('leaflet.markercluster/dist/MarkerCluster.css')
-      // @ts-ignore - CSS imports
       await import('leaflet.markercluster/dist/MarkerCluster.Default.css')
       log('debug', 'MarkerCluster plugin loaded dynamically')
     } catch (error) {
@@ -516,7 +513,6 @@ export class MapManager {
     }
 
     // Double-check that L.markerClusterGroup is now available
-    // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
     if (typeof L.markerClusterGroup !== 'function') {
       log('error', 'L.markerClusterGroup still not available after dynamic import')
       this.addMarkersWithoutClustering()
@@ -529,7 +525,6 @@ export class MapManager {
 
     // Create marker cluster group with optimized configuration
     // Based on Leaflet.markercluster best practices for 60+ markers
-    // @ts-ignore - markerClusterGroup is added to L by leaflet.markercluster
     const markers = L.markerClusterGroup({
       // Performance optimizations (critical for 50+ markers)
       chunkedLoading: true, // Split processing to prevent UI freeze
@@ -573,7 +568,6 @@ export class MapManager {
           className = 'md-map-cluster-medium'
         }
 
-        // @ts-ignore - Leaflet.markercluster types
         return L.divIcon({
           html: `<div class="md-map-cluster ${className}">
                    <span class="md-map-cluster-count" style="font-size: ${fontSize}px">${count}</span>
@@ -642,7 +636,8 @@ export class MapManager {
     })
 
     // Add all markers at once (performance best practice)
-    markers.addLayers(markerArray)
+    // Type assertion via unknown: Marker[] extends Layer[], but TypeScript strict mode requires this
+    markers.addLayers(/** @type {import('leaflet').Layer[]} */ (/** @type {unknown} */ (markerArray)))
     this.context.markers = markerArray
 
     // Add cluster group to map
