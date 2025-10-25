@@ -4,6 +4,17 @@ import { MapManager } from '../../src/js/trainingsplaner/map-manager.js'
 import { CONFIG } from '../../src/js/config.js'
 import { utils } from '../../src/js/utils.js'
 
+// Mock dynamic imports for leaflet.markercluster
+vi.mock('leaflet.markercluster', () => ({
+  default: {}
+}))
+vi.mock('leaflet.markercluster/dist/MarkerCluster.css', () => ({
+  default: ''
+}))
+vi.mock('leaflet.markercluster/dist/MarkerCluster.Default.css', () => ({
+  default: ''
+}))
+
 // Mock Leaflet - define inline in vi.mock to avoid hoisting issues
 vi.mock('leaflet', () => {
   const mockMap = vi.fn()
@@ -359,10 +370,18 @@ describe('MapManager', () => {
       expect(mockMap.removeLayer).toHaveBeenCalledWith(existingCluster)
     })
 
-    it('should create marker for each training with coordinates', () => {
+    it('should create marker for each training with coordinates', async () => {
       mockContext.filteredTrainings = [mockTraining]
 
       mapManager.addMarkersToMap()
+
+      // Wait for async operations to complete using vi.waitFor
+      await vi.waitFor(
+        () => {
+          expect(L.marker).toHaveBeenCalled()
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       expect(L.marker).toHaveBeenCalledWith(
         [mockTraining.lat, mockTraining.lng],
@@ -382,8 +401,16 @@ describe('MapManager', () => {
       expect(L.marker).not.toHaveBeenCalled()
     })
 
-    it('should bind popup to marker', () => {
+    it('should bind popup to marker', async () => {
       mapManager.addMarkersToMap()
+
+      // Wait for async operations to complete
+      await vi.waitFor(
+        () => {
+          expect(mockMarker.bindPopup).toHaveBeenCalled()
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       expect(mockMarker.bindPopup).toHaveBeenCalledWith(
         expect.any(String),
@@ -395,29 +422,52 @@ describe('MapManager', () => {
       )
     })
 
-    it('should add markers to cluster group', () => {
+    it('should add markers to cluster group', async () => {
       const mockClusterGroup = L.markerClusterGroup()
 
       mapManager.addMarkersToMap()
 
-      expect(mockClusterGroup.addLayers).toHaveBeenCalled()
+      // Wait for async operations to complete
+      await vi.waitFor(
+        () => {
+          expect(mockClusterGroup.addLayers).toHaveBeenCalled()
+        },
+        { timeout: 1000, interval: 10 }
+      )
+
       expect(mockMap.addLayer).toHaveBeenCalledWith(mockClusterGroup)
     })
 
-    it('should store markers in context', () => {
+    it('should store markers in context', async () => {
       mapManager.addMarkersToMap()
+
+      // Wait for async operations to complete
+      await vi.waitFor(
+        () => {
+          expect(mockContext.markers.length).toBeGreaterThan(0)
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       expect(mockContext.markers).toHaveLength(1)
       expect(mockContext.markers[0]).toBe(mockMarker)
     })
 
-    it('should fit bounds to show all markers', () => {
+    it('should fit bounds to show all markers', async () => {
       mockContext.filteredTrainings = [
         mockTraining,
         { ...mockTraining, id: 2, lat: 48.135124, lng: 11.582002 }
       ]
 
       mapManager.addMarkersToMap()
+
+      // Wait for async operations to complete
+      await vi.waitFor(
+        () => {
+          expect(mockMap.fitBounds).toHaveBeenCalled()
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       expect(mockMap.fitBounds).toHaveBeenCalledWith(
         expect.arrayContaining([[mockTraining.lat, mockTraining.lng]]),
@@ -441,7 +491,7 @@ describe('MapManager', () => {
       expect(mockMap.fitBounds).not.toHaveBeenCalled()
     })
 
-    it('should set user interaction flag on movestart', () => {
+    it('should set user interaction flag on movestart', async () => {
       let moveStartCallback
 
       mockMap.once.mockImplementation((event, callback) => {
@@ -452,7 +502,13 @@ describe('MapManager', () => {
 
       mapManager.addMarkersToMap()
 
-      expect(mockMap.once).toHaveBeenCalledWith('movestart', expect.any(Function))
+      // Wait for async operations to complete
+      await vi.waitFor(
+        () => {
+          expect(mockMap.once).toHaveBeenCalledWith('movestart', expect.any(Function))
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       // Trigger movestart
       if (moveStartCallback) {
@@ -462,7 +518,7 @@ describe('MapManager', () => {
       expect(mockContext.userHasInteractedWithMap).toBe(true)
     })
 
-    it('should handle multiple trainings', () => {
+    it('should handle multiple trainings', async () => {
       mockContext.filteredTrainings = [
         mockTraining,
         { ...mockTraining, id: 2, lat: 48.135, lng: 11.582 },
@@ -471,8 +527,15 @@ describe('MapManager', () => {
 
       mapManager.addMarkersToMap()
 
+      // Wait for async operations to complete
+      await vi.waitFor(
+        () => {
+          expect(mockContext.markers.length).toBe(3)
+        },
+        { timeout: 1000, interval: 10 }
+      )
+
       expect(L.marker).toHaveBeenCalledTimes(3)
-      expect(mockContext.markers).toHaveLength(3)
     })
   })
 
@@ -591,11 +654,18 @@ describe('MapManager', () => {
       })
     })
 
-    it('should handle complete map lifecycle', () => {
+    it('should handle complete map lifecycle', async () => {
       // Initialize
       mapManager.initializeMap()
-      expect(mockContext.map).toBeTruthy()
-      expect(mockContext.markers).toHaveLength(1)
+
+      // Wait for async initialization AND markers to be added
+      await vi.waitFor(
+        () => {
+          expect(mockContext.map).toBeTruthy()
+          expect(mockContext.markers.length).toBe(1)
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       // Update markers
       mockContext.filteredTrainings = [
@@ -620,7 +690,14 @@ describe('MapManager', () => {
       }
 
       mapManager.addMarkersToMap()
-      expect(mockContext.markers).toHaveLength(2)
+
+      // Wait for async marker update to complete
+      await vi.waitFor(
+        () => {
+          expect(mockContext.markers.length).toBe(2)
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       // Cleanup
       mapManager.cleanupMap()
@@ -637,7 +714,7 @@ describe('MapManager', () => {
       expect(mockContext.markers).toEqual([])
     })
 
-    it('should handle map with mixed trainings', () => {
+    it('should handle map with mixed trainings', async () => {
       mockContext.filteredTrainings = [
         mockTraining,
         mockTrainingNoCoords,
@@ -646,12 +723,26 @@ describe('MapManager', () => {
 
       mapManager.initializeMap()
 
-      // Should only create markers for trainings with coordinates
-      expect(mockContext.markers).toHaveLength(2)
+      // Wait for async initialization to complete
+      await vi.waitFor(
+        () => {
+          expect(mockContext.markers.length).toBe(2)
+        },
+        { timeout: 1000, interval: 10 }
+      )
     })
 
-    it('should handle user interaction correctly', () => {
+    it('should handle user interaction correctly', async () => {
       mapManager.initializeMap()
+
+      // Wait for async initialization AND markers to be added
+      await vi.waitFor(
+        () => {
+          expect(mockContext.map).toBeTruthy()
+          expect(mockContext.markers.length).toBeGreaterThan(0)
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       // Simulate user interaction
       const moveStartCallback = mockMap.once.mock.calls.find(call => call[0] === 'movestart')?.[1]
@@ -664,6 +755,14 @@ describe('MapManager', () => {
 
       // Update markers - should not fit bounds
       mapManager.addMarkersToMap()
+
+      // Wait for async marker update to complete
+      await vi.waitFor(
+        () => {
+          expect(mockContext.markers.length).toBeGreaterThanOrEqual(0)
+        },
+        { timeout: 1000, interval: 10 }
+      )
 
       // fitBounds should only be called once (during init)
       expect(mockMap.fitBounds).toHaveBeenCalledTimes(1)
