@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-24T23:57:37.922Z",
+  "generated": "2025-10-23T16:57:39.654Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -520,7 +520,7 @@
       "alterBis": 5,
       "trainer": "Steffi",
       "probetraining": "nein",
-      "anmerkung": "am 29.10 kein Training",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fe3a5ada-798e-434f-914b-a9aafc321f8a",
       "lat": 48.08626981754226,
@@ -538,7 +538,7 @@
       "alterBis": 9,
       "trainer": "Steffi",
       "probetraining": "nein",
-      "anmerkung": "am 29.10 kein Training",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/62c0977e-60a2-4762-a140-220638829599",
       "lat": 48.08626981754226,
@@ -556,7 +556,7 @@
       "alterBis": 11,
       "trainer": "Steffi",
       "probetraining": "nein",
-      "anmerkung": "am 29.10 kein Training",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/632ad222-9d07-41e7-b422-9598f1e1d568",
       "lat": 48.08626981754226,
