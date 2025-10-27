@@ -9,20 +9,20 @@ importers:
   .:
     dependencies:
       '@alpinejs/collapse':
-        specifier: ^3.15.0
-        version: 3.15.0
+        specifier: ^3.15.1
+        version: 3.15.1
       '@alpinejs/focus':
-        specifier: ^3.15.0
-        version: 3.15.0
+        specifier: ^3.15.1
+        version: 3.15.1
       '@alpinejs/intersect':
-        specifier: ^3.15.0
-        version: 3.15.0
+        specifier: ^3.15.1
+        version: 3.15.1
       '@alpinejs/persist':
-        specifier: ^3.15.0
-        version: 3.15.0
+        specifier: ^3.15.1
+        version: 3.15.1
       alpinejs:
-        specifier: ^3.15.0
-        version: 3.15.0
+        specifier: ^3.15.1
+        version: 3.15.1
       fuse.js:
         specifier: ^7.0.0
         version: 7.1.0
@@ -117,17 +117,17 @@ importers:
 
 packages:
 
-  '@alpinejs/collapse@3.15.0':
-    resolution: {integrity: sha512-RREZVE67/2E7rDZIxw3B5BGAFBm1x/16+3jeyjj+Fky4wPBqnhGCQZujkiggrOmdU6mcZPixYxkKFlhKfQMAXw==}
+  '@alpinejs/collapse@3.15.1':
+    resolution: {integrity: sha512-p3ejDFk8VWdrHa6+Fq3NQp6X4LxWoj2TFRgKEKPQPmVyJMV+Zf5m4ZUFk3Z54zIsgOM9JkAZE0Xany00ntTTng==}
 
-  '@alpinejs/focus@3.15.0':
-    resolution: {integrity: sha512-Cm9vop09oNFw7T9SEBcfijrTdSN1aBNHK3cN4mB52eKvi9z5pa+xcyN+6S3FmZ44MR/u81JXa6hi5CjX1iy6dA==}
+  '@alpinejs/focus@3.15.1':
+    resolution: {integrity: sha512-Svu8ILVafdJouRVAV/vAkw7i/5/RNi5USh/C1llOhmhpSlX+F8JI1FuVhlJHLMcNqNIV6fm9yoiUBjB2NLwwUQ==}
 
-  '@alpinejs/intersect@3.15.0':
-    resolution: {integrity: sha512-K9ax9F4u0iQbWIlR1TFeXYmHN20n6fWyfCt/GlDb0qCEwRITOmd3xF7uZDAB706OgImIJBLulC5DSEcfrNNCWw==}
+  '@alpinejs/intersect@3.15.1':
+    resolution: {integrity: sha512-nEtGPLVZrFHOW5CCz1o13jCT+F9JhTjv8P07EdNZYIlJMYcJMIfoT7vsFrK7Ehl75q9OEuPdkxuEADwKXpNE3A==}
 
-  '@alpinejs/persist@3.15.0':
-    resolution: {integrity: sha512-SmW1DWn9FRflfPqZZtpTq+2uXDq/ohbSiKmYg6HXX1UxQnsaSkTT0HT72SQcbqOC3WmIUF28CberBnwiWoqmpw==}
+  '@alpinejs/persist@3.15.1':
+    resolution: {integrity: sha512-EtK4s7I0xhRTJsLaYjhJ4SyQan8+gkGaRYvzFw+ndg7rzrjSHzhgRmQ20GZbnjj+eDg77fPMTvzvngX6yAExbg==}
 
   '@apideck/better-ajv-errors@0.3.6':
     resolution: {integrity: sha512-P+ZygBLZtkp0qqOAJJVX4oX/sFo5JR3eBWwwuqHHhK0GIgQOKWrAfiAaWX0aArHkRWHMuggFEgAZNxVPwPZYaA==}
@@ -1316,8 +1316,8 @@ packages:
   ajv@8.17.1:
     resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
 
-  alpinejs@3.15.0:
-    resolution: {integrity: sha512-lpokA5okCF1BKh10LG8YjqhfpxyHBk4gE7boIgVHltJzYoM7O9nK3M7VlntLEJGsVmu7U/RzUWajmHREGT38Eg==}
+  alpinejs@3.15.1:
+    resolution: {integrity: sha512-HLO1TtiE92VajFHtLLPK8BWaK1YepV/uj31UrfoGnQ00lyFOJZ+oVY3F0DghPAwvg8sLU79pmjGQSytERa2gEg==}
 
   ansi-escapes@7.1.1:
     resolution: {integrity: sha512-Zhl0ErHcSRUaVfGUeUdDuLgpkEo8KIFjB4Y9uAc46ScOpdDiU1Dbyplh7qWJeJ/ZHpbyMSM26+X3BySgnIz40Q==}
@@ -3429,16 +3429,16 @@ packages:
 
 snapshots:
 
-  '@alpinejs/collapse@3.15.0': {}
+  '@alpinejs/collapse@3.15.1': {}
 
-  '@alpinejs/focus@3.15.0':
+  '@alpinejs/focus@3.15.1':
     dependencies:
       focus-trap: 6.9.4
       tabbable: 5.3.3
 
-  '@alpinejs/intersect@3.15.0': {}
+  '@alpinejs/intersect@3.15.1': {}
 
-  '@alpinejs/persist@3.15.0': {}
+  '@alpinejs/persist@3.15.1': {}
 
   '@apideck/better-ajv-errors@0.3.6(ajv@8.17.1)':
     dependencies:
@@ -4688,7 +4688,7 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  alpinejs@3.15.0:
+  alpinejs@3.15.1:
     dependencies:
       '@vue/reactivity': 3.1.5
 
