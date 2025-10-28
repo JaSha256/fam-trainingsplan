@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-10-27T23:57:30.696Z",
+  "generated": "2025-10-28T00:57:29.110Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -322,7 +322,7 @@
       "alterBis": 11,
       "trainer": "Laurenz",
       "probetraining": "ja",
-      "anmerkung": "Das Training ist ab den Herbstferien in der Winterpause",
+      "anmerkung": "Das Training in der Winterpause",
       "teilnehmer": 4,
       "link": "https://fam.kurabu.com/de/events/8516b0f1-d29e-4c36-9741-30944c21cfbe",
       "lat": 48.11201643938622,
@@ -376,7 +376,7 @@
       "alterBis": null,
       "trainer": "Ludwig",
       "probetraining": "ja",
-      "anmerkung": "21.10. an der Pinakothek der Moderne! Ab den Herbstferien in der Winterpause",
+      "anmerkung": "Ab den Herbstferien in der Winterpause",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/66b79177-0f29-4f7c-a455-2e9048785fc7",
       "lat": 48.11201643938622,
