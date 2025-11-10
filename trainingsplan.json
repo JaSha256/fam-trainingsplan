@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-10T08:57:28.777Z",
+  "generated": "2025-11-10T09:57:29.262Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -149,7 +149,7 @@
         "wochentage": [
           "Mittwoch"
         ],
-        "probetraining": false,
+        "probetraining": true,
         "koordinaten": {
           "lat": 48.08626981754226,
           "lng": 11.496730165793442
@@ -259,7 +259,7 @@
   },
   "stats": {
     "total": 59,
-    "mitProbetraining": 36,
+    "mitProbetraining": 37,
     "mitLink": 59,
     "nachWochentag": {
       "Montag": 1,
@@ -536,7 +536,7 @@
       "alterVon": 8,
       "alterBis": 11,
       "trainer": "Steffi",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "Probetraining möglich",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/632ad222-9d07-41e7-b422-9598f1e1d568",
