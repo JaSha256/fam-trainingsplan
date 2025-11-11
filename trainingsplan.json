@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-11T13:57:30.378Z",
+  "generated": "2025-11-11T14:57:35.164Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -358,7 +358,7 @@
       "alterBis": null,
       "trainer": "Ludwig",
       "probetraining": "ja",
-      "anmerkung": "Winterpause",
+      "anmerkung": "11.11. an der Münchner Freiham",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/66b79177-0f29-4f7c-a455-2e9048785fc7",
       "lat": 48.11201643938622,
