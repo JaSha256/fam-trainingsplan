@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-11T10:57:36.449Z",
+  "generated": "2025-11-11T11:57:29.038Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -1204,7 +1204,7 @@
       "alterBis": 11,
       "trainer": "Steven, Julian W.",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "Kein Probetraining möglich!!!",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
       "lat": 48.141691300033706,
