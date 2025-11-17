@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-17T22:57:27.635Z",
+  "generated": "2025-11-17T23:57:27.931Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -395,7 +395,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/7f33bd4c-1f56-4c00-ae79-57784ab7e917",
+      "link": "https://fam.kurabu.com/de/events/921d17cf-d4b6-425a-8452-bbb8cdd3f883",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
     },
@@ -413,7 +413,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/80d40c31-40fe-489b-8098-1f7fd5181be2",
+      "link": "https://fam.kurabu.com/de/events/2712f5da-e272-47ca-bd0f-0a6a988b7cbc",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -431,7 +431,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 7,
-      "link": "https://fam.kurabu.com/de/events/1777c5e0-b17a-4473-b6f7-e971bc891248",
+      "link": "https://fam.kurabu.com/de/events/bdc3c772-78da-4a08-ae98-d574db014980",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -449,7 +449,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/en/events/d769631f-95ea-458a-8546-f1da43a3902f",
+      "link": "https://fam.kurabu.com/de/events/581cf88f-628b-49f2-9942-3df65a9e3761",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -467,7 +467,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/d9ece0df-b4b9-4b43-9638-7dae4853b8e6",
+      "link": "https://fam.kurabu.com/de/events/214ce350-65f5-4e32-af2b-f89d11f304e7",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -485,7 +485,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/d7329b73-7e8f-4244-9c70-283f6bf845f5",
+      "link": "https://fam.kurabu.com/de/events/ae54756a-8187-4b65-b587-f05e3b879eca",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -503,7 +503,7 @@
       "probetraining": "nein",
       "anmerkung": "kein Probetraining möglich",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/fe3a5ada-798e-434f-914b-a9aafc321f8a",
+      "link": "https://fam.kurabu.com/de/events/e31c2602-6f04-4d73-8a3d-3ef23cc27688",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442
     },
@@ -521,7 +521,7 @@
       "probetraining": "nein",
       "anmerkung": "kein Probetraining möglich",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/62c0977e-60a2-4762-a140-220638829599",
+      "link": "https://fam.kurabu.com/de/events/71066164-b8dc-4ecb-9583-8418563d3c18",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442
     },
@@ -575,7 +575,7 @@
       "probetraining": "ja",
       "anmerkung": "Milbwoch-Jam",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/1eec1fc9-d924-4cf3-923f-53f0e586fee7",
+      "link": "https://fam.kurabu.com/de/events/4fa95f29-2a12-4c45-b714-f505f4898595",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294
     },
@@ -611,7 +611,7 @@
       "probetraining": "ja",
       "anmerkung": "Fällt am 19.11. aus!",
       "teilnehmer": 12,
-      "link": "https://fam.kurabu.com/de/events/75b253a9-aae1-4806-ae2a-66f9284a78e7",
+      "link": "https://fam.kurabu.com/de/events/b4744555-1b27-4211-ac97-3e09c4cea159",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -629,7 +629,7 @@
       "probetraining": "ja",
       "anmerkung": "Fällt am 19.11. aus!",
       "teilnehmer": 8,
-      "link": "https://fam.kurabu.com/de/events/b4c3b240-40fd-4c70-8804-dce642f381e6",
+      "link": "https://fam.kurabu.com/de/events/4fa95f29-2a12-4c45-b714-f505f4898595",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -647,7 +647,7 @@
       "probetraining": "ja",
       "anmerkung": "Fällt am 19.11. aus!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/104405d4-33de-4121-9742-23a63f6593c5",
+      "link": "https://fam.kurabu.com/de/events/67883d42-60b7-4998-9642-e87da700b4a1",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
@@ -755,7 +755,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/b728cec3-fc25-465c-a87c-ed408a170894",
+      "link": "https://fam.kurabu.com/de/events/0748ba2d-e2fb-4a2c-83ad-5b7277a85f1b",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413
     },
@@ -791,7 +791,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
+      "link": "https://fam.kurabu.com/de/events/fdf29833-f16c-443c-902c-9f66291ee28e",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275
     },
@@ -809,7 +809,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
+      "link": "https://fam.kurabu.com/de/events/5c64b634-468c-4cad-8089-a3188f6bd5c4",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275
     },
@@ -845,7 +845,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/fc674a4b-ff55-4c1a-b961-07d52380521d",
+      "link": "https://fam.kurabu.com/de/events/e95be6eb-e0c8-4d53-a399-be7d44057c8c",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274
     },
@@ -917,7 +917,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
+      "link": "https://fam.kurabu.com/de/events/1f0177ad-0183-4450-9f7e-f14b78d5734d",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274
     },
@@ -953,7 +953,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/5497822d-fbd0-4130-b60b-dc204b1eb21b",
+      "link": "https://fam.kurabu.com/de/events/122ab0ca-88b0-409a-925c-de884e0328ca",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274
     },
@@ -1007,7 +1007,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 28,
-      "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
+      "link": "https://fam.kurabu.com/de/events/48c9397e-cd79-4feb-9308-dcb37f60dcfe",
       "lat": 48.16961192487,
       "lng": 11.507736765568037
     },
@@ -1025,7 +1025,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 6,
-      "link": "https://fam.kurabu.com/de/events/d69e8cf8-ef1a-4250-8f8e-06a1daeb11f3",
+      "link": "https://fam.kurabu.com/de/events/1632f0fb-3158-426e-87bb-0b94f6f7b55e",
       "lat": 48.16961192487,
       "lng": 11.507736765568037
     },
@@ -1223,7 +1223,7 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
+      "link": "https://fam.kurabu.com/de/events/7be85623-930f-482d-b5bc-244b5662e668",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
     },
@@ -1259,7 +1259,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/0d497802-e483-494f-8ad1-d94d7b8cad97",
+      "link": "https://fam.kurabu.com/de/events/8976dab2-8ce0-4292-9cba-f8f316460d94",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421
     },
