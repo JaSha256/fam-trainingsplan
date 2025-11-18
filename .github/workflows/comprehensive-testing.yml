@@ -61,7 +61,7 @@ jobs:
       
       - name: Upload Visual Test Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: visual-regression-results
           path: |
@@ -71,7 +71,7 @@ jobs:
       
       - name: Upload Screenshot Diffs (on failure)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: visual-regression-diffs
           path: test-results/**/*-diff.png
@@ -112,7 +112,7 @@ jobs:
       
       - name: Upload Security Test Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: security-test-results
           path: playwright-report/
@@ -167,7 +167,7 @@ jobs:
       
       - name: Upload API Test Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: api-test-results
           path: playwright-report/
