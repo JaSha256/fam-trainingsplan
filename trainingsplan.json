@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-18T16:57:29.798Z",
+  "generated": "2025-11-18T17:57:38.053Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -53,11 +53,12 @@
       "Chris, Konsti",
       "David",
       "Finnian, Maxi Dö., Jakob",
+      "Garlef, Maxi C.",
       "Garlef, Maxi C., Marcel",
       "Joni, Hannah",
       "Joni, Neo",
       "Kati,Malte, Maxi Dö., Felix P.",
-      "Konsti, Neo",
+      "Konsti, Teo",
       "Laurenz",
       "Lea, Joni",
       "Lewin",
@@ -325,7 +326,8 @@
       "teilnehmer": 4,
       "link": "https://fam.kurabu.com/de/events/8516b0f1-d29e-4c36-9741-30944c21cfbe",
       "lat": 48.11201643938622,
-      "lng": 11.572617040130154
+      "lng": 11.572617040130154,
+      "trainingsID": "T001"
     },
     {
       "id": 1,
@@ -343,7 +345,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/921d17cf-d4b6-425a-8452-bbb8cdd3f883",
       "lat": 48.13739897456391,
-      "lng": 11.57544604922726
+      "lng": 11.57544604922726,
+      "trainingsID": "T002"
     },
     {
       "id": 2,
@@ -361,7 +364,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/66b79177-0f29-4f7c-a455-2e9048785fc7",
       "lat": 48.11201643938622,
-      "lng": 11.572617040130154
+      "lng": 11.572617040130154,
+      "trainingsID": "T003"
     },
     {
       "id": 3,
@@ -379,7 +383,8 @@
       "teilnehmer": 30,
       "link": "https://fam.kurabu.com/de/events/2c1a0676-35bc-416f-a1a7-0bff8e1e26e2",
       "lat": 48.141691300033706,
-      "lng": 11.40614693505211
+      "lng": 11.40614693505211,
+      "trainingsID": "T004"
     },
     {
       "id": 4,
@@ -397,7 +402,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/7f33bd4c-1f56-4c00-ae79-57784ab7e917",
       "lat": 48.141691300033706,
-      "lng": 11.40614693505211
+      "lng": 11.40614693505211,
+      "trainingsID": "T005"
     },
     {
       "id": 5,
@@ -415,7 +421,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/2712f5da-e272-47ca-bd0f-0a6a988b7cbc",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T006"
     },
     {
       "id": 6,
@@ -433,7 +440,8 @@
       "teilnehmer": 7,
       "link": "https://fam.kurabu.com/de/events/bdc3c772-78da-4a08-ae98-d574db014980",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T007"
     },
     {
       "id": 7,
@@ -451,7 +459,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/581cf88f-628b-49f2-9942-3df65a9e3761",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T008"
     },
     {
       "id": 8,
@@ -469,7 +478,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/214ce350-65f5-4e32-af2b-f89d11f304e7",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T009"
     },
     {
       "id": 9,
@@ -487,7 +497,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/ae54756a-8187-4b65-b587-f05e3b879eca",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T010"
     },
     {
       "id": 10,
@@ -505,7 +516,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e31c2602-6f04-4d73-8a3d-3ef23cc27688",
       "lat": 48.08626981754226,
-      "lng": 11.496730165793442
+      "lng": 11.496730165793442,
+      "trainingsID": "T011"
     },
     {
       "id": 11,
@@ -523,7 +535,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/71066164-b8dc-4ecb-9583-8418563d3c18",
       "lat": 48.08626981754226,
-      "lng": 11.496730165793442
+      "lng": 11.496730165793442,
+      "trainingsID": "T012"
     },
     {
       "id": 12,
@@ -541,7 +554,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/632ad222-9d07-41e7-b422-9598f1e1d568",
       "lat": 48.08626981754226,
-      "lng": 11.496730165793442
+      "lng": 11.496730165793442,
+      "trainingsID": "T013"
     },
     {
       "id": 13,
@@ -559,7 +573,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/75b253a9-aae1-4806-ae2a-66f9284a78e7",
       "lat": 48.18090466622404,
-      "lng": 11.566481568007294
+      "lng": 11.566481568007294,
+      "trainingsID": "T014"
     },
     {
       "id": 14,
@@ -575,9 +590,10 @@
       "probetraining": "ja",
       "anmerkung": "Milbwoch-Jam",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/4fa95f29-2a12-4c45-b714-f505f4898595",
+      "link": "https://fam.kurabu.com/de/events/df04d76f-b95d-47df-a0f1-6649e2c68a1c",
       "lat": 48.18090466622404,
-      "lng": 11.566481568007294
+      "lng": 11.566481568007294,
+      "trainingsID": "T015"
     },
     {
       "id": 15,
@@ -595,7 +611,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/39e10508-d915-4a5c-9922-482af365ba49",
       "lat": 48.18090466622404,
-      "lng": 11.566481568007294
+      "lng": 11.566481568007294,
+      "trainingsID": "T016"
     },
     {
       "id": 16,
@@ -613,7 +630,8 @@
       "teilnehmer": 12,
       "link": "https://fam.kurabu.com/de/events/b4744555-1b27-4211-ac97-3e09c4cea159",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T017"
     },
     {
       "id": 17,
@@ -631,7 +649,8 @@
       "teilnehmer": 8,
       "link": "https://fam.kurabu.com/en/events/4fa95f29-2a12-4c45-b714-f505f4898595",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T018"
     },
     {
       "id": 18,
@@ -649,7 +668,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/67883d42-60b7-4998-9642-e87da700b4a1",
       "lat": 48.20486657383294,
-      "lng": 11.61657561943386
+      "lng": 11.61657561943386,
+      "trainingsID": "T019"
     },
     {
       "id": 19,
@@ -667,7 +687,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/b7c3eb8e-c8cf-4e4f-9786-f1fc22d188b6",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T020"
     },
     {
       "id": 20,
@@ -685,7 +706,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fc02197a-ced9-4ad2-9f26-3213d41bf3eb",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T021"
     },
     {
       "id": 21,
@@ -703,7 +725,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/71a35c47-bc2e-45a8-9eb7-a8c36370abb3",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T022"
     },
     {
       "id": 22,
@@ -721,7 +744,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0666498d-dbc9-43a4-a8be-78dc92a63fb2",
       "lat": 48.10343606652215,
-      "lng": 11.605320746449413
+      "lng": 11.605320746449413,
+      "trainingsID": "T023"
     },
     {
       "id": 23,
@@ -739,7 +763,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f85adaa5-7fac-429d-a2cb-332e6cea0ccc",
       "lat": 48.10343606652215,
-      "lng": 11.605320746449413
+      "lng": 11.605320746449413,
+      "trainingsID": "T024"
     },
     {
       "id": 24,
@@ -757,7 +782,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0748ba2d-e2fb-4a2c-83ad-5b7277a85f1b",
       "lat": 48.10343606652215,
-      "lng": 11.605320746449413
+      "lng": 11.605320746449413,
+      "trainingsID": "T025"
     },
     {
       "id": 25,
@@ -775,7 +801,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
       "lat": 48.1417830051316,
-      "lng": 11.403146869033275
+      "lng": 11.403146869033275,
+      "trainingsID": "T026"
     },
     {
       "id": 26,
@@ -793,7 +820,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/fdf29833-f16c-443c-902c-9f66291ee28e",
       "lat": 48.1417830051316,
-      "lng": 11.403146869033275
+      "lng": 11.403146869033275,
+      "trainingsID": "T027"
     },
     {
       "id": 27,
@@ -811,7 +839,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/5c64b634-468c-4cad-8089-a3188f6bd5c4",
       "lat": 48.1417830051316,
-      "lng": 11.403146869033275
+      "lng": 11.403146869033275,
+      "trainingsID": "T028"
     },
     {
       "id": 28,
@@ -829,7 +858,8 @@
       "teilnehmer": 22,
       "link": "https://fam.kurabu.com/de/events/39328963-a499-4953-9129-8056997bda1d",
       "lat": 48.10343606652215,
-      "lng": 11.605320746449413
+      "lng": 11.605320746449413,
+      "trainingsID": "T029"
     },
     {
       "id": 29,
@@ -847,7 +877,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e95be6eb-e0c8-4d53-a399-be7d44057c8c",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T030"
     },
     {
       "id": 30,
@@ -865,7 +896,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/8e0b04b4-7296-4a78-9209-bf080b9a9f70",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T031"
     },
     {
       "id": 31,
@@ -883,7 +915,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/33d40c37-bdd4-45b5-9854-ac8e454bcfbe",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T032"
     },
     {
       "id": 32,
@@ -901,7 +934,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/668ae999-bf23-4057-94fc-e8ad7914f1ba",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T033"
     },
     {
       "id": 33,
@@ -913,13 +947,14 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Konsti, Neo",
+      "trainer": "Konsti, Teo",
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/1f0177ad-0183-4450-9f7e-f14b78d5734d",
+      "link": "https://fam.kurabu.com/de/events/5bbae08e-4014-49f2-8945-fc8bb21c4697",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T034"
     },
     {
       "id": 34,
@@ -937,7 +972,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/1f0177ad-0183-4450-9f7e-f14b78d5734d",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T035"
     },
     {
       "id": 35,
@@ -949,13 +985,14 @@
       "altersgruppe": "Teens",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Konsti, Neo",
+      "trainer": "Konsti, Teo",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/122ab0ca-88b0-409a-925c-de884e0328ca",
+      "link": "https://fam.kurabu.com/de/events/9fe56949-a48a-4fd7-a5c4-a8957d48d6b4",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T036"
     },
     {
       "id": 36,
@@ -973,7 +1010,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/122ab0ca-88b0-409a-925c-de884e0328ca",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T037"
     },
     {
       "id": 37,
@@ -991,7 +1029,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/c9afaa99-6711-4d40-8c56-f618512cc337",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T038"
     },
     {
       "id": 38,
@@ -1009,7 +1048,8 @@
       "teilnehmer": 28,
       "link": "https://fam.kurabu.com/de/events/48c9397e-cd79-4feb-9308-dcb37f60dcfe",
       "lat": 48.16961192487,
-      "lng": 11.507736765568037
+      "lng": 11.507736765568037,
+      "trainingsID": "T039"
     },
     {
       "id": 39,
@@ -1027,7 +1067,8 @@
       "teilnehmer": 6,
       "link": "https://fam.kurabu.com/de/events/1632f0fb-3158-426e-87bb-0b94f6f7b55e",
       "lat": 48.16961192487,
-      "lng": 11.507736765568037
+      "lng": 11.507736765568037,
+      "trainingsID": "T040"
     },
     {
       "id": 40,
@@ -1039,13 +1080,14 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Garlef, Maxi C., Marcel",
+      "trainer": "Garlef, Maxi C.",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 2,
       "link": "https://fam.kurabu.com/de/events/559ad33c-90e3-4f4c-99a1-d7b8669d2ec6",
       "lat": 48.16961192487,
-      "lng": 11.507736765568037
+      "lng": 11.507736765568037,
+      "trainingsID": "T041"
     },
     {
       "id": 41,
@@ -1063,7 +1105,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/db927f2f-574a-4a09-b685-e3c84658f0e6",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T042"
     },
     {
       "id": 42,
@@ -1081,7 +1124,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/74a35444-7548-4cc7-80ff-e34c8e37eb13",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T043"
     },
     {
       "id": 43,
@@ -1099,7 +1143,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/795c64ce-524a-4f13-8aea-dda6a3708631",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T044"
     },
     {
       "id": 44,
@@ -1117,7 +1162,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/3294f690-6885-4e81-906f-351605fcdc4e",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T045"
     },
     {
       "id": 45,
@@ -1135,7 +1181,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/4b8e212d-2057-4828-b4bb-0e63d55b5558",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T046"
     },
     {
       "id": 46,
@@ -1153,7 +1200,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/67d59036-22a3-42d5-a747-deb70e99c9fc",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T047"
     },
     {
       "id": 47,
@@ -1171,7 +1219,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/969e5281-3bc6-4902-ae6b-c2be1e02709a",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T048"
     },
     {
       "id": 48,
@@ -1189,7 +1238,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d63fdc84-7737-44e9-93b1-b94eb8afd9ad",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T049"
     },
     {
       "id": 49,
@@ -1207,7 +1257,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
       "lat": 48.141691300033706,
-      "lng": 11.40614693505211
+      "lng": 11.40614693505211,
+      "trainingsID": "T050"
     },
     {
       "id": 50,
@@ -1225,7 +1276,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/7be85623-930f-482d-b5bc-244b5662e668",
       "lat": 48.141691300033706,
-      "lng": 11.40614693505211
+      "lng": 11.40614693505211,
+      "trainingsID": "T051"
     },
     {
       "id": 51,
@@ -1243,7 +1295,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0d497802-e483-494f-8ad1-d94d7b8cad97",
       "lat": 48.097997433962256,
-      "lng": 11.506329342215421
+      "lng": 11.506329342215421,
+      "trainingsID": "T052"
     },
     {
       "id": 52,
@@ -1261,7 +1314,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/8976dab2-8ce0-4292-9cba-f8f316460d94",
       "lat": 48.097997433962256,
-      "lng": 11.506329342215421
+      "lng": 11.506329342215421,
+      "trainingsID": "T053"
     },
     {
       "id": 53,
@@ -1279,7 +1333,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/a3758b6b-0bc5-4714-8cee-6353736fff65",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T054"
     },
     {
       "id": 54,
@@ -1297,7 +1352,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e65687be-7cc3-47ef-98ba-52e97fd8d47c",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T055"
     },
     {
       "id": 55,
@@ -1315,7 +1371,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e60f3a4d-04eb-4c53-9de7-fad1b126a077",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T056"
     },
     {
       "id": 56,
@@ -1333,7 +1390,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f534cefa-7906-4707-9792-ad9608cb1a09",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T057"
     },
     {
       "id": 57,
@@ -1351,7 +1409,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/9d63f202-4f6c-48b2-91e9-5a7aa7d9c119",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T058"
     },
     {
       "id": 58,
@@ -1369,7 +1428,8 @@
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/d29df62a-2696-41ad-b827-9a4f24480942",
       "lat": 48.124155075514125,
-      "lng": 11.621655148342274
+      "lng": 11.621655148342274,
+      "trainingsID": "T059"
     }
   ]
 }
