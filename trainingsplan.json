@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-18T08:57:41.223Z",
+  "generated": "2025-11-18T09:57:28.845Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -717,7 +717,7 @@
       "alterBis": 11,
       "trainer": "Joni, Hannah",
       "probetraining": "nein",
-      "anmerkung": "kein Probetraining möglich",
+      "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0666498d-dbc9-43a4-a8be-78dc92a63fb2",
       "lat": 48.10343606652215,
