@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-18T15:57:29.120Z",
+  "generated": "2025-11-18T16:57:29.798Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -395,7 +395,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/921d17cf-d4b6-425a-8452-bbb8cdd3f883",
+      "link": "https://fam.kurabu.com/de/events/7f33bd4c-1f56-4c00-ae79-57784ab7e917",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211
     },
@@ -629,7 +629,7 @@
       "probetraining": "ja",
       "anmerkung": "Fällt am 19.11. aus!",
       "teilnehmer": 8,
-      "link": "https://fam.kurabu.com/de/events/4fa95f29-2a12-4c45-b714-f505f4898595",
+      "link": "https://fam.kurabu.com/en/events/4fa95f29-2a12-4c45-b714-f505f4898595",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386
     },
