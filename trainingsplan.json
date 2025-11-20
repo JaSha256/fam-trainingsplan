@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-11-20T11:57:27.935Z",
+  "generated": "2025-11-20T12:57:27.249Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -55,6 +55,7 @@
       "Finnian, Maxi Dö., Jakob",
       "Garlef, Maxi C.",
       "Garlef, Maxi C., Marcel",
+      "Hannah, Joni",
       "Joni, Hannah",
       "Joni, Neo",
       "Kati,Malte, Maxi Dö., Felix P.",
@@ -755,7 +756,7 @@
       "bis": "20:00",
       "training": "Parkour",
       "altersgruppe": "Kids",
-      "alterVon": 10,
+      "alterVon": 12,
       "alterBis": null,
       "trainer": "Joni, Hannah",
       "probetraining": "nein",
@@ -776,7 +777,7 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Simon R.",
+      "trainer": "Hannah, Joni",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
