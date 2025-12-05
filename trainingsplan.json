@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-05T15:57:52.691Z",
+  "generated": "2025-12-05T16:57:29.959Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -263,7 +263,7 @@
   },
   "stats": {
     "total": 59,
-    "mitProbetraining": 38,
+    "mitProbetraining": 40,
     "mitLink": 59,
     "nachWochentag": {
       "Montag": 1,
@@ -781,7 +781,7 @@
       "alterBis": null,
       "trainer": "Hannah, Joni",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0748ba2d-e2fb-4a2c-83ad-5b7277a85f1b",
       "lat": 48.10343606652215,
@@ -1160,7 +1160,7 @@
       "alterVon": 2,
       "alterBis": 4,
       "trainer": "Steffi",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/3294f690-6885-4e81-906f-351605fcdc4e",
@@ -1179,7 +1179,7 @@
       "alterVon": 4,
       "alterBis": 6,
       "trainer": "Steffi",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/4b8e212d-2057-4828-b4bb-0e63d55b5558",
