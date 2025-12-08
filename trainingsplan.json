@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-08T10:57:28.549Z",
+  "generated": "2025-12-08T11:57:29.035Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -74,7 +74,8 @@
       "Simon R., Laurenz, Konsti L.",
       "Steffi",
       "Steffi, Bene",
-      "Steffi, Sarah",
+      "Steffi, Sarah K.",
+      "Steffi, Sarah, Sarah K.",
       "Steven, Julian W.",
       "Teo",
       "Youssef"
@@ -475,7 +476,7 @@
       "altersgruppe": "Minis",
       "alterVon": 4,
       "alterBis": 6,
-      "trainer": "Steffi, Sarah",
+      "trainer": "Steffi, Sarah, Sarah K.",
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
@@ -494,7 +495,7 @@
       "altersgruppe": "Minis",
       "alterVon": 4,
       "alterBis": 8,
-      "trainer": "Steffi",
+      "trainer": "Steffi, Sarah K.",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
