@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-08T11:57:29.035Z",
+  "generated": "2025-12-08T12:57:27.804Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -55,8 +55,8 @@
       "Hannah, Joni",
       "Jakob",
       "Jonathan",
+      "Joni, Hannah",
       "Joni, Jakob",
-      "Joni, Nassi",
       "Kati,Malte, Maxi Dö., Felix P.",
       "Laurenz",
       "Laurenz, Konsti L.",
@@ -742,7 +742,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Joni, Nassi",
+      "trainer": "Joni, Hannah",
       "probetraining": "nein",
       "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
@@ -761,7 +761,7 @@
       "altersgruppe": "Kids",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Joni, Nassi",
+      "trainer": "Joni, Hannah",
       "probetraining": "nein",
       "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
