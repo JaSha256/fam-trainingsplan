@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-12T08:57:37.532Z",
+  "generated": "2025-12-12T09:57:27.624Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -264,7 +264,7 @@
   },
   "stats": {
     "total": 59,
-    "mitProbetraining": 40,
+    "mitProbetraining": 38,
     "mitLink": 59,
     "nachWochentag": {
       "Montag": 1,
@@ -629,8 +629,8 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Bene, Chris, Konrad",
-      "probetraining": "ja",
-      "anmerkung": "",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": 12,
       "link": "https://fam.kurabu.com/de/events/b4744555-1b27-4211-ac97-3e09c4cea159",
       "lat": 48.20486657383294,
@@ -648,8 +648,8 @@
       "alterVon": 12,
       "alterBis": null,
       "trainer": "Bene, Chris, Konrad",
-      "probetraining": "ja",
-      "anmerkung": "",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": 8,
       "link": "https://fam.kurabu.com/en/events/4fa95f29-2a12-4c45-b714-f505f4898595",
       "lat": 48.20486657383294,
