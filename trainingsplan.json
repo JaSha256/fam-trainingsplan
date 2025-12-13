@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-13T08:57:38.072Z",
+  "generated": "2025-12-13T09:57:27.395Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -1048,7 +1048,7 @@
       "alterBis": 11,
       "trainer": "Garlef",
       "probetraining": "ja",
-      "anmerkung": "",
+      "anmerkung": "20.12 kein Training",
       "teilnehmer": 28,
       "link": "https://fam.kurabu.com/de/events/48c9397e-cd79-4feb-9308-dcb37f60dcfe",
       "lat": 48.16961192487,
@@ -1067,7 +1067,7 @@
       "alterBis": null,
       "trainer": "Garlef",
       "probetraining": "ja",
-      "anmerkung": "",
+      "anmerkung": "20.12 kein Training",
       "teilnehmer": 6,
       "link": "https://fam.kurabu.com/de/events/1632f0fb-3158-426e-87bb-0b94f6f7b55e",
       "lat": 48.16961192487,
@@ -1086,7 +1086,7 @@
       "alterBis": null,
       "trainer": "Garlef",
       "probetraining": "ja",
-      "anmerkung": "",
+      "anmerkung": "20.12 kein Training",
       "teilnehmer": 2,
       "link": "https://fam.kurabu.com/de/events/559ad33c-90e3-4f4c-99a1-d7b8669d2ec6",
       "lat": 48.16961192487,
