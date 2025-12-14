@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-14T11:34:20.402Z",
+  "generated": "2025-12-14T11:36:23.790Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -1371,7 +1371,7 @@
       "alterBis": 11,
       "trainer": "Sam, Malorie",
       "probetraining": "nein",
-      "anmerkung": "14.12. Training Entfällt (Vereins-Weihnachtsfeier) Kein Probetraining möglich!",
+      "anmerkung": "14.12. Training Entfällt (Vereins-Weihnachtsfeier)",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e60f3a4d-04eb-4c53-9de7-fad1b126a077",
       "lat": 48.124155075514125,
@@ -1390,7 +1390,7 @@
       "alterBis": null,
       "trainer": "Sam",
       "probetraining": "ja",
-      "anmerkung": "14.12. Training Entfällt (Vereins-Weihnachtsfeier) Probetraining möglich!",
+      "anmerkung": "14.12. Training Entfällt (Vereins-Weihnachtsfeier)",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f534cefa-7906-4707-9792-ad9608cb1a09",
       "lat": 48.124155075514125,
