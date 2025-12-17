@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2025-12-17T10:57:37.682Z",
+  "generated": "2025-12-17T11:57:27.387Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -68,7 +68,7 @@
       "Maxi D.",
       "Maxi Dö.",
       "Maxi Dö., Konsti L.",
-      "Neo, Konsti L.",
+      "Neo, Juli P.",
       "Sam",
       "Sam, Malorie",
       "Simon R., Laurenz, Konsti L.",
@@ -951,7 +951,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Neo, Konsti L.",
+      "trainer": "Neo, Juli P.",
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
@@ -989,7 +989,7 @@
       "altersgruppe": "Teens",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Neo, Konsti L.",
+      "trainer": "Neo, Juli P.",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
