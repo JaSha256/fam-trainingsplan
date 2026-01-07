@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-07T17:57:27.441Z",
+  "generated": "2026-01-07T18:57:27.126Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -48,7 +48,6 @@
       "Sonntag"
     ],
     "trainer": [
-      "Alwin",
       "Bene, Chris",
       "Bene, Chris, Konrad",
       "David, Maxi K.",
@@ -909,7 +908,7 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Alwin",
+      "trainer": "Lewin",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
@@ -928,7 +927,7 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Alwin",
+      "trainer": "Lewin",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
