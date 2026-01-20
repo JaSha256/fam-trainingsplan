@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-20T10:57:28.595Z",
+  "generated": "2026-01-20T11:30:20.932Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -260,7 +260,7 @@
   },
   "stats": {
     "total": 59,
-    "mitProbetraining": 38,
+    "mitProbetraining": 37,
     "mitLink": 59,
     "nachWochentag": {
       "Montag": 1,
@@ -1347,7 +1347,7 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Simon R.",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "14.12. Training Entfällt (Vereins-Weihnachtsfeier)",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/e65687be-7cc3-47ef-98ba-52e97fd8d47c",
