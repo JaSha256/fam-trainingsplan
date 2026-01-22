@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-22T11:57:27.945Z",
+  "generated": "2026-01-22T12:29:26.718Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -740,7 +740,7 @@
       "alterBis": 11,
       "trainer": "Joni, Hannah",
       "probetraining": "nein",
-      "anmerkung": "kein Probetraining möglich!",
+      "anmerkung": "22.01.2026 findet nicht statt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0666498d-dbc9-43a4-a8be-78dc92a63fb2",
       "lat": 48.10343606652215,
@@ -759,7 +759,7 @@
       "alterBis": null,
       "trainer": "Joni, Hannah",
       "probetraining": "nein",
-      "anmerkung": "kein Probetraining möglich!",
+      "anmerkung": "22.01.2026 findet nicht statt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/f85adaa5-7fac-429d-a2cb-332e6cea0ccc",
       "lat": 48.10343606652215,
@@ -778,7 +778,7 @@
       "alterBis": null,
       "trainer": "Hannah, Joni",
       "probetraining": "nein",
-      "anmerkung": "kein Probetraining möglich!",
+      "anmerkung": "22.01.2026 findet nicht statt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/0748ba2d-e2fb-4a2c-83ad-5b7277a85f1b",
       "lat": 48.10343606652215,
