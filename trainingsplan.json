@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-23T10:57:28.377Z",
+  "generated": "2026-01-23T11:57:32.470Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -58,7 +58,7 @@
       "Joni, Neo",
       "Joni, Steffi",
       "Kati,Malte, Maxi Dö., Felix P.",
-      "Konsti L., Manu",
+      "Konsti L., Laurenz",
       "Laurenz",
       "Lewin",
       "Lora, Lea",
@@ -567,7 +567,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Konsti L., Manu",
+      "trainer": "Konsti L., Laurenz",
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
