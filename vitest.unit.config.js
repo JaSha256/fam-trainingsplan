@@ -7,9 +7,8 @@ const resolvedViteConfig = typeof viteConfig === 'function'
   ? viteConfig({ mode: 'test', command: 'serve' })
   : viteConfig
 
-// @ts-ignore - mergeConfig with imported viteConfig produces complex union type
 export default mergeConfig(
-  resolvedViteConfig,
+  /** @type {any} */ (resolvedViteConfig),
   defineConfig({
     test: {
       name: 'unit',

@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-// @ts-ignore - ConfigEnv type compatibility with plugin types
+/** @param {{ mode: string, command: string }} config */
 export default defineConfig(({ mode }) => {
   // Load environment variables for the given mode
   const env = loadEnv(mode, process.cwd(), '')
@@ -23,9 +23,7 @@ export default defineConfig(({ mode }) => {
 
     plugins: [
       // Tailwind CSS v4 Plugin with Forms & Typography
-      // @ts-ignore - tailwindcss plugin accepts options but types are incomplete
-      tailwindcss({
-        // @ts-ignore - plugins property exists but not in type definition
+      /** @type {any} */ (tailwindcss)({
         plugins: ['@tailwindcss/forms', '@tailwindcss/typography']
       }),
 
@@ -164,17 +162,6 @@ export default defineConfig(({ mode }) => {
                 },
                 cacheableResponse: {
                   statuses: [0, 200]
-                }
-              }
-            },
-            {
-              urlPattern: /^https:\/\/unpkg\.com\/leaflet.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'leaflet-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 86400 * 30
                 }
               }
             },

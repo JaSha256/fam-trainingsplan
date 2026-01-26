@@ -41,8 +41,6 @@
     "node_modules",
     "dist",
     "coverage",
-    "tests/**/*",
-    "src/js/trainingsplaner.legacy.js",
-    "src/js/trainingsplaner.monolithic.js"
+    "tests/**/*"
   ]
 }

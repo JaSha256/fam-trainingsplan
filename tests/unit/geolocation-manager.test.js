@@ -473,7 +473,7 @@ describe('GeolocationManager', () => {
     })
 
     it('should save manual location to localStorage', () => {
-      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+      const setItemSpy = vi.spyOn(localStorage, 'setItem')
 
       geolocationManager.setManualLocation(48.1351, 11.5820, 'Munich Center')
 
