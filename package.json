@@ -50,42 +50,43 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@alpinejs/collapse": "^3.15.0",
-    "@alpinejs/focus": "^3.15.0",
-    "@alpinejs/intersect": "^3.15.0",
-    "@alpinejs/persist": "^3.15.0",
-    "alpinejs": "^3.15.0",
+    "@alpinejs/collapse": "^3.15.4",
+    "@alpinejs/focus": "^3.15.4",
+    "@alpinejs/intersect": "^3.15.4",
+    "@alpinejs/persist": "^3.15.4",
+    "alpinejs": "^3.15.4",
     "fuse.js": "^7.0.0",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
-    "@eslint/js": "^9.38.0",
-    "@playwright/test": "^1.48.2",
-    "@tailwindcss/forms": "^0.5.9",
+    "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.58.0",
+    "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.15",
-    "@tailwindcss/vite": "^4.1.16",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/alpinejs": "^3.13.11",
     "@types/leaflet": "^1.9.21",
     "@types/leaflet.markercluster": "^1.5.6",
-    "@types/node": "^24.8.1",
-    "@vitest/browser": "^4.0.3",
-    "@vitest/coverage-v8": "^4.0.3",
-    "eslint": "^9.15.0",
+    "@types/node": "^24.10.9",
+    "@vitest/browser": "^4.0.18",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^9.39.2",
     "gh-pages": "^6.3.0",
-    "globals": "^16.4.0",
+    "globals": "^16.5.0",
     "husky": "^9.1.7",
-    "jsdom": "^27.0.0",
-    "lint-staged": "^16.2.5",
-    "prettier": "^3.3.3",
+    "jsdom": "^27.4.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
     "rollup-plugin-visualizer": "^6.0.5",
-    "tailwindcss": "^4.1.16",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vite": "^7.1.12",
-    "vite-plugin-pwa": "^1.0.3",
-    "vitest": "^4.0.3",
-    "workbox-window": "^7.3.0"
+    "vite": "^7.3.1",
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^4.0.18",
+    "workbox-build": "^7.4.0",
+    "workbox-window": "^7.4.0"
   },
   "engines": {
     "node": ">=20.19.0",
@@ -97,6 +98,11 @@
     "Chrome >= 111",
     "Firefox >= 128"
   ],
+  "pnpm": {
+    "overrides": {
+      "js-yaml@>=4.0.0 <4.1.1": ">=4.1.1"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx}": [
       "eslint --fix",
