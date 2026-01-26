@@ -43,9 +43,8 @@ test-results-integration/
 tests/e2e/**/*-snapshots/
 tests/integration/__screenshots__/
 
-# Puppeteer
-tests/puppeteer/screenshots/
-tests/puppeteer/videos/
+# Puppeteer (legacy, removed)
+tests/puppeteer/
 .chrome/
 
 # Cache
@@ -181,3 +180,22 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .mcp.json
+
+# Agent configuration directories
+.kilo/
+.kiro/
+.roo/
+.trae/
+.zed/
+.gemini/
+.cursor/
+.clinerules/
+
+# Debug artifacts
+debug-*.png
+*.backup
+*.backup-*
+
+# One-off test/debug HTML
+test-*.html
+debug-*.html
