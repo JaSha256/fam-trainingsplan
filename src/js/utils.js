@@ -150,30 +150,6 @@ export function isValidUrl(url) {
 }
 
 /**
- * Pluralize
- * @param {number} count - Count
- * @param {string} singular - Singular form
- * @param {string} plural - Plural form
- * @returns {string}
- */
-export function pluralize(count, singular, plural) {
-  return count === 1 ? singular : plural
-}
-
-/**
- * Format number (1k, 1M)
- * @param {number} num - Number
- * @returns {string}
- */
-export function formatNumber(num) {
-  if (typeof num !== 'number' || Number.isNaN(num)) return '0'
-  
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'k'
-  return num.toString()
-}
-
-/**
  * Round to decimals
  * @param {number} num - Number
  * @param {number} decimals - Decimal places
@@ -203,53 +179,6 @@ export function extractUnique(array, key) {
 
   return [...new Set(values.map(v => String(v)))]
     .sort((a, b) => a.localeCompare(b, 'de'))
-}
-
-/**
- * Group array by key
- *
- * @template T
- * @param {T[]} array - Input array
- * @param {keyof T} key - Grouping key
- * @returns {Record<string, T[]>} Grouped object
- */
-export function groupBy(array, key) {
-  if (!Array.isArray(array)) return {}
-
-  // Use native Object.groupBy if available (Node 21+)
-  if (Object.groupBy) {
-    // @ts-ignore - Object.groupBy exists in newer environments
-    return Object.groupBy(array, item => String(item[key] || 'undefined'))
-  }
-
-  // Fallback
-  /** @type {Record<string, T[]>} */
-  const result = {}
-  return array.reduce((result, item) => {
-    const groupKey = String(item[key] || 'undefined')
-    if (!result[groupKey]) {
-      result[groupKey] = []
-    }
-    result[groupKey].push(item)
-    return result
-  }, result)
-}
-
-/**
- * Shuffle array (Fisher-Yates)
- * @template T
- * @param {T[]} array - Input array
- * @returns {T[]} Shuffled array
- */
-export function shuffle(array) {
-  if (!Array.isArray(array)) return []
-
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
 }
 
 // ==================== GEOLOCATION ====================
@@ -935,14 +864,10 @@ export const utils = {
   formatAlter,
   sanitizeHtml,
   isValidUrl,
-  pluralize,
-  formatNumber,
   roundTo,
-  
+
   // Array Helpers
   extractUnique,
-  groupBy,
-  shuffle,
   
   // Geolocation
   getCurrentPosition,

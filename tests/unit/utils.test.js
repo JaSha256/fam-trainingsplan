@@ -132,63 +132,6 @@ describe('utils.js', () => {
     })
   })
 
-  describe('groupBy()', () => {
-    it('should group array by key', () => {
-      const array = [
-        { type: 'A', value: 1 },
-        { type: 'B', value: 2 },
-        { type: 'A', value: 3 }
-      ]
-      const grouped = utils.groupBy(array, 'type')
-      
-      expect(grouped.A).toHaveLength(2)
-      expect(grouped.B).toHaveLength(1)
-    })
-
-    it('should handle empty array', () => {
-      expect(utils.groupBy([], 'type')).toEqual({})
-    })
-  })
-
-  describe('shuffle()', () => {
-    it('should shuffle array', () => {
-      const array = [1, 2, 3, 4, 5]
-      const shuffled = utils.shuffle(array)
-      
-      expect(shuffled).toHaveLength(5)
-      expect(shuffled).toContain(1)
-      expect(shuffled).toContain(5)
-    })
-
-    it('should not modify original', () => {
-      const original = [1, 2, 3]
-      const shuffled = utils.shuffle(original)
-      
-      expect(original).toEqual([1, 2, 3])
-    })
-  })
-
-  describe('pluralize()', () => {
-    it('should pluralize correctly', () => {
-      expect(utils.pluralize(1, 'Training', 'Trainings')).toBe('Training')
-      expect(utils.pluralize(2, 'Training', 'Trainings')).toBe('Trainings')
-      expect(utils.pluralize(0, 'Training', 'Trainings')).toBe('Trainings')
-    })
-  })
-
-  describe('formatNumber()', () => {
-    it('should format large numbers', () => {
-      expect(utils.formatNumber(1500)).toBe('1.5k')
-      expect(utils.formatNumber(1500000)).toBe('1.5M')
-      expect(utils.formatNumber(500)).toBe('500')
-    })
-
-    it('should handle invalid input', () => {
-      expect(utils.formatNumber(NaN)).toBe('0')
-      expect(utils.formatNumber('abc')).toBe('0')
-    })
-  })
-
   describe('roundTo()', () => {
     it('should round to decimals', () => {
       expect(utils.roundTo(1.2345, 2)).toBe(1.23)

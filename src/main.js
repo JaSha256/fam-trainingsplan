@@ -314,7 +314,7 @@ Alpine.store('ui', {
       filters.ort.length > 0 ||
       filters.training.length > 0 ||
       filters.altersgruppe.length > 0 ||
-      filters.probetraining ||
+      filters._customFeatureFilter ||
       filters.searchTerm !== ''
     )
   },
@@ -332,7 +332,7 @@ Alpine.store('ui', {
       filters.ort.length +
       filters.training.length +
       filters.altersgruppe.length +
-      (filters.probetraining ? 1 : 0) +
+      (filters._customFeatureFilter ? 1 : 0) +
       (filters.searchTerm ? 1 : 0)
     )
   },
