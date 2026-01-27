@@ -33,6 +33,9 @@
  * @property {UserPosition | null} [manualLocation] - Manual location coordinates
  * @property {boolean} [manualLocationSet] - Manual location was set
  * @property {string} [manualLocationAddress] - Manual location address
+ * @property {number | null} selectedTrainingId - Selected training for detail modal
+ * @property {(id: number) => void} openTrainingModal - Open training detail modal
+ * @property {() => void} closeTrainingModal - Close training detail modal
  * @property {() => void} toggleMapView - Toggle map view
  * @property {() => void} showListView - Show list view
  * @property {(message: string, type?: import('../types.js').NotificationType, duration?: number) => void} showNotification - Show notification
@@ -172,6 +175,7 @@
  *   cleanupMap: () => void
  *   zoomToFavorites: () => Promise<void>
  *   zoomToTraining: (trainingId: number) => Promise<void>
+ *   navigateTraining: (direction: number) => void
  *   loadFiltersFromUrl: () => void
  *   updateUrlWithFilters: () => void
  *   getCachedData: () => ApiResponse | null
@@ -239,6 +243,7 @@
  *   cleanupMap: () => void
  *   zoomToFavorites: () => Promise<void>
  *   zoomToTraining: (trainingId: number) => Promise<void>
+ *   navigateTraining: (direction: number) => void
  *   loadFiltersFromUrl: () => void
  *   updateUrlWithFilters: () => void
  *   getCachedData: () => ApiResponse | null

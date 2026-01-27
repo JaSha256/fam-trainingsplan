@@ -643,6 +643,28 @@ export function trainingsplaner() {
     return this.mapManager.zoomToTraining(trainingId)
   }
 
+  // Training Detail Modal Navigation
+  /**
+   * Navigate to next/previous training in the filtered list.
+   * Used by arrow key handlers and modal navigation buttons.
+   *
+   * @param {number} direction - Navigation direction: -1 for previous, 1 for next
+   * @returns {void}
+   */
+  component.navigateTraining = function (/** @type {number} */ direction) {
+    const currentId = this.$store?.ui?.selectedTrainingId
+    if (currentId === null || currentId === undefined) return
+
+    const trainings = this.filteredTrainings
+    const currentIndex = trainings.findIndex((/** @type {Training} */ t) => t.id === currentId)
+    if (currentIndex === -1) return
+
+    const newIndex = currentIndex + direction
+    if (newIndex < 0 || newIndex >= trainings.length) return
+
+    this.$store.ui.selectedTrainingId = trainings[newIndex].id
+  }
+
   // URL Handling
   component.loadFiltersFromUrl = function () {
     return this.urlFiltersManager.loadFiltersFromUrl()
@@ -1196,14 +1218,21 @@ export function trainingsplaner() {
     // Escape: Close modals in priority order
     if (event.key === 'Escape') {
       if (alpineContext.$store?.ui) {
-        // Switch away from map view first (highest priority)
+        // 1. Training Detail Modal (highest priority)
+        if (alpineContext.$store.ui.selectedTrainingId !== null) {
+          alpineContext.$store.ui.closeTrainingModal()
+          event.preventDefault()
+          return
+        }
+
+        // 2. Switch away from map view
         if (alpineContext.$store.ui.activeView === 'map') {
           alpineContext.$store.ui.activeView = 'list'
           event.preventDefault()
           return
         }
 
-        // Then mobile filter drawer
+        // 3. Mobile filter drawer
         if (alpineContext.$store.ui.mobileFilterOpen) {
           alpineContext.$store.ui.mobileFilterOpen = false
           event.preventDefault()

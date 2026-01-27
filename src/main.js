@@ -100,6 +100,7 @@ Alpine.store('ui', {
   sidebarCollapsed: Alpine.$persist(false).as('fam-trainingsplan-sidebar-collapsed'),
   mobileFilterOpen: false,
   locationSettingsOpen: false,
+  selectedTrainingId: null,
   mapView: false,
   // @ts-ignore - Alpine.$persist plugin API
   activeView: Alpine.$persist('list').as('activeView'),
@@ -261,6 +262,17 @@ Alpine.store('ui', {
   toggleSidebar() {
     // @ts-ignore - Alpine.js context properties
     this.sidebarCollapsed = !this.sidebarCollapsed
+  },
+
+  /** @param {number} id */
+  openTrainingModal(id) {
+    // @ts-ignore - Alpine.js context properties
+    this.selectedTrainingId = id
+  },
+
+  closeTrainingModal() {
+    // @ts-ignore - Alpine.js context properties
+    this.selectedTrainingId = null
   },
 
   updateScrollDirection() {
