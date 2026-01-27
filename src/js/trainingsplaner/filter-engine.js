@@ -362,12 +362,25 @@ export class FilterEngine {
    * @returns {Training[]} Filtered trainings
    */
   applySearchFilter(trainings, searchTerm) {
-    if (!searchTerm || !searchTerm.trim() || !this.context.fuse) return trainings
+    if (!searchTerm || !searchTerm.trim()) return trainings
+    const term = searchTerm.trim()
 
-    /** @type {import('fuse.js').FuseResult<Training>[]} */
-    const fuseResults = this.context.fuse.search(searchTerm.trim())
-    const searchIds = new Set(fuseResults.map((/** @type {import('fuse.js').FuseResult<Training>} */ r) => r.item.id))
-    return trainings.filter((/** @type {Training} */ t) => searchIds.has(t.id))
+    // Fuse.js available -> fuzzy search
+    if (this.context.fuse) {
+      /** @type {import('fuse.js').FuseResult<Training>[]} */
+      const fuseResults = this.context.fuse.search(term)
+      const searchIds = new Set(fuseResults.map((/** @type {import('fuse.js').FuseResult<Training>} */ r) => r.item.id))
+      return trainings.filter((/** @type {Training} */ t) => searchIds.has(t.id))
+    }
+
+    // Fallback: case-insensitive substring match while Fuse.js loads
+    const lower = term.toLowerCase()
+    return trainings.filter((/** @type {Training} */ t) =>
+      (t.training && t.training.toLowerCase().includes(lower)) ||
+      (t.ort && t.ort.toLowerCase().includes(lower)) ||
+      (t.trainer && t.trainer.toLowerCase().includes(lower)) ||
+      (t.wochentag && t.wochentag.toLowerCase().includes(lower))
+    )
   }
 
   // ==================== UTILITY METHODS ====================

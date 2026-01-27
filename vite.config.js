@@ -245,9 +245,8 @@ export default defineConfig(({ mode }) => {
               '@alpinejs/focus',
               '@alpinejs/intersect',
               '@alpinejs/persist'
-            ],
-            'vendor-utils': ['fuse.js'],
-            'vendor-map': ['leaflet', 'leaflet.markercluster']
+            ]
+            // vendor-utils and vendor-map removed - Vite creates automatic chunks for dynamic imports
           },
 
           assetFileNames: assetInfo => {
@@ -290,10 +289,8 @@ export default defineConfig(({ mode }) => {
         '@alpinejs/collapse',
         '@alpinejs/focus',
         '@alpinejs/intersect',
-        '@alpinejs/persist',
-        'fuse.js',
-        'leaflet',
-        'leaflet.markercluster'
+        '@alpinejs/persist'
+        // fuse.js, leaflet, leaflet.markercluster removed - lazy loaded via dynamic import
       ],
       exclude: [],
       // Force Leaflet to be treated as ESM

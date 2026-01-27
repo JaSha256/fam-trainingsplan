@@ -454,8 +454,11 @@ describe('trainingsplaner.js - Core Functionality', () => {
     })
 
     it('should cleanup map on destroy', async () => {
-      // Need to init() first to create mapManager
+      // Need to init() first to create managers
       await component.init()
+
+      // Lazy-load mapManager so it's available for the test
+      await component._ensureMapManager()
 
       // Set component.map to truthy value so destroy() will call cleanupMap
       component.map = { mock: 'map object' }

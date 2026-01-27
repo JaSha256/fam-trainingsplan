@@ -10,6 +10,11 @@
 import { CONFIG, log } from '../config.js'
 import { utils } from '../utils.js'
 import * as L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
+// Expose L globally for leaflet.markercluster (extends window.L, not ES module)
+window.L = { ...L }
+
 import {
   createGeolocationControl,
   createResetViewControl,

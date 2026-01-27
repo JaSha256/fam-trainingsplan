@@ -272,16 +272,14 @@ describe('DataLoader', () => {
       expect(mockContext.metadata).toEqual(mockApiResponse.metadata)
     })
 
-    it('should initialize Fuse.js search', () => {
-      const FuseMock = vi.fn()
-      Fuse.mockImplementation(FuseMock)
-
+    it('should initialize Fuse.js search lazily', async () => {
       dataLoader.loadData(mockApiResponse)
 
-      expect(FuseMock).toHaveBeenCalledWith(
-        mockApiResponse.trainings,
-        CONFIG.search.fuseOptions
-      )
+      // Fuse.js is now loaded via dynamic import (async)
+      // Wait for the lazy init to complete
+      await vi.waitFor(() => {
+        expect(mockContext.fuse).toBeTruthy()
+      })
     })
 
     it('should add distance if user position available', () => {

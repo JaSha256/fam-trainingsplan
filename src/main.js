@@ -8,23 +8,13 @@
 
 // @ts-check
 
-// CRITICAL: Import Leaflet FIRST and expose globally BEFORE any other imports
-// This ensures window.L is available for leaflet.markercluster in production builds
-import * as L from 'leaflet'
-window.L = { ...L }
-
-// Now import Alpine and other dependencies AFTER window.L assignment
 import Alpine from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import focus from '@alpinejs/focus'
 import intersect from '@alpinejs/intersect'
 import persist from '@alpinejs/persist'
 
-// Import Leaflet CSS (MarkerCluster CSS is now imported dynamically in map-manager.js)
-import 'leaflet/dist/leaflet.css'
 import './style.css'
-
-// NOTE: leaflet.markercluster is now imported dynamically in map-manager.js
 
 import { trainingsplaner } from './js/trainingsplaner.js'
 import { initIframeAutoResize } from './js/iframe-resize.js'

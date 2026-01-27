@@ -9,7 +9,6 @@
 
 import { CONFIG, log } from '../config.js'
 import { utils } from '../utils.js'
-import Fuse from 'fuse.js'
 
 /**
  * @typedef {import('./types.js').ApiResponse} ApiResponse
@@ -114,21 +113,45 @@ export class DataLoader {
     this.context.allTrainings = data.trainings || []
     this.context.metadata = data.metadata || null
 
-    // Initialize Fuse.js
-    this.context.fuse = new Fuse(this.context.allTrainings, CONFIG.search.fuseOptions)
+    // Fuse.js lazy initialisieren (non-blocking)
+    this._initFuse(this.context.allTrainings)
 
     // Add distance if user position available
     if (this.state.userPosition) {
       this.addDistanceToTrainings()
     }
 
-    // Apply Filters
+    // Apply Filters (uses fallback search while Fuse loads)
     this.applyFilters()
 
     log('info', 'Data loaded', {
       trainings: this.context.allTrainings.length,
       fromCache: this.context.fromCache
     })
+  }
+
+  /**
+   * Initialize Fuse.js Lazily
+   *
+   * Loads Fuse.js via dynamic import and initializes search index.
+   * Re-applies filters if a search term is active to upgrade from fallback to fuzzy search.
+   *
+   * @private
+   * @param {import('./types.js').Training[]} trainings - Trainings to index
+   * @returns {Promise<void>}
+   */
+  async _initFuse(trainings) {
+    try {
+      const { default: Fuse } = await import('fuse.js')
+      this.context.fuse = new Fuse(trainings, CONFIG.search.fuseOptions)
+      log('debug', 'Fuse.js initialized lazily')
+      // Re-apply if search term active (upgrade fallback -> fuzzy)
+      if (this.context.$store?.ui?.filters?.searchTerm?.trim()) {
+        this.applyFilters()
+      }
+    } catch (error) {
+      log('error', 'Failed to load Fuse.js', error)
+    }
   }
 
   /**

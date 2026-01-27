@@ -23,7 +23,6 @@ import { UrlFiltersManager } from './trainingsplaner/url-filters-manager.js'
 import { FilterEngine } from './trainingsplaner/filter-engine.js'
 import { FavoritesManager } from './trainingsplaner/favorites-manager.js'
 import { GeolocationManager } from './trainingsplaner/geolocation-manager.js'
-import { MapManager } from './trainingsplaner/map-manager.js'
 import { DataLoader } from './trainingsplaner/data-loader.js'
 import { ActionsManager } from './trainingsplaner/actions-manager.js'
 import { QUICK_FILTERS } from './trainingsplaner/quick-filters.js'
@@ -253,17 +252,30 @@ export function trainingsplaner() {
       applyFilters: () => this.filterEngine.applyFilters()
     })
 
-    // Create MapManager without geolocationManager initially
-    this.mapManager = new MapManager(state, alpineContext)
+    // MapManager is lazy-loaded on first map open to reduce initial bundle
+    this.mapManager = null
 
-    // Create GeolocationManager with mapManager dependency
+    // Memoized lazy loader for MapManager (closure over state/alpineContext)
+    /** @type {Promise<import('./trainingsplaner/map-manager.js').MapManager> | null} */
+    let mapManagerLoading = null
+    this._ensureMapManager = () => {
+      if (this.mapManager) return Promise.resolve(this.mapManager)
+      if (!mapManagerLoading) {
+        mapManagerLoading = import('./trainingsplaner/map-manager.js').then(({ MapManager }) => {
+          this.mapManager = new MapManager(state, alpineContext)
+          this.mapManager.geolocationManager = this.geolocationManager
+          this.geolocationManager.mapManager = this.mapManager
+          return this.mapManager
+        })
+      }
+      return mapManagerLoading
+    }
+
+    // Create GeolocationManager (mapManager injected after lazy load)
     this.geolocationManager = new GeolocationManager(state, alpineContext, {
       applyFilters: () => this.filterEngine.applyFilters(),
-      mapManager: this.mapManager
+      mapManager: undefined
     })
-
-    // Now inject geolocationManager back into mapManager for the location control
-    this.mapManager.geolocationManager = this.geolocationManager
 
     this.dataLoader = new DataLoader(state, alpineContext, {
       addDistanceToTrainings: () => this.geolocationManager.addDistanceToTrainings(),
@@ -343,7 +355,8 @@ export function trainingsplaner() {
           if (
             (alpineContext.$store?.ui?.activeView === 'map' ||
               alpineContext.$store?.ui?.activeView === 'split') &&
-            alpineContext.map
+            alpineContext.map &&
+            alpineContext.mapManager
           ) {
             // Reset interaction flag so fitBounds re-centers on new marker set
             alpineContext.userHasInteractedWithMap = false
@@ -357,8 +370,9 @@ export function trainingsplaner() {
     )
 
     // Watch for map view (activeView state replaces mapModalOpen)
-    alpineContext.$watch('$store.ui.activeView', (/** @type {string} */ activeView) => {
+    alpineContext.$watch('$store.ui.activeView', async (/** @type {string} */ activeView) => {
       if (activeView === 'map' || activeView === 'split') {
+        await alpineContext._ensureMapManager()
         alpineContext.$nextTick(() => {
           // Initialize map if not already initialized
           if (!alpineContext.map) {
@@ -384,10 +398,12 @@ export function trainingsplaner() {
       alpineContext.$store?.ui?.activeView === 'map' ||
       alpineContext.$store?.ui?.activeView === 'split'
     ) {
-      alpineContext.$nextTick(() => {
-        if (!alpineContext.map) {
-          alpineContext.mapManager.initializeMap()
-        }
+      alpineContext._ensureMapManager().then(() => {
+        alpineContext.$nextTick(() => {
+          if (!alpineContext.map) {
+            alpineContext.mapManager.initializeMap()
+          }
+        })
       })
     }
   }
@@ -596,28 +612,34 @@ export function trainingsplaner() {
     return this.geolocationManager.resetLocation()
   }
 
-  // Map
-  component.initializeMap = function () {
+  // Map (lazy-loaded)
+  component.initializeMap = async function () {
+    await this._ensureMapManager()
     return this.mapManager.initializeMap()
   }
 
   component.addMarkersToMap = function () {
+    if (!this.mapManager) return
     return this.mapManager.addMarkersToMap()
   }
 
   component.createMapPopup = function (/** @type {Training} */ training) {
+    if (!this.mapManager) return ''
     return this.mapManager.createMapPopup(training)
   }
 
   component.cleanupMap = function () {
+    if (!this.mapManager) return
     return this.mapManager.cleanupMap()
   }
 
-  component.zoomToFavorites = function () {
+  component.zoomToFavorites = async function () {
+    await this._ensureMapManager()
     return this.mapManager.zoomToFavorites()
   }
 
-  component.zoomToTraining = function (/** @type {number} */ trainingId) {
+  component.zoomToTraining = async function (/** @type {number} */ trainingId) {
+    await this._ensureMapManager()
     return this.mapManager.zoomToTraining(trainingId)
   }
 
@@ -1198,7 +1220,7 @@ export function trainingsplaner() {
       clearInterval(this.updateCheckInterval)
     }
 
-    if (this.map) {
+    if (this.map && this.mapManager) {
       this.mapManager.cleanupMap()
     }
 
