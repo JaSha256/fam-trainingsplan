@@ -11,7 +11,7 @@
 // CRITICAL: Import Leaflet FIRST and expose globally BEFORE any other imports
 // This ensures window.L is available for leaflet.markercluster in production builds
 import * as L from 'leaflet'
-window.L = L
+window.L = { ...L }
 
 // Now import Alpine and other dependencies AFTER window.L assignment
 import Alpine from 'alpinejs'

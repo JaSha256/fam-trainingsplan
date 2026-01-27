@@ -48,6 +48,12 @@ export class MapManager {
     this.state = state
     this.context = context
     this.geolocationManager = dependencies.geolocationManager || null
+
+    // Guard against concurrent addMarkersToMap() calls
+    /** @type {number | null} */
+    this._markerUpdateRAF = null
+    /** @type {number} */
+    this._markerUpdateGeneration = 0
   }
 
   /**
@@ -456,23 +462,52 @@ export class MapManager {
     // This fixes the "_latLngToNewLayerPoint" null error during zoom
     map.stop()
 
-    // CRITICAL: Defer marker update to next animation frame
-    // This ensures any pending animations have fully stopped
-    requestAnimationFrame(() => {
+    // Cancel any pending marker update to prevent duplicate marker sets
+    if (this._markerUpdateRAF) {
+      cancelAnimationFrame(this._markerUpdateRAF)
+      this._markerUpdateRAF = null
+    }
+
+    // Increment generation so stale async addMarkersWithClustering() calls abort
+    this._markerUpdateGeneration++
+    const generation = this._markerUpdateGeneration
+
+    // Defer marker update to next animation frame (ensures animations fully stopped)
+    this._markerUpdateRAF = requestAnimationFrame(() => {
+      this._markerUpdateRAF = null
       if (!this.context.map) return // Map might have been cleaned up
 
       // Remove existing markers and cluster group
-      if (this.context.markerClusterGroup) {
-        // Stop cluster animations before removal
-        this.context.markerClusterGroup.off() // Remove event listeners
-        map.removeLayer(this.context.markerClusterGroup)
-        this.context.markerClusterGroup = null
-      }
-      this.context.markers = []
+      this._removeAllMarkers()
 
-      // Proceed with clustering (async dynamic import handles availability check)
-      this.addMarkersWithClustering()
+      // Proceed with clustering (async; generation check prevents stale adds)
+      this.addMarkersWithClustering(generation)
     })
+  }
+
+  /**
+   * Remove All Markers and Cluster Group
+   *
+   * Synchronous cleanup of all markers from the map.
+   * Extracted to prevent duplication between addMarkersToMap and addMarkersWithClustering.
+   *
+   * @private
+   * @returns {void}
+   */
+  _removeAllMarkers() {
+    const map = this.context.map
+    if (!map) return
+
+    if (this.context.markerClusterGroup) {
+      this.context.markerClusterGroup.off()
+      map.removeLayer(this.context.markerClusterGroup)
+      this.context.markerClusterGroup = null
+    }
+
+    this.context.markers.forEach(m =>
+      map.removeLayer(/** @type {import('leaflet').Layer} */ (/** @type {unknown} */ (m)))
+    )
+    this.context.markers = []
   }
 
   /**
@@ -484,20 +519,15 @@ export class MapManager {
    * CRITICAL: Ensures safe removal of existing cluster group
    * DEPLOYMENT FIX: Uses async dynamic import to guarantee plugin is loaded
    *
+   * @param {number} [generation] - Update generation to detect stale calls
    * @returns {Promise<void>}
    */
-  async addMarkersWithClustering() {
+  async addMarkersWithClustering(generation) {
     if (!this.context.map) return
     const map = this.context.map
 
-    // Remove existing markers if called again
-    if (this.context.markerClusterGroup) {
-      // CRITICAL: Remove event listeners before removing layer
-      this.context.markerClusterGroup.off()
-      map.removeLayer(this.context.markerClusterGroup)
-      this.context.markerClusterGroup = null
-    }
-    this.context.markers = []
+    // Remove existing markers if called again (safety net)
+    this._removeAllMarkers()
 
     // DEPLOYMENT FIX: Dynamically import leaflet.markercluster to ensure it's loaded
     // This prevents "L.MarkerClusterGroup is not a constructor" in production builds
@@ -512,14 +542,16 @@ export class MapManager {
       return
     }
 
-    // CRITICAL: Wait for next animation frame to ensure plugin registration
-    // The dynamic import loads the module, but the browser needs time to execute
-    // the plugin code and register L.markerClusterGroup on the global L object
-    await new Promise(resolve => requestAnimationFrame(resolve))
+    // Abort if a newer addMarkersToMap() call has started (stale generation)
+    if (generation !== undefined && generation !== this._markerUpdateGeneration) {
+      log('debug', `Aborting stale marker update (gen ${generation} vs current ${this._markerUpdateGeneration})`)
+      return
+    }
 
-    // Double-check that L.markerClusterGroup is now available
-    if (typeof L.markerClusterGroup !== 'function') {
-      log('error', 'L.markerClusterGroup still not available after dynamic import')
+    // Check that markerClusterGroup is available on the mutable global window.L
+    // (leaflet.markercluster extends window.L, not the frozen ES module namespace)
+    if (typeof window.L?.markerClusterGroup !== 'function') {
+      log('error', 'window.L.markerClusterGroup not available after dynamic import')
       this.addMarkersWithoutClustering()
       return
     }
@@ -530,7 +562,7 @@ export class MapManager {
 
     // Create marker cluster group with optimized configuration
     // Based on Leaflet.markercluster best practices for 60+ markers
-    const markers = L.markerClusterGroup({
+    const markers = window.L.markerClusterGroup({
       // Performance optimizations (critical for 50+ markers)
       chunkedLoading: true, // Split processing to prevent UI freeze
       chunkInterval: 200, // Time between processing intervals (ms)
@@ -640,6 +672,12 @@ export class MapManager {
       bounds.push([lat, lng])
     })
 
+    // Final stale-generation check before committing markers to map
+    if (generation !== undefined && generation !== this._markerUpdateGeneration) {
+      log('debug', `Aborting stale marker commit (gen ${generation} vs current ${this._markerUpdateGeneration})`)
+      return
+    }
+
     // Add all markers at once (performance best practice)
     // Type assertion via unknown: Marker[] extends Layer[], but TypeScript strict mode requires this
     markers.addLayers(/** @type {import('leaflet').Layer[]} */ (/** @type {unknown} */ (markerArray)))
@@ -650,13 +688,13 @@ export class MapManager {
     this.context.markerClusterGroup = markers
 
     // Fit bounds to show all markers
+    // userHasInteractedWithMap is reset to false by the filter watcher before each update,
+    // so fitBounds runs after every filter change. It is set to true here after fitBounds
+    // to prevent redundant re-fits on the same marker set.
     if (bounds.length > 0 && !this.context.userHasInteractedWithMap) {
       map.fitBounds(bounds, { padding: [50, 50] })
     }
-
-    map.once('movestart', () => {
-      this.context.userHasInteractedWithMap = true
-    })
+    this.context.userHasInteractedWithMap = true
 
     log('info', `Added ${markerArray.length} markers to map with clustering`)
   }
@@ -676,37 +714,58 @@ export class MapManager {
     /** @type {[number, number][]} */
     const bounds = []
 
-    // Create standard markers for each training
-    this.context.filteredTrainings.forEach(training => {
-      if (!training.lat || !training.lng) return
+    // Group trainings by location (same logic as clustering path)
+    const locationGroups = groupTrainingsByLocation(this.context.filteredTrainings)
 
-      const marker = L.marker([training.lat, training.lng], {
-        title: `${training.training} - ${training.ort}`,
-        alt: `Standort: ${training.ort}`,
+    // Create ONE marker per unique location
+    locationGroups.forEach((trainings, locationKey) => {
+      const [lat, lng] = locationKey.split(',').map(Number)
+      const trainingCount = trainings.length
+      const locationName = trainings[0].ort
+
+      const icon = this.createLocationIcon(trainingCount, trainings)
+
+      const marker = L.marker([lat, lng], {
+        icon: icon,
+        title:
+          trainingCount > 1
+            ? `${locationName} (${trainingCount} Trainings)`
+            : `${trainings[0].training} - ${locationName}`,
+        alt: `Standort: ${locationName}`,
         riseOnHover: true
       })
 
-      marker.bindPopup(this.createMapPopup(training), {
-        maxWidth: 400,
+      // @ts-expect-error - Adding custom properties to marker for data storage
+      marker.locationTrainings = trainings
+      // @ts-expect-error - Adding custom properties to marker for data storage
+      marker.trainingId = trainings[0].id
+
+      const popupHTML =
+        trainingCount > 1 ? createLocationPopupHTML(trainings) : this.createMapPopup(trainings[0])
+
+      marker.bindPopup(popupHTML, {
+        maxWidth: trainingCount > 1 ? 450 : 400,
         className: 'md-map-popup-container',
-        autoPan: false, // Disable - we handle centering manually
-        autoClose: true // Close popup on zoom to prevent race condition
+        autoPan: false,
+        autoClose: true,
+        autoPanPadding: [50, 50]
+      })
+
+      marker.on('click', e => {
+        this.centerOnMarker(e.latlng, trainingCount > 1)
       })
 
       marker.addTo(map)
       this.context.markers.push(marker)
-      bounds.push([training.lat, training.lng])
+      bounds.push([lat, lng])
     })
 
     if (bounds.length > 0 && !this.context.userHasInteractedWithMap) {
       map.fitBounds(bounds, { padding: [50, 50] })
     }
+    this.context.userHasInteractedWithMap = true
 
-    map.once('movestart', () => {
-      this.context.userHasInteractedWithMap = true
-    })
-
-    log('info', `Added ${this.context.markers.length} markers without clustering`)
+    log('info', `Added ${this.context.markers.length} location markers without clustering`)
   }
 
   /**

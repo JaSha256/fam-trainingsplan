@@ -340,12 +340,13 @@ export function trainingsplaner() {
           alpineContext.filterEngine.applyFilters()
 
           // Auto-update map markers when filters change and map is active or split view
-          // CRITICAL: Increased debounce delay to prevent rapid marker updates during animations
           if (
             (alpineContext.$store?.ui?.activeView === 'map' ||
               alpineContext.$store?.ui?.activeView === 'split') &&
             alpineContext.map
           ) {
+            // Reset interaction flag so fitBounds re-centers on new marker set
+            alpineContext.userHasInteractedWithMap = false
             alpineContext.$nextTick(() => {
               alpineContext.mapManager.addMarkersToMap()
             })
@@ -768,6 +769,25 @@ export function trainingsplaner() {
     return 'bg-slate-100 text-slate-800 border-slate-200'
   }
 
+  /**
+   * Get Training Card Stripe Class
+   *
+   * Returns CSS class for left-border color stripe on training cards.
+   * Uses the same color system as badges from training-colors.css.
+   *
+   * @param {string} training - Training type name
+   * @returns {string} CSS class for card stripe
+   */
+  component.getTrainingStripe = function (/** @type {string} */ training) {
+    const t = (training || '').toLowerCase()
+    if (t.includes('parkour')) return 'card-stripe-parkour'
+    if (t.includes('trampolin')) return 'card-stripe-trampolin'
+    if (t.includes('tricking')) return 'card-stripe-tricking'
+    if (t.includes('movement')) return 'card-stripe-movement'
+    if (t.includes('fam')) return 'card-stripe-fam'
+    return 'card-stripe-default'
+  }
+
   component.formatAlter = function (/** @type {Training} */ training) {
     return utils.formatAlter(training)
   }
@@ -793,19 +813,20 @@ export function trainingsplaner() {
       /** @type {any} */ (this)
     )
 
-    if (alpineContext.$store?.ui?.filters) {
-      alpineContext.$store.ui.filters = {
-        wochentag: [],
-        ort: [],
-        training: [],
-        altersgruppe: [],
-        searchTerm: '',
-        activeQuickFilter: null,
-        _customTimeFilter: '',
-        _customFeatureFilter: '',
-        _customLocationFilter: '',
-        _customPersonalFilter: ''
-      }
+    const filters = alpineContext.$store?.ui?.filters
+    if (filters) {
+      // Clear properties individually instead of replacing the object.
+      // Replacing the entire object can break Alpine's deep watcher reference tracking.
+      filters.wochentag = []
+      filters.ort = []
+      filters.training = []
+      filters.altersgruppe = []
+      filters.searchTerm = ''
+      filters.activeQuickFilter = null
+      filters._customTimeFilter = ''
+      filters._customFeatureFilter = ''
+      filters._customLocationFilter = ''
+      filters._customPersonalFilter = ''
     }
 
     this.applyFilters()

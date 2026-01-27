@@ -223,6 +223,8 @@ describe('MapManager', () => {
     L.tileLayer.mockReturnValue(mockTileLayer)
     L.marker.mockReturnValue(mockMarker)
     L.markerClusterGroup.mockReturnValue(mockClusterGroup)
+    // Expose mutable L on window so markercluster plugin path works
+    window.L = { ...L }
     L.latLngBounds.mockReturnValue({
       getBounds: vi.fn(() => [
         [48.1, 11.5],
@@ -491,30 +493,20 @@ describe('MapManager', () => {
       expect(mockMap.fitBounds).not.toHaveBeenCalled()
     })
 
-    it('should set user interaction flag on movestart', async () => {
-      let moveStartCallback
-
-      mockMap.once.mockImplementation((event, callback) => {
-        if (event === 'movestart') {
-          moveStartCallback = callback
-        }
-      })
+    it('should set user interaction flag after markers are added', async () => {
+      mockContext.userHasInteractedWithMap = false
 
       mapManager.addMarkersToMap()
 
       // Wait for async operations to complete
       await vi.waitFor(
         () => {
-          expect(mockMap.once).toHaveBeenCalledWith('movestart', expect.any(Function))
+          expect(mockContext.markers.length).toBeGreaterThan(0)
         },
         { timeout: 1000, interval: 10 }
       )
 
-      // Trigger movestart
-      if (moveStartCallback) {
-        moveStartCallback()
-      }
-
+      // userHasInteractedWithMap is set to true after addMarkersWithClustering completes
       expect(mockContext.userHasInteractedWithMap).toBe(true)
     })
 
@@ -744,16 +736,10 @@ describe('MapManager', () => {
         { timeout: 1000, interval: 10 }
       )
 
-      // Simulate user interaction
-      const moveStartCallback = mockMap.once.mock.calls.find(call => call[0] === 'movestart')?.[1]
-
-      if (moveStartCallback) {
-        moveStartCallback()
-      }
-
+      // userHasInteractedWithMap is set to true after addMarkersWithClustering completes
       expect(mockContext.userHasInteractedWithMap).toBe(true)
 
-      // Update markers - should not fit bounds
+      // Update markers again - should not fit bounds (flag is already true)
       mapManager.addMarkersToMap()
 
       // Wait for async marker update to complete
@@ -764,7 +750,7 @@ describe('MapManager', () => {
         { timeout: 1000, interval: 10 }
       )
 
-      // fitBounds should only be called once (during init)
+      // fitBounds should only be called once (during init, not during re-add)
       expect(mockMap.fitBounds).toHaveBeenCalledTimes(1)
     })
   })

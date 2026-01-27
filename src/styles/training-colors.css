@@ -151,6 +151,32 @@
   background-color: var(--training-fam-hover);
 }
 
+/* ==================== CARD STRIPE CLASSES ==================== */
+
+.card-stripe-parkour {
+  border-left: 4px solid var(--training-parkour-border);
+}
+
+.card-stripe-trampolin {
+  border-left: 4px solid var(--training-trampolin-border);
+}
+
+.card-stripe-tricking {
+  border-left: 4px solid var(--training-tricking-border);
+}
+
+.card-stripe-movement {
+  border-left: 4px solid var(--training-movement-border);
+}
+
+.card-stripe-fam {
+  border-left: 4px solid var(--training-fam-border);
+}
+
+.card-stripe-default {
+  border-left: 4px solid var(--md-sys-color-outline, #79747e);
+}
+
 /* ==================== ACCESSIBILITY ==================== */
 
 /* Ensure sufficient focus indicator for keyboard navigation */

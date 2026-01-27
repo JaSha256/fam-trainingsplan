@@ -637,7 +637,7 @@
                   d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
                 />
               </svg>
-              Filter aktiv
+              <span x-text="getActiveFilterCount()"></span> Filter
             </div>
 
             <!-- Favorites Badge -->
@@ -658,115 +658,41 @@
 
         <!-- Right Section: Controls & Actions -->
         <div class="flex items-center gap-3 flex-shrink-0">
-          <!-- Sort & Group Controls (only in list view) - Compact Design -->
+          <!-- Sort & Group Controls (only in list view) - Dropdown Design -->
           <div
             x-show="!loading && !error && $store.ui.activeView === 'list'"
             x-transition
-            class="flex items-center gap-2 px-2 py-1 bg-slate-50 rounded-lg border border-slate-200"
+            class="flex items-center gap-3 px-2 py-1"
           >
-            <!-- Sort Controls - More compact -->
-            <div class="flex items-center gap-0.5" role="group" aria-label="Sortierung">
-              <span class="text-xs font-medium text-slate-600 mr-1">Sort:</span>
-              <!-- Sort by Weekday -->
-              <button
-                @click="$store.ui.sortBy = ['wochentag', 'ort', 'uhrzeit', 'training']"
-                :class="$store.ui.sortBy[0] === 'wochentag' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'wochentag'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Wochentag sortieren"
-                title="Wochentag"
+            <!-- Sort Dropdown -->
+            <div class="flex items-center gap-1.5">
+              <label for="sort-select-header" class="text-xs font-medium text-slate-600 dark:text-slate-400 whitespace-nowrap">Sortierung:</label>
+              <select
+                id="sort-select-header"
+                @change="$store.ui.sortBy = JSON.parse($event.target.value)"
+                :value="JSON.stringify($store.ui.sortBy)"
+                class="text-xs bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md px-2 py-1.5 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                aria-label="Sortierung waehlen"
               >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </button>
-
-              <!-- Sort by Location -->
-              <button
-                @click="$store.ui.sortBy = ['ort', 'wochentag', 'uhrzeit', 'training']"
-                :class="$store.ui.sortBy[0] === 'ort' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'ort'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Ort sortieren"
-                title="Ort"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
-
-              <!-- Sort by Time -->
-              <button
-                @click="$store.ui.sortBy = ['uhrzeit', 'wochentag', 'ort', 'training']"
-                :class="$store.ui.sortBy[0] === 'uhrzeit' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'uhrzeit'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Uhrzeit sortieren"
-                title="Zeit"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
-
-              <!-- Sort by Training Type -->
-              <button
-                @click="$store.ui.sortBy = ['training', 'wochentag', 'ort', 'uhrzeit']"
-                :class="$store.ui.sortBy[0] === 'training' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.sortBy[0] === 'training'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Training sortieren"
-                title="Training"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </button>
+                <option :value="JSON.stringify(['wochentag', 'ort', 'uhrzeit', 'training'])">Wochentag</option>
+                <option :value="JSON.stringify(['ort', 'wochentag', 'uhrzeit', 'training'])">Ort</option>
+                <option :value="JSON.stringify(['uhrzeit', 'wochentag', 'ort', 'training'])">Uhrzeit</option>
+                <option :value="JSON.stringify(['training', 'wochentag', 'ort', 'uhrzeit'])">Training</option>
+              </select>
             </div>
 
-            <!-- Divider -->
-            <div class="h-5 w-px bg-slate-300" aria-hidden="true"></div>
-
-            <!-- Group Controls - More compact -->
-            <div class="flex items-center gap-0.5" role="group" aria-label="Gruppierung">
-              <span class="text-xs font-medium text-slate-600 mr-1">Group:</span>
-              <!-- Group by Weekday -->
-              <button
-                @click="$store.ui.groupingMode = 'wochentag'"
-                :class="$store.ui.groupingMode === 'wochentag' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.groupingMode === 'wochentag'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Wochentag gruppieren"
-                title="Nach Wochentag"
+            <!-- Group Dropdown -->
+            <div class="flex items-center gap-1.5">
+              <label for="group-select-header" class="text-xs font-medium text-slate-600 dark:text-slate-400 whitespace-nowrap">Gruppierung:</label>
+              <select
+                id="group-select-header"
+                x-model="$store.ui.groupingMode"
+                class="text-xs bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md px-2 py-1.5 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                aria-label="Gruppierung waehlen"
               >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 16v2M12 16v2M17 16v2" opacity="0.5" />
-                </svg>
-              </button>
-
-              <!-- Group by Location -->
-              <button
-                @click="$store.ui.groupingMode = 'ort'"
-                :class="$store.ui.groupingMode === 'ort' ? 'bg-primary-500 text-white shadow-sm' : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-300'"
-                :aria-pressed="$store.ui.groupingMode === 'ort'"
-                class="p-1.5 rounded transition-all"
-                type="button"
-                aria-label="Nach Ort gruppieren"
-                title="Nach Ort"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 11h6M9 13h6" opacity="0.5" />
-                </svg>
-              </button>
+                <option value="wochentag">Wochentag</option>
+                <option value="ort">Ort</option>
+              </select>
             </div>
           </div>
 
@@ -1291,7 +1217,7 @@
                 class="filter-group"
                 data-filter-section="wochentag"
                 x-data="{
-                                  expanded: $store.ui.filters.wochentag.length > 0,
+                                  expanded: true,
                                   get allSelected() { return $store.ui.filters.wochentag.length === $store.filterOptions.wochentage.length },
                                   get sortedOptions() {
                                       return [...$store.filterOptions.wochentage].sort((a, b) => {
@@ -1688,21 +1614,6 @@
                 Filter zurücksetzen
               </button>
 
-              <button
-                @click="$store.ui.activeView = 'map'"
-                type="button"
-                class="w-full md-btn-filled md-state-layer md-typescale-label-large flex items-center justify-center gap-2"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  />
-                </svg>
-                Karte anzeigen
-              </button>
             </div>
           </div>
         </aside>
@@ -1711,7 +1622,7 @@
         <main class="flex-1 min-w-0" id="main-content">
           <!-- ==================== AUFGABE 28: SKELETON LOADING STATE ==================== -->
           <!-- Skeleton cards prevent Cumulative Layout Shift (CLS) and improve perceived performance -->
-          <div x-show="loading" class="p-4 lg:p-6">
+          <div x-show="loading" class="p-4 lg:p-6 max-w-screen-2xl mx-auto">
             <!-- Screen reader announcement -->
             <div class="sr-only" role="status" aria-live="polite">Trainings werden geladen...</div>
 
@@ -1850,7 +1761,7 @@
               }"
             >
               <!-- Training Cards -->
-              <div x-show="!loading && !error && filteredTrainings.length > 0" class="p-4 lg:p-6">
+              <div x-show="!loading && !error && filteredTrainings.length > 0" class="p-4 lg:p-6 max-w-screen-2xl mx-auto">
                 <template x-for="gruppe in groupedTrainings" :key="gruppe.key">
                   <section class="mb-10">
                     <h2 class="text-2xl font-bold text-slate-900 mb-5 flex items-center gap-3">
@@ -1873,6 +1784,7 @@
                       <template x-for="training in gruppe.items" :key="training.id">
                         <article
                           class="md-card-elevated md-state-layer p-4 sm:p-5 md:p-6 training-card-stagger w-full max-w-sm mx-auto"
+                          :class="getTrainingStripe(training.training)"
                           data-training-card
                         >
                           <!-- Header mit Favoriten -->
@@ -1939,7 +1851,7 @@
                                 <dt class="sr-only">Zeit:</dt>
                                 <dd class="flex items-center gap-2.5">
                                   <svg
-                                    class="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0"
+                                    class="w-5 h-5 sm:w-6 sm:h-6 text-primary-500 flex-shrink-0"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -1952,7 +1864,7 @@
                                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
                                   </svg>
-                                  <span x-text="formatZeitrange(training.von, training.bis)"></span>
+                                  <span class="text-base sm:text-lg font-bold text-slate-900" x-text="formatZeitrange(training.von, training.bis)"></span>
                                 </dd>
                               </div>
 
@@ -2280,6 +2192,7 @@
             >
               <article
                 class="md-card-elevated md-state-layer p-4 sm:p-5 md:p-6 mb-5 training-card-stagger w-full max-w-sm mx-auto"
+                :class="getTrainingStripe(training.training)"
                 data-training-card
               >
                 <!-- Same training card structure as list view -->
