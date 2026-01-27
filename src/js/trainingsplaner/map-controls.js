@@ -164,11 +164,8 @@ export const GeolocationControl = L.Control.extend({
     this._map.locate({
       setView: true,
       maxZoom: 16,
-      // @ts-expect-error - CONFIG types incomplete
       enableHighAccuracy: CONFIG.map.geolocation.enableHighAccuracy,
-      // @ts-expect-error - CONFIG types incomplete
       timeout: CONFIG.map.geolocation.timeout,
-      // @ts-expect-error - CONFIG types incomplete
       maximumAge: CONFIG.map.geolocation.maximumAge
     })
 

@@ -531,7 +531,6 @@ export function downloadICalFile(icalContent, filename = 'training.ics') {
  */
 export function createShareLink(filters) {
   const params = new URLSearchParams()
-  // @ts-ignore - CONFIG runtime property access
   const paramMapping = CONFIG.filters.urlParams
 
   Object.entries(filters).forEach(([key, value]) => {
@@ -571,7 +570,6 @@ export function createShareLink(filters) {
  */
 export function getFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search)
-  // @ts-ignore - CONFIG runtime property access
   const paramMapping = /** @type {Record<string, string>} */ (CONFIG.filters.urlParams)
 
   const reverseMapping = Object.fromEntries(
@@ -756,8 +754,7 @@ export const favorites = {
    * @returns {Array<number>}
    */
   load() {
-    // @ts-ignore - CONFIG runtime property access
-    return storage.get(CONFIG.favoritesKey, [])
+      return storage.get(CONFIG.favoritesKey, [])
   },
 
   /**
@@ -771,11 +768,9 @@ export const favorites = {
       ? favs.filter(id => typeof id === 'number' || typeof id === 'string')
       : []
 
-    // @ts-ignore - CONFIG runtime property access
-    const limited = validated.slice(0, CONFIG.favorites.maxCount)
+      const limited = validated.slice(0, CONFIG.favorites.maxCount)
 
-    // @ts-ignore - CONFIG runtime property access
-    return storage.set(CONFIG.favoritesKey, limited)
+      return storage.set(CONFIG.favoritesKey, limited)
   },
 
   /**

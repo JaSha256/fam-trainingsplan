@@ -43,36 +43,151 @@ const TIME = Object.freeze({
 // ==================== MAIN CONFIG ====================
 
 /**
- * Application Configuration Type (Partial)
+ * @typedef {Object} ConfigTouchType
+ * @property {number} swipeThreshold
+ * @property {number} swipeVelocity
+ * @property {number} swipeMaxTime
+ * @property {number} swipeMaxVertical
+ */
+
+/**
+ * @typedef {Object} ConfigUIType
+ * @property {number} mobileBreakpoint
+ * @property {number} filterDebounce
+ * @property {number} notificationDuration
+ * @property {number} animationDuration
+ * @property {ConfigTouchType} touch
+ * @property {string} lazyLoadThreshold
+ * @property {string} lazyLoadRootMargin
+ */
+
+/**
+ * @typedef {Object} ConfigFeaturesType
+ * @property {boolean} enableMap
+ * @property {boolean} enableSearch
+ * @property {boolean} enableQuickFilters
+ * @property {boolean} enablePersistence
+ * @property {boolean} enableLazyLoading
+ * @property {boolean} enableAnalytics
+ * @property {boolean} enableShareLinks
+ * @property {boolean} enablePrintView
+ * @property {boolean} enableDarkMode
+ * @property {boolean} enableNotifications
+ * @property {boolean} enableOfflineMode
+ * @property {boolean} enableFavorites
+ * @property {boolean} enableGeolocation
+ * @property {boolean} enableUpdateCheck
+ * @property {boolean} enableCalendarExport
+ * @property {boolean} enableTouchGestures
+ * @property {boolean} enableBulkExport
+ */
+
+/**
+ * @typedef {Object} ConfigPWAType
+ * @property {boolean} enabled
+ * @property {string} name
+ * @property {string} shortName
+ * @property {string} description
+ * @property {string} version
+ * @property {string} themeColor
+ * @property {string} backgroundColor
+ * @property {string} display
+ * @property {string} orientation
+ * @property {string} scope
+ * @property {string} startUrl
+ * @property {'prompt' | 'auto'} updateStrategy
+ * @property {number} updateCheckInterval
+ * @property {readonly string[]} offlinePages
+ */
+
+/**
+ * @typedef {Object} ConfigErrorsType
+ * @property {number} maxRetries
+ * @property {number} retryDelay
+ * @property {number} retryBackoff
+ * @property {boolean} showUserFriendlyMessages
+ * @property {boolean} logToConsole
+ */
+
+/**
+ * @typedef {Object} ConfigLoggingType
+ * @property {boolean} enabled
+ * @property {string} level
+ * @property {boolean} logToConsole
+ * @property {boolean} logToServer
+ * @property {Readonly<Record<string, number>>} levels
+ */
+
+/**
+ * @typedef {Object} ConfigIframeType
+ * @property {boolean} enabled
+ * @property {string} parentOrigin
+ * @property {readonly string[]} allowedOrigins
+ * @property {number} debounceDelay
+ * @property {number} minHeight
+ * @property {number} maxHeight
+ * @property {boolean} autoResize
+ */
+
+/**
+ * @typedef {Object} ConfigGeolocationDetailType
+ * @property {boolean} enableHighAccuracy
+ * @property {number} timeout
+ * @property {number} maximumAge
+ * @property {number} maxDistance
+ * @property {Readonly<Record<string, string>>} errorMessages
+ */
+
+/**
+ * @typedef {Object} ConfigMapType
+ * @property {readonly number[]} defaultCenter
+ * @property {number} defaultZoom
+ * @property {number} maxZoom
+ * @property {number} minZoom
+ * @property {string} tileLayerUrl
+ * @property {string} attribution
+ * @property {ConfigGeolocationDetailType} geolocation
+ * @property {Object} clustering
+ * @property {boolean} clustering.enabled
+ * @property {number} clustering.maxClusterRadius
+ */
+
+/**
+ * @typedef {Object} ConfigFiltersType
+ * @property {boolean} persistInUrl
+ * @property {number} debounceDelay
+ * @property {Object} urlParams
+ * @property {Object} distanceSlider
+ * @property {number} distanceSlider.min
+ * @property {number} distanceSlider.max
+ * @property {number} distanceSlider.default
+ * @property {number} distanceSlider.step
+ */
+
+/**
+ * Application Configuration Type
  * @typedef {Object} ConfigType
  * @property {string} jsonUrl
  * @property {string} versionUrl
  * @property {boolean} cacheEnabled
  * @property {string} cacheKey
  * @property {number} cacheDuration
- * @property {Object} features
- * @property {boolean} features.enableFavorites
- * @property {boolean} features.enableGeolocation
- * @property {boolean} features.enableUpdateCheck
- * @property {Object} filters
- * @property {boolean} filters.persistInUrl
- * @property {Object} filters.distanceSlider
- * @property {number} filters.distanceSlider.min
- * @property {number} filters.distanceSlider.max
- * @property {number} filters.distanceSlider.default
- * @property {number} filters.distanceSlider.step
- * @property {Object} map
- * @property {Object} map.geolocation
- * @property {number} map.geolocation.maxDistance
- * @property {number[]} map.defaultCenter
- * @property {number} map.defaultZoom
- * @property {string} map.tileLayerUrl
- * @property {string} map.attribution
- * @property {Object} pwa
- * @property {string} pwa.version
- * @property {number} pwa.updateCheckInterval
+ * @property {string} favoritesKey
  * @property {Object} search
+ * @property {number} search.debounceDelay
+ * @property {number} search.minQueryLength
+ * @property {number} search.maxResults
  * @property {Object} search.fuseOptions
+ * @property {ConfigFiltersType} filters
+ * @property {ConfigMapType} map
+ * @property {ConfigUIType} ui
+ * @property {Object} performance
+ * @property {ConfigFeaturesType} features
+ * @property {{ maxCount: number, syncAcrossDevices: boolean }} favorites
+ * @property {ConfigErrorsType} errors
+ * @property {ConfigLoggingType} logging
+ * @property {ConfigIframeType} iframe
+ * @property {ConfigPWAType} pwa
  */
 
 /**
@@ -308,7 +423,6 @@ function validateConfig() {
   
   // Validate URLs (allow both absolute and relative URLs)
   try {
-    // @ts-ignore - CONFIG properties exist at runtime
     const jsonUrl = CONFIG.jsonUrl
     // Relative URLs (starting with /) are valid in Vite
     if (!jsonUrl.startsWith('/') && !jsonUrl.startsWith('http')) {
@@ -323,8 +437,7 @@ function validateConfig() {
   }
 
   try {
-    // @ts-ignore - CONFIG properties exist at runtime
-    const versionUrl = CONFIG.versionUrl
+      const versionUrl = CONFIG.versionUrl
     // Relative URLs (starting with /) are valid in Vite
     if (!versionUrl.startsWith('/') && !versionUrl.startsWith('http')) {
       throw new Error('URL must be absolute (http/https) or relative (/)')
@@ -338,23 +451,19 @@ function validateConfig() {
   }
 
   // Validate Numbers
-  // @ts-ignore - CONFIG properties exist at runtime
   if (CONFIG.cacheDuration < 0) {
     errors.push('cacheDuration must be >= 0')
   }
 
-  // @ts-ignore - CONFIG properties exist at runtime
   if (CONFIG.ui.mobileBreakpoint < 320) {
     errors.push('mobileBreakpoint too small (min: 320px)')
   }
 
-  // @ts-ignore - CONFIG properties exist at runtime
   if (CONFIG.map.geolocation.timeout < 1000) {
     errors.push('geolocation.timeout too small (min: 1000ms)')
   }
 
   // Validate Feature Flags
-  // @ts-ignore - CONFIG properties exist at runtime
   const features = CONFIG.features
   if (typeof features !== 'object') {
     errors.push('features must be an object')
@@ -385,8 +494,7 @@ if (isDev) {
  * @returns {boolean}
  */
 export function isFeatureEnabled(feature) {
-  // @ts-ignore - CONFIG properties exist at runtime
-  return CONFIG.features[feature] ?? false
+  return /** @type {Record<string, boolean>} */ (CONFIG.features)[feature] ?? false
 }
 
 /**
@@ -395,12 +503,9 @@ export function isFeatureEnabled(feature) {
  * @returns {boolean}
  */
 export function shouldLog(level) {
-  // @ts-ignore - CONFIG properties exist at runtime
   if (!CONFIG.logging.enabled) return false
 
-  // @ts-ignore - CONFIG properties exist at runtime
   const currentLevel = CONFIG.logging.levels[CONFIG.logging.level] ?? 3
-  // @ts-ignore - CONFIG properties exist at runtime
   const requestedLevel = CONFIG.logging.levels[level] ?? 0
 
   return requestedLevel >= currentLevel
@@ -461,8 +566,7 @@ export function getBrowserInfo() {
   }
   
   browserInfoCache = Object.freeze({
-    // @ts-ignore - CONFIG properties exist at runtime
-    isMobile: window.innerWidth < CONFIG.ui.mobileBreakpoint,
+      isMobile: window.innerWidth < CONFIG.ui.mobileBreakpoint,
     isTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
 
     // Feature Detection
@@ -551,8 +655,7 @@ const configCache = new Map()
  */
 function getCachedConfig(key) {
   if (!configCache.has(key)) {
-    // @ts-ignore - CONFIG properties exist at runtime
-    configCache.set(key, structuredClone(CONFIG[key]))
+      configCache.set(key, structuredClone(/** @type {Record<string, unknown>} */ (CONFIG)[key]))
   }
   return configCache.get(key)
 }
@@ -586,7 +689,6 @@ export function getIframeConfig() {
 }
 
 export function getCacheDuration() {
-  // @ts-ignore - CONFIG properties exist at runtime
   return CONFIG.cacheDuration
 }
 
