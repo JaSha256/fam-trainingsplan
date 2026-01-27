@@ -433,9 +433,7 @@ describe('DataLoader', () => {
     })
 
     it('should handle localStorage quota errors', () => {
-      // Mock localStorage.setItem to throw
-      const originalSetItem = Storage.prototype.setItem
-      Storage.prototype.setItem = vi.fn(() => {
+      const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
         throw new Error('QuotaExceededError')
       })
 
@@ -444,7 +442,7 @@ describe('DataLoader', () => {
         dataLoader.setCachedData(mockApiResponse)
       }).not.toThrow()
 
-      Storage.prototype.setItem = originalSetItem
+      setItemSpy.mockRestore()
     })
   })
 
