@@ -24,7 +24,10 @@ describe('TDD Infrastructure Validation - RED PHASE', () => {
     })
 
     it('should have npm version >= 10.0.0', () => {
-      const npmVersion = execSync('npm --version', { encoding: 'utf8' }).trim()
+      const cleanEnv = Object.fromEntries(
+        Object.entries(process.env).filter(([key]) => !key.startsWith('npm_'))
+      )
+      const npmVersion = execSync('npm --version', { encoding: 'utf8', env: cleanEnv }).trim()
       const [major] = npmVersion.split('.').map(Number)
 
       expect(major).toBeGreaterThanOrEqual(10)
