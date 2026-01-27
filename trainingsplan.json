@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-27T16:57:45.762Z",
+  "generated": "2026-01-27T17:57:28.935Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -69,6 +69,7 @@
       "Neo, Konsti L.",
       "Sam",
       "Simon R.",
+      "Simon R., Lewin",
       "Steffi",
       "Steffi, Bene",
       "Steffi, Faiza, Sarah H.",
@@ -1422,7 +1423,7 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Simon R.",
+      "trainer": "Simon R., Lewin",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
