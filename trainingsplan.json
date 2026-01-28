@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-28T09:57:34.072Z",
+  "generated": "2026-01-28T10:25:43.844Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -418,7 +418,7 @@
       "alterBis": 11,
       "trainer": "Bene, Chris",
       "probetraining": "ja",
-      "anmerkung": "Kein Probetraining möglich!",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/2712f5da-e272-47ca-bd0f-0a6a988b7cbc",
       "lat": 48.20486657383294,
@@ -551,7 +551,7 @@
       "alterBis": 11,
       "trainer": "Steffi",
       "probetraining": "ja",
-      "anmerkung": "Probetraining möglich",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/events/632ad222-9d07-41e7-b422-9598f1e1d568",
       "lat": 48.08626981754226,
