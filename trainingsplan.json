@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-29T17:11:35.305Z",
+  "generated": "2026-01-29T17:57:28.686Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -21,7 +21,6 @@
       "Calisthenics",
       "FAM Minis",
       "Flips & Tricks",
-      "Freestyle Calistenics",
       "Freestyle Calisthenics",
       "Freies Training",
       "Movement Outdoor",
@@ -200,11 +199,10 @@
       "LTR": {
         "anzahl": 26,
         "trainingsarten": [
-          "Freestyle Calistenics",
+          "Freestyle Calisthenics",
           "Freies Training",
           "Trampolin & Tricking",
           "Parkour",
-          "Freestyle Calisthenics",
           "Parkour & Trampolin",
           "Parkour & Movement",
           "Tricking",
@@ -321,12 +319,11 @@
       "Ninja Warrior": 3,
       "Parkour": 22,
       "Calisthenics": 2,
-      "Freestyle Calisthenics": 2,
+      "Freestyle Calisthenics": 3,
       "Parkour Outdoor": 1,
       "Movement Outdoor": 1,
       "Flips & Tricks": 2,
       "FAM Minis": 8,
-      "Freestyle Calistenics": 1,
       "Trampolin & Tricking": 2,
       "Parkour & Trampolin": 4,
       "Parkour & Movement": 2,
@@ -903,7 +900,7 @@
       "ort": "LTR",
       "von": "20:00",
       "bis": "22:00",
-      "training": "Freestyle Calistenics",
+      "training": "Freestyle Calisthenics",
       "altersgruppe": "Adults",
       "alterVon": 18,
       "alterBis": null,
