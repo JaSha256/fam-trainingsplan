@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-29T17:57:28.686Z",
+  "generated": "2026-01-29T18:57:29.229Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -1009,7 +1009,7 @@
       "trainingsID": "T036"
     },
     {
-      "id": 35,
+      "id": 45,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "15:30",
@@ -1028,7 +1028,7 @@
       "trainingsID": "T044"
     },
     {
-      "id": 36,
+      "id": 46,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "15:30",
@@ -1047,7 +1047,7 @@
       "trainingsID": "T045"
     },
     {
-      "id": 37,
+      "id": 47,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "17:00",
@@ -1066,7 +1066,7 @@
       "trainingsID": "T046"
     },
     {
-      "id": 38,
+      "id": 48,
       "wochentag": "Freitag",
       "ort": "Balanstr.",
       "von": "16:00",
@@ -1085,7 +1085,7 @@
       "trainingsID": "T047"
     },
     {
-      "id": 39,
+      "id": 49,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "18:00",
@@ -1104,7 +1104,7 @@
       "trainingsID": "T048"
     },
     {
-      "id": 40,
+      "id": 50,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:00",
@@ -1123,7 +1123,7 @@
       "trainingsID": "T049"
     },
     {
-      "id": 41,
+      "id": 51,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:30",
@@ -1142,7 +1142,7 @@
       "trainingsID": "T050"
     },
     {
-      "id": 42,
+      "id": 52,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:30",
@@ -1161,7 +1161,7 @@
       "trainingsID": "T051"
     },
     {
-      "id": 43,
+      "id": 53,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "09:30",
@@ -1180,7 +1180,7 @@
       "trainingsID": "T052"
     },
     {
-      "id": 44,
+      "id": 54,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "09:30",
@@ -1199,7 +1199,7 @@
       "trainingsID": "T053"
     },
     {
-      "id": 45,
+      "id": 55,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "11:00",
@@ -1218,7 +1218,7 @@
       "trainingsID": "T054"
     },
     {
-      "id": 46,
+      "id": 56,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "11:00",
@@ -1237,7 +1237,7 @@
       "trainingsID": "T055"
     },
     {
-      "id": 47,
+      "id": 57,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "12:30",
@@ -1256,7 +1256,7 @@
       "trainingsID": "T056"
     },
     {
-      "id": 48,
+      "id": 58,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "09:30",
@@ -1275,7 +1275,7 @@
       "trainingsID": "T057"
     },
     {
-      "id": 49,
+      "id": 59,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "11:30",
@@ -1294,7 +1294,7 @@
       "trainingsID": "T058"
     },
     {
-      "id": 50,
+      "id": 60,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "13:00",
@@ -1313,7 +1313,7 @@
       "trainingsID": "T059"
     },
     {
-      "id": 51,
+      "id": 61,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1332,7 +1332,7 @@
       "trainingsID": "T060"
     },
     {
-      "id": 52,
+      "id": 62,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1351,7 +1351,7 @@
       "trainingsID": "T061"
     },
     {
-      "id": 53,
+      "id": 63,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1370,7 +1370,7 @@
       "trainingsID": "T062"
     },
     {
-      "id": 54,
+      "id": 64,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "09:30",
@@ -1389,7 +1389,7 @@
       "trainingsID": "T063"
     },
     {
-      "id": 55,
+      "id": 65,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "10:30",
@@ -1408,7 +1408,7 @@
       "trainingsID": "T064"
     },
     {
-      "id": 56,
+      "id": 66,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:30",
@@ -1427,7 +1427,7 @@
       "trainingsID": "T065"
     },
     {
-      "id": 57,
+      "id": 67,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:45",
@@ -1446,7 +1446,7 @@
       "trainingsID": "T066"
     },
     {
-      "id": 58,
+      "id": 68,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:45",
@@ -1465,7 +1465,7 @@
       "trainingsID": "T067"
     },
     {
-      "id": 59,
+      "id": 69,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "13:15",
@@ -1484,7 +1484,7 @@
       "trainingsID": "T068"
     },
     {
-      "id": 60,
+      "id": 70,
       "wochentag": "Sonntag",
       "ort": "Freiham Halle C",
       "von": "10:30",
@@ -1503,7 +1503,7 @@
       "trainingsID": "T069"
     },
     {
-      "id": 61,
+      "id": 71,
       "wochentag": "Sonntag",
       "ort": "Freiham Halle C",
       "von": "12:00",
@@ -1522,7 +1522,7 @@
       "trainingsID": "T070"
     },
     {
-      "id": 62,
+      "id": 72,
       "wochentag": "Sonntag",
       "ort": "Drygalski Allee",
       "von": "10:00",
@@ -1541,7 +1541,7 @@
       "trainingsID": "T071"
     },
     {
-      "id": 63,
+      "id": 73,
       "wochentag": "Sonntag",
       "ort": "Drygalski Allee",
       "von": "11:00",
@@ -1560,7 +1560,7 @@
       "trainingsID": "T072"
     },
     {
-      "id": 64,
+      "id": 74,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "16:45",
@@ -1579,7 +1579,7 @@
       "trainingsID": "T073"
     },
     {
-      "id": 65,
+      "id": 75,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "16:45",
@@ -1598,7 +1598,7 @@
       "trainingsID": "T074"
     },
     {
-      "id": 66,
+      "id": 76,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1617,7 +1617,7 @@
       "trainingsID": "T075"
     },
     {
-      "id": 67,
+      "id": 77,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1636,7 +1636,7 @@
       "trainingsID": "T076"
     },
     {
-      "id": 68,
+      "id": 78,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
