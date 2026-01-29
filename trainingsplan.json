@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-29T12:57:52.921Z",
+  "generated": "2026-01-29T13:57:29.802Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -48,8 +48,8 @@
       "Sonntag"
     ],
     "trainer": [
-      "Bene, Chris",
       "Bene, Chris, Konrad",
+      "Chris, Konrad",
       "David, Maxi K.",
       "Garlef",
       "Hannah, Joni",
@@ -71,7 +71,6 @@
       "Simon R.",
       "Simon R., Lewin",
       "Steffi",
-      "Steffi, Bene",
       "Steffi, Faiza, Sarah H.",
       "Steffi, Sarah K., Sarah H.",
       "Steven, Julian W.",
@@ -416,7 +415,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Bene, Chris",
+      "trainer": "Chris, Konrad",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
@@ -435,7 +434,7 @@
       "altersgruppe": "Teens, Adults",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Bene, Chris",
+      "trainer": "Chris, Konrad",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 7,
@@ -454,7 +453,7 @@
       "altersgruppe": "Teens, Adults",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Steffi, Bene",
+      "trainer": "Steffi",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
@@ -686,7 +685,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/b7c3eb8e-c8cf-4e4f-9786-f1fc22d188b6",
+      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-ltr-mi-20-00-uhr-ae2ka",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T020"
@@ -895,7 +894,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/8e0b04b4-7296-4a78-9209-bf080b9a9f70",
+      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-ltr-fr-19-00-uhr-uhmuz",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T031"
