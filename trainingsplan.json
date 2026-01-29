@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-29T13:57:29.802Z",
+  "generated": "2026-01-29T14:57:27.749Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -12,16 +12,20 @@
       "Freiham Halle A/B",
       "Freiham Halle C",
       "LTR",
+      "MAP",
       "Milbertshofen",
       "Outdoor",
       "PSV"
     ],
     "trainingsarten": [
+      "Calisthenics",
       "FAM Minis",
       "Flips & Tricks",
       "Freestyle Calistenics",
+      "Freestyle Calisthenics",
       "Freies Training",
       "Movement Outdoor",
+      "Ninja Warrior",
       "Parkour",
       "Parkour & Movement",
       "Parkour & Trampolin",
@@ -48,18 +52,23 @@
       "Sonntag"
     ],
     "trainer": [
+      "Andi",
       "Bene, Chris, Konrad",
+      "Bene, Lea, Simon R., Laurenz",
+      "Bene, Simon R., Laurenz",
       "Chris, Konrad",
       "David, Maxi K.",
+      "Dima, Youssef",
       "Garlef",
       "Hannah, Joni",
+      "Jonas G.",
       "Jonathan, Alwin",
       "Joni, Hannah",
       "Joni, Neo",
       "Joni, Steffi",
+      "Julia B., Rafael N., Kathi A.",
       "Kati,Malte, Maxi Dö., Felix P.",
-      "Konsti L., Laurenz",
-      "Laurenz",
+      "Konsti L., Manu",
       "Lewin",
       "Lora, Lea",
       "Ludwig",
@@ -67,11 +76,16 @@
       "Maxi D.",
       "Maxi Dö., Jakob",
       "Neo, Konsti L.",
-      "Sam",
+      "Rafael N., Jakob",
+      "Rafael N., Leo A.",
+      "Sam, Laurin",
       "Simon R.",
+      "Simon R., Laurenz, Steffi",
       "Simon R., Lewin",
       "Steffi",
+      "Steffi, David",
       "Steffi, Faiza, Sarah H.",
+      "Steffi, Faiza, Sarah H., Matthias W., Kai",
       "Steffi, Sarah K., Sarah H.",
       "Steven, Julian W.",
       "Youssef"
@@ -112,13 +126,11 @@
         }
       },
       "Candidplatz": {
-        "anzahl": 2,
+        "anzahl": 1,
         "trainingsarten": [
-          "Parkour Outdoor",
           "Movement Outdoor"
         ],
         "wochentage": [
-          "Montag",
           "Dienstag"
         ],
         "probetraining": true,
@@ -192,6 +204,7 @@
           "Freies Training",
           "Trampolin & Tricking",
           "Parkour",
+          "Freestyle Calisthenics",
           "Parkour & Trampolin",
           "Parkour & Movement",
           "Tricking",
@@ -210,6 +223,24 @@
         "koordinaten": {
           "lat": 48.124155075514125,
           "lng": 11.621655148342274
+        }
+      },
+      "MAP": {
+        "anzahl": 11,
+        "trainingsarten": [
+          "Freies Training",
+          "Ninja Warrior",
+          "Parkour",
+          "Calisthenics",
+          "Freestyle Calisthenics"
+        ],
+        "wochentage": [
+          "Montag"
+        ],
+        "probetraining": true,
+        "koordinaten": {
+          "lat": 48.174907748537585,
+          "lng": 11.557718375551984
         }
       },
       "Milbertshofen": {
@@ -259,11 +290,11 @@
     }
   },
   "stats": {
-    "total": 59,
-    "mitProbetraining": 39,
-    "mitLink": 59,
+    "total": 69,
+    "mitProbetraining": 47,
+    "mitLink": 69,
     "nachWochentag": {
-      "Montag": 1,
+      "Montag": 11,
       "Dienstag": 9,
       "Mittwoch": 12,
       "Donnerstag": 3,
@@ -272,8 +303,9 @@
       "Sonntag": 15
     },
     "nachOrt": {
-      "Candidplatz": 2,
+      "MAP": 11,
       "Outdoor": 1,
+      "Candidplatz": 1,
       "Freiham Halle C": 4,
       "Burmesterstr.": 8,
       "Forstenried": 3,
@@ -285,13 +317,16 @@
       "Drygalski Allee": 2
     },
     "nachTrainingsart": {
-      "Parkour Outdoor": 2,
+      "Freies Training": 13,
+      "Ninja Warrior": 3,
+      "Parkour": 22,
+      "Calisthenics": 2,
+      "Freestyle Calisthenics": 2,
+      "Parkour Outdoor": 1,
       "Movement Outdoor": 1,
-      "Parkour": 19,
       "Flips & Tricks": 2,
-      "Freies Training": 11,
       "FAM Minis": 8,
-      "Freestyle Calistenics": 2,
+      "Freestyle Calistenics": 1,
       "Trampolin & Tricking": 2,
       "Parkour & Trampolin": 4,
       "Parkour & Movement": 2,
@@ -301,10 +336,11 @@
       "Trampolin": 2
     },
     "nachAltersgruppe": {
-      "Kids": 18,
-      "Adults, Teens": 21,
+      "Teens, Adults": 8,
+      "Kids": 19,
+      "Adults, Teens": 24,
+      "Kids, Teens": 2,
       "Adults": 3,
-      "Teens, Adults": 4,
       "Minis": 8,
       "Teens": 5
     }
@@ -313,24 +349,214 @@
     {
       "id": 0,
       "wochentag": "Montag",
-      "ort": "Candidplatz",
-      "von": "16:00",
+      "ort": "MAP",
+      "von": "15:00",
       "bis": "17:00",
-      "training": "Parkour Outdoor",
-      "altersgruppe": "Kids",
-      "alterVon": 6,
-      "alterBis": 11,
-      "trainer": "Laurenz",
-      "probetraining": "nein",
-      "anmerkung": "findet erst wieder im April statt",
-      "teilnehmer": 4,
-      "link": "https://fam.kurabu.com/de/events/8516b0f1-d29e-4c36-9741-30944c21cfbe",
-      "lat": 48.11201643938622,
-      "lng": 11.572617040130154,
+      "training": "Freies Training",
+      "altersgruppe": "Teens, Adults",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Andi",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/freies-training-map-mo-15-uhr-deb2q",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
       "trainingsID": "T001"
     },
     {
       "id": 1,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "15:45",
+      "bis": "16:50",
+      "training": "Ninja Warrior",
+      "altersgruppe": "Kids",
+      "alterVon": 6,
+      "alterBis": 9,
+      "trainer": "Rafael N., Jakob",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-map-mo-15-45-uhr-qmdvh",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T002"
+    },
+    {
+      "id": 2,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "15:45",
+      "bis": "16:50",
+      "training": "Parkour",
+      "altersgruppe": "Kids",
+      "alterVon": 6,
+      "alterBis": 9,
+      "trainer": "Simon R., Laurenz, Steffi",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-map-mo-15-45-uhr-xbxp7",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T003"
+    },
+    {
+      "id": 3,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "15:50",
+      "bis": "16:50",
+      "training": "Calisthenics",
+      "altersgruppe": "Adults, Teens",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Jonas G.",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/calisthenics-map-mo-15-50-uhr-hdz9e",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T004"
+    },
+    {
+      "id": 4,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "17:00",
+      "bis": "18:20",
+      "training": "Ninja Warrior",
+      "altersgruppe": "Kids, Teens",
+      "alterVon": 10,
+      "alterBis": 12,
+      "trainer": "Julia B., Rafael N., Kathi A.",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-map-mo-17-uhr-b4bnw",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T005"
+    },
+    {
+      "id": 5,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "17:00",
+      "bis": "18:20",
+      "training": "Parkour",
+      "altersgruppe": "Kids, Teens",
+      "alterVon": 10,
+      "alterBis": 12,
+      "trainer": "Simon R., Laurenz, Steffi",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-map-mo-17-uhr-hod29",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T006"
+    },
+    {
+      "id": 6,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "17:00",
+      "bis": "18:20",
+      "training": "Calisthenics",
+      "altersgruppe": "Adults, Teens",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Jonas G.",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/calisthenics-map-mo-17-uhr-7mjrh",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T007"
+    },
+    {
+      "id": 7,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "18:30",
+      "bis": "19:50",
+      "training": "Freestyle Calisthenics",
+      "altersgruppe": "Adults, Teens",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Dima, Youssef",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-map-mo-18-30-uhr-zksah",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T008"
+    },
+    {
+      "id": 8,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "18:30",
+      "bis": "19:50",
+      "training": "Ninja Warrior",
+      "altersgruppe": "Teens, Adults",
+      "alterVon": 13,
+      "alterBis": null,
+      "trainer": "Rafael N., Leo A.",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-teens-map-mo-18-30-uhr-0mhhi",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T009"
+    },
+    {
+      "id": 9,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "18:30",
+      "bis": "19:50",
+      "training": "Parkour",
+      "altersgruppe": "Teens, Adults",
+      "alterVon": 13,
+      "alterBis": null,
+      "trainer": "Bene, Lea, Simon R., Laurenz",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-map-mo-18-30-uhr-8awx9",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T010"
+    },
+    {
+      "id": 10,
+      "wochentag": "Montag",
+      "ort": "MAP",
+      "von": "20:00",
+      "bis": "22:00",
+      "training": "Freies Training",
+      "altersgruppe": "Teens, Adults",
+      "alterVon": 14,
+      "alterBis": null,
+      "trainer": "Bene, Simon R., Laurenz",
+      "probetraining": "ja",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "https://fam.kurabu.com/de/teams/freies-training-map-mo-20-uhr-xoaiz",
+      "lat": 48.174907748537585,
+      "lng": 11.557718375551984,
+      "trainingsID": "T011"
+    },
+    {
+      "id": 11,
       "wochentag": "Dienstag",
       "ort": "Outdoor",
       "von": "18:30",
@@ -343,13 +569,13 @@
       "probetraining": "ja",
       "anmerkung": "Standort wechselt jede Woche, Informationen über WA-Gruppe",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/921d17cf-d4b6-425a-8452-bbb8cdd3f883",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-outdoor-di-18-30-uhr-v5s5c",
       "lat": 48.13739897456391,
       "lng": 11.57544604922726,
-      "trainingsID": "T002"
+      "trainingsID": "T013"
     },
     {
-      "id": 2,
+      "id": 12,
       "wochentag": "Dienstag",
       "ort": "Candidplatz",
       "von": "19:00",
@@ -362,13 +588,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/66b79177-0f29-4f7c-a455-2e9048785fc7",
+      "link": "https://fam.kurabu.com/de/teams/movement-outdoor-di-19-00-uhr-3x6zt",
       "lat": 48.11201643938622,
       "lng": 11.572617040130154,
-      "trainingsID": "T003"
+      "trainingsID": "T014"
     },
     {
-      "id": 3,
+      "id": 13,
       "wochentag": "Dienstag",
       "ort": "Freiham Halle C",
       "von": "17:00",
@@ -381,13 +607,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": 30,
-      "link": "https://fam.kurabu.com/de/events/2c1a0676-35bc-416f-a1a7-0bff8e1e26e2",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-c-di-17-00-uhr-zchwc",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
-      "trainingsID": "T004"
+      "trainingsID": "T015"
     },
     {
-      "id": 4,
+      "id": 14,
       "wochentag": "Dienstag",
       "ort": "Freiham Halle C",
       "von": "18:30",
@@ -400,13 +626,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/7f33bd4c-1f56-4c00-ae79-57784ab7e917",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-c-di-18-30-uhr-gniex",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
-      "trainingsID": "T005"
+      "trainingsID": "T016"
     },
     {
-      "id": 5,
+      "id": 15,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
       "von": "17:00",
@@ -416,16 +642,16 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Chris, Konrad",
-      "probetraining": "ja",
-      "anmerkung": "",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/2712f5da-e272-47ca-bd0f-0a6a988b7cbc",
+      "link": "https://fam.kurabu.com/de/teams/flips-and-tricks-kids-burmester-di-17-00-uhr-tcb8e",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T006"
+      "trainingsID": "T017"
     },
     {
-      "id": 6,
+      "id": 16,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
       "von": "18:30",
@@ -438,13 +664,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 7,
-      "link": "https://fam.kurabu.com/de/events/bdc3c772-78da-4a08-ae98-d574db014980",
+      "link": "https://fam.kurabu.com/de/teams/flips-and-tricks-teens-burmester-di-18-30-uhr-yi7ou",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T007"
+      "trainingsID": "T018"
     },
     {
-      "id": 7,
+      "id": 17,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
       "von": "18:30",
@@ -457,13 +683,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/581cf88f-628b-49f2-9942-3df65a9e3761",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-burmester-di-18-30-uhr-s71tv",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T008"
+      "trainingsID": "T019"
     },
     {
-      "id": 8,
+      "id": 18,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
       "von": "17:00",
@@ -473,16 +699,16 @@
       "alterVon": 4,
       "alterBis": 6,
       "trainer": "Steffi, Sarah K., Sarah H.",
-      "probetraining": "ja",
-      "anmerkung": "",
+      "probetraining": "nein",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/214ce350-65f5-4e32-af2b-f89d11f304e7",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-4-6-jahre-burmester-di-17-uhr-zvlgr",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T009"
+      "trainingsID": "T020"
     },
     {
-      "id": 9,
+      "id": 19,
       "wochentag": "Dienstag",
       "ort": "Burmesterstr.",
       "von": "18:00",
@@ -495,13 +721,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/ae54756a-8187-4b65-b587-f05e3b879eca",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-4-8-jahre-burmester-di-18-uhr-02q1o",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T010"
+      "trainingsID": "T021"
     },
     {
-      "id": 10,
+      "id": 20,
       "wochentag": "Mittwoch",
       "ort": "Forstenried",
       "von": "16:30",
@@ -510,17 +736,17 @@
       "altersgruppe": "Minis",
       "alterVon": 2,
       "alterBis": 5,
-      "trainer": "Steffi",
+      "trainer": "Steffi, David",
       "probetraining": "nein",
-      "anmerkung": "kein Probetraining möglich",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/e31c2602-6f04-4d73-8a3d-3ef23cc27688",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-forstenrieder-mi-16-30-uhr-ewqdy",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442,
-      "trainingsID": "T011"
+      "trainingsID": "T022"
     },
     {
-      "id": 11,
+      "id": 21,
       "wochentag": "Mittwoch",
       "ort": "Forstenried",
       "von": "17:30",
@@ -529,17 +755,17 @@
       "altersgruppe": "Kids",
       "alterVon": 5,
       "alterBis": 9,
-      "trainer": "Steffi",
+      "trainer": "Steffi, David",
       "probetraining": "nein",
-      "anmerkung": "kein Probetraining möglich",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/71066164-b8dc-4ecb-9583-8418563d3c18",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-forstenrieder-5-9-jahre-mi-17-30-uhr-obhdp",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442,
-      "trainingsID": "T012"
+      "trainingsID": "T023"
     },
     {
-      "id": 12,
+      "id": 22,
       "wochentag": "Mittwoch",
       "ort": "Forstenried",
       "von": "18:30",
@@ -548,17 +774,17 @@
       "altersgruppe": "Kids",
       "alterVon": 8,
       "alterBis": 11,
-      "trainer": "Steffi",
+      "trainer": "Steffi, David",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/632ad222-9d07-41e7-b422-9598f1e1d568",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-forstenrieder-mi-18-30-uhr-s7dhe",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442,
-      "trainingsID": "T013"
+      "trainingsID": "T024"
     },
     {
-      "id": 13,
+      "id": 23,
       "wochentag": "Mittwoch",
       "ort": "Milbertshofen",
       "von": "17:00",
@@ -567,17 +793,17 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Konsti L., Laurenz",
+      "trainer": "Konsti L., Manu",
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/75b253a9-aae1-4806-ae2a-66f9284a78e7",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-milbertshofen-mi-17-00-uhr-wpv4g",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294,
-      "trainingsID": "T014"
+      "trainingsID": "T025"
     },
     {
-      "id": 14,
+      "id": 24,
       "wochentag": "Mittwoch",
       "ort": "Milbertshofen",
       "von": "18:30",
@@ -590,13 +816,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/df04d76f-b95d-47df-a0f1-6649e2c68a1c",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-milbertshofen-mi-18-30-uhr-t7pkv",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294,
-      "trainingsID": "T015"
+      "trainingsID": "T026"
     },
     {
-      "id": 15,
+      "id": 25,
       "wochentag": "Mittwoch",
       "ort": "Milbertshofen",
       "von": "20:00",
@@ -609,13 +835,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/39e10508-d915-4a5c-9922-482af365ba49",
+      "link": "https://fam.kurabu.com/de/teams/freies-community-training-milb-mi-20-uhr-9fm3v",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294,
-      "trainingsID": "T016"
+      "trainingsID": "T027"
     },
     {
-      "id": 16,
+      "id": 26,
       "wochentag": "Mittwoch",
       "ort": "Burmesterstr.",
       "von": "17:00",
@@ -628,13 +854,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": 12,
-      "link": "https://fam.kurabu.com/de/events/b4744555-1b27-4211-ac97-3e09c4cea159",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-burmester-mi-17-00-uhr-oszkq",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T017"
+      "trainingsID": "T028"
     },
     {
-      "id": 17,
+      "id": 27,
       "wochentag": "Mittwoch",
       "ort": "Burmesterstr.",
       "von": "18:30",
@@ -644,16 +870,16 @@
       "alterVon": 12,
       "alterBis": null,
       "trainer": "Bene, Chris, Konrad",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": 8,
-      "link": "https://fam.kurabu.com/en/events/4fa95f29-2a12-4c45-b714-f505f4898595",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-burmester-mi-18-30-uhr-s4pyt",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T018"
+      "trainingsID": "T029"
     },
     {
-      "id": 18,
+      "id": 28,
       "wochentag": "Mittwoch",
       "ort": "Burmesterstr.",
       "von": "18:30",
@@ -666,13 +892,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/67883d42-60b7-4998-9642-e87da700b4a1",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-burmester-mi-18-30-uhr-jzqp2",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
-      "trainingsID": "T019"
+      "trainingsID": "T030"
     },
     {
-      "id": 19,
+      "id": 29,
       "wochentag": "Mittwoch",
       "ort": "LTR",
       "von": "20:00",
@@ -688,10 +914,10 @@
       "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-ltr-mi-20-00-uhr-ae2ka",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T020"
+      "trainingsID": "T031"
     },
     {
-      "id": 20,
+      "id": 30,
       "wochentag": "Mittwoch",
       "ort": "LTR",
       "von": "20:00",
@@ -704,13 +930,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/fc02197a-ced9-4ad2-9f26-3213d41bf3eb",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-mi-20-00-uhr-i0pxx",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T021"
+      "trainingsID": "T032"
     },
     {
-      "id": 21,
+      "id": 31,
       "wochentag": "Mittwoch",
       "ort": "LTR",
       "von": "20:00",
@@ -723,13 +949,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/71a35c47-bc2e-45a8-9eb7-a8c36370abb3",
+      "link": "https://fam.kurabu.com/de/teams/tricking-and-trampolin-ltr-mi-20-00-uhr-uhvqe",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T022"
+      "trainingsID": "T033"
     },
     {
-      "id": 22,
+      "id": 32,
       "wochentag": "Donnerstag",
       "ort": "Balanstr.",
       "von": "17:00",
@@ -740,15 +966,15 @@
       "alterBis": 11,
       "trainer": "Joni, Hannah",
       "probetraining": "nein",
-      "anmerkung": "22.01.2026 findet nicht statt",
+      "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/0666498d-dbc9-43a4-a8be-78dc92a63fb2",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-balanstrasse-do-17-00-uhr-tu05b",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
-      "trainingsID": "T023"
+      "trainingsID": "T034"
     },
     {
-      "id": 23,
+      "id": 33,
       "wochentag": "Donnerstag",
       "ort": "Balanstr.",
       "von": "18:30",
@@ -759,15 +985,15 @@
       "alterBis": null,
       "trainer": "Joni, Hannah",
       "probetraining": "nein",
-      "anmerkung": "22.01.2026 findet nicht statt",
+      "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/f85adaa5-7fac-429d-a2cb-332e6cea0ccc",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-balanstrasse-do-18-30-uhr-pecmn",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
-      "trainingsID": "T024"
+      "trainingsID": "T035"
     },
     {
-      "id": 24,
+      "id": 34,
       "wochentag": "Donnerstag",
       "ort": "Balanstr.",
       "von": "18:30",
@@ -778,15 +1004,15 @@
       "alterBis": null,
       "trainer": "Hannah, Joni",
       "probetraining": "nein",
-      "anmerkung": "22.01.2026 findet nicht statt",
+      "anmerkung": "kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/0748ba2d-e2fb-4a2c-83ad-5b7277a85f1b",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-balanstrasse-do-18-30-uhr-07zzn",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
-      "trainingsID": "T025"
+      "trainingsID": "T036"
     },
     {
-      "id": 25,
+      "id": 35,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "15:30",
@@ -799,13 +1025,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/f7d06ef1-4207-4dd0-9c91-876da7eec9f7",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-a-fr-15-30-uhr-ixula",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275,
-      "trainingsID": "T026"
+      "trainingsID": "T044"
     },
     {
-      "id": 26,
+      "id": 36,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "15:30",
@@ -818,13 +1044,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/fdf29833-f16c-443c-902c-9f66291ee28e",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-a-fr-15-30-uhr-vxta4",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275,
-      "trainingsID": "T027"
+      "trainingsID": "T045"
     },
     {
-      "id": 27,
+      "id": 37,
       "wochentag": "Freitag",
       "ort": "Freiham Halle A/B",
       "von": "17:00",
@@ -837,13 +1063,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetrainig möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/5c64b634-468c-4cad-8089-a3188f6bd5c4",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-a-fr-17-00-uhr-kl9bb",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275,
-      "trainingsID": "T028"
+      "trainingsID": "T046"
     },
     {
-      "id": 28,
+      "id": 38,
       "wochentag": "Freitag",
       "ort": "Balanstr.",
       "von": "16:00",
@@ -856,13 +1082,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": 22,
-      "link": "https://fam.kurabu.com/de/events/39328963-a499-4953-9129-8056997bda1d",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-balanstrasse-fr-16-00-uhr-ntsfm",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
-      "trainingsID": "T029"
+      "trainingsID": "T047"
     },
     {
-      "id": 29,
+      "id": 39,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "18:00",
@@ -872,21 +1098,21 @@
       "alterVon": 10,
       "alterBis": null,
       "trainer": "Maxi D.",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/e95be6eb-e0c8-4d53-a399-be7d44057c8c",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-ltr-fr-18-00-uhr-xd0vl",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T030"
+      "trainingsID": "T048"
     },
     {
-      "id": 30,
+      "id": 40,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:00",
       "bis": "22:00",
-      "training": "Freestyle Calistenics",
+      "training": "Freestyle Calisthenics",
       "altersgruppe": "Adults",
       "alterVon": 18,
       "alterBis": null,
@@ -897,10 +1123,10 @@
       "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-ltr-fr-19-00-uhr-uhmuz",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T031"
+      "trainingsID": "T049"
     },
     {
-      "id": 31,
+      "id": 41,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:30",
@@ -913,13 +1139,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/33d40c37-bdd4-45b5-9854-ac8e454bcfbe",
+      "link": "https://fam.kurabu.com/de/teams/tricking-and-trampolin-ltr-fr-19-30-uhr-vdoc3",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T032"
+      "trainingsID": "T050"
     },
     {
-      "id": 32,
+      "id": 42,
       "wochentag": "Freitag",
       "ort": "LTR",
       "von": "19:30",
@@ -932,13 +1158,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/668ae999-bf23-4057-94fc-e8ad7914f1ba",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-fr-19-30-uhr-icamo",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T033"
+      "trainingsID": "T051"
     },
     {
-      "id": 33,
+      "id": 43,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "09:30",
@@ -951,13 +1177,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/5bbae08e-4014-49f2-8945-fc8bb21c4697",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-kids-ltr-sa-9-30-uhr-g92go",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T034"
+      "trainingsID": "T052"
     },
     {
-      "id": 34,
+      "id": 44,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "09:30",
@@ -970,13 +1196,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/1f0177ad-0183-4450-9f7e-f14b78d5734d",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-movement-ltr-sa-9-30-uhr-kfasj",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T035"
+      "trainingsID": "T053"
     },
     {
-      "id": 35,
+      "id": 45,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "11:00",
@@ -989,13 +1215,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/9fe56949-a48a-4fd7-a5c4-a8957d48d6b4",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-teens-ltr-sa-11-00-uhr-59ise",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T036"
+      "trainingsID": "T054"
     },
     {
-      "id": 36,
+      "id": 46,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "11:00",
@@ -1008,13 +1234,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/122ab0ca-88b0-409a-925c-de884e0328ca",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-movement-ltr-sa-11-uhr-cx6vw",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T037"
+      "trainingsID": "T055"
     },
     {
-      "id": 37,
+      "id": 47,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "12:30",
@@ -1027,13 +1253,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/c9afaa99-6711-4d40-8c56-f618512cc337",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-sa-12-30-uhr-ljci7",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T038"
+      "trainingsID": "T056"
     },
     {
-      "id": 38,
+      "id": 48,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "09:30",
@@ -1046,13 +1272,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 28,
-      "link": "https://fam.kurabu.com/de/events/48c9397e-cd79-4feb-9308-dcb37f60dcfe",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-psv-kids-sa-09-30-uhr-6-11-jahre-dhmea",
       "lat": 48.16961192487,
       "lng": 11.507736765568037,
-      "trainingsID": "T039"
+      "trainingsID": "T057"
     },
     {
-      "id": 39,
+      "id": 49,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "11:30",
@@ -1065,13 +1291,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 6,
-      "link": "https://fam.kurabu.com/de/events/1632f0fb-3158-426e-87bb-0b94f6f7b55e",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-psv-teens-sa-11-30-uhr-nj0iu",
       "lat": 48.16961192487,
       "lng": 11.507736765568037,
-      "trainingsID": "T040"
+      "trainingsID": "T058"
     },
     {
-      "id": 40,
+      "id": 50,
       "wochentag": "Samstag",
       "ort": "PSV",
       "von": "13:00",
@@ -1084,13 +1310,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": 2,
-      "link": "https://fam.kurabu.com/de/events/559ad33c-90e3-4f4c-99a1-d7b8669d2ec6",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-psv-sa-13-uhr-pwguw",
       "lat": 48.16961192487,
       "lng": 11.507736765568037,
-      "trainingsID": "T041"
+      "trainingsID": "T059"
     },
     {
-      "id": 41,
+      "id": 51,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1103,13 +1329,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/db927f2f-574a-4a09-b685-e3c84658f0e6",
+      "link": "https://fam.kurabu.com/de/teams/tricking-ltr-sa-18-00-uhr-txfhx",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T042"
+      "trainingsID": "T060"
     },
     {
-      "id": 42,
+      "id": 52,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1122,13 +1348,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/74a35444-7548-4cc7-80ff-e34c8e37eb13",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-teens-ltr-sa-18-00-uhr-6pwcc",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T043"
+      "trainingsID": "T061"
     },
     {
-      "id": 43,
+      "id": 53,
       "wochentag": "Samstag",
       "ort": "LTR",
       "von": "18:00",
@@ -1141,13 +1367,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/795c64ce-524a-4f13-8aea-dda6a3708631",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-sa-18-uhr-cu7gr",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T044"
+      "trainingsID": "T062"
     },
     {
-      "id": 44,
+      "id": 54,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "09:30",
@@ -1156,17 +1382,17 @@
       "altersgruppe": "Minis",
       "alterVon": 2,
       "alterBis": 4,
-      "trainer": "Steffi, Faiza, Sarah H.",
+      "trainer": "Steffi, Faiza, Sarah H., Matthias W., Kai",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/3294f690-6885-4e81-906f-351605fcdc4e",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-2-4-jahre-ltr-so-9-30-uhr-syn15",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T045"
+      "trainingsID": "T063"
     },
     {
-      "id": 45,
+      "id": 55,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "10:30",
@@ -1175,17 +1401,17 @@
       "altersgruppe": "Minis",
       "alterVon": 4,
       "alterBis": 6,
-      "trainer": "Steffi, Faiza, Sarah H.",
+      "trainer": "Steffi, Faiza, Sarah H., Matthias W., Kai",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/4b8e212d-2057-4828-b4bb-0e63d55b5558",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-4-6-jahre-ltr-so-10-30-uhr-atazd",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T046"
+      "trainingsID": "T064"
     },
     {
-      "id": 46,
+      "id": 56,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:30",
@@ -1198,13 +1424,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/67d59036-22a3-42d5-a747-deb70e99c9fc",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-6-8-jahre-ltr-so-11-30-uhr-alvj9",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T047"
+      "trainingsID": "T065"
     },
     {
-      "id": 47,
+      "id": 57,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:45",
@@ -1217,13 +1443,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/969e5281-3bc6-4902-ae6b-c2be1e02709a",
+      "link": "https://fam.kurabu.com/de/teams/parkour-adults-ltr-so-11-45-uhr-0u8zu",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T048"
+      "trainingsID": "T066"
     },
     {
-      "id": 48,
+      "id": 58,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "11:45",
@@ -1236,13 +1462,13 @@
       "probetraining": "nein",
       "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/d63fdc84-7737-44e9-93b1-b94eb8afd9ad",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-advanced-ltr-so-11-45-uhr-ryc8o",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T049"
+      "trainingsID": "T067"
     },
     {
-      "id": 49,
+      "id": 59,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "13:15",
@@ -1255,13 +1481,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/a3758b6b-0bc5-4714-8cee-6353736fff65",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-so-13-15-uhr-wmavu",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T054"
+      "trainingsID": "T068"
     },
     {
-      "id": 50,
+      "id": 60,
       "wochentag": "Sonntag",
       "ort": "Freiham Halle C",
       "von": "10:30",
@@ -1272,15 +1498,15 @@
       "alterBis": 11,
       "trainer": "Steven, Julian W.",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/19d94358-85e1-40a4-ab33-00e46cb89fb0",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-c-so-10-30-uhr-knmgt",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
-      "trainingsID": "T050"
+      "trainingsID": "T069"
     },
     {
-      "id": 51,
+      "id": 61,
       "wochentag": "Sonntag",
       "ort": "Freiham Halle C",
       "von": "12:00",
@@ -1293,13 +1519,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/7be85623-930f-482d-b5bc-244b5662e668",
+      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-c-so-12-uhr-ewjpd",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
-      "trainingsID": "T051"
+      "trainingsID": "T070"
     },
     {
-      "id": 52,
+      "id": 62,
       "wochentag": "Sonntag",
       "ort": "Drygalski Allee",
       "von": "10:00",
@@ -1312,13 +1538,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/0d497802-e483-494f-8ad1-d94d7b8cad97",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-drygalski-so-10-uhr-p6cir",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421,
-      "trainingsID": "T052"
+      "trainingsID": "T071"
     },
     {
-      "id": 53,
+      "id": 63,
       "wochentag": "Sonntag",
       "ort": "Drygalski Allee",
       "von": "11:00",
@@ -1331,13 +1557,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/8976dab2-8ce0-4292-9cba-f8f316460d94",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-drygalski-so-11-uhr-xprvp",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421,
-      "trainingsID": "T053"
+      "trainingsID": "T072"
     },
     {
-      "id": 54,
+      "id": 64,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "16:45",
@@ -1348,15 +1574,15 @@
       "alterBis": 11,
       "trainer": "Simon R.",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/e65687be-7cc3-47ef-98ba-52e97fd8d47c",
+      "link": "https://fam.kurabu.com/de/teams/parkour-kids-ltr-so-16-45-uhr-ye8hz",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T055"
+      "trainingsID": "T073"
     },
     {
-      "id": 55,
+      "id": 65,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "16:45",
@@ -1365,17 +1591,17 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Sam",
+      "trainer": "Sam, Laurin",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "Kein Probetraining möglich!",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/e60f3a4d-04eb-4c53-9de7-fad1b126a077",
+      "link": "https://fam.kurabu.com/de/teams/trampolin-kids-ltr-so-16-45-uhr-xswck",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T056"
+      "trainingsID": "T074"
     },
     {
-      "id": 56,
+      "id": 66,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1384,17 +1610,17 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Sam",
+      "trainer": "Sam, Laurin",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/f534cefa-7906-4707-9792-ad9608cb1a09",
+      "link": "https://fam.kurabu.com/de/teams/trampolin-teens-ltr-so-18-30-uhr-fhqbs",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T057"
+      "trainingsID": "T075"
     },
     {
-      "id": 57,
+      "id": 67,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1407,13 +1633,13 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/9d63f202-4f6c-48b2-91e9-5a7aa7d9c119",
+      "link": "https://fam.kurabu.com/de/teams/tricking-ltr-so-18-30-uhr-pxdqa",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T058"
+      "trainingsID": "T076"
     },
     {
-      "id": 58,
+      "id": 68,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
@@ -1426,10 +1652,10 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/events/d29df62a-2696-41ad-b827-9a4f24480942",
+      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-so-18-30-uhr-uztmj",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
-      "trainingsID": "T059"
+      "trainingsID": "T077"
     }
   ]
 }
