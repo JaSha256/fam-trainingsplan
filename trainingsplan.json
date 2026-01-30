@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-30T12:57:27.724Z",
+  "generated": "2026-01-30T13:32:11.724Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -295,7 +295,7 @@
   },
   "stats": {
     "total": 80,
-    "mitProbetraining": 57,
+    "mitProbetraining": 58,
     "mitLink": 80,
     "nachWochentag": {
       "Montag": 11,
@@ -703,7 +703,7 @@
       "alterVon": 4,
       "alterBis": 6,
       "trainer": "Steffi, Sarah K., Sarah H.",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/fam-minis-4-6-jahre-burmester-di-17-uhr-zvlgr",
