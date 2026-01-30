@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-01-30T10:57:27.708Z",
+  "generated": "2026-01-30T11:57:27.907Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -380,7 +380,7 @@
       "alterVon": 6,
       "alterBis": 9,
       "trainer": "Rafael N., Jakob",
-      "probetraining": "nein",
+      "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-map-mo-15-45-uhr-qmdvh",
@@ -437,7 +437,7 @@
       "alterVon": 10,
       "alterBis": 12,
       "trainer": "Julia B., Rafael N., Kathi A.",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-map-mo-17-uhr-b4bnw",
