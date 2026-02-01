@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-01T08:57:38.143Z",
+  "generated": "2026-02-01T09:29:54.309Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -1635,7 +1635,7 @@
       "alterBis": 11,
       "trainer": "Steven, Julian W.",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "01.02. & 08.02. Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-c-so-10-30-uhr-knmgt",
       "lat": 48.141691300033706,
@@ -1654,7 +1654,7 @@
       "alterBis": null,
       "trainer": "Steven, Julian W.",
       "probetraining": "ja",
-      "anmerkung": "",
+      "anmerkung": "01.02. & 08.02. Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-c-so-12-uhr-ewjpd",
       "lat": 48.141691300033706,
