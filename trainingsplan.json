@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-02T11:57:37.408Z",
+  "generated": "2026-02-02T12:57:30.790Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -295,7 +295,7 @@
   },
   "stats": {
     "total": 80,
-    "mitProbetraining": 58,
+    "mitProbetraining": 57,
     "mitLink": 80,
     "nachWochentag": {
       "Montag": 11,
@@ -1026,7 +1026,7 @@
       "alterVon": 6,
       "alterBis": 9,
       "trainer": "Baris",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-and-ninja-warrior-kids-or-map-or-do-15-30-uhr-julck",
