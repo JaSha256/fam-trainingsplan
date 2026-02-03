@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-03T16:57:38.046Z",
+  "generated": "2026-02-03T17:57:28.248Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -60,6 +60,7 @@
       "Chris, Konrad",
       "David, Maxi K.",
       "Dima, Youssef",
+      "Finnian",
       "Garlef",
       "Hannah, Joni",
       "Jakob",
@@ -77,7 +78,6 @@
       "Ludwig",
       "Manu",
       "Maxi D.",
-      "Maxi Dö., Jakob",
       "Neo, Konsti L.",
       "Rafael N., Jakob",
       "Rafael N., Leo A.",
@@ -607,7 +607,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Maxi Dö., Jakob",
+      "trainer": "Finnian",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": 30,
@@ -626,7 +626,7 @@
       "altersgruppe": "Teens, Adults",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Maxi Dö., Jakob",
+      "trainer": "Finnian",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
