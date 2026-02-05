@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-05T08:57:38.768Z",
+  "generated": "2026-02-05T09:57:27.685Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -84,6 +84,7 @@
       "Sam, Laurin",
       "Simon R.",
       "Simon R., Laurenz, Steffi",
+      "Simon R., Laurenz, Steffi, Bene",
       "Simon R., Lewin",
       "Steffi",
       "Steffi, David",
@@ -455,7 +456,7 @@
       "altersgruppe": "Kids, Teens",
       "alterVon": 10,
       "alterBis": 12,
-      "trainer": "Simon R., Laurenz, Steffi",
+      "trainer": "Simon R., Laurenz, Steffi, Bene",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
