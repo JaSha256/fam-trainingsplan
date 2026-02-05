@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-05T13:57:29.880Z",
+  "generated": "2026-02-05T14:57:28.540Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -54,7 +54,7 @@
     "trainer": [
       "Andi",
       "Baris",
-      "Baris, Jakob",
+      "Baris, Yonah",
       "Bene, Chris, Konrad",
       "Bene, Simon R., Laurenz",
       "Chris, Konrad",
@@ -93,6 +93,7 @@
       "Steffi, Faiza, Sarah H., Matthias W., Kai",
       "Steffi, Sarah K., Sarah H.",
       "Steven, Julian W.",
+      "Yonah",
       "Youssef"
     ],
     "standorte": {
@@ -1027,7 +1028,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 9,
-      "trainer": "Baris, Jakob",
+      "trainer": "Baris, Yonah",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
@@ -1046,7 +1047,7 @@
       "altersgruppe": "Kids, Teens",
       "alterVon": 10,
       "alterBis": 12,
-      "trainer": "Jakob",
+      "trainer": "Yonah",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
