@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-06T09:57:27.756Z",
+  "generated": "2026-02-06T10:57:32.289Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -204,7 +204,7 @@
         }
       },
       "LTR": {
-        "anzahl": 30,
+        "anzahl": 26,
         "trainingsarten": [
           "Freestyle Calisthenics",
           "Freies Training",
@@ -297,9 +297,9 @@
     }
   },
   "stats": {
-    "total": 80,
-    "mitProbetraining": 57,
-    "mitLink": 80,
+    "total": 76,
+    "mitProbetraining": 54,
+    "mitLink": 76,
     "nachWochentag": {
       "Montag": 11,
       "Dienstag": 9,
@@ -307,7 +307,7 @@
       "Donnerstag": 10,
       "Freitag": 8,
       "Samstag": 11,
-      "Sonntag": 19
+      "Sonntag": 15
     },
     "nachOrt": {
       "MAP": 18,
@@ -317,14 +317,14 @@
       "Burmesterstr.": 8,
       "Forstenried": 3,
       "Milbertshofen": 3,
-      "LTR": 30,
+      "LTR": 26,
       "Balanstr.": 4,
       "Freiham Halle A/B": 3,
       "PSV": 3,
       "Drygalski Allee": 2
     },
     "nachTrainingsart": {
-      "Freies Training": 14,
+      "Freies Training": 13,
       "Ninja Warrior": 6,
       "Parkour": 25,
       "Calisthenics": 2,
@@ -337,15 +337,15 @@
       "Parkour & Ninja Warrior": 1,
       "Parkour & Trampolin": 4,
       "Parkour & Movement": 2,
-      "Tricking": 3,
+      "Tricking": 2,
       "Trampolin & Parkour": 1,
       "Parkour Advanced": 1,
-      "Trampolin": 4
+      "Trampolin": 2
     },
     "nachAltersgruppe": {
       "Teens, Adults": 10,
-      "Kids": 21,
-      "Adults, Teens": 29,
+      "Kids": 20,
+      "Adults, Teens": 26,
       "Kids, Teens": 4,
       "Adults": 3,
       "Minis": 8,
@@ -1780,82 +1780,6 @@
     },
     {
       "id": 75,
-      "wochentag": "Sonntag",
-      "ort": "LTR",
-      "von": "18:30",
-      "bis": "20:00",
-      "training": "Freies Training",
-      "altersgruppe": "Adults, Teens",
-      "alterVon": 14,
-      "alterBis": null,
-      "trainer": "Simon R., Lewin",
-      "probetraining": "ja",
-      "anmerkung": "",
-      "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-so-18-30-uhr-uztmj",
-      "lat": 48.124155075514125,
-      "lng": 11.621655148342274,
-      "trainingsID": "T077"
-    },
-    {
-      "id": 76,
-      "wochentag": "Sonntag",
-      "ort": "LTR",
-      "von": "16:45",
-      "bis": "18:15",
-      "training": "Trampolin",
-      "altersgruppe": "Kids",
-      "alterVon": 6,
-      "alterBis": 11,
-      "trainer": "Sam, Laurin",
-      "probetraining": "nein",
-      "anmerkung": "",
-      "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/trampolin-kids-ltr-so-16-45-uhr-xswck",
-      "lat": 48.124155075514125,
-      "lng": 11.621655148342274,
-      "trainingsID": "T074"
-    },
-    {
-      "id": 77,
-      "wochentag": "Sonntag",
-      "ort": "LTR",
-      "von": "18:30",
-      "bis": "20:30",
-      "training": "Trampolin",
-      "altersgruppe": "Adults, Teens",
-      "alterVon": 12,
-      "alterBis": null,
-      "trainer": "Sam, Laurin",
-      "probetraining": "ja",
-      "anmerkung": "",
-      "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/trampolin-teens-ltr-so-18-30-uhr-fhqbs",
-      "lat": 48.124155075514125,
-      "lng": 11.621655148342274,
-      "trainingsID": "T075"
-    },
-    {
-      "id": 78,
-      "wochentag": "Sonntag",
-      "ort": "LTR",
-      "von": "18:30",
-      "bis": "20:30",
-      "training": "Tricking",
-      "altersgruppe": "Adults, Teens",
-      "alterVon": 14,
-      "alterBis": null,
-      "trainer": "Lewin",
-      "probetraining": "ja",
-      "anmerkung": "",
-      "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/tricking-ltr-so-18-30-uhr-pxdqa",
-      "lat": 48.124155075514125,
-      "lng": 11.621655148342274,
-      "trainingsID": "T076"
-    },
-    {
-      "id": 79,
       "wochentag": "Sonntag",
       "ort": "LTR",
       "von": "18:30",
