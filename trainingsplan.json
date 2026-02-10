@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-10T10:57:27.004Z",
+  "generated": "2026-02-10T11:57:28.333Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -303,7 +303,7 @@
   "stats": {
     "total": 78,
     "mitProbetraining": 56,
-    "mitLink": 78,
+    "mitLink": 20,
     "nachWochentag": {
       "Montag": 11,
       "Dienstag": 10,
@@ -373,7 +373,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-map-mo-15-uhr-deb2q",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T001"
@@ -392,7 +392,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-map-mo-15-45-uhr-qmdvh",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T002"
@@ -411,7 +411,7 @@
       "probetraining": "nein",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-map-mo-15-45-uhr-xbxp7",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T003"
@@ -430,7 +430,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/calisthenics-map-mo-15-50-uhr-hdz9e",
+      "link": "https://fam.kurabu.com/de/teams/calisthenics-or-map-or-mo-15-50-uhr-yl7k0",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T004"
@@ -449,7 +449,7 @@
       "probetraining": "nein",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-map-mo-17-uhr-b4bnw",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T005"
@@ -468,7 +468,7 @@
       "probetraining": "nein",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-map-mo-17-uhr-hod29",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T006"
@@ -487,7 +487,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/calisthenics-map-mo-17-uhr-7mjrh",
+      "link": "https://fam.kurabu.com/de/teams/calisthenics-or-map-or-mo-17-00-uhr-odwau",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T007"
@@ -506,7 +506,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-map-mo-18-30-uhr-zksah",
+      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-or-map-or-mo-18-30-uhr-rhahw",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T008"
@@ -525,7 +525,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-teens-map-mo-18-30-uhr-0mhhi",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T009"
@@ -544,7 +544,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-map-mo-18-30-uhr-8awx9",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T010"
@@ -563,7 +563,7 @@
       "probetraining": "ja",
       "anmerkung": "16.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-map-mo-20-uhr-xoaiz",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T011"
@@ -582,7 +582,7 @@
       "probetraining": "ja",
       "anmerkung": "17.02. Ferien, Training entfällt. Standort wechselt jede Woche, Informationen über WA-Gruppe",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-outdoor-di-18-30-uhr-v5s5c",
+      "link": "",
       "lat": 48.13739897456391,
       "lng": 11.57544604922726,
       "trainingsID": "T013"
@@ -601,7 +601,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/movement-outdoor-di-19-00-uhr-3x6zt",
+      "link": "",
       "lat": 48.11201643938622,
       "lng": 11.572617040130154,
       "trainingsID": "T014"
@@ -620,7 +620,7 @@
       "probetraining": "nein",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": 30,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-c-di-17-00-uhr-zchwc",
+      "link": "",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
       "trainingsID": "T015"
@@ -639,7 +639,7 @@
       "probetraining": "ja",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-c-di-18-30-uhr-gniex",
+      "link": "",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
       "trainingsID": "T016"
@@ -658,7 +658,7 @@
       "probetraining": "nein",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/flips-and-tricks-kids-burmester-di-17-00-uhr-tcb8e",
+      "link": "https://fam.kurabu.com/de/teams/flips-and-tricks-kids-or-burmester-or-di-17-00-uhr-djznq",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T017"
@@ -677,7 +677,7 @@
       "probetraining": "ja",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": 7,
-      "link": "https://fam.kurabu.com/de/teams/flips-and-tricks-teens-burmester-di-18-30-uhr-yi7ou",
+      "link": "https://fam.kurabu.com/de/teams/flips-and-tricks-teens-or-burmester-or-di-18-30-uhr-2t9s6",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T018"
@@ -696,7 +696,7 @@
       "probetraining": "ja",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-burmester-di-18-30-uhr-s71tv",
+      "link": "",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T019"
@@ -715,7 +715,7 @@
       "probetraining": "ja",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-4-6-jahre-burmester-di-17-uhr-zvlgr",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-burmester-or-di-17-00-uhr-hlem8",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T020"
@@ -734,7 +734,7 @@
       "probetraining": "ja",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-4-8-jahre-burmester-di-18-uhr-02q1o",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-burmester-or-di-18-00-uhr-emkqe",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T021"
@@ -753,7 +753,7 @@
       "probetraining": "nein",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-forstenrieder-mi-16-30-uhr-ewqdy",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-forstenrieder-or-mi-16-30-uhr-anrv4",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442,
       "trainingsID": "T022"
@@ -772,7 +772,7 @@
       "probetraining": "nein",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-forstenrieder-5-9-jahre-mi-17-30-uhr-obhdp",
+      "link": "",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442,
       "trainingsID": "T023"
@@ -791,7 +791,7 @@
       "probetraining": "ja",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-forstenrieder-mi-18-30-uhr-s7dhe",
+      "link": "",
       "lat": 48.08626981754226,
       "lng": 11.496730165793442,
       "trainingsID": "T024"
@@ -810,7 +810,7 @@
       "probetraining": "nein",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-milbertshofen-mi-17-00-uhr-wpv4g",
+      "link": "",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294,
       "trainingsID": "T025"
@@ -829,7 +829,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-milbertshofen-mi-18-30-uhr-t7pkv",
+      "link": "",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294,
       "trainingsID": "T026"
@@ -848,7 +848,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-community-training-milb-mi-20-uhr-9fm3v",
+      "link": "",
       "lat": 48.18090466622404,
       "lng": 11.566481568007294,
       "trainingsID": "T027"
@@ -867,7 +867,7 @@
       "probetraining": "nein",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": 12,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-burmester-mi-17-00-uhr-oszkq",
+      "link": "",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T028"
@@ -886,7 +886,7 @@
       "probetraining": "ja",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": 8,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-burmester-mi-18-30-uhr-s4pyt",
+      "link": "",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T029"
@@ -905,7 +905,7 @@
       "probetraining": "ja",
       "anmerkung": "18.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-burmester-mi-18-30-uhr-jzqp2",
+      "link": "",
       "lat": 48.20486657383294,
       "lng": 11.61657561943386,
       "trainingsID": "T030"
@@ -924,7 +924,7 @@
       "probetraining": "ja",
       "anmerkung": "Freies Training bis 25.03.",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-ltr-mi-20-00-uhr-ae2ka",
+      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-or-ltr-or-mi-20-00-uhr-gp6l2",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T031"
@@ -943,7 +943,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-mi-20-00-uhr-i0pxx",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T032"
@@ -962,7 +962,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/tricking-and-trampolin-ltr-mi-20-00-uhr-uhvqe",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T033"
@@ -981,7 +981,7 @@
       "probetraining": "nein",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-balanstrasse-do-17-00-uhr-tu05b",
+      "link": "",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
       "trainingsID": "T034"
@@ -1000,7 +1000,7 @@
       "probetraining": "nein",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-balanstrasse-do-18-30-uhr-pecmn",
+      "link": "",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
       "trainingsID": "T035"
@@ -1019,7 +1019,7 @@
       "probetraining": "nein",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-balanstrasse-do-18-30-uhr-07zzn",
+      "link": "",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
       "trainingsID": "T036"
@@ -1038,7 +1038,7 @@
       "probetraining": "nein",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-ninja-warrior-kids-or-map-or-do-15-30-uhr-julck",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T037"
@@ -1057,7 +1057,7 @@
       "probetraining": "ja",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-or-map-or-do-16-30-uhr-qik6a",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T038"
@@ -1076,7 +1076,7 @@
       "probetraining": "ja",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-kids-or-map-or-do-16-30-uhr-aehdu",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T039"
@@ -1095,7 +1095,7 @@
       "probetraining": "ja",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-or-map-or-do-18-00-uhr-kqqj7",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T040"
@@ -1114,7 +1114,7 @@
       "probetraining": "ja",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-teens-or-map-or-do-18-00-uhr-jpcma",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T041"
@@ -1133,7 +1133,7 @@
       "probetraining": "ja",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-or-map-or-do-19-30-uhr-qrhu2",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T042"
@@ -1152,7 +1152,7 @@
       "probetraining": "ja",
       "anmerkung": "19.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ninja-warrior-teens-or-map-or-do-19-30-uhr-8ndrn",
+      "link": "",
       "lat": 48.174907748537585,
       "lng": 11.557718375551984,
       "trainingsID": "T043"
@@ -1171,7 +1171,7 @@
       "probetraining": "nein",
       "anmerkung": "20.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-a-fr-15-30-uhr-ixula",
+      "link": "",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275,
       "trainingsID": "T044"
@@ -1190,7 +1190,7 @@
       "probetraining": "nein",
       "anmerkung": "20.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-a-fr-15-30-uhr-vxta4",
+      "link": "",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275,
       "trainingsID": "T045"
@@ -1209,7 +1209,7 @@
       "probetraining": "nein",
       "anmerkung": "20.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-a-fr-17-00-uhr-kl9bb",
+      "link": "",
       "lat": 48.1417830051316,
       "lng": 11.403146869033275,
       "trainingsID": "T046"
@@ -1228,7 +1228,7 @@
       "probetraining": "nein",
       "anmerkung": "20.02. Ferien, Training entfällt",
       "teilnehmer": 22,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-balanstrasse-fr-16-00-uhr-ntsfm",
+      "link": "",
       "lat": 48.10343606652215,
       "lng": 11.605320746449413,
       "trainingsID": "T047"
@@ -1247,7 +1247,7 @@
       "probetraining": "ja",
       "anmerkung": "20.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-ltr-fr-18-00-uhr-xd0vl",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T048"
@@ -1266,7 +1266,7 @@
       "probetraining": "ja",
       "anmerkung": "Freies Training bis zum 25.03.",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-ltr-fr-19-00-uhr-uhmuz",
+      "link": "https://fam.kurabu.com/de/teams/freestyle-calisthenics-or-ltr-or-fr-19-00-uhr-vhill",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T049"
@@ -1285,7 +1285,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/tricking-and-trampolin-ltr-fr-19-30-uhr-vdoc3",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T050"
@@ -1304,7 +1304,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-fr-19-30-uhr-icamo",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T051"
@@ -1323,7 +1323,7 @@
       "probetraining": "nein",
       "anmerkung": "21.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-kids-ltr-sa-9-30-uhr-g92go",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-kids-or-ltr-or-sa-9-30-uhr-ulafu",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T052"
@@ -1342,7 +1342,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-movement-ltr-sa-9-30-uhr-kfasj",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T053"
@@ -1361,7 +1361,7 @@
       "probetraining": "ja",
       "anmerkung": "21.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-teens-ltr-sa-11-00-uhr-59ise",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-teens-or-ltr-or-sa-11-00-uhr-xwxbs",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T054"
@@ -1380,7 +1380,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-movement-ltr-sa-11-uhr-cx6vw",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T055"
@@ -1399,7 +1399,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-sa-12-30-uhr-ljci7",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T056"
@@ -1418,7 +1418,7 @@
       "probetraining": "ja",
       "anmerkung": "14.02. + 21.02. Ferien, Training entfällt",
       "teilnehmer": 28,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-psv-kids-sa-09-30-uhr-6-11-jahre-dhmea",
+      "link": "",
       "lat": 48.16961192487,
       "lng": 11.507736765568037,
       "trainingsID": "T057"
@@ -1437,7 +1437,7 @@
       "probetraining": "ja",
       "anmerkung": "14.02. + 21.02. Ferien, Training entfällt",
       "teilnehmer": 6,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-psv-teens-sa-11-30-uhr-nj0iu",
+      "link": "",
       "lat": 48.16961192487,
       "lng": 11.507736765568037,
       "trainingsID": "T058"
@@ -1456,7 +1456,7 @@
       "probetraining": "ja",
       "anmerkung": "14.02. + 21.02. Ferien, Training entfällt",
       "teilnehmer": 2,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-psv-sa-13-uhr-pwguw",
+      "link": "",
       "lat": 48.16961192487,
       "lng": 11.507736765568037,
       "trainingsID": "T059"
@@ -1475,7 +1475,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/tricking-ltr-sa-18-00-uhr-txfhx",
+      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-teens-or-ltr-or-sa-18-00-uhr-laxim",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T060"
@@ -1494,7 +1494,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-teens-ltr-sa-18-00-uhr-6pwcc",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T061"
@@ -1513,7 +1513,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-sa-18-uhr-cu7gr",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T062"
@@ -1532,7 +1532,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-2-4-jahre-ltr-so-9-30-uhr-syn15",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-ltr-or-so-9-30-uhr-4rwqy",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T063"
@@ -1551,7 +1551,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-4-6-jahre-ltr-so-10-30-uhr-atazd",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-ltr-or-so-10-30-uhr-emp1h",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T064"
@@ -1570,7 +1570,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-6-8-jahre-ltr-so-11-30-uhr-alvj9",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-ltr-or-so-11-30-uhr-p6tdm",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T065"
@@ -1589,7 +1589,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-adults-ltr-so-11-45-uhr-0u8zu",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T066"
@@ -1608,7 +1608,7 @@
       "probetraining": "nein",
       "anmerkung": "15.02. + 22.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-advanced-ltr-so-11-45-uhr-ryc8o",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T067"
@@ -1627,7 +1627,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-so-13-15-uhr-wmavu",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T068"
@@ -1646,7 +1646,7 @@
       "probetraining": "nein",
       "anmerkung": "15.02. Training in Halle A, 22.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-freiham-halle-c-so-10-30-uhr-knmgt",
+      "link": "",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
       "trainingsID": "T069"
@@ -1665,7 +1665,7 @@
       "probetraining": "ja",
       "anmerkung": "15.02. Training in Halle A, 22.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-teens-freiham-halle-c-so-12-uhr-ewjpd",
+      "link": "",
       "lat": 48.141691300033706,
       "lng": 11.40614693505211,
       "trainingsID": "T070"
@@ -1684,7 +1684,7 @@
       "probetraining": "ja",
       "anmerkung": "22.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-drygalski-so-10-uhr-p6cir",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-drygalski-or-so-10-00-uhr-ktryp",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421,
       "trainingsID": "T071"
@@ -1703,7 +1703,7 @@
       "probetraining": "ja",
       "anmerkung": "22.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/fam-minis-drygalski-so-11-uhr-xprvp",
+      "link": "https://fam.kurabu.com/de/teams/fam-minis-or-drygalski-or-so-11-00-uhr-8sme4",
       "lat": 48.097997433962256,
       "lng": 11.506329342215421,
       "trainingsID": "T072"
@@ -1722,7 +1722,7 @@
       "probetraining": "nein",
       "anmerkung": "22.02. Ferien, Training entfällt",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/parkour-kids-ltr-so-16-45-uhr-ye8hz",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T073"
@@ -1741,7 +1741,7 @@
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/trampolin-kids-ltr-so-16-45-uhr-xswck",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T074"
@@ -1760,7 +1760,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/trampolin-teens-ltr-so-18-30-uhr-fhqbs",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T075"
@@ -1779,7 +1779,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/tricking-ltr-so-18-30-uhr-pxdqa",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T076"
@@ -1798,7 +1798,7 @@
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/freies-training-ltr-so-18-30-uhr-uztmj",
+      "link": "",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T077"
@@ -1836,7 +1836,7 @@
       "probetraining": "ja",
       "anmerkung": "Nur in den Ferien",
       "teilnehmer": null,
-      "link": "https://fam.kurabu.com/de/teams/ferien-trampolin-and-tricking-14-or-ltr-or-di-16-30-3r2vq",
+      "link": "https://fam.kurabu.com/de/teams/ferien-trampolin-and-tricking-14-or-ltr-or-di-16-30-uhr-nip9m",
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T078"
