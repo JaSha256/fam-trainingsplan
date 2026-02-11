@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-11T10:57:38.253Z",
+  "generated": "2026-02-11T11:39:10.248Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -302,7 +302,7 @@
   },
   "stats": {
     "total": 78,
-    "mitProbetraining": 56,
+    "mitProbetraining": 55,
     "mitLink": 78,
     "nachWochentag": {
       "Montag": 11,
@@ -712,7 +712,7 @@
       "alterVon": 4,
       "alterBis": 6,
       "trainer": "Steffi, Sarah K., Sarah H.",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "17.02. Ferien, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/fam-minis-or-burmester-or-di-17-00-uhr-hlem8",
