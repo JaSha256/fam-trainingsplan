@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-12T13:57:37.638Z",
+  "generated": "2026-02-12T14:31:44.199Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -980,7 +980,7 @@
       "alterBis": 11,
       "trainer": "Hannah",
       "probetraining": "nein",
-      "anmerkung": "19.02. Ferien, Training entfällt",
+      "anmerkung": "12.2. und 19.02. Ferien, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-kids-or-balan-or-do-17-00-uhr-r4zjz",
       "lat": 48.10343606652215,
@@ -999,7 +999,7 @@
       "alterBis": null,
       "trainer": "Hannah",
       "probetraining": "nein",
-      "anmerkung": "19.02. Ferien, Training entfällt",
+      "anmerkung": "12.2. und 19.02. Ferien, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-teens-or-balan-or-do-18-30-uhr-hdzue",
       "lat": 48.10343606652215,
@@ -1018,7 +1018,7 @@
       "alterBis": null,
       "trainer": "Hannah",
       "probetraining": "nein",
-      "anmerkung": "19.02. Ferien, Training entfällt",
+      "anmerkung": "12.2. und 19.02. Ferien, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/freies-training-or-balan-or-do-18-30-uhr-oessw",
       "lat": 48.10343606652215,
