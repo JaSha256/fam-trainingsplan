@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-02-23T07:57:39.346Z",
+  "generated": "2026-02-23T08:57:28.016Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -743,7 +743,7 @@
       "alterBis": 5,
       "trainer": "Steffi, David",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "25.02. Turnhalle gesperrt, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/fam-minis-or-forstenrieder-or-mi-16-30-uhr-anrv4",
       "lat": 48.08626981754226,
@@ -762,7 +762,7 @@
       "alterBis": 9,
       "trainer": "Steffi, David",
       "probetraining": "nein",
-      "anmerkung": "",
+      "anmerkung": "25.02. Turnhalle gesperrt, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-kids-or-forstenried-or-mi-17-30-uhr-lyiz2",
       "lat": 48.08626981754226,
@@ -781,7 +781,7 @@
       "alterBis": 11,
       "trainer": "Steffi, David",
       "probetraining": "ja",
-      "anmerkung": "",
+      "anmerkung": "25.02. Turnhalle gesperrt, Training entfällt",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/parkour-teens-or-forstenried-or-mi-18-30-uhr-ynixi",
       "lat": 48.08626981754226,
