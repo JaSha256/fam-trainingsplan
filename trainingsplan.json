@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-02T10:57:43.893Z",
+  "generated": "2026-03-02T11:57:39.954Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -69,7 +69,6 @@
       "Jakob",
       "Jakob, Finnian",
       "Jakob, Rafael N.",
-      "Jonas G.",
       "Jonathan, Alwin",
       "Joni, Lea",
       "Julia B.",
@@ -418,7 +417,7 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Jonas G.",
+      "trainer": "Baris",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
@@ -475,7 +474,7 @@
       "altersgruppe": "Adults, Teens",
       "alterVon": 14,
       "alterBis": null,
-      "trainer": "Jonas G.",
+      "trainer": "Jakob",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
