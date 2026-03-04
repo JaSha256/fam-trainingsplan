@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-04T19:57:33.766Z",
+  "generated": "2026-03-04T20:57:28.120Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -69,7 +69,7 @@
       "Hannah",
       "Hannah, Joni",
       "Jakob",
-      "Jakob, Maxi Dö., Finnian",
+      "Jakob, Finnian",
       "Jonas G.",
       "Jonathan, Alwin",
       "Joni, Lea",
@@ -607,7 +607,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Jakob, Maxi Dö., Finnian",
+      "trainer": "Jakob, Finnian",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": 30,
@@ -626,7 +626,7 @@
       "altersgruppe": "Teens, Adults",
       "alterVon": 12,
       "alterBis": null,
-      "trainer": "Jakob, Maxi Dö., Finnian",
+      "trainer": "Jakob, Finnian",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
