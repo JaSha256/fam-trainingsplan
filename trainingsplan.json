@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-05T05:57:38.425Z",
+  "generated": "2026-03-05T06:57:27.398Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -58,7 +58,7 @@
       "Ben W.",
       "Bene",
       "Bene, Chris, Benji",
-      "Bene, Simon R.",
+      "Bene, Simon R., Steffi",
       "Chris, Konrad",
       "David, Maxi K.",
       "Dima",
@@ -455,7 +455,7 @@
       "altersgruppe": "Kids, Teens",
       "alterVon": 10,
       "alterBis": 12,
-      "trainer": "Bene, Simon R.",
+      "trainer": "Bene, Simon R., Steffi",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
