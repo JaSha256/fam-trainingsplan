@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-07T21:57:27.095Z",
+  "generated": "2026-03-07T22:57:45.605Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -292,7 +292,7 @@
     }
   },
   "stats": {
-    "total": 76,
+    "total": 77,
     "mitProbetraining": 53,
     "mitLink": 76,
     "nachWochentag": {
@@ -1791,6 +1791,25 @@
       "lat": 48.124155075514125,
       "lng": 11.621655148342274,
       "trainingsID": "T077"
+    },
+    {
+      "id": 76,
+      "wochentag": "",
+      "ort": "",
+      "von": "",
+      "bis": "",
+      "training": "",
+      "altersgruppe": "",
+      "alterVon": null,
+      "alterBis": null,
+      "trainer": "",
+      "probetraining": "nein",
+      "anmerkung": "",
+      "teilnehmer": null,
+      "link": "",
+      "lat": null,
+      "lng": null,
+      "trainingsID": "T012"
     }
   ]
 }
