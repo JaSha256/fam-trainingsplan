@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-10T11:57:27.105Z",
+  "generated": "2026-03-10T12:57:28.138Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -75,6 +75,8 @@
       "Joni, Lea",
       "Julia B.",
       "Julia B., Baris, Jakob",
+      "Julian W., Nassi",
+      "Konsti L.",
       "Laurenz",
       "Lea",
       "Leo A., Jakob",
@@ -88,8 +90,7 @@
       "Steffi",
       "Steffi, Faiza, Sarah H.",
       "Steffi, Faiza, Sarah H., Matthias W., Kai",
-      "Steffi, Sarah K., Sarah H.",
-      "Steven, Julian W."
+      "Steffi, Sarah K., Sarah H."
     ],
     "standorte": {
       "Balanstr.": {
@@ -1631,7 +1632,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Steven, Julian W.",
+      "trainer": "Julian W., Nassi",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
@@ -1650,7 +1651,7 @@
       "altersgruppe": "Teens",
       "alterVon": 10,
       "alterBis": null,
-      "trainer": "Steven, Julian W.",
+      "trainer": "Julian W., Nassi",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
@@ -1671,7 +1672,7 @@
       "alterBis": 8,
       "trainer": "David, Maxi K.",
       "probetraining": "ja",
-      "anmerkung": "08.03. Turnhalle gesperrt, Training entfällt",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/fam-minis-or-drygalski-or-so-10-00-uhr-ktryp",
       "lat": 48.097997433962256,
@@ -1690,7 +1691,7 @@
       "alterBis": 8,
       "trainer": "David, Maxi K.",
       "probetraining": "ja",
-      "anmerkung": "08.03. Turnhalle gesperrt, Training entfällt",
+      "anmerkung": "",
       "teilnehmer": null,
       "link": "https://fam.kurabu.com/de/teams/fam-minis-or-drygalski-or-so-11-00-uhr-8sme4",
       "lat": 48.097997433962256,
@@ -1707,7 +1708,7 @@
       "altersgruppe": "Kids",
       "alterVon": 6,
       "alterBis": 11,
-      "trainer": "Simon R.",
+      "trainer": "Konsti L.",
       "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": null,
