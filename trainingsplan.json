@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-13T06:57:26.625Z",
+  "generated": "2026-03-13T07:57:29.258Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -86,7 +86,8 @@
       "Steffi",
       "Steffi, Faiza, Sarah H.",
       "Steffi, Faiza, Sarah H., Matthias W., Kai",
-      "Steffi, Sarah K., Sarah H."
+      "Steffi, Sarah K., Sarah H.",
+      "Yevhenii"
     ],
     "standorte": {
       "Balanstr.": {
@@ -1229,7 +1230,7 @@
       "altersgruppe": "Teens",
       "alterVon": 10,
       "alterBis": null,
-      "trainer": "Konsti L.",
+      "trainer": "Yevhenii",
       "probetraining": "ja",
       "anmerkung": "",
       "teilnehmer": null,
