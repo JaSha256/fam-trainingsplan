@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "minClientVersion": "2.0.0",
-  "generated": "2026-03-14T14:57:37.196Z",
+  "generated": "2026-03-14T15:36:51.850Z",
   "metadata": {
     "orte": [
       "Balanstr.",
@@ -291,7 +291,7 @@
   },
   "stats": {
     "total": 76,
-    "mitProbetraining": 53,
+    "mitProbetraining": 52,
     "mitLink": 76,
     "nachWochentag": {
       "Montag": 11,
@@ -1402,7 +1402,7 @@
       "alterVon": 6,
       "alterBis": 11,
       "trainer": "Garlef, Konsti S., Marcel",
-      "probetraining": "ja",
+      "probetraining": "nein",
       "anmerkung": "",
       "teilnehmer": 28,
       "link": "https://fam.kurabu.com/de/teams/parkour-and-trampolin-kids-or-psv-or-sa-09-30-uhr-saglu",
